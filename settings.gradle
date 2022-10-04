@@ -1,0 +1,2 @@
+rootProject.name = "Mealer_Project"
+include ':app'
