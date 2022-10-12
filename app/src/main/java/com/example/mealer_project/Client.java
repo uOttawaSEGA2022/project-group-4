@@ -2,6 +2,10 @@ package com.example.mealer_project;
 
 import java.util.Date;
 
+/**
+ * This class instantiates an instance of Client for Mealer App
+ * Child Class of User
+ */
 public class Client extends User {
     private CreditCard clientCreditCard;
     /**
