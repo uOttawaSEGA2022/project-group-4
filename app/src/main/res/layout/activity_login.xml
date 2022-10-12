@@ -95,17 +95,6 @@
 
 
         <ImageView
-            android:id="@+id/Twitter"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:width="100dp"
-
-            android:src="@drawable/Twitter"
-            tools:ignore="ImageContrastCheck" />
-
-        <ImageView
             android:id="@+id/Google"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
