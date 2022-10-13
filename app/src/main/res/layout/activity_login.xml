@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:autofillHints=""
+        android:autofillHints="Password"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="10dp"
         android:hint="@string/prompt_password"
@@ -82,7 +82,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.216" />
+        app:layout_constraintVertical_bias="0.216"
+        app:cornerRadius="40dp" />
 
 
     <ProgressBar
