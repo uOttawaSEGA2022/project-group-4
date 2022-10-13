@@ -12,16 +12,18 @@
     tools:context=".ui.login.LoginActivity">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/LogoForNow"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/logo_here"
-        android:src="@android:drawable/checkbox_off_background"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:width="100dp"
+        android:src="@drawable/logo_fornow"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ImageContrastCheck" />
+        android:contentDescription="logo for now" />
 
     <EditText
         android:id="@+id/username"
@@ -82,49 +84,6 @@
         app:layout_constraintTop_toBottomOf="@+id/password"
         app:layout_constraintVertical_bias="0.428" />
 
-    <LinearLayout
-        android:layout_width="323dp"
-        android:layout_height="100dp"
-        android:layout_margin="40dp"
-        android:gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.991">
-
-
-        <ImageView
-            android:id="@+id/Twitter"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:width="100dp"
-
-            android:src="@drawable/Twitter"
-            tools:ignore="ImageContrastCheck" />
-
-        <ImageView
-            android:id="@+id/Google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:width="100dp"
-            android:src="@drawable/google" />
-
-        <ImageView
-            android:id="@+id/Facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:width="100dp"
-
-            android:src="@drawable/facebook" />
-
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/loading"
