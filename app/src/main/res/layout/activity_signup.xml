@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signupPage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.signup.SignupActivity">
+
+
+    <LinearLayout
+        android:id="@+id/signupHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="30dp">
+
+        <ImageView
+            android:id="@+id/signupLogo"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:maxHeight="50dp"
+            app:srcCompat="@mipmap/ic_signup_user_logo" />
+
+        <TextView
+            android:id="@+id/signupTitle"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/montaga"
+            android:text="Signup"
+            android:textSize="34sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/signupFormLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signupHeader"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <EditText
+            android:id="@+id/signupFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_box_shadow"
+            android:ems="10"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="First name"
+            android:inputType="textPersonName"
+            android:minHeight="50dp"
+            tools:paddingLeft="10dp" />
+
+        <EditText
+            android:id="@+id/signupLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_box_shadow"
+            android:ems="10"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="Last name"
+            android:inputType="textPersonName"
+            android:minHeight="50dp"
+            tools:paddingLeft="10dp" />
+
+        <EditText
+            android:id="@+id/signupEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_box_shadow"
+            android:ems="10"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:minHeight="50dp"
+            tools:paddingLeft="10dp" />
+
+        <EditText
+            android:id="@+id/signupPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_box_shadow"
+            android:ems="10"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:minHeight="50dp"
+            tools:paddingLeft="10dp" />
+
+        <EditText
+            android:id="@+id/signupConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_box_shadow"
+            android:ems="10"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="Confirm Password"
+            android:inputType="textPassword"
+            android:minHeight="50dp"
+            tools:paddingLeft="10dp" />
+
+        <EditText
+            android:id="@+id/signupStreetAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_box_shadow"
+            android:ems="10"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="Street Address"
+            android:inputType="textPostalAddress"
+            android:minHeight="50dp"
+            tools:paddingLeft="10dp" />
+
+        <LinearLayout
+            android:id="@+id/cityPincodeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/signupCity"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/input_box_shadow"
+                android:ems="10"
+                android:fontFamily="@font/nunito_sans"
+                android:hint="City"
+                android:inputType="textPostalAddress"
+                android:minHeight="50dp"
+                android:paddingLeft="10dp" />
+
+            <EditText
+                android:id="@+id/signupPincode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/input_box_shadow"
+                android:ems="10"
+                android:fontFamily="@font/nunito_sans"
+                android:hint="Pincode"
+                android:inputType="textPostalAddress"
+                android:minHeight="50dp"
+                tools:paddingLeft="10dp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/signupCountry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/input_box_shadow"
+            android:ems="10"
+            android:fontFamily="@font/nunito_sans"
+            android:hint="Country"
+            android:inputType="textPostalAddress"
+            android:minHeight="50dp"
+            tools:paddingLeft="10dp" />
+
+        <LinearLayout
+            android:id="@+id/userTypeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/signupUserTypeMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_margin="0dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_sans"
+                android:padding="0dp"
+                android:text="Registering as:"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/userTypeSelectors"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:minWidth="200dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/userTypeClient"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montaga"
+                    android:minHeight="50dp"
+                    android:text="Client"
+                    app:cornerRadius="20dp" />
+
+                <Button
+                    android:id="@+id/userTypeChef"
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montaga"
+                    android:minHeight="50dp"
+                    android:text="Chef"
+                    app:cornerRadius="20dp" />
+            </LinearLayout>
+
+            <!--            <RadioGroup-->
+            <!--                android:id="@+id/userTypeSelectionGroup"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:layout_weight="1"-->
+            <!--                android:minHeight="50dp"-->
+            <!--                android:layout_gravity="center">-->
+
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:orientation="horizontal">-->
+
+            <!--                    <RadioButton-->
+            <!--                        android:id="@+id/radioButton2"-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="Chef"-->
+            <!--                        android:textSize="20sp" />-->
+
+            <!--                    <RadioButton-->
+            <!--                        android:id="@+id/radioButton"-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent"-->
+            <!--                        android:minHeight="50dp"-->
+            <!--                        android:text="Client"-->
+            <!--                        android:textSize="20sp" />-->
+            <!--                </LinearLayout>-->
+
+            <!--            </RadioGroup>-->
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chefSpecificInfoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/signupChefAboutYourselfMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_sans"
+                android:padding="0dp"
+                android:text="About yourself:"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/signupChefShortDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/input_box_shadow"
+                android:ems="10"
+                android:fontFamily="@font/nunito_sans"
+                android:gravity="start|top"
+                android:hint="Short Description"
+                android:inputType="textMultiLine"
+                android:minHeight="200dp"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/signupChefVoidChequeBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_sans"
+                android:minHeight="50dp"
+                android:text="Upload a void cheque"
+                app:cornerRadius="20sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/clientSpecificInfoContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:minHeight="50dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/signupClientCreditCardMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunito_sans"
+                android:padding="0dp"
+                android:text="Add Credit Card Information:"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/creditCardInfoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/signupCreditCardNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/input_box_shadow"
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans"
+                    android:hint="CARD NUMBER"
+                    android:inputType="number"
+                    android:minHeight="50dp"
+                    android:paddingLeft="10dp" />
+
+                <EditText
+                    android:id="@+id/signupCreditCardName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/input_box_shadow"
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans"
+                    android:hint="CARDHOLDER NAME"
+                    android:inputType="textPersonName"
+                    android:minHeight="50dp"
+                    android:paddingLeft="10dp"
+                    tools:paddingLeft="10dp" />
+
+                <LinearLayout
+                    android:id="@+id/creditCardExpiryAndCVCContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <EditText
+                        android:id="@+id/signupCreditCardMonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/input_box_shadow"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center"
+                        android:hint="MM"
+                        android:inputType="number"
+                        android:minHeight="50dp"
+                        android:paddingLeft="10dp" />
+
+                    <EditText
+                        android:id="@+id/signupCreditCardYear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/input_box_shadow"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center"
+                        android:hint="YY"
+                        android:inputType="number"
+                        android:minHeight="50dp"
+                        android:paddingLeft="10dp" />
+
+                    <EditText
+                        android:id="@+id/signupCreditCardCVC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/input_box_shadow"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center"
+                        android:hint="CVC"
+                        android:inputType="number"
+                        android:minHeight="50dp"
+                        android:paddingLeft="10dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/signupFormSubmitBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/montaga"
+            android:minHeight="70dp"
+            android:text="Sign up"
+            android:textSize="18sp"
+            app:cornerRadius="20sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>
