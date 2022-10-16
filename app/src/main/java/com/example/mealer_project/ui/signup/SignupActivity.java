@@ -182,5 +182,4 @@ public class SignupActivity extends AppCompatActivity {
         String description = textDescription.getText().toString();
         return description;
     }
-
 }
