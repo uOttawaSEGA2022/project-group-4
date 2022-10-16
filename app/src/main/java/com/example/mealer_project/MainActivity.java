@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.mealer_project.ui.login.LoginActivity;
+
 import com.example.mealer_project.ui.signup.SignupActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public void OnSetLogIn(View view) {
 
         // Variable Declaration
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class); //where LogIn.class is the login activity
+        Intent intent = new Intent(getApplicationContext(), Login_Screen.class); //where LogIn.class is the login activity
         startActivityForResult (intent,0); //fix this after
     }
 }
