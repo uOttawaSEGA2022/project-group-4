@@ -18,4 +18,9 @@
     <string name="upload_photo">Upload Image/File</string>
     <string name="photo_button_description">Press to take picture of void cheque</string>
     <string name="upload_button_description">Upload an image of void cheque</string>
+    <string name="logoDescription">an image of our logo</string>
+    <string name="title">Mealer</string>
+    <string name="signUpBtn">SIGN UP</string>
+    <string name="loginBtn">LOG IN</string>
+    <string name="title_activity_login">login</string>
 </resources>
