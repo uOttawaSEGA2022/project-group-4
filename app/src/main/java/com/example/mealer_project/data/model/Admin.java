@@ -1,6 +1,4 @@
-package com.example.mealer_project;
-
-import java.util.Date;
+package com.example.mealer_project.data.model;
 
 /**
  * This class instantiates a single instance of Admin for Mealer App
