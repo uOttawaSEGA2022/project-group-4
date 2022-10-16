@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 
 public class WelcomeScreen extends AppCompatActivity {
 
@@ -26,5 +28,6 @@ public class WelcomeScreen extends AppCompatActivity {
         Intent intent = new Intent (this, IntroScreen.class);
         startActivity(intent);
         //finish(); // change later to proper code
+        FirebaseAuth.getInstance().signOut();
     }
 }
