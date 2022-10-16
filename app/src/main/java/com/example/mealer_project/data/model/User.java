@@ -64,8 +64,59 @@ public class User {
      * @param firstName String representing user's first name
      */
     public void setFirstName(String firstName) {
-        // validate first name
-        this.firstName = firstName;
+
+        if (validateName(firstName) == true) { //valid
+
+            this.firstName = firstName; //setting name
+
+        }
+        else { //invalid
+
+            // Output: error message
+            System.out.println("error message here");
+
+        }
+
+    }
+
+    /**
+     * this helper method checks and validates the first/last names
+     *
+     * @param name
+     *  the name inputted
+     *
+     * @return
+     *  whether the name is valid
+     */
+    private boolean validateName(String name) {
+
+        // Process: checking name length
+        if (name.length() > 0) { //at least 1 char
+
+            // Variable Declaration
+            char[] charsInName = name.toCharArray();
+
+            // Process: validating input
+            for (int i = 0; i < charsInName.length; i++) {
+
+                // Process: checking for all letters
+                if (!Character.isLetter(charsInName[i])) { //is not letter
+
+                    return false;
+
+                }
+
+            }
+
+            return true;
+
+        }
+        else { //nothing inputted
+
+            return false;
+
+        }
+
     }
 
     /**
@@ -81,8 +132,19 @@ public class User {
      * @param lastName String representing user's last name
      */
     public void setLastName(String lastName) {
-        // validate last name
-        this.lastName = lastName;
+
+        if (validateName(lastName) == true) { //valid
+
+            this.lastName = lastName; //setting name
+
+        }
+        else { //invalid
+
+            // Output: error message
+            System.out.println("error message here");
+
+        }
+
     }
 
     /**
@@ -98,17 +160,55 @@ public class User {
      * @param email String representing user's email address
      */
     public void setEmail(String email) {
-        // validate email format
-        this.email = email;
+
+        // Process: checking if email is valid
+        if (validateEmail(email)) { //valid
+
+            this.email = email; //setting email
+
+        }
+        else {
+
+            // Output: error msg
+            System.out.println("error msg");
+
+        }
     }
 
     /**
-     * Validate user's password against the supplied password
-     * @param password password to validate
-     * @return True, if passwords match, else False
+     * this helper method checks and validates the email address inputted by the user
+     *
+     * @param email
+     *  the email entered
+     *
+     * @return
+     *  whether the email is valid
      */
-    public Boolean validatePassword(String password) {
-        return this.password.equals(password);
+   private boolean validateEmail(String email) {
+
+        // Variable Declaration
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if (email.length() > 0) { //not empty
+
+            // Process: checking if email matches the email pattern
+            if (email.matches(emailPattern)) { //success
+
+                return true;
+
+            } else { //invalid
+
+                return false;
+
+            }
+
+        }
+        else { //empty field
+
+            return false;
+
+        }
+
     }
 
     /**
@@ -116,8 +216,110 @@ public class User {
      * @param password String representing user's password
      */
     public void setPassword(String password) {
-        // validate password
-        this.password = password;
+
+        // Process: validating password
+        if (validatePassword(password)) { //valid
+
+            this.password = password;
+
+        }
+        else { //invalid
+
+            // Output:
+            System.out.println("error msg");
+
+        }
+
+    }
+
+    /**
+     * this helper method checks and validates the password inputted by the user
+     *
+     * @param password
+     *  the password entered
+     *
+     * @return
+     *  whether password is valid
+     */
+    private boolean validatePassword(String password) {
+
+        /*
+         * A good password should contain:
+         * at least 8 characters
+         * at least 1 capital
+         * at least 1 number
+         * at least 1 special character
+         */
+
+        // Variable Declaration
+        boolean atLeast8 = false;
+        boolean hasLetters = false;
+        boolean hasCapital = false;
+        boolean hasNumber = false;
+        boolean hasSpecial = false;
+
+        char[] charsInPassword = password.toCharArray();
+
+        // Process: checking for password length
+        if (charsInPassword.length >= 8) { //valid
+
+            atLeast8 = true;
+
+            // Process: looping through password
+            for (int i = 0; i < charsInPassword.length; i++) {
+
+                // Process: checking char
+                if (Character.isLetter(charsInPassword[i])) { //is letter
+
+                    // Process: checking for uppercase
+                    if (Character.isUpperCase(charsInPassword[i])) { //uppercase
+
+                        hasCapital = true; //updating flag
+
+                    }
+
+                    hasLetters = true; //updating flag
+
+                } else if (Character.isDigit(charsInPassword[i])) { //is number
+
+                    hasNumber = true; //updating flag
+
+                } else { //is special char
+
+                    hasSpecial = true; //updating flag
+
+                }
+
+            }
+
+            // Process: validating password
+            if (hasCapital && hasLetters && hasNumber && hasSpecial) { //valid
+
+                return true;
+
+            }
+            else { //invalid
+
+                return false;
+
+            }
+
+        }
+        else { //not long enough
+
+            return false;
+
+        }
+
+    }
+
+    /**
+     * Validate user's password against the supplied password
+     * @param password password to validate
+     * @return True, if passwords match, else False
+     */
+    private Boolean checkMatchingPasswords(String password) {
+        return this.password.equals(password);
     }
 
     /**
@@ -133,7 +335,6 @@ public class User {
      * @param address String representing user's address
      */
     public void setAddress(String address) {
-        // validate address
         this.address = address;
     }
 
