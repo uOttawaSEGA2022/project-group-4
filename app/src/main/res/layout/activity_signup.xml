@@ -294,7 +294,8 @@
                 android:fontFamily="@font/nunito_sans"
                 android:minHeight="50dp"
                 android:text="Upload a void cheque"
-                app:cornerRadius="20sp" />
+                app:cornerRadius="20sp"
+                tools:ignore="TouchTargetSizeCheck,TouchTargetSizeCheck" />
 
 
         </LinearLayout>

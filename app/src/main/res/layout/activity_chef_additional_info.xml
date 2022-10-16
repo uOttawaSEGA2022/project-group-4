@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/submit_text"
         android:textColor="#455A64"
-        app:backgroundTint="@color/backGroundGreen"
+        app:backgroundTint="@color/green_primary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
