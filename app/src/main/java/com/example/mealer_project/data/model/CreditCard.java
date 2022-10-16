@@ -1,4 +1,4 @@
-package com.example.mealer_project;
+package com.example.mealer_project.data.model;
 
 import java.util.Date;
 

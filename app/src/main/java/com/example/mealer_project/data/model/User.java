@@ -1,4 +1,4 @@
-package com.example.mealer_project;
+package com.example.mealer_project.data.model;
 
 /**
  * User class to instantiate a User
@@ -37,7 +37,7 @@ public class User {
      * @param address address of the user
      * @param role Role of the user
      */
-    User(String firstName, String lastName, String email, String password, String address, UserRoles role) {
+    public User(String firstName, String lastName, String email, String password, String address, UserRoles role) {
         // instantiate User's data members
         // using setters to enable validation of incoming data
         this.setFirstName(firstName);

@@ -1,8 +1,7 @@
-package com.example.mealer_project;
+package com.example.mealer_project.data.model;
 
 import androidx.annotation.NonNull;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 
