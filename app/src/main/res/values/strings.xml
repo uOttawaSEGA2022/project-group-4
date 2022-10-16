@@ -12,6 +12,12 @@
     <string name="logo_here">logo_here</string>
     <string name="log_in">LOG IN</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="instruction_text">Please submit an image of a void cheque for payment:</string>
+    <string name="submit_text"><![CDATA[Submit ->]]></string>
+    <string name="take_photo">Take Photo</string>
+    <string name="upload_photo">Upload Image/File</string>
+    <string name="photo_button_description">Press to take picture of void cheque</string>
+    <string name="upload_button_description">Upload an image of void cheque</string>
     <string name="logoDescription">an image of our logo</string>
     <string name="title">Mealer</string>
     <string name="signUpBtn">SIGN UP</string>

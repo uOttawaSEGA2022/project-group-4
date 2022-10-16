@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mealer_project">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,12 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mealer_Project">
         <activity
-            android:name=".IntroScreen"
-            android:exported="false">
+            android:name=".ui.signup.SignupActivity"
+            android:exported="false"
+            android:label="SignupActivity">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity
+             android:name=".IntroScreen"
+             android:exported="false">
+             <meta-data
+                 android:name="android.app.lib_name"
+                 android:value="" />
+         </activity>
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
@@ -29,6 +39,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
