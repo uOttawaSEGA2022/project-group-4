@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mealer_Project">
         <activity
+            android:name=".IntroScreen"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.login.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login" />

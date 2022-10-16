@@ -1,15 +1,8 @@
 <resources>
     <string name="app_name">Mealer_Project</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="logo_here">logo_here</string>
-    <string name="log_in">LOG IN</string>
-    <string name="forgot_password">Forgot Password?</string>
+    <string name="logoDescription">an image of our logo</string>
+    <string name="title">Mealer</string>
+    <string name="signUpBtn">SIGN UP</string>
+    <string name="loginBtn">LOG IN</string>
+    <string name="title_activity_login">login</string>
 </resources>
