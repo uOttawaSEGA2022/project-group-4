@@ -2,6 +2,7 @@ package com.example.mealer_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ public class welcome_screen extends AppCompatActivity {
     }
 
     public void clickLogout (View view) {
-        finish(); // change later to proper code
+        Intent intent = new Intent (this, IntroScreen.class);
+        startActivity(intent);
+        //finish(); // change later to proper code
     }
 }
