@@ -122,7 +122,6 @@ public class SignupActivity extends AppCompatActivity {
         clientSpecificInfo.setVisibility(View.GONE); // takes it out of the view
         chefSpecificInfo.setVisibility(View.VISIBLE);
     }
-<<<<<<< HEAD
 
     private String[] getSignUpInformation() {
         // Get text from text fields
@@ -184,7 +183,4 @@ public class SignupActivity extends AppCompatActivity {
         return description;
     }
 
-
-=======
->>>>>>> 8b99f39c9168a79503412880847f27b799d14f37
 }
