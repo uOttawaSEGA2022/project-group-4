@@ -18,7 +18,7 @@ public class Client extends User {
      * @param role Role of the client
      * @param clientCreditCard credit card info of the client
      */
-    Client(String firstName, String lastName, String email, String password, String address, UserRoles role, CreditCard clientCreditCard) {
+    public Client(String firstName, String lastName, String email, String password, String address, UserRoles role, CreditCard clientCreditCard) {
         // instantiate Client's data members
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
