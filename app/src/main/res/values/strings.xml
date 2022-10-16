@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Mealer_Project</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="app_name">Mealer Project</string>
+    <string name="title_activity_login">Login</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -22,5 +22,4 @@
     <string name="title">Mealer</string>
     <string name="signUpBtn">SIGN UP</string>
     <string name="loginBtn">LOG IN</string>
-    <string name="title_activity_login">login</string>
 </resources>
