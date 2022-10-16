@@ -84,7 +84,49 @@ public class CreditCard {
     }
 
     public void setNumber(String number) {
-        this.number = number;
+
+        // Process: validating the number
+        if (validateNumber(number)) { //valid
+
+            this.number = number;
+
+        }
+        else { //invalid
+
+            // Output: error msg
+            System.out.println("error msg");
+
+        }
+    }
+
+    /**
+     * this helper method checks and validates the credit card number inputted by the user
+     *
+     * @param number
+     *  the number entered
+     *
+     * @return
+     *  whether the number is valid
+     */
+    private boolean validateNumber(String number) {
+
+        // Variable Declaration
+        char[] charsInNumber = number.toCharArray();
+
+        // Process: looping through number
+        for (int i = 0; i < charsInNumber.length; i++) {
+
+            // Process: checking for numbers only
+            if (!Character.isDigit(charsInNumber[i])) { //is not number
+
+                return false;
+
+            }
+
+        }
+
+        return true;
+
     }
 
     public int getCvc() {
