@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
-public class welcome_screen extends AppCompatActivity {
+public class WelcomeScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
