@@ -1,6 +1,5 @@
 package com.example.mealer_project.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,19 +18,12 @@ import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class SignupActivity extends AppCompatActivity {
     LinearLayout clientSpecificInfo;
     LinearLayout chefSpecificInfo;
-
-
-
+    UserRoles userRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +38,6 @@ public class SignupActivity extends AppCompatActivity {
         // instantiate linear layouts need for user type selection
         clientSpecificInfo = (LinearLayout) findViewById(R.id.clientSpecificInfoContainer);
         chefSpecificInfo = (LinearLayout) findViewById(R.id.chefSpecificInfoContainer);
-
-
-
     }
 
     private void attachOnClickListeners() {
@@ -103,11 +92,13 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void setUserTypeClient() {
+        userRole = UserRoles.CLIENT;
         clientSpecificInfo.setVisibility(View.VISIBLE);
         chefSpecificInfo.setVisibility(View.GONE);
     }
 
     private void setUserTypeChef() {
+        userRole = UserRoles.CHEF;
         clientSpecificInfo.setVisibility(View.GONE); // takes it out of the view
         chefSpecificInfo.setVisibility(View.VISIBLE);
     }
@@ -125,31 +116,54 @@ public class SignupActivity extends AppCompatActivity {
     // logic for handling sign up submission
     public Response signUpSubmitButtonClickHandler() {
 
-        // first try to create credit card entity model (to collect credit card data) [performs some validation]
-        // get a Result object back as representation of results of creating credit card entity model
-        Result<CreditCardEntityModel, String> creditCardEntityCreation;
+        UserEntityModel userEntityModel = getUserEntityModel();
 
-        try {
-            creditCardEntityCreation = getCreditCardEntityModel();
-        } catch (Exception e) {
-            return new Response(false, "Form submitted with invalid or no Credit Card data, please enter correct details and try again!" + e.getMessage());
-        }
+        // registering a new Client user
+        if (userRole == UserRoles.CLIENT) {
+            // first try to create credit card entity model (to collect credit card data) [performs some validation]
+            // get a Result object back as representation of results of creating credit card entity model
+            Result<CreditCardEntityModel, String> creditCardEntityCreation;
+            try {
+                creditCardEntityCreation = getCreditCardEntityModel();
+            } catch (Exception e) {
+                return new Response(false, "Form submitted with invalid or no Credit Card data, please enter correct details and try again!" + e.getMessage());
+            }
 
-        if (creditCardEntityCreation.isSuccess()) {
+            if (creditCardEntityCreation.isSuccess()) {
+                // register the new user by passing data to UserDataHandler of the app instance
+                Response userRegistrationResponse = App.getUserDataHandler().registerClient(this, userEntityModel, creditCardEntityCreation.getSuccessObject());
+                if (userRegistrationResponse.isSuccess()) {
+
+
+                    return new Response(true, userRegistrationResponse.getSuccessMessage());
+                } else {
+                    return new Response(false, userRegistrationResponse.getErrorMessage());
+                }
+
+            } else {
+                // if failed to create credit card entity due to data validation error
+                return new Response(false, creditCardEntityCreation.getErrorObject());
+            }
+        } else if (userRole == UserRoles.CHEF){
+            // registering a new chef
+            // get short description
+            EditText chefShortDesc = (EditText)findViewById(R.id.signupChefShortDescription);
+            String chefShortDescription = chefShortDesc.getText().toString();
+
+            // TO-DO: to be implemented. Temporarily empty string
+            String voidCheque = "";
+
             // register the new user by passing data to UserDataHandler of the app instance
-            Response userRegistrationResponse = App.getUserDataHandler().registerClient(this, getUserEntityModel(), creditCardEntityCreation.getSuccessObject());
+            Response userRegistrationResponse = App.getUserDataHandler().registerChef(this, userEntityModel, chefShortDescription, voidCheque);
             if (userRegistrationResponse.isSuccess()) {
-
-
                 return new Response(true, userRegistrationResponse.getSuccessMessage());
             } else {
                 return new Response(false, userRegistrationResponse.getErrorMessage());
             }
-
         } else {
-            // if failed to create credit card entity due to data validation error
-            return new Response(false, creditCardEntityCreation.getErrorObject());
+            return new Response(false, "Invalid user role!");
         }
+
     }
 
     public void showNextScreen() {
