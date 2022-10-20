@@ -10,8 +10,10 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
+import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
@@ -67,7 +69,12 @@ public class FirebaseRepository {
                                     databaseUser.put("addressCity", newUser.getAddress().getCity());
                                     databaseUser.put("country", newUser.getAddress().getCountry());
                                     databaseUser.put("postalCode", newUser.getAddress().getPostalCode());
-                                    databaseUser.put("creditCard", newUser.getClientCreditCard());
+                                    databaseUser.put("creditCardBrand", newUser.getClientCreditCard().getBrand());
+                                    databaseUser.put("creditCardName", newUser.getClientCreditCard().getName());
+                                    databaseUser.put("creditCardNumber", newUser.getClientCreditCard().getNumber());
+                                    databaseUser.put("creditCardExpiryMonth", newUser.getClientCreditCard().getExpiryMonth());
+                                    databaseUser.put("creditCardExpiryYear", newUser.getClientCreditCard().getExpiryYear());
+                                    databaseUser.put("creditCardCvc", newUser.getClientCreditCard().getCvc());
 
 
                                     database.collection("Clients").document(newUser.getUserId())
@@ -180,7 +187,7 @@ public class FirebaseRepository {
     }
 
 
-    private User getUserById(String userId){
+    private User getUserById(String userId) {
 
         database = FirebaseFirestore.getInstance();
 
@@ -198,19 +205,76 @@ public class FirebaseRepository {
                         AddressEntityModel newAddress = new AddressEntityModel();
                         CreditCardEntityModel newCreditCard = new CreditCardEntityModel();
 
+                        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
+                        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
+                        newUser.setEmail(String.valueOf(document.getData().get("email")));
+                        newUser.setRole(UserRoles.CLIENT);
 
-                        String firstName = String.valueOf(document.getData().get("firstName"));
-                        String lastName = String.valueOf(document.getData().get("lastName"));
-                        String email = String.valueOf(document.getData().get("email"));
-                        String  = String.valueOf(document.getData().get("firstName"));
-                        String firstName = String.valueOf(document.getData().get("firstName"));
-                        String firstName = String.valueOf(document.getData().get("firstName"));
-                        String firstName = String.valueOf(document.getData().get("firstName"));
+                        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
+                        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
+                        newAddress.setCountry(String.valueOf(document.getData().get("country")));
+                        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
 
-                        Client newClient= new Client(newUser, newAddress, newCreditCard);
+                        newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
+                        newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
+                        newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
+                        newCreditCard.setExpiryMonth((Integer) document.getData().get("creditCardExpiryMonth"));
+                        newCreditCard.setExpiryYear((Integer) document.getData().get("creditCardExpiryYear"));
+                        newCreditCard.setCvc((Integer) document.getData().get("creditCardCvc"));
+
+                        Address address = new Address(newAddress);
+                        CreditCard creditCard = new CreditCard(newCreditCard);
+
+                        Client newClient = new Client(newUser, address, creditCard);
+
+                    } else {
+                        getChefById(userId);
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        return null;
+
+    }
 
 
-                        Client newClient = new Client()
+    private User getChefById(String userId) {
+
+        database = FirebaseFirestore.getInstance();
+
+        DocumentReference userReference = database.collection("Chefs").document(userId);
+
+        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        UserEntityModel newUser = new UserEntityModel();
+                        AddressEntityModel newAddress = new AddressEntityModel();
+
+                        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
+                        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
+                        newUser.setEmail(String.valueOf(document.getData().get("email")));
+                        newUser.setRole(UserRoles.CLIENT);
+
+                        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
+                        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
+                        newAddress.setCountry(String.valueOf(document.getData().get("country")));
+                        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
+
+                        String description = String.valueOf(document.getData().get("description"));
+                        String voidCheque = String.valueOf(document.getData().get("voidCheque"));
+
+                        Address address = new Address(newAddress);
+
+                        Chef newChef = new Chef(newUser, UserRoles.CHEF, address, description, voidCheque);
+
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -220,8 +284,11 @@ public class FirebaseRepository {
             }
         });
 
+        return null;
 
     }
+
+
 
 
 
