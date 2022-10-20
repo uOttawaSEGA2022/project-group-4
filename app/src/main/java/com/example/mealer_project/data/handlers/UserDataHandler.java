@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.handlers;
 
+import androidx.annotation.NonNull;
+
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
@@ -11,8 +13,23 @@ import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
 import com.example.mealer_project.ui.SignupActivity;
 import com.example.mealer_project.utils.Response;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserDataHandler {
+    String firstName;
+    String lastName;
+    String email;
+    String addressStreet;
+    String addressCity;
+    String postalCode;
+    String country;
 
     public UserDataHandler() {
     }
@@ -38,6 +55,8 @@ public class UserDataHandler {
             App.getPrimaryDatabase().AUTH
                     .registerUser(userData.getEmail(), userData.getPassword(), signupActivity, newClient);
 
+
+
             // if user was authenticated successfully
             if (App.getAppInstance().isUserAuthenticated()) {
                 App.getAppInstance().setUser(newClient);
@@ -50,6 +69,8 @@ public class UserDataHandler {
             return new Response(false, "UserDataHandler: " + e.getMessage());
         }
     }
+
+
 
     public void logInUser(LoginScreen loginScreen, String email, String password) {
         App.getPrimaryDatabase().AUTH.logInUser(email, password, loginScreen);

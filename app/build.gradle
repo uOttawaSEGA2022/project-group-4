@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.mealer_project"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
@@ -42,6 +42,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
+    implementation 'com.google.firebase:firebase-firestore:24.4.0'
     testImplementation 'junit:junit:'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
