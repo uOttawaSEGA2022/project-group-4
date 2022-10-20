@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class WelcomeScreen extends AppCompatActivity {
@@ -16,6 +17,10 @@ public class WelcomeScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
+
+        // Getting the user's information on Firebase
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //String name = user.getDisplayName(); // gives entire name of user
 
         // Change text to proper welcome message when opened
         String role = "wowowowo";
@@ -27,7 +32,6 @@ public class WelcomeScreen extends AppCompatActivity {
     public void clickLogout (View view) {
         Intent intent = new Intent (this, IntroScreen.class);
         startActivity(intent);
-        //finish(); // change later to proper code
         FirebaseAuth.getInstance().signOut();
     }
 }
