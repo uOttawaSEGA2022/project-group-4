@@ -205,7 +205,7 @@ public class CreditCard {
             else { //invalid
 
                 // Output: error msg
-                throw new IllegalArgumentException("Invalid expiry month");
+                throw new IllegalArgumentException(String.valueOf(expiryMonth));
 
             }
         }
