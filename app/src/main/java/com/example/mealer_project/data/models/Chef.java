@@ -2,6 +2,8 @@ package com.example.mealer_project.data.models;
 
 import androidx.annotation.NonNull;
 
+import com.example.mealer_project.data.entity_models.UserEntityModel;
+
 import java.util.Map;
 import java.util.HashMap;
 
@@ -27,7 +29,7 @@ public class Chef extends User {
      * @param voidCheque Chequing information of chef
      * Menu of a chef is stored in a HashMap
      */
-    Chef(String firstName, String lastName, String email, String password, Address address,
+    public Chef(String firstName, String lastName, String email, String password, Address address,
          UserRoles role, String description, String voidCheque, int numberOfMealsSold, int chefRating) {
         // instantiate Admins data members
         super(firstName, lastName, email, password, address, role);
@@ -35,6 +37,16 @@ public class Chef extends User {
         this.setVoidCheque(voidCheque);
         this.setNumOfMealsSold(numOfMealsSold);
         this.setChefRating(chefRating);
+        this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
+    }
+
+    public Chef(UserEntityModel userData, UserRoles role, Address address, String description, String voidCheque) {
+        // instantiate Admins data members
+        super(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getPassword(), address, role);
+        this.setDescription(description);
+        this.setVoidCheque(voidCheque);
+        this.setNumOfMealsSold(0);
+        this.setChefRating(0);
         this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
     }
 
