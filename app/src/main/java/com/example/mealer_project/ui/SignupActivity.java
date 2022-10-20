@@ -1,5 +1,6 @@
 package com.example.mealer_project.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -15,13 +16,22 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class SignupActivity extends AppCompatActivity {
     LinearLayout clientSpecificInfo;
     LinearLayout chefSpecificInfo;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +46,9 @@ public class SignupActivity extends AppCompatActivity {
         // instantiate linear layouts need for user type selection
         clientSpecificInfo = (LinearLayout) findViewById(R.id.clientSpecificInfoContainer);
         chefSpecificInfo = (LinearLayout) findViewById(R.id.chefSpecificInfoContainer);
+
+
+
     }
 
     private void attachOnClickListeners() {
@@ -126,6 +139,8 @@ public class SignupActivity extends AppCompatActivity {
             // register the new user by passing data to UserDataHandler of the app instance
             Response userRegistrationResponse = App.getUserDataHandler().registerClient(this, getUserEntityModel(), creditCardEntityCreation.getSuccessObject());
             if (userRegistrationResponse.isSuccess()) {
+
+
                 return new Response(true, userRegistrationResponse.getSuccessMessage());
             } else {
                 return new Response(false, userRegistrationResponse.getErrorMessage());
@@ -146,8 +161,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private UserEntityModel getUserEntityModel () {
-
         UserEntityModel user = new UserEntityModel();
+
         AddressEntityModel userAddress = new AddressEntityModel();
 
         // Get text from text fields
@@ -179,6 +194,9 @@ public class SignupActivity extends AppCompatActivity {
 
         return user;
     }
+
+
+
 
     public Result<CreditCardEntityModel, String> getCreditCardEntityModel() {
 

@@ -4,18 +4,28 @@ import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
 import com.example.mealer_project.ui.SignupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class FirebaseRepository {
 
     final private FirebaseAuth mAuth;
     public AuthActions AUTH;
+    FirebaseFirestore database;
 
     public FirebaseRepository(FirebaseAuth mAuth) {
         this.mAuth = mAuth;
@@ -35,6 +45,52 @@ public class FirebaseRepository {
                                 if (user != null) {
                                     newUser.setUserId(user.getUid());
                                     App.getAppInstance().setUser(newUser);
+
+                                    // therefore, add the user to database
+                                    database = FirebaseFirestore.getInstance();
+
+                                    Map<String, Object> databaseUser = new HashMap<>();
+                                    databaseUser.put("firstName", newUser.getFirstName());
+                                    databaseUser.put("lastName", newUser.getLastName());
+                                    databaseUser.put("email", newUser.getEmail());
+                                    databaseUser.put("addressStreet", newUser.getAddress().getStreetAddress());
+                                    databaseUser.put("addressCity", newUser.getAddress().getCity());
+                                    databaseUser.put("country", newUser.getAddress().getCountry());
+                                    databaseUser.put("postalCode", newUser.getAddress().getPostalCode());
+
+                                    if (newUser.getRole()== UserRoles.CLIENT){
+                                        database.collection("Clients").document(newUser.getUserId())
+                                                .set(databaseUser)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        // print success statement
+                                                        }
+                                                    })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        // print failure statement
+                                                    }
+                                                });
+
+                                    }else{
+                                        database.collection("Chef").document(newUser.getUserId())
+                                                .set(databaseUser)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        // print success statement
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        // print failure statement
+                                                    }
+                                                });
+                                    }
+
                                     signupActivity.showNextScreen();
                                 } else {
                                     signupActivity.userRegistrationFailed("User registration returned no user info");
