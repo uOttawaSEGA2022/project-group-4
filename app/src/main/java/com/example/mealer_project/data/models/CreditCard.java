@@ -121,7 +121,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("inccorect credit card number");
+            throw new IllegalArgumentException("Incorrect credit card number");
 
         }
     }
@@ -170,7 +170,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("invalid cvc");
+            throw new IllegalArgumentException("Invalid cvc");
 
         }
     }
@@ -205,7 +205,7 @@ public class CreditCard {
             else { //invalid
 
                 // Output: error msg
-                throw new IllegalArgumentException("invalid expiry month");
+                throw new IllegalArgumentException("Invalid expiry month");
 
             }
         }
@@ -240,7 +240,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("invalid expiry year");
+            throw new IllegalArgumentException("Invalid expiry year");
 
         }
     }
