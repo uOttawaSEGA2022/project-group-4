@@ -13,11 +13,7 @@ import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
 import com.example.mealer_project.ui.SignupActivity;
 import com.example.mealer_project.utils.Response;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +49,7 @@ public class UserDataHandler {
             // therefore, add the user to database
             // in returned Result, on success: user id is returned (from firebase) or error message
             App.getPrimaryDatabase().AUTH
-                    .registerUser(userData.getEmail(), userData.getPassword(), signupActivity, newClient);
+                    .registerClient(userData.getEmail(), userData.getPassword(), signupActivity, newClient);
 
 
 
