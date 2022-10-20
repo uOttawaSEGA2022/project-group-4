@@ -1,4 +1,4 @@
-package com.example.mealer_project.data.model;
+package com.example.mealer_project.data.models;
 
 import androidx.annotation.NonNull;
 
@@ -27,7 +27,7 @@ public class Chef extends User {
      * @param voidCheque Chequing information of chef
      * Menu of a chef is stored in a HashMap
      */
-    Chef(String firstName, String lastName, String email, String password, String address,
+    Chef(String firstName, String lastName, String email, String password, Address address,
          UserRoles role, String description, String voidCheque, int numberOfMealsSold, int chefRating) {
         // instantiate Admins data members
         super(firstName, lastName, email, password, address, role);

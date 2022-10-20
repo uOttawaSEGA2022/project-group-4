@@ -1,4 +1,6 @@
-package com.example.mealer_project.data.model;
+package com.example.mealer_project.data.models;
+
+import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 
 import java.util.Date;
 
@@ -11,7 +13,22 @@ public class CreditCard {
     private String name;
     private String number;
     private int cvc;
-    private Date expiry;
+    private int expiryMonth;
+    private int expiryYear;
+
+    /**
+     * Create a credit card object to store information, without a client id
+     * @param creditCardEntityModel a CreditCardEntityModel object containing unvalidated credit card details
+     */
+    public CreditCard(CreditCardEntityModel creditCardEntityModel) {
+        // using setters to enable data validation
+        this.setBrand(creditCardEntityModel.getBrand());
+        this.setName(creditCardEntityModel.getName());
+        this.setNumber(creditCardEntityModel.getNumber());
+        this.setCvc(creditCardEntityModel.getCvc());
+        this.setExpiryMonth(creditCardEntityModel.getExpiryMonth());
+        this.setExpiryYear(creditCardEntityModel.getExpiryYear());
+    }
 
     /**
      * Create a credit card object to store information, without a client id
@@ -19,15 +36,17 @@ public class CreditCard {
      * @param name name of the card holder
      * @param number credit card's number
      * @param cvc CVC code of the credit card
-     * @param expiry expiry date of the credit card
+     * @param expiryMonth expiry month of the credit card
+     * @param expiryYear expiry year of the credit card
      */
-    public CreditCard(String brand, String name, String number, int cvc, Date expiry) {
+    public CreditCard(String brand, String name, String number, int cvc, int expiryMonth, int expiryYear) {
         // using setters to enable data validation
         this.setBrand(brand);
         this.setName(name);
         this.setNumber(number);
         this.setCvc(cvc);
-        this.setExpiry(expiry);
+        this.setExpiryMonth(expiryMonth);
+        this.setExpiryYear(expiryYear);
     }
 
     /**
@@ -37,16 +56,18 @@ public class CreditCard {
      * @param name name of the card holder
      * @param number credit card's number
      * @param cvc CVC code of the credit card
-     * @param expiry expiry date of the credit card
+     * @param expiryMonth expiry month of the credit card
+     * @param expiryYear expiry year of the credit card
      */
-    public CreditCard(String clientId, String brand, String name, String number, int cvc, Date expiry) {
+    public CreditCard(String clientId, String brand, String name, String number, int cvc, int expiryMonth, int expiryYear) {
         // using setters to enable data validation
         this.setClientId(clientId);
         this.setBrand(brand);
         this.setName(name);
         this.setNumber(number);
         this.setCvc(cvc);
-        this.setExpiry(expiry);
+        this.setExpiryMonth(expiryMonth);
+        this.setExpiryYear(expiryYear);
     }
 
     public String getClientId() {
@@ -137,12 +158,20 @@ public class CreditCard {
         this.cvc = cvc;
     }
 
-    public Date getExpiry() {
-        return expiry;
+    public int getExpiryMonth() {
+        return expiryMonth;
     }
 
-    public void setExpiry(Date expiry) {
-        this.expiry = expiry;
+    public void setExpiryMonth(int expiryMonth) {
+        this.expiryMonth = expiryMonth;
+    }
+
+    public int getExpiryYear() {
+        return expiryYear;
+    }
+
+    public void setExpiryYear(int expiryYear) {
+        this.expiryYear = expiryYear;
     }
 
     /**/

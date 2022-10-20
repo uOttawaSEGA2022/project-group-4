@@ -1,4 +1,6 @@
-package com.example.mealer_project.data.model;
+package com.example.mealer_project.data.models;
+
+import com.example.mealer_project.data.entity_models.UserEntityModel;
 
 /**
  * User class to instantiate a User
@@ -11,20 +13,11 @@ public class User {
     // storing password as string for simplicity for now
     protected String password;
     // not modularizing address (ex: city, region, zipcode), storing as single string for now
-    protected String address;
+    protected Address address;
     // user id will likely be a UUID (from Firebase or App logic)
     protected String userId;
     // User's role can one of the accepted values
-    // below are the accepted roles (same for all user's)
-    static private final String ADMIN = "ADMIN";
-    static private final String CLIENT = "CLIENT";
-    static private final String CHEF = "CHEF";
-    // an enum to allow child classes to access possible roles
-    protected enum UserRoles {
-        ADMIN,
-        CLIENT,
-        CHEF
-    }
+
     // data member containing user's role
     protected UserRoles role;
 
@@ -37,7 +30,7 @@ public class User {
      * @param address address of the user
      * @param role Role of the user
      */
-    public User(String firstName, String lastName, String email, String password, String address, UserRoles role) {
+    public User(String firstName, String lastName, String email, String password, Address address, UserRoles role) {
         // instantiate User's data members
         // using setters to enable validation of incoming data
         this.setFirstName(firstName);
@@ -49,6 +42,23 @@ public class User {
         this.setRole(role);
         // id will be auto generated (uuid), by firebase or app logic
         this.setUserId("");
+    }
+
+    /**
+     * Create a User object
+     * @param userData A UserEntityModel object representing non-validated user data
+     * @param userAddress an Address object representing validated address data
+     */
+    public User(UserEntityModel userData, Address userAddress) {
+        // instantiate User's data members
+        // using setters to enable validation of incoming data
+        this.setFirstName(userData.getFirstName());
+        this.setLastName(userData.getLastName());
+        this.setEmail(userData.getEmail());
+        this.setPassword(userData.getPassword());
+        this.setAddress(userAddress);
+        // value of role has to be one of accepted user roles
+        this.setRole(userData.getRole());
     }
 
     /**
@@ -65,7 +75,7 @@ public class User {
      */
     public void setFirstName(String firstName) {
 
-        if (validateName(firstName) == true) { //valid
+        if (validateName(firstName)) { //valid
 
             this.firstName = firstName; //setting name
 
@@ -73,7 +83,7 @@ public class User {
         else { //invalid
 
             // Output: error message
-            System.out.println("error message here");
+            throw new IllegalArgumentException("value of first name not valid");
 
         }
 
@@ -141,7 +151,7 @@ public class User {
         else { //invalid
 
             // Output: error message
-            System.out.println("error message here");
+            throw new IllegalArgumentException("value of last name not valid");
 
         }
 
@@ -170,7 +180,7 @@ public class User {
         else {
 
             // Output: error msg
-            System.out.println("error msg");
+            throw new IllegalArgumentException("invalid email address provided");
 
         }
     }
@@ -226,7 +236,7 @@ public class User {
         else { //invalid
 
             // Output:
-            System.out.println("error msg");
+            throw new IllegalArgumentException("invalid password provided");
 
         }
 
@@ -326,7 +336,7 @@ public class User {
      * Get user's address
      * @return String representing user's address
      */
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
@@ -334,7 +344,7 @@ public class User {
      * Set user's address
      * @param address String representing user's address
      */
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 
@@ -358,8 +368,8 @@ public class User {
      * Get user's role
      * @return String representing user's role
      */
-    public String getRole() {
-        return role.toString();
+    public UserRoles getRole() {
+        return role;
     }
 
     /**

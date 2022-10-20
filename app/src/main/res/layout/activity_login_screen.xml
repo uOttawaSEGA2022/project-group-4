@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="Login_Screen">
+    tools:context=".ui.LoginScreen">
 
     <ImageView
         android:id="@+id/LogoForNow"
@@ -19,14 +19,14 @@
         android:layout_weight="1"
         android:width="100dp"
         android:src="@drawable/logo_fornow"
-        app:layout_constraintBottom_toTopOf="@+id/username"
+        app:layout_constraintBottom_toTopOf="@+id/loginUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="logo for now" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/loginUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="168dp"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/loginPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -62,19 +62,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
+        app:layout_constraintTop_toBottomOf="@+id/loginUsername"
         app:layout_constraintVertical_bias="0.027" />
 
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/loginSubmitBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="64dp"
         android:backgroundTint="#2E7D32"
-        android:enabled="false"
         android:text="@string/log_in"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#FFFF"

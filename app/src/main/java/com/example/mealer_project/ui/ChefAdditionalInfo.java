@@ -1,4 +1,4 @@
-package com.example.mealer_project;
+package com.example.mealer_project.ui;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,9 +16,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.example.mealer_project.data.model.Chef;
-import com.example.mealer_project.ui.signup.SignupActivity;
-import com.example.mealer_project.ui.signup.SignupController;
+import com.example.mealer_project.R;
 
 
 public class ChefAdditionalInfo extends AppCompatActivity {
