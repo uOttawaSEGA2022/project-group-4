@@ -1,4 +1,4 @@
-package com.example.mealer_project.data.model;
+package com.example.mealer_project.data.models;
 
 /**
  * This class instantiates a single instance of Admin for Mealer App
@@ -15,12 +15,12 @@ public class Admin extends User {
      * @param address address of the admin
      * @param role Role of the admin
      */
-    private Admin(String firstName, String lastName, String email, String password, String address, UserRoles role) {
+    private Admin(String firstName, String lastName, String email, String password, Address address, UserRoles role) {
         // instantiate Admins data members
         super(firstName, lastName, email, password, address, role);
     }
 
-    public static Admin getInstance(String firstName, String lastName, String email, String password, String address, UserRoles role) {
+    public static Admin getInstance(String firstName, String lastName, String email, String password, Address address, UserRoles role) {
         if(mealerAdmin == null) {
 
             //To make thread safe
