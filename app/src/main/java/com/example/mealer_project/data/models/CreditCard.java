@@ -2,6 +2,7 @@ package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -104,7 +105,12 @@ public class CreditCard {
         return number;
     }
 
-    public void setNumber(String number) {
+    /**
+     * Sets the credit card number
+     * @param number
+     * @throws IllegalArgumentException
+     */
+    public void setNumber(String number) throws IllegalArgumentException {
 
         // Process: validating the number
         if (validateNumber(number)) { //valid
@@ -115,7 +121,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            System.out.println("error msg");
+            throw new IllegalArgumentException("inccorect credit card number");
 
         }
     }
@@ -154,26 +160,101 @@ public class CreditCard {
         return cvc;
     }
 
-    public void setCvc(int cvc) {
-        this.cvc = cvc;
+    public void setCvc(int cvc) throws IllegalArgumentException {
+        // Process: validating the cvc number
+        if (validateCVC(cvc)) { //valid
+
+            this.cvc = cvc;
+
+        }
+        else { //invalid
+
+            // Output: error msg
+            throw new IllegalArgumentException("invalid cvc");
+
+        }
+    }
+
+    /**
+     * This method validates the CVC
+     * @param number
+     * @return valid or not
+     */
+    private boolean validateCVC(int number) {
+        if (number>99 && number<1000 )
+            return true;
+        return false;
     }
 
     public int getExpiryMonth() {
         return expiryMonth;
     }
 
-    public void setExpiryMonth(int expiryMonth) {
-        this.expiryMonth = expiryMonth;
-    }
+    /**
+     * Sets the expiry month of the credit card after validating
+     * @param expiryMonth
+     * @throws IllegalArgumentException
+     */
+    public void setExpiryMonth(int expiryMonth) throws IllegalArgumentException {
+            // Process: validating the expiry month
+            if (validateExpiryMonth(expiryMonth)) { //valid
+
+                this.expiryMonth = expiryMonth;
+
+            }
+            else { //invalid
+
+                // Output: error msg
+                throw new IllegalArgumentException("invalid expiry month");
+
+            }
+        }
+
+    /**
+     * Validates the expiry month
+     * @param month
+     * @return valid or not
+     */
+    private boolean validateExpiryMonth(int month) {
+            if (month>=1 && month<=12 )
+                return true;
+            return false;
+        }
 
     public int getExpiryYear() {
         return expiryYear;
     }
 
-    public void setExpiryYear(int expiryYear) {
-        this.expiryYear = expiryYear;
+    /**
+     * Sets the expiry year of the credit card
+     * @param expiryYear
+     * @throws IllegalArgumentException
+     */
+    public void setExpiryYear(int expiryYear) throws IllegalArgumentException {
+        // Process: validating the expiry year
+        if (validateExpiryYear(expiryYear)) { //valid
+
+            this.expiryYear = expiryYear;
+
+        }
+        else { //invalid
+
+            // Output: error msg
+            throw new IllegalArgumentException("invalid expiry year");
+
+        }
     }
 
-    /**/
+    /**
+     * Validates the expiry date
+     * @param year
+     * @return valid or not
+     */
+    private boolean validateExpiryYear(int year) {
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR)%2000;
+        if (year >= currentYear )
+            return true;
+        return false;
+    }
 
 }
