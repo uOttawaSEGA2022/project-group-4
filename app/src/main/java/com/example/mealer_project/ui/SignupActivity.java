@@ -75,7 +75,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // check confirm password is correct
         if (!checkConfirmPasswordMatches()) {
-            displayErrorToast("passwords do not match, try again");
+            displayErrorToast("Passwords do not match. Try Again");
             return;
         }
 
@@ -141,8 +141,7 @@ public class SignupActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class); //where SignUp.class is the sign up activity
         startActivity(intent);
     }
-    public void userRegistrationFailed(String message) {
-        displayErrorToast(message);
+    public void userRegistrationFailed(String message) { displayErrorToast(message);
     }
 
     private UserEntityModel getUserEntityModel () {

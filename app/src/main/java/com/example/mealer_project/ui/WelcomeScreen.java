@@ -24,7 +24,7 @@ public class WelcomeScreen extends AppCompatActivity {
         // Change text to proper welcome message when opened
         String message = "Welcome! g ";
         if (App.getAppInstance().isUserAuthenticated()) {
-            message = " " + currentUser.getRole() + ", " + currentUser.getFirstName() + " " + currentUser.getLastName();
+            message = "Welcome " + currentUser.getRole() + ", " + currentUser.getFirstName() + " " + currentUser.getLastName() + "!";
         }
 
         setContentView(R.layout.activity_welcome_screen);
