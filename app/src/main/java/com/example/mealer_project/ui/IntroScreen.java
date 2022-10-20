@@ -1,4 +1,4 @@
-package com.example.mealer_project;
+package com.example.mealer_project.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 
-import com.example.mealer_project.ui.signup.SignupActivity;
+import com.example.mealer_project.R;
 
 public class IntroScreen extends AppCompatActivity {
 
@@ -47,7 +47,7 @@ public class IntroScreen extends AppCompatActivity {
     public void OnSetLogIn(View view) {
 
         // Variable Declaration
-        Intent intent = new Intent(getApplicationContext(), Login_Screen.class); //where LogIn.class is the login activity
+        Intent intent = new Intent(getApplicationContext(), LoginScreen.class); //where LogIn.class is the login activity
         startActivityForResult (intent,0); //fix this after
     }
 

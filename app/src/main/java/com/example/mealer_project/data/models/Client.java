@@ -1,4 +1,6 @@
-package com.example.mealer_project.data.model;
+package com.example.mealer_project.data.models;
+
+import com.example.mealer_project.data.entity_models.UserEntityModel;
 
 import java.util.Date;
 
@@ -18,11 +20,29 @@ public class Client extends User {
      * @param role Role of the client
      * @param clientCreditCard credit card info of the client
      */
-    public Client(String firstName, String lastName, String email, String password, String address, UserRoles role, CreditCard clientCreditCard) {
+    public Client(String firstName, String lastName, String email, String password, Address address, UserRoles role, CreditCard clientCreditCard) {
         // instantiate Client's data members
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
         this.setClientCreditCard(clientCreditCard);
+    }
+
+    /**
+     * Create a Client object
+     * @param clientData a UserEntityModel object containing unvalidated user details
+     * @param clientAddress an Address object containing validated address info
+     * @param clientCreditCard credit card info of the client
+     */
+    public Client(UserEntityModel clientData, Address clientAddress, CreditCard clientCreditCard) {
+        // instantiate Client's data members
+        super(clientData, clientAddress);
+        this.setClientCreditCard(clientCreditCard);
+    }
+
+    @Override
+    public void setUserId(String userId) {
+        super.setUserId(userId);
+        clientCreditCard.setClientId(userId);
     }
 
     /**
@@ -38,7 +58,11 @@ public class Client extends User {
      * @param clientCreditCard a CreditCard object
      */
     public void setClientCreditCard(CreditCard clientCreditCard) {
-        this.clientCreditCard = clientCreditCard.setClientId(this.userId);
+        this.clientCreditCard = clientCreditCard;
+        // update user id of new credit card as well, if user id exists (i.e., user registered on database)
+        if (this.getUserId() != null && !this.getUserId().equals("")) {
+            this.clientCreditCard.setClientId(this.getUserId());
+        }
     }
 
     /**
@@ -47,12 +71,13 @@ public class Client extends User {
      * @param name name of the card holder
      * @param number credit card number
      * @param cvc CVC code
-     * @param expiry credit card expiry
+     * @param expiryMonth expiry month of the credit card
+     * @param expiryYear expiry year of the credit card
      */
-    public void setClientCreditCard(String brand, String name, String number, int cvc, Date expiry) {
+    public void setClientCreditCard(String brand, String name, String number, int cvc, int expiryMonth, int expiryYear) {
         // validate provided card info
         // verify client has been instantiated (has valid userId)
-        this.clientCreditCard = new CreditCard(this.userId, brand, name, number, cvc, expiry);
+        this.clientCreditCard = new CreditCard(this.userId, brand, name, number, cvc, expiryMonth, expiryYear);
     }
 
     /**

@@ -1,7 +1,5 @@
-package com.example.mealer_project.data.model;
+package com.example.mealer_project.data.models;
 
-
-import java.util.Date;
 
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
