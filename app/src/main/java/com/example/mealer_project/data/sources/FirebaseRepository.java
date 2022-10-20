@@ -7,6 +7,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.entity_models.AddressEntityModel;
+import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
+import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.User;
@@ -191,9 +194,20 @@ public class FirebaseRepository {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
+                        UserEntityModel newUser = new UserEntityModel();
+                        AddressEntityModel newAddress = new AddressEntityModel();
+                        CreditCardEntityModel newCreditCard = new CreditCardEntityModel();
+
+
+                        String firstName = String.valueOf(document.getData().get("firstName"));
+                        String lastName = String.valueOf(document.getData().get("lastName"));
+                        String email = String.valueOf(document.getData().get("email"));
+                        String  = String.valueOf(document.getData().get("firstName"));
+                        String firstName = String.valueOf(document.getData().get("firstName"));
+                        String firstName = String.valueOf(document.getData().get("firstName"));
                         String firstName = String.valueOf(document.getData().get("firstName"));
 
-
+                        Client newClient= new Client(newUser, newAddress, newCreditCard);
 
 
                         Client newClient = new Client()
