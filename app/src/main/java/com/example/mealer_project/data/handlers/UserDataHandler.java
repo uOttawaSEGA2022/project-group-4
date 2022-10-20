@@ -37,7 +37,7 @@ public class UserDataHandler {
             // therefore, add the user to database
             // in returned Result, on success: user id is returned (from firebase) or error message
             App.getPrimaryDatabase().AUTH
-                    .registerUser(userData.getEmail(), userData.getPassword(), signupActivity, newClient);
+                    .registerClient(userData.getEmail(), userData.getPassword(), signupActivity, newClient);
 
             return new Response(true, "User login submitted");
 

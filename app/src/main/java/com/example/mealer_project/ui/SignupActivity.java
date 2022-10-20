@@ -77,7 +77,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // check confirm password is correct
         if (!checkConfirmPasswordMatches()) {
-            displayErrorToast("Passwords do not match. Try Again");
+            displayErrorToast("Passwords do not match. Try again");
             return;
         }
 
