@@ -21,7 +21,6 @@ public class WelcomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         User currentUser = App.getAppInstance().getUser();
-        Log.e("WELCOMEEEE", currentUser.getFirstName() + " Maybe ");
         // Change text to proper welcome message when opened
         String message = "Welcome! g ";
         if (App.getAppInstance().isUserAuthenticated()) {
