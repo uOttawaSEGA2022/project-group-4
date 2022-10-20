@@ -16,56 +16,50 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.example.mealer_project.data.model.Chef;
+import com.example.mealer_project.ui.signup.SignupActivity;
+import com.example.mealer_project.ui.signup.SignupController;
+
 
 public class ChefAdditionalInfo extends AppCompatActivity {
 
-    ImageView imageView;
-    //Button variables used for taking picture of cheque and going to next screen
-    ImageButton imageButton;
     Button submitChequeButton;
+    ImageView imageView;
+    ImageButton takePictureButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_additional_info);
 
-        //set the values for the buttons
+        submitChequeButton = findViewById(R.id.submitCheque);
         imageView = findViewById(R.id.voidCheque);
-        imageButton = findViewById(R.id.imageButton);
-        submitChequeButton = findViewById(R.id.submitChequeButton);
+        takePictureButton = findViewById(R.id.imageButton);
 
-        //Request for camera permission
         if (ContextCompat.checkSelfPermission(ChefAdditionalInfo.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(ChefAdditionalInfo.this, new String[]{
                     Manifest.permission.CAMERA
-            },100);
+            }, 100);
         }
-
-        //Declare the action of what the take picture button will do
-        imageButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 100);
-            }
-        });
-
-        //Declares the action to get to welcome screen
-        submitChequeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ChefAdditionalInfo.this, WelcomeScreen.class));
-            }
-        });
     }
 
-    //Allows the image to appear on the app
+    public void takePicture(View view){
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, 100);
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(bitmap);
         }
     }
+
+    public void goBack(View view){
+        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+        startActivityForResult (intent,0);
+    }
+
 }
