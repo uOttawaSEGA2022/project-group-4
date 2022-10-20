@@ -83,7 +83,7 @@ public class User {
         else { //invalid
 
             // Output: error message
-            throw new IllegalArgumentException("value of first name not valid");
+            throw new IllegalArgumentException("Invalid first name");
 
         }
 
@@ -91,6 +91,7 @@ public class User {
 
     /**
      * this helper method checks and validates the first/last names
+     * or city/country name
      *
      * @param name
      *  the name inputted
@@ -112,7 +113,11 @@ public class User {
                 // Process: checking for all letters
                 if (!Character.isLetter(charsInName[i])) { //is not letter
 
-                    return false;
+                    if (!(charsInName[i] == 45 || charsInName[i] == 32)) {
+
+                        return false;
+
+                    }
 
                 }
 
@@ -151,7 +156,7 @@ public class User {
         else { //invalid
 
             // Output: error message
-            throw new IllegalArgumentException("value of last name not valid");
+            throw new IllegalArgumentException("Invalid last name");
 
         }
 
@@ -180,7 +185,7 @@ public class User {
         else {
 
             // Output: error msg
-            throw new IllegalArgumentException("invalid email address provided");
+            throw new IllegalArgumentException("Invalid email address");
 
         }
     }
@@ -236,7 +241,11 @@ public class User {
         else { //invalid
 
             // Output:
-            throw new IllegalArgumentException("invalid password provided");
+            throw new IllegalArgumentException("Your password should contain:\n" +
+                    "at least 8 characters\n" +
+                    "at least 1 capital\n" +
+                    "at least 1 number\n" +
+                    "at least 1 special character");
 
         }
 
@@ -343,9 +352,109 @@ public class User {
     /**
      * Set user's address
      * @param address String representing user's address
+     * @throws IllegalArgumentException
      */
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddress(Address address) throws IllegalArgumentException {
+
+        if (validateAddress(address)) {
+
+            this.address = address;
+
+        }
+        else {
+
+            throw new IllegalArgumentException("Invalid address");
+
+        }
+    }
+
+    private boolean validateAddress(Address address) {
+
+        // Variable Declaration
+        String streetAd = address.getStreetAddress();
+        String postalCode = address.getPostalCode();
+        String city = address.getCity();
+        String country = address.getCountry();
+
+        // Process: checking length of fields
+        if (streetAd.length() <= 0 || postalCode.length() <= 0 || city.length() <= 0 ||
+                country.length() <= 0) { //empty
+
+            return false;
+
+        }
+        else { //not empty
+
+            // variable declaration for street address
+            char[] charsInStreet = streetAd.toCharArray();
+            boolean hasLetters = false;
+            boolean hasNumber = false;
+            boolean hasInvalidSpecial = false;
+
+            // Process: looping through street address
+            for (int i = 0; i < charsInStreet.length; i++) {
+
+                // Process: checking char
+                if (Character.isLetter(charsInStreet[i])) { //is letter
+
+                    hasLetters = true; //updating flag
+
+                }
+                else if (Character.isDigit(charsInStreet[i])) { //is number
+
+                    hasNumber = true; //updating flag
+
+                }
+                else { //is special char
+
+                    if (charsInStreet[i] == 32 || charsInStreet[i] == 45 ||
+                            charsInStreet[i] == 46) { //space, hyphen, or period
+
+                        hasInvalidSpecial = false; //updating flag
+
+                    }
+                    else { //invalid special char
+
+                        hasInvalidSpecial = true; //updating flag
+
+                    }
+
+                }
+
+            }
+
+            // Process: checking if street address is valid
+            if (!(hasLetters == true && hasNumber == true && hasInvalidSpecial == false)) { //invalid
+
+                return false;
+
+            }
+
+            // Process: checking if postal code is valid
+            if (!postalCode.matches("[A-Za-z]\\d[A-Za-z]\\d[A-Za-z]\\d")) { //invalid
+
+                return false;
+
+            }
+
+            // Process: checking if city is valid
+            if (!validateName(city)) { //invalid
+
+                return false;
+
+            }
+
+            // Process: checking if country is valid
+            if (!validateName(country)) { //invalid
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+
     }
 
     /**
