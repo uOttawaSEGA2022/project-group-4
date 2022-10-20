@@ -1,8 +1,10 @@
-package com.example.mealer_project;
+package com.example.mealer_project.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.mealer_project.R;
 
 public class activity_clientAdditional extends AppCompatActivity {
 
