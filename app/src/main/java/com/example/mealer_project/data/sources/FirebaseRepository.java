@@ -196,7 +196,7 @@ public class FirebaseRepository {
 
 
 
-                        Client newClient = new Client()
+//                        Client newClient = new Client();
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -206,7 +206,7 @@ public class FirebaseRepository {
             }
         });
 
-
+        return null;
     }
 
 

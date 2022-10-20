@@ -7,7 +7,6 @@ import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
-import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
 import com.example.mealer_project.ui.SignupActivity;
@@ -31,7 +30,7 @@ public class UserDataHandler {
 
             // Try to instantiate three objects: Address object, CreditCard object, and finally, Client object
             // if any of these throw exception (i.e., if unable to create instance) we handle and return response
-            User newClient = new Client(userData, new Address(userData.getAddress()), new CreditCard(creditCardData));
+            Client newClient = new Client(userData, new Address(userData.getAddress()), new CreditCard(creditCardData));
 
             // if code execution reaches this points, it means all user data was valid
             // therefore, add the user to database
@@ -60,13 +59,13 @@ public class UserDataHandler {
 
             // Try to instantiate three objects: Address object, CreditCard object, and finally, Client object
             // if any of these throw exception (i.e., if unable to create instance) we handle and return response
-            User newChef = new Chef(userData, userData.getRole(), new Address(userData.getAddress()), chefShortDescription, voidCheque);
+            Chef newChef = new Chef(userData, userData.getRole(), new Address(userData.getAddress()), chefShortDescription, voidCheque);
 
             // if code execution reaches this points, it means all user data was valid
             // therefore, add the user to database
             // in returned Result, on success: user id is returned (from firebase) or error message
             App.getPrimaryDatabase().AUTH
-                    .registerUser(userData.getEmail(), userData.getPassword(), signupActivity, newChef);
+                    .registerChef(userData.getEmail(), userData.getPassword(), signupActivity, newChef);
 
             return new Response(true, "User login submitted");
 
