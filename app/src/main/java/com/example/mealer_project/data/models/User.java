@@ -241,10 +241,10 @@ public class User {
         else { //invalid
 
             // Output:
-            throw new IllegalArgumentException("Your password should contain:\n" +
-                    "at least 8 characters\n" +
-                    "at least 1 capital\n" +
-                    "at least 1 number\n" +
+            throw new IllegalArgumentException("Your password should contain:\r\n" +
+                    "at least 8 characters\r\n" +
+                    "at least 1 capital\r\n" +
+                    "at least 1 number\r\n" +
                     "at least 1 special character");
 
         }

@@ -115,7 +115,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("Invalid credit card name");
+            throw new IllegalArgumentException("Invalid card holder name");
 
         }
     }
