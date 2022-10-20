@@ -2,6 +2,8 @@ package com.example.mealer_project.ui.signup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
@@ -121,6 +123,11 @@ public class SignupActivity extends AppCompatActivity {
         this.userRole = USER_TYPE.CHEF;
         clientSpecificInfo.setVisibility(View.GONE); // takes it out of the view
         chefSpecificInfo.setVisibility(View.VISIBLE);
+    }
+
+    public void goBack(View view){
+        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+        startActivityForResult (intent,0);
     }
 
     private String[] getSignUpInformation() {

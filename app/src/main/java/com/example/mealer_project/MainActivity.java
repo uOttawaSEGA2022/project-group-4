@@ -32,9 +32,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), Login_Screen.class); //where LogIn.class is the login activity
         startActivityForResult (intent,0); //fix this after
     }
-
-    public void goBack(View view){
-        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-        startActivityForResult (intent,0);
-    }
 }

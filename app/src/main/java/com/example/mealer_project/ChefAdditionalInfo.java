@@ -57,9 +57,4 @@ public class ChefAdditionalInfo extends AppCompatActivity {
         }
     }
 
-    public void goBack(View view){
-        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
-        startActivityForResult (intent,0);
-    }
-
 }
