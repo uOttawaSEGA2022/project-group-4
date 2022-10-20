@@ -3,10 +3,10 @@ package com.example.mealer_project.data.models;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 
 public class Address {
-    String streetAddress;
-    String city;
-    String postalCode;
-    String country;
+    private String streetAddress;
+    private String city;
+    private String postalCode;
+    private String country;
 
     public Address(String streetAddress, String city, String postalCode, String country) {
         this.streetAddress = streetAddress;
