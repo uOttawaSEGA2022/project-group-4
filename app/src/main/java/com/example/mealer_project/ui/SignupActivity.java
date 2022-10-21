@@ -242,9 +242,9 @@ public class SignupActivity extends AppCompatActivity {
         try {
             val = Integer.parseInt(textCardYear.getText().toString());
         } catch (Exception e) {
-            return new Result<>(null, "Invalid Expiry Month value: " + e.getMessage());
+            return new Result<>(null, "Invalid Expiry Year value: " + e.getMessage());
         }
-        creditCard.setExpiryMonth(val);
+        creditCard.setExpiryYear(val);
 
         EditText textCardCVC = (EditText)findViewById(R.id.signupCreditCardCVC);
         try {

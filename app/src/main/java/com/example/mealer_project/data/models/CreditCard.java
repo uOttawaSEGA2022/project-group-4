@@ -89,16 +89,75 @@ public class CreditCard {
         return brand;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setBrand(String brand) throws IllegalArgumentException {
+
+        if (brand.length() > 0) { //entered field
+            this.brand = brand;
+        }
+        else { //empty field
+            throw new IllegalArgumentException("Please enter a credit card brand name.");
+        }
+
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws IllegalArgumentException {
+
+        // Process: validating the name
+        if (validateName(name)) { //valid
+
+            this.name = name;
+
+        }
+        else { //invalid
+
+            // Output: error msg
+            throw new IllegalArgumentException("Invalid card holder name");
+
+        }
+    }
+
+    /**
+     * this helper method checks and validates the name inputted by the user
+     *
+     * @param name
+     *  the name entered
+     *
+     * @return
+     *  whether the name is valid
+     */
+    private boolean validateName(String name) {
+
+        if (name.length() > 0) { //not empty
+
+            // Variable Declaration
+            char[] charsInName = name.toCharArray();
+
+            // Process: looping through the name
+            for (int i = 0; i < charsInName.length; i++) {
+
+                if (!((charsInName[i] >= 65 && charsInName[i] <= 90) ||
+                        (charsInName[i] >= 97 && charsInName[i] <= 122) ||
+                        (charsInName[i] == 32))) { //only letters or space
+
+                    return false;
+
+                }
+
+            }
+
+            return true;
+
+        }
+        else { //empty field
+
+            return false;
+
+        }
+
     }
 
     public String getNumber() {
@@ -121,7 +180,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("Incorrect credit card number");
+            throw new IllegalArgumentException("Invalid credit card number");
 
         }
     }
@@ -137,22 +196,36 @@ public class CreditCard {
      */
     private boolean validateNumber(String number) {
 
-        // Variable Declaration
-        char[] charsInNumber = number.toCharArray();
+        if (number.length() > 0) { //not empty
 
-        // Process: looping through number
-        for (int i = 0; i < charsInNumber.length; i++) {
+            // Variable Declaration
+            char[] charsInNumber = number.toCharArray();
 
-            // Process: checking for numbers only
-            if (!Character.isDigit(charsInNumber[i])) { //is not number
+            // Process: looping through number
+            for (int i = 0; i < charsInNumber.length; i++) {
 
-                return false;
+                // Process: checking for numbers only
+                if (!Character.isDigit(charsInNumber[i])) { //is not number
+
+                    return false;
+
+                }
+                else if (!(charsInNumber.length >= 13 && charsInNumber.length <= 16)) { //wrong length
+
+                    return false;
+
+                }
 
             }
 
-        }
+            return true;
 
-        return true;
+        }
+        else { //empty
+
+            return false;
+
+        }
 
     }
 
@@ -170,7 +243,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("Invalid cvc");
+            throw new IllegalArgumentException("Invalid CVC");
 
         }
     }
@@ -205,7 +278,7 @@ public class CreditCard {
             else { //invalid
 
                 // Output: error msg
-                throw new IllegalArgumentException("Invalid expiry month");
+                throw new IllegalArgumentException(String.valueOf(expiryMonth));
 
             }
         }

@@ -7,7 +7,6 @@ import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
-import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
 import com.example.mealer_project.ui.SignupActivity;
