@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.widget.EditText;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class SignupScreen extends AppCompatActivity {
     LinearLayout chefSpecificInfo;
     UserRoles userRole;
     boolean userRegistrationInProgress;
+    EditText cvcValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +38,25 @@ public class SignupScreen extends AppCompatActivity {
         // instantiate linear layouts need for user type selection
         clientSpecificInfo = (LinearLayout) findViewById(R.id.clientSpecificInfoContainer);
         chefSpecificInfo = (LinearLayout) findViewById(R.id.chefSpecificInfoContainer);
+        // add input filter to CVC form field to limit number of characters
+        cvcValue = findViewById(R.id.signupCreditCardCVC);
+
         // to keep track of when user sign up completes on the Firebase
         // it gets set to true, when first time submit button it clicked
         // methods that the asynchronous firebase code calls backs after completing registration
         // sets this to false
         userRegistrationInProgress = false;
+    }
+
+    private boolean isCVCValid() {
+        String cvcNum = cvcValue.getText().toString();
+        int numChars = cvcNum.toCharArray().length;
+        if (numChars != 3) {
+            displayErrorToast("Invalid CVC value. CVC must be 3 digit number between 000 - 999");
+            return false;
+        }
+
+        return true;
     }
 
     private void attachOnClickListeners() {
@@ -82,13 +98,22 @@ public class SignupScreen extends AppCompatActivity {
 
     private void signupFormSubmissionHandler(View v) {
 
+        // set sign up in progress
+        userRegistrationInProgress = true;
+
         // check confirm password is correct
         if (!checkConfirmPasswordMatches()) {
             displayErrorToast("Passwords do not match. Try again.");
             return;
         }
 
-        userRegistrationInProgress = true;
+        // check CVC
+        if (!isCVCValid()) {
+            userRegistrationInProgress = false;
+            return;
+        }
+
+
 
         // pass all sign up form details to controller
         Response response = signUpSubmitButtonClickHandler();
