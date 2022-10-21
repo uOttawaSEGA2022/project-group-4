@@ -13,7 +13,7 @@ public class CreditCard {
     private String brand;
     private String name;
     private String number;
-    private int cvc;
+    private String cvc;
     private int expiryMonth;
     private int expiryYear;
 
@@ -40,7 +40,7 @@ public class CreditCard {
      * @param expiryMonth expiry month of the credit card
      * @param expiryYear expiry year of the credit card
      */
-    public CreditCard(String brand, String name, String number, int cvc, int expiryMonth, int expiryYear) {
+    public CreditCard(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
         // using setters to enable data validation
         this.setBrand(brand);
         this.setName(name);
@@ -60,7 +60,7 @@ public class CreditCard {
      * @param expiryMonth expiry month of the credit card
      * @param expiryYear expiry year of the credit card
      */
-    public CreditCard(String clientId, String brand, String name, String number, int cvc, int expiryMonth, int expiryYear) {
+    public CreditCard(String clientId, String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
         // using setters to enable data validation
         this.setClientId(clientId);
         this.setBrand(brand);
@@ -229,11 +229,11 @@ public class CreditCard {
 
     }
 
-    public int getCvc() {
+    public String getCvc() {
         return cvc;
     }
 
-    public void setCvc(int cvc) throws IllegalArgumentException {
+    public void setCvc(String cvc) throws IllegalArgumentException {
         // Process: validating the cvc number
         if (validateCVC(cvc)) { //valid
 
@@ -253,8 +253,8 @@ public class CreditCard {
      * @param number
      * @return valid or not
      */
-    private boolean validateCVC(int number) {
-        if (number>99 && number<1000 )
+    private boolean validateCVC(String number) {
+        if (true )
             return true;
         return false;
     }

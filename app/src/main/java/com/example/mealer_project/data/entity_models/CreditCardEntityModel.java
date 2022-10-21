@@ -1,19 +1,17 @@
 package com.example.mealer_project.data.entity_models;
 
-import java.util.Date;
-
 public class CreditCardEntityModel {
     private String clientId;
     private String brand;
     private String name;
     private String number;
-    private int cvc;
+    private String cvc;
     private int expiryMonth;
     private int expiryYear;
 
     public CreditCardEntityModel() {};
 
-    public CreditCardEntityModel(String brand, String name, String number, int cvc, int expiryMonth, int expiryYear) {
+    public CreditCardEntityModel(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
         this.setBrand(brand);
         this.setName(name);
         this.setNumber(number);
@@ -54,11 +52,11 @@ public class CreditCardEntityModel {
         this.number = number;
     }
 
-    public int getCvc() {
+    public String getCvc() {
         return cvc;
     }
 
-    public void setCvc(int cvc) {
+    public void setCvc(String cvc) {
         this.cvc = cvc;
     }
 

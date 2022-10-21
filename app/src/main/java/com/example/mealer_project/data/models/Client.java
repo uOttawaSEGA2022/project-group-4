@@ -74,7 +74,7 @@ public class Client extends User {
      * @param expiryMonth expiry month of the credit card
      * @param expiryYear expiry year of the credit card
      */
-    public void setClientCreditCard(String brand, String name, String number, int cvc, int expiryMonth, int expiryYear) {
+    public void setClientCreditCard(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
         // validate provided card info
         // verify client has been instantiated (has valid userId)
         this.clientCreditCard = new CreditCard(this.userId, brand, name, number, cvc, expiryMonth, expiryYear);

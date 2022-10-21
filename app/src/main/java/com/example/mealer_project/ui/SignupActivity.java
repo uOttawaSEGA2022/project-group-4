@@ -239,6 +239,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // holder for validating integer data going forward
         int val;
+        String number;
 
         EditText textCardMonth = (EditText)findViewById(R.id.signupCreditCardMonth);
         // try parsing the user input to integer
@@ -261,11 +262,11 @@ public class SignupActivity extends AppCompatActivity {
 
         EditText textCardCVC = (EditText)findViewById(R.id.signupCreditCardCVC);
         try {
-            val = Integer.parseInt(textCardCVC.getText().toString());
+            number = textCardCVC.getText().toString();
         } catch (Exception e) {
             return new Result<>(null, "Invalid CVC value: " + e.getMessage());
         }
-        creditCard.setCvc(val);
+        creditCard.setCvc(number);
 
         // return Result containing creditCard instance and no error object
         return new Result<>(creditCard, null);
