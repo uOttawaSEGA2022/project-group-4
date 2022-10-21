@@ -410,11 +410,11 @@ public class User {
             return false;
         }
         else if (postalCode.length() == 0) {
-            errorMsg = "City cannot be empty";
+            errorMsg = "Postal code cannot be empty";
             return false;
         }
         else if (city.length() == 0) {
-            errorMsg = "Postal code cannot be empty";
+            errorMsg = "City cannot be empty";
             return false;
         }
         else if (country.length() == 0) {
