@@ -160,7 +160,7 @@ public class CreditCard {
 
                     if (!(charsInName[i] == 45 || charsInName[i] == 32)) {
 
-                        SignupActivity.getCurrentFieldsCredit(index).setBackgroundResource(R.drawable.edterror);
+                        //SignupActivity.getCurrentFieldsCredit(index).setBackgroundResource(R.drawable.edterror);
 
                         SignupActivity.getCurrentFieldsCredit(index).setError("Illegal characters in field"); //setting error icon & msg
 
@@ -172,7 +172,7 @@ public class CreditCard {
 
             }
 
-            SignupActivity.getCurrentFieldsCredit(index).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFieldsCredit(index).setBackgroundResource(R.drawable.edtnormal);
 
             SignupActivity.getCurrentFieldsCredit(index).setError(null); //setting error icon & msg
 
@@ -181,7 +181,7 @@ public class CreditCard {
         }
         else { //nothing inputted
 
-            SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
+            //SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
 
             SignupActivity.getCurrentFields(index).setError("Field cannot be empty"); //setting error icon & msg
 
@@ -238,7 +238,7 @@ public class CreditCard {
                 // Process: checking for numbers only
                 if (!Character.isDigit(charsInNumber[i])) { //is not number
 
-                    SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
+                    //SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
 
                     SignupActivity.getCurrentFieldsCredit(1).setError("Must only contain numbers"); //setting error icon & msg
 
@@ -247,7 +247,7 @@ public class CreditCard {
                 }
                 else if (!(charsInNumber.length >= 13 && charsInNumber.length <= 16)) { //wrong length
 
-                    SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
+                    //SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
 
                     SignupActivity.getCurrentFieldsCredit(1).setError("Number must be between 13 to 16 digits long"); //setting error icon & msg
 
@@ -257,7 +257,7 @@ public class CreditCard {
 
             }
 
-            SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edtnormal);
 
             SignupActivity.getCurrentFieldsCredit(1).setError(null); //setting error icon & msg
 
@@ -266,7 +266,7 @@ public class CreditCard {
         }
         else { //empty
 
-            SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
+            //SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
 
             SignupActivity.getCurrentFieldsCredit(1).setError("Credit card number cannot be empty"); //setting error icon & msg
 
@@ -302,12 +302,12 @@ public class CreditCard {
      */
     private boolean validateCVC(String number) {
         /*if (number.length() == 3) {
-            SignupActivity.getCurrentFieldsCredit(5).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFieldsCredit(5).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFieldsCredit(5).setError(null); //setting error icon & msg
             return true;
         }
         else {
-            SignupActivity.getCurrentFieldsCredit(5).setBackgroundResource(R.drawable.edterror);
+            //SignupActivity.getCurrentFieldsCredit(5).setBackgroundResource(R.drawable.edterror);
             SignupActivity.getCurrentFieldsCredit(5).setError("Must be 3 digits long"); //setting error icon & msg
             return false;
         }*/
@@ -344,11 +344,11 @@ public class CreditCard {
      */
     private boolean validateExpiryMonth(int month) {
             if (month>=1 && month<=12 ) {
-                SignupActivity.getCurrentFieldsCredit(3).setBackgroundResource(R.drawable.edtnormal);
+                //SignupActivity.getCurrentFieldsCredit(3).setBackgroundResource(R.drawable.edtnormal);
                 SignupActivity.getCurrentFieldsCredit(3).setError(null); //setting error icon & msg
                 return true;
             }
-            SignupActivity.getCurrentFieldsCredit(3).setBackgroundResource(R.drawable.edterror);
+            //SignupActivity.getCurrentFieldsCredit(3).setBackgroundResource(R.drawable.edterror);
             SignupActivity.getCurrentFieldsCredit(3).setError("Month must be between 1 and 12"); //setting error icon & msg
             return false;
         }
@@ -386,11 +386,11 @@ public class CreditCard {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR)%2000;
 
         if (year >= currentYear) {
-            SignupActivity.getCurrentFieldsCredit(4).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFieldsCredit(4).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFieldsCredit(4).setError(null); //setting error icon & msg
             return true;
         }
-        SignupActivity.getCurrentFieldsCredit(4).setBackgroundResource(R.drawable.edterror);
+        //SignupActivity.getCurrentFieldsCredit(4).setBackgroundResource(R.drawable.edterror);
         SignupActivity.getCurrentFieldsCredit(4).setError("Must be a valid expiration year"); //setting error icon & msg
         return false;
     }

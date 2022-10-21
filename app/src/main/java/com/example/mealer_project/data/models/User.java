@@ -181,7 +181,7 @@ public class User {
 
                     if (!(charsInName[i] == 45 || charsInName[i] == 32)) {
 
-                        SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
+                        //SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
                         SignupActivity.getCurrentFields(index).setError("Illegal characters in name"); //setting error icon & msg
 
                         return false;
@@ -192,7 +192,7 @@ public class User {
 
             }
 
-            SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFields(index).setError(null); //setting error icon & msg
 
             return true;
@@ -200,7 +200,7 @@ public class User {
         }
         else { //nothing inputted
 
-            SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
+            //SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
             SignupActivity.getCurrentFields(index).setError("Name cannot be empty"); //setting error icon & msg
 
             return false;
@@ -259,14 +259,14 @@ public class User {
             // Process: checking if email matches the email pattern
             if (email.matches(emailPattern)) { //success
 
-                SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edtnormal);
+               // SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edtnormal);
                 SignupActivity.getCurrentFields(2).setError(null); //setting error icon & msg
 
                 return true;
 
             } else { //invalid
 
-                SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edterror);
+               // SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edterror);
                 SignupActivity.getCurrentFields(2).setError("Invalid email address"); //setting error icon & msg
 
                 return false;
@@ -276,7 +276,7 @@ public class User {
         }
         else { //empty field
 
-            SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edterror);
+            //SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edterror);
             SignupActivity.getCurrentFields(2).setError("Email cannot be empty"); //setting error icon & msg
 
             return false;
@@ -295,7 +295,7 @@ public class User {
         // Process: validating password
         if (validatePassword(password)) { //valid
 
-            SignupActivity.getCurrentFields(3).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFields(3).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFields(3).setError(null); //setting error icon & msg
 
             this.password = password;
@@ -305,7 +305,7 @@ public class User {
         }
         else { //invalid
 
-            SignupActivity.getCurrentFields(3).setBackgroundResource(R.drawable.edterror);
+            //SignupActivity.getCurrentFields(3).setBackgroundResource(R.drawable.edterror);
             SignupActivity.getCurrentFields(3).setError("A good password should contain:\n" +
                     "at least 8 characters,\n" +
                     "at least 1 capital,\n" +
@@ -458,16 +458,16 @@ public class User {
                 country.length() <= 0) { //empty
 
             if (streetAd.length() == 0) {
-                SignupActivity.getCurrentFields(4).setBackgroundResource(R.drawable.edterror);
+               // SignupActivity.getCurrentFields(4).setBackgroundResource(R.drawable.edterror);
                 SignupActivity.getCurrentFields(4).setError("Street address cannot be empty"); //setting error icon & msg
             }if (postalCode.length() == 0) {
-                SignupActivity.getCurrentFields(5).setBackgroundResource(R.drawable.edterror);
+               // SignupActivity.getCurrentFields(5).setBackgroundResource(R.drawable.edterror);
                 SignupActivity.getCurrentFields(5).setError("City cannot be empty"); //setting error icon & msg
             }if (city.length() == 0){
-                SignupActivity.getCurrentFields(6).setBackgroundResource(R.drawable.edterror);
+                //SignupActivity.getCurrentFields(6).setBackgroundResource(R.drawable.edterror);
                 SignupActivity.getCurrentFields(6).setError("Postal code cannot be empty"); //setting error icon & msg
             }if (country.length() == 0) {
-                SignupActivity.getCurrentFields(7).setBackgroundResource(R.drawable.edterror);
+               // SignupActivity.getCurrentFields(7).setBackgroundResource(R.drawable.edterror);
                 SignupActivity.getCurrentFields(7).setError("Country cannot be empty"); //setting error icon & msg
             }
             return false;
@@ -551,13 +551,13 @@ public class User {
 
             }
 
-            SignupActivity.getCurrentFields(4).setBackgroundResource(R.drawable.edtnormal);
+           // SignupActivity.getCurrentFields(4).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFields(4).setError(null); //setting error icon & msg
-            SignupActivity.getCurrentFields(5).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFields(5).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFields(5).setError(null); //setting error icon & msg
-            SignupActivity.getCurrentFields(6).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFields(6).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFields(6).setError(null); //setting error icon & msg
-            SignupActivity.getCurrentFields(7).setBackgroundResource(R.drawable.edtnormal);
+            //SignupActivity.getCurrentFields(7).setBackgroundResource(R.drawable.edtnormal);
             SignupActivity.getCurrentFields(7).setError(null); //setting error icon & msg
 
             return true;

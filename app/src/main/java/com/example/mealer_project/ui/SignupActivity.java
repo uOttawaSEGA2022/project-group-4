@@ -111,11 +111,11 @@ public class SignupActivity extends AppCompatActivity {
         // check confirm password is correct
         if (!checkConfirmPasswordMatches()) {
             EditText textPassword = (EditText)findViewById(R.id.signupPassword);
-            textPassword.setBackgroundResource(R.drawable.edterror);
+           // textPassword.setBackgroundResource(R.drawable.edterror);
             textPassword.setError("Password doesn't match");
 
             EditText textConfirmPassword = (EditText)findViewById(R.id.signupConfirmPassword);
-            textConfirmPassword.setBackgroundResource(R.drawable.edterror);
+          //  textConfirmPassword.setBackgroundResource(R.drawable.edterror);
             textConfirmPassword.setError("Password doesn't match");
 
             displayErrorToast("Passwords do not match. Try again.");
@@ -123,11 +123,11 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         EditText textPassword = (EditText)findViewById(R.id.signupPassword);
-        textPassword.setBackgroundResource(R.drawable.edtnormal);
+       // textPassword.setBackgroundResource(R.drawable.edtnormal);
         textPassword.setError(null);
 
         EditText textConfirmPassword = (EditText)findViewById(R.id.signupConfirmPassword);
-        textConfirmPassword.setBackgroundResource(R.drawable.edtnormal);
+       // textConfirmPassword.setBackgroundResource(R.drawable.edtnormal);
         textConfirmPassword.setError(null);
 
         userRegistrationInProgress = true;
@@ -206,10 +206,10 @@ public class SignupActivity extends AppCompatActivity {
             String chefShortDescription = chefShortDesc.getText().toString();
 
             if (chefShortDescription == "") {
-                chefShortDesc.setBackgroundResource(R.drawable.edterror);
+              //  chefShortDesc.setBackgroundResource(R.drawable.edterror);
                 chefShortDesc.setError("Description cannot be empty");
             } else{
-                chefShortDesc.setBackgroundResource(R.drawable.edtnormal);
+               // chefShortDesc.setBackgroundResource(R.drawable.edtnormal);
                 chefShortDesc.setError(null);
             }
 
