@@ -37,7 +37,7 @@
             android:label="@string/title_activity_login" />
 
         <activity
-            android:name=".ui.SignupActivity"
+            android:name=".ui.SignupScreen"
             android:exported="false"
             android:label="SignupActivity">
             <meta-data
@@ -46,7 +46,7 @@
         </activity>
 
         <activity
-            android:name=".ui.ChefAdditionalInfo"
+            android:name=".ui.VoidChequeScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

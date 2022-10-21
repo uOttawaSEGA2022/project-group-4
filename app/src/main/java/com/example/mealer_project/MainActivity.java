@@ -9,7 +9,7 @@ import android.view.View;
 
 
 import com.example.mealer_project.ui.LoginScreen;
-import com.example.mealer_project.ui.SignupActivity;
+import com.example.mealer_project.ui.SignupScreen;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public void OnSetSignUp(View view) {
 
         // Variable Declaration
-        Intent intent = new Intent(getApplicationContext(), SignupActivity.class); //where SignUp.class is the sign up activity
+        Intent intent = new Intent(getApplicationContext(), SignupScreen.class); //where SignUp.class is the sign up activity
         startActivityForResult (intent,0); //fix this after
     }
 

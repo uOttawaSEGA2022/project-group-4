@@ -20,7 +20,7 @@ import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
 
 
-public class SignupActivity extends AppCompatActivity {
+public class SignupScreen extends AppCompatActivity {
     LinearLayout clientSpecificInfo;
     LinearLayout chefSpecificInfo;
     UserRoles userRole;
@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
         Button voidChequeBtnHandler = (Button) findViewById(R.id.signupChefVoidChequeBtn);
         voidChequeBtnHandler.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ChefAdditionalInfo.class); //where SignUp.class is the sign up activity
+                Intent intent = new Intent(getApplicationContext(), VoidChequeScreen.class); //where SignUp.class is the sign up activity
                 startActivityForResult (intent,0);
             }
         });
@@ -269,7 +269,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void goBack(View view){
-        Intent intent = new Intent(getApplicationContext(), SignupActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SignupScreen.class);
         startActivityForResult (intent,0);
     }
 

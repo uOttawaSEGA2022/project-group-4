@@ -9,7 +9,7 @@ import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
-import com.example.mealer_project.ui.SignupActivity;
+import com.example.mealer_project.ui.SignupScreen;
 import com.example.mealer_project.utils.Response;
 
 public class UserDataHandler {
@@ -17,7 +17,7 @@ public class UserDataHandler {
     public UserDataHandler() {
     }
 
-    public Response registerClient(SignupActivity signupActivity, UserEntityModel userData, CreditCardEntityModel creditCardData) {
+    public Response registerClient(SignupScreen signupScreen, UserEntityModel userData, CreditCardEntityModel creditCardData) {
         // guard clause
         if (userData == null) {
             return new Response(false, "Please complete all fields.");
@@ -38,7 +38,7 @@ public class UserDataHandler {
             // therefore, add the user to database
             // in returned Result, on success: user id is returned (from firebase) or error message
             App.getPrimaryDatabase().AUTH
-                    .registerClient(userData.getEmail(), userData.getPassword(), signupActivity, newClient);
+                    .registerClient(userData.getEmail(), userData.getPassword(), signupScreen, newClient);
 
             return new Response(true, "User login submitted!");
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class UserDataHandler {
 
     }
 
-    public Response registerChef(SignupActivity signupActivity, UserEntityModel userData, String chefShortDescription, String voidCheque) {
+    public Response registerChef(SignupScreen signupScreen, UserEntityModel userData, String chefShortDescription, String voidCheque) {
         // guard clause
         if (userData == null) {
             return new Response(false, "Please complete all fields.");
@@ -70,7 +70,7 @@ public class UserDataHandler {
             // therefore, add the user to database
             // in returned Result, on success: user id is returned (from firebase) or error message
             App.getPrimaryDatabase().AUTH
-                    .registerChef(userData.getEmail(), userData.getPassword(), signupActivity, newChef);
+                    .registerChef(userData.getEmail(), userData.getPassword(), signupScreen, newChef);
 
             return new Response(true, "User login submitted");
 
