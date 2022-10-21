@@ -7,6 +7,11 @@ public class Response {
     String errorMessage;
     String successMessage;
 
+    public Response(boolean isSuccess) {
+        this.isSuccess = isSuccess;
+        this.isError = !isSuccess;
+    }
+
     public Response(boolean isSuccess, boolean isError) {
         this.isSuccess = isSuccess;
         this.isError = isError;
