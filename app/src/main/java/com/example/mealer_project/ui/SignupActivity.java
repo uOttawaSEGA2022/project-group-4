@@ -24,20 +24,23 @@ public class SignupActivity extends AppCompatActivity {
     LinearLayout clientSpecificInfo;
     LinearLayout chefSpecificInfo;
     UserRoles userRole;
+    boolean userRegistrationInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        // instantiate signup handler
-//        signupHandler = new SignupHandler();
-
         // attach onClick handlers to buttons
         attachOnClickListeners();
         // instantiate linear layouts need for user type selection
         clientSpecificInfo = (LinearLayout) findViewById(R.id.clientSpecificInfoContainer);
         chefSpecificInfo = (LinearLayout) findViewById(R.id.chefSpecificInfoContainer);
+        // to keep track of when user sign up completes on the Firebase
+        // it gets set to true, when first time submit button it clicked
+        // methods that the asynchronous firebase code calls backs after completing registration
+        // sets this to false
+        userRegistrationInProgress = false;
     }
 
     private void attachOnClickListeners() {
@@ -46,7 +49,11 @@ public class SignupActivity extends AppCompatActivity {
         Button signupSubmitBtn = (Button) findViewById(R.id.signupFormSubmitBtn);
         signupSubmitBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                signupFormSubmissionHandler(v);
+                if (!userRegistrationInProgress) {
+                    signupFormSubmissionHandler(v);
+                } else {
+                    displayErrorToast("Already processing a sign up request. Please wait and try again!");
+                }
             }
         });
 
@@ -81,11 +88,14 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
+        userRegistrationInProgress = true;
+
         // pass all sign up form details to controller
         Response response = signUpSubmitButtonClickHandler();
         if (response.isSuccess()) {
             displaySuccessToast(response.getSuccessMessage());
         } else {
+            userRegistrationInProgress = false;
             displayErrorToast(response.getErrorMessage());
         }
 
@@ -126,6 +136,7 @@ public class SignupActivity extends AppCompatActivity {
             try {
                 creditCardEntityCreation = getCreditCardEntityModel();
             } catch (Exception e) {
+                userRegistrationInProgress = false;
                 return new Response(false, "Form submitted with invalid or no Credit Card data, please enter correct details and try again!" + e.getMessage());
             }
 
@@ -133,14 +144,14 @@ public class SignupActivity extends AppCompatActivity {
                 // register the new user by passing data to UserDataHandler of the app instance
                 Response userRegistrationResponse = App.getUserDataHandler().registerClient(this, userEntityModel, creditCardEntityCreation.getSuccessObject());
                 if (userRegistrationResponse.isSuccess()) {
-
-
                     return new Response(true, userRegistrationResponse.getSuccessMessage());
                 } else {
+                    userRegistrationInProgress = false;
                     return new Response(false, userRegistrationResponse.getErrorMessage());
                 }
 
             } else {
+                userRegistrationInProgress = false;
                 // if failed to create credit card entity due to data validation error
                 return new Response(false, creditCardEntityCreation.getErrorObject());
             }
@@ -158,19 +169,24 @@ public class SignupActivity extends AppCompatActivity {
             if (userRegistrationResponse.isSuccess()) {
                 return new Response(true, userRegistrationResponse.getSuccessMessage());
             } else {
+                userRegistrationInProgress = false;
                 return new Response(false, userRegistrationResponse.getErrorMessage());
             }
         } else {
+            userRegistrationInProgress = false;
             return new Response(false, "Invalid user role!");
         }
 
     }
 
     public void showNextScreen() {
+        userRegistrationInProgress = false;
         Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class); //where SignUp.class is the sign up activity
         startActivity(intent);
     }
-    public void userRegistrationFailed(String message) { displayErrorToast(message);
+    public void userRegistrationFailed(String message) {
+        userRegistrationInProgress = false;
+        displayErrorToast(message);
     }
 
     private UserEntityModel getUserEntityModel () {
@@ -207,9 +223,6 @@ public class SignupActivity extends AppCompatActivity {
 
         return user;
     }
-
-
-
 
     public Result<CreditCardEntityModel, String> getCreditCardEntityModel() {
 
