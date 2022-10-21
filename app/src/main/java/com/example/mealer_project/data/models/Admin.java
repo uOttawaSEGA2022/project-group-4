@@ -20,6 +20,17 @@ public class Admin extends User {
         super(firstName, lastName, email, password, address, role);
     }
 
+    /**
+     * Constructor to instantiate a new Admin
+     * @param userId userid of the admin
+     * @param firstName First name of the admin
+     * @param lastName Last name of the admin
+     * @param email email of the admin
+     */
+    public Admin(String userId, String firstName, String lastName, String email) {
+        super(userId, firstName, lastName, email, UserRoles.ADMIN);
+    }
+
     public static Admin getInstance(String firstName, String lastName, String email, String password, Address address, UserRoles role) {
         if(mealerAdmin == null) {
 

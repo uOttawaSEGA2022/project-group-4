@@ -64,7 +64,7 @@ public class UserDataHandler {
 
             // Try to instantiate three objects: Address object, CreditCard object, and finally, Client object
             // if any of these throw exception (i.e., if unable to create instance) we handle and return response
-            Chef newChef = new Chef(userData, userData.getRole(), new Address(userData.getAddress()), chefShortDescription, voidCheque);
+            Chef newChef = new Chef(userData, new Address(userData.getAddress()), chefShortDescription, voidCheque);
 
             // if code execution reaches this points, it means all user data was valid
             // therefore, add the user to database
