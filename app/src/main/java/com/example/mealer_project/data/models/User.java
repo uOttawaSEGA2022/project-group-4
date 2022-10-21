@@ -405,11 +405,21 @@ public class User {
         String country = address.getCountry();
 
         // Process: checking length of fields
-        if (streetAd.length() <= 0 || postalCode.length() <= 0 || city.length() <= 0 ||
-                country.length() <= 0) { //empty
-            errorMsg = "Please fill out all Address fields";
+        if (streetAd.length() == 0) {
+            errorMsg = "Street address cannot be empty";
             return false;
-
+        }
+        else if (postalCode.length() == 0) {
+            errorMsg = "City cannot be empty";
+            return false;
+        }
+        else if (city.length() == 0) {
+            errorMsg = "Postal code cannot be empty";
+            return false;
+        }
+        else if (country.length() == 0) {
+            errorMsg = "Country cannot be empty";
+            return false;
         }
         else { //not empty
 
