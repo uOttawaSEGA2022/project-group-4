@@ -254,7 +254,7 @@ public class SignupScreen extends AppCompatActivity {
 
         EditText textCardCVC = (EditText)findViewById(R.id.signupCreditCardCVC);
 
-        creditCard.setCvc(textCardCVC.toString());
+        creditCard.setCvc(textCardCVC.getText().toString());
 
         // return Result containing creditCard instance and no error object
         return new Result<>(creditCard, null);
