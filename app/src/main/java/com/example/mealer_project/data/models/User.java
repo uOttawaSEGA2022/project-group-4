@@ -31,7 +31,7 @@ public class User {
      * @param address address of the user
      * @param role Role of the user
      */
-    public User(String firstName, String lastName, String email, String password, Address address, UserRoles role) {
+    public User(String firstName, String lastName, String email, String password, Address address, UserRoles role)  throws IllegalArgumentException {
         // instantiate User's data members
         // using setters to enable validation of incoming data
         this.setFirstName(firstName);
@@ -52,7 +52,7 @@ public class User {
      * @param userData A UserEntityModel object representing non-validated user data
      * @param userAddress an Address object representing validated address data
      */
-    public User(UserEntityModel userData, Address userAddress) {
+    public User(UserEntityModel userData, Address userAddress)  throws IllegalArgumentException {
         // instantiate User's data members
         // using setters to enable validation of incoming data
         this.setFirstName(userData.getFirstName());

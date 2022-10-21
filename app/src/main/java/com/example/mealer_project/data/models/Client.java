@@ -20,7 +20,7 @@ public class Client extends User {
      * @param role Role of the client
      * @param clientCreditCard credit card info of the client
      */
-    public Client(String firstName, String lastName, String email, String password, Address address, UserRoles role, CreditCard clientCreditCard) {
+    public Client(String firstName, String lastName, String email, String password, Address address, UserRoles role, CreditCard clientCreditCard)  throws IllegalArgumentException {
         // instantiate Client's data members
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
@@ -33,7 +33,7 @@ public class Client extends User {
      * @param clientAddress an Address object containing validated address info
      * @param clientCreditCard credit card info of the client
      */
-    public Client(UserEntityModel clientData, Address clientAddress, CreditCard clientCreditCard) {
+    public Client(UserEntityModel clientData, Address clientAddress, CreditCard clientCreditCard) throws IllegalArgumentException {
         // instantiate Client's data members
         super(clientData, clientAddress);
         this.setClientCreditCard(clientCreditCard);

@@ -30,7 +30,7 @@ public class Chef extends User {
      * Menu of a chef is stored in a HashMap
      */
     public Chef(String firstName, String lastName, String email, String password, Address address,
-         UserRoles role, String description, String voidCheque, int numberOfMealsSold, int chefRating) {
+         UserRoles role, String description, String voidCheque, int numberOfMealsSold, int chefRating)  throws IllegalArgumentException {
         // instantiate Admins data members
         super(firstName, lastName, email, password, address, role);
         this.setDescription(description);
@@ -40,7 +40,7 @@ public class Chef extends User {
         this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
     }
 
-    public Chef(UserEntityModel userData, UserRoles role, Address address, String description, String voidCheque) {
+    public Chef(UserEntityModel userData, UserRoles role, Address address, String description, String voidCheque) throws IllegalArgumentException {
         // instantiate Admins data members
         super(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getPassword(), address, role);
         this.setDescription(description);

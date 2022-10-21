@@ -29,12 +29,8 @@ public class IntroScreen extends AppCompatActivity {
 
         // Variable Declaration
         Intent intent = new Intent(getApplicationContext(), SignupActivity.class); //where SignUp.class is the sign up activity
-        startActivityForResult (intent,0); //fix this after
+        startActivity (intent);
     }
-
-
-
-
 
     /**
      * this method describes the behaviour for the log in button
@@ -48,7 +44,7 @@ public class IntroScreen extends AppCompatActivity {
 
         // Variable Declaration
         Intent intent = new Intent(getApplicationContext(), LoginScreen.class); //where LogIn.class is the login activity
-        startActivityForResult (intent,0); //fix this after
+        startActivity (intent);
     }
 
 }
