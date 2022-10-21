@@ -25,7 +25,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -201,7 +200,9 @@ public class FirebaseRepository {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        makeClientFromFirebase(document);
+                        if (document.getData() != null){
+                            makeClientFromFirebase(document);
+                        }
 
                     } else {
                         getChefById(userId);
@@ -259,7 +260,9 @@ public class FirebaseRepository {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        makeChefFromFirebase(document);
+                        if (document.getData() != null){
+                            makeChefFromFirebase(document);
+                        }
 
                     } else {
                         Log.d(TAG, "No such document");

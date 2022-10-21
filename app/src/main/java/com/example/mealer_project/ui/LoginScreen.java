@@ -55,6 +55,7 @@ public class LoginScreen extends AppCompatActivity {
 
     private void login(String email, String password) {
         // initiate login process
+
         App.getUserDataHandler().logInUser(this, email, password);
     }
 
