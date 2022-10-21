@@ -240,7 +240,7 @@ public class FirebaseRepository {
             newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
             newCreditCard.setExpiryMonth(Math.toIntExact((long) document.getData().get("creditCardExpiryMonth")));
             newCreditCard.setExpiryYear(Math.toIntExact((long) document.getData().get("creditCardExpiryYear")));
-            newCreditCard.setCvc(Math.toIntExact((long) document.getData().get("creditCardCvc")));
+            newCreditCard.setCvc(String.valueOf((long) document.getData().get("creditCardCvc")));
 
             Address address = new Address(newAddress);
             CreditCard creditCard = new CreditCard(newCreditCard);
