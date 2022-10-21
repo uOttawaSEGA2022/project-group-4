@@ -32,8 +32,6 @@ public class LoginScreen extends AppCompatActivity {
         loginBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
 
-                Log.e("LOGINNNN Button", "clicked");
-
                 EditText textEmail = (EditText)findViewById(R.id.loginUsername);
                 String email = textEmail.getText().toString();
                 if (email.equals("")) {
@@ -55,7 +53,6 @@ public class LoginScreen extends AppCompatActivity {
 
     private void login(String email, String password) {
         // initiate login process
-
         App.getUserDataHandler().logInUser(this, email, password);
     }
 
