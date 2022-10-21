@@ -1,13 +1,14 @@
 package com.example.mealer_project.data.models;
 
+import com.example.mealer_project.R;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.ui.SignupActivity;
 
 /**
  * User class to instantiate a User
  * Parent class of Client, Chef and Admin
  */
 public class User {
-    static protected String errorMsg = "";
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -31,16 +32,10 @@ public class User {
      * @param address address of the user
      * @param role Role of the user
      */
-    public User(String firstName, String lastName, String email, String password, Address address, UserRoles role)  throws IllegalArgumentException {
+    public User(String firstName, String lastName, String email, String password, Address address, UserRoles role) {
         // instantiate User's data members
         // using setters to enable validation of incoming data
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
-        this.setEmail(email);
-        if (password != null) {
-            this.setPassword(password);
-        }
-        this.setAddress(address);
+        this.setUserData(firstName, lastName, email, password, address);
         // value of role has to be one of accepted user roles
         this.setRole(role);
         // id will be auto generated (uuid), by firebase or app logic
@@ -52,16 +47,49 @@ public class User {
      * @param userData A UserEntityModel object representing non-validated user data
      * @param userAddress an Address object representing validated address data
      */
-    public User(UserEntityModel userData, Address userAddress)  throws IllegalArgumentException {
+    public User(UserEntityModel userData, Address userAddress)  {
         // instantiate User's data members
         // using setters to enable validation of incoming data
-        this.setFirstName(userData.getFirstName());
-        this.setLastName(userData.getLastName());
-        this.setEmail(userData.getEmail());
-        this.setPassword(userData.getPassword());
-        this.setAddress(userAddress);
+        this.setUserData(userData.getFirstName(),
+                userData.getLastName(),
+                userData.getEmail(),
+                userData.getPassword(),
+                userAddress);
         // value of role has to be one of accepted user roles
         this.setRole(userData.getRole());
+    }
+
+    /**
+     * this helper method calls the set methods for all the user data
+     * and checks for errors, throwing an exception when one is found
+     * @param firstName the first name entered by the user
+     * @param lastName the last name entered by the user
+     * @param email the email
+     * @param password the password
+     * @param address the address
+     * @throws IllegalArgumentException
+     */
+    private void setUserData(String firstName, String lastName, String email, String password, Address address) throws IllegalArgumentException {
+
+        // Variable Declaration
+        boolean hasError = false;
+
+        // Process: checking for errors
+        if (!setFirstName(firstName)) //invalid first name
+            hasError = true;
+        if (!setLastName(lastName)) //invalid last name
+            hasError = true;
+        if (!setEmail(email)) //invalid email
+            hasError = true;
+        if (!setPassword(password)) //invalid password
+            hasError = true;
+        if (!setAddress(address)) //invalid address
+            hasError = true;
+
+        // Output
+        if (hasError) //exception
+            throw new IllegalArgumentException("Sign-up unsuccessful!");
+
     }
 
     /**
@@ -75,61 +103,18 @@ public class User {
     /**
      * Set user's first name
      * @param firstName String representing user's first name
+     * @return whether the set is successful
      */
-    public void setFirstName(String firstName) {
+    private boolean setFirstName(String firstName) {
 
-        if (validateName(firstName)) { //valid
+        if (validateName(firstName, 0)) { //valid
 
             this.firstName = firstName; //setting name
-
-        }
-        else { //invalid
-
-            // Output: error message
-            throw new IllegalArgumentException("Invalid first name");
-
-        }
-
-    }
-
-    /**
-     * this helper method checks and validates the first/last names
-     * or city/country name
-     *
-     * @param name
-     *  the name inputted
-     *
-     * @return
-     *  whether the name is valid
-     */
-    private boolean validateName(String name) {
-
-        // Process: checking name length
-        if (name.length() > 0) { //at least 1 char
-
-            // Variable Declaration
-            char[] charsInName = name.toCharArray();
-
-            // Process: validating input
-            for (int i = 0; i < charsInName.length; i++) {
-
-                // Process: checking for all letters
-                if (!Character.isLetter(charsInName[i])) { //is not letter
-
-                    if (!(charsInName[i] == 45 || charsInName[i] == 32)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
 
             return true;
 
         }
-        else { //nothing inputted
+        else {
 
             return false;
 
@@ -148,18 +133,77 @@ public class User {
     /**
      * Set user's last name
      * @param lastName String representing user's last name
+     * @return whether the set is successful
      */
-    public void setLastName(String lastName) {
+    private boolean setLastName(String lastName) {
 
-        if (validateName(lastName) == true) { //valid
+        if (validateName(lastName, 1) == true) { //valid
 
             this.lastName = lastName; //setting name
 
-        }
-        else { //invalid
+            return true;
 
-            // Output: error message
-            throw new IllegalArgumentException("Invalid last name");
+        }
+        else {
+
+            return false;
+
+        }
+
+    }
+
+    /**
+     * this helper method checks and validates the first/last names
+     * or city/country name
+     *
+     * @param name
+     *  the name inputted
+     *
+     * @param index
+     *  the index representing the text field being manipulated
+     *
+     * @return
+     *  whether the name is valid
+     */
+    private boolean validateName(String name, int index) {
+
+        // Process: checking name length
+        if (name.length() > 0) { //at least 1 char
+
+            // Variable Declaration
+            char[] charsInName = name.toCharArray();
+
+            // Process: validating input
+            for (int i = 0; i < charsInName.length; i++) {
+
+                // Process: checking for all letters
+                if (!Character.isLetter(charsInName[i])) { //is not letter
+
+                    if (!(charsInName[i] == 45 || charsInName[i] == 32)) {
+
+                        SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
+                        SignupActivity.getCurrentFields(index).setError("Illegal characters in name"); //setting error icon & msg
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+            SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFields(index).setError(null); //setting error icon & msg
+
+            return true;
+
+        }
+        else { //nothing inputted
+
+            SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
+            SignupActivity.getCurrentFields(index).setError("Name cannot be empty"); //setting error icon & msg
+
+            return false;
 
         }
 
@@ -176,21 +220,24 @@ public class User {
     /**
      * Set user's email address
      * @param email String representing user's email address
+     * @return whether the set is successful
      */
-    public void setEmail(String email) {
+    public boolean setEmail(String email) {
 
         // Process: checking if email is valid
         if (validateEmail(email)) { //valid
 
             this.email = email; //setting email
 
+            return true;
+
         }
         else {
 
-            // Output: error msg
-            throw new IllegalArgumentException("Invalid email address");
+            return false;
 
         }
+
     }
 
     /**
@@ -212,9 +259,15 @@ public class User {
             // Process: checking if email matches the email pattern
             if (email.matches(emailPattern)) { //success
 
+                SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edtnormal);
+                SignupActivity.getCurrentFields(2).setError(null); //setting error icon & msg
+
                 return true;
 
             } else { //invalid
+
+                SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edterror);
+                SignupActivity.getCurrentFields(2).setError("Invalid email address"); //setting error icon & msg
 
                 return false;
 
@@ -222,6 +275,9 @@ public class User {
 
         }
         else { //empty field
+
+            SignupActivity.getCurrentFields(2).setBackgroundResource(R.drawable.edterror);
+            SignupActivity.getCurrentFields(2).setError("Email cannot be empty"); //setting error icon & msg
 
             return false;
 
@@ -232,24 +288,33 @@ public class User {
     /**
      * Set user's password
      * @param password String representing user's password
+     * @return whether the set is successful
      */
-    public void setPassword(String password) {
+    public boolean setPassword(String password) {
 
-        if (password!= null){
-            // Process: validating password
-            if (validatePassword(password)) { //valid
+        // Process: validating password
+        if (validatePassword(password)) { //valid
 
-                this.password = password;
+            SignupActivity.getCurrentFields(3).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFields(3).setError(null); //setting error icon & msg
 
-            }
-            else { //invalid
+            this.password = password;
 
-            // Output:
-            throw new IllegalArgumentException(errorMsg);
-            
-            }
+            return true;
+
         }
+        else { //invalid
 
+            SignupActivity.getCurrentFields(3).setBackgroundResource(R.drawable.edterror);
+            SignupActivity.getCurrentFields(3).setError("A good password should contain:\n" +
+                    "at least 8 characters,\n" +
+                    "at least 1 capital,\n" +
+                    "at least 1 number, &\n" +
+                    "at least 1 special character"); //setting error icon & msg
+
+            return false;
+
+        }
 
     }
 
@@ -316,14 +381,10 @@ public class User {
             // Process: validating password
             if (!hasLetters) {
 
-                errorMsg = "Password must contain at least 1 letter.";
-
                 return false;
 
             }
             else if (!hasCapital) {
-
-                errorMsg = "Password must contain at least 1 capital letter.";
 
                 return false;
 
@@ -331,14 +392,10 @@ public class User {
             }
             else if (!hasNumber) {
 
-                errorMsg = "Password must contain at least 1 number.";
-
                 return false;
 
             }
             else if (!hasSpecial) {
-
-                errorMsg = "Password must contain at least 1 special character.";
 
                 return false;
 
@@ -352,21 +409,10 @@ public class User {
         }
         else { //not long enough
 
-            errorMsg = "Password must be at least 8 characters long.";
-
             return false;
 
         }
 
-    }
-
-    /**
-     * Validate user's password against the supplied password
-     * @param password password to validate
-     * @return True, if passwords match, else False
-     */
-    private Boolean checkMatchingPasswords(String password) {
-        return this.password.equals(password);
     }
 
     /**
@@ -380,20 +426,23 @@ public class User {
     /**
      * Set user's address
      * @param address String representing user's address
-     * @throws IllegalArgumentException
+     * @return whether the set is successful
      */
-    public void setAddress(Address address) throws IllegalArgumentException {
+    public boolean setAddress(Address address) {
 
         if (validateAddress(address)) {
 
             this.address = address;
 
+            return true;
+
         }
         else {
 
-            throw new IllegalArgumentException(errorMsg);
+            return false;
 
         }
+
     }
 
     private boolean validateAddress(Address address) {
@@ -407,7 +456,20 @@ public class User {
         // Process: checking length of fields
         if (streetAd.length() <= 0 || postalCode.length() <= 0 || city.length() <= 0 ||
                 country.length() <= 0) { //empty
-            errorMsg = "Please fill out all Address fields";
+
+            if (streetAd.length() == 0) {
+                SignupActivity.getCurrentFields(4).setBackgroundResource(R.drawable.edterror);
+                SignupActivity.getCurrentFields(4).setError("Street address cannot be empty"); //setting error icon & msg
+            }if (postalCode.length() == 0) {
+                SignupActivity.getCurrentFields(5).setBackgroundResource(R.drawable.edterror);
+                SignupActivity.getCurrentFields(5).setError("City cannot be empty"); //setting error icon & msg
+            }if (city.length() == 0){
+                SignupActivity.getCurrentFields(6).setBackgroundResource(R.drawable.edterror);
+                SignupActivity.getCurrentFields(6).setError("Postal code cannot be empty"); //setting error icon & msg
+            }if (country.length() == 0) {
+                SignupActivity.getCurrentFields(7).setBackgroundResource(R.drawable.edterror);
+                SignupActivity.getCurrentFields(7).setError("Country cannot be empty"); //setting error icon & msg
+            }
             return false;
 
         }
@@ -438,7 +500,6 @@ public class User {
                     if (charsInStreet[i] == 32 || charsInStreet[i] == 45 ||
                             charsInStreet[i] == 46) { //space, hyphen, or period
 
-                        errorMsg = "Invalid characters in street address";
                         hasInvalidSpecial = false; //updating flag
 
                     }
@@ -457,35 +518,47 @@ public class User {
 
                 // Process: checking for incomplete address or special chars
                 if (hasInvalidSpecial) { //wrong chars
-                    errorMsg = "Invalid characters in street address";
+                    SignupActivity.getCurrentFields(4).setError("Invalid characters in street address"); //setting error icon & msg
                 }
                 else {
-                    errorMsg = "Invalid street address";
+                    SignupActivity.getCurrentFields(4).setError("Must contain both street number and street name"); //setting error icon & msg
                 }
+
                 return false;
 
             }
 
             // Process: checking if postal code is valid
             if (!postalCode.matches("[A-Za-z]\\d[A-Za-z]\\d[A-Za-z]\\d")) { //invalid
-                errorMsg = "Invalid postal code";
+
+                SignupActivity.getCurrentFields(6).setError("Invalid postal code"); //setting error icon & msg
+
                 return false;
 
             }
 
             // Process: checking if city is valid
-            if (!validateName(city)) { //invalid
-                errorMsg = "Invalid city";
+            if (!validateName(city, 5)) { //invalid
+
                 return false;
 
             }
 
             // Process: checking if country is valid
-            if (!validateName(country)) { //invalid
-                errorMsg = "Invalid country";
+            if (!validateName(country, 7)) { //invalid
+
                 return false;
 
             }
+
+            SignupActivity.getCurrentFields(4).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFields(4).setError(null); //setting error icon & msg
+            SignupActivity.getCurrentFields(5).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFields(5).setError(null); //setting error icon & msg
+            SignupActivity.getCurrentFields(6).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFields(6).setError(null); //setting error icon & msg
+            SignupActivity.getCurrentFields(7).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFields(7).setError(null); //setting error icon & msg
 
             return true;
 

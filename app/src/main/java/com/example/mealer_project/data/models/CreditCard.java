@@ -1,6 +1,8 @@
 package com.example.mealer_project.data.models;
 
+import com.example.mealer_project.R;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
+import com.example.mealer_project.ui.SignupActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,12 +25,9 @@ public class CreditCard {
      */
     public CreditCard(CreditCardEntityModel creditCardEntityModel) {
         // using setters to enable data validation
-        this.setBrand(creditCardEntityModel.getBrand());
-        this.setName(creditCardEntityModel.getName());
-        this.setNumber(creditCardEntityModel.getNumber());
-        this.setCvc(creditCardEntityModel.getCvc());
-        this.setExpiryMonth(creditCardEntityModel.getExpiryMonth());
-        this.setExpiryYear(creditCardEntityModel.getExpiryYear());
+        this.setCreditCardData(creditCardEntityModel.getBrand(), creditCardEntityModel.getName(),
+                creditCardEntityModel.getNumber(), creditCardEntityModel.getCvc(),
+                creditCardEntityModel.getExpiryMonth(), creditCardEntityModel.getExpiryYear());
     }
 
     /**
@@ -42,12 +41,7 @@ public class CreditCard {
      */
     public CreditCard(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
         // using setters to enable data validation
-        this.setBrand(brand);
-        this.setName(name);
-        this.setNumber(number);
-        this.setCvc(cvc);
-        this.setExpiryMonth(expiryMonth);
-        this.setExpiryYear(expiryYear);
+        this.setCreditCardData(brand, name, number, cvc, expiryMonth, expiryYear);
     }
 
     /**
@@ -63,12 +57,7 @@ public class CreditCard {
     public CreditCard(String clientId, String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
         // using setters to enable data validation
         this.setClientId(clientId);
-        this.setBrand(brand);
-        this.setName(name);
-        this.setNumber(number);
-        this.setCvc(cvc);
-        this.setExpiryMonth(expiryMonth);
-        this.setExpiryYear(expiryYear);
+        this.setCreditCardData(brand, name, number, cvc, expiryMonth, expiryYear);
     }
 
     public String getClientId() {
@@ -85,17 +74,43 @@ public class CreditCard {
         return this;
     }
 
+    private void setCreditCardData(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) throws IllegalArgumentException {
+
+        // Variable Declaration
+        boolean hasError = false;
+
+        // Process: checking for errors
+        if (!setBrand(brand)) //invalid brand
+            hasError = true;
+        if (!setName(name)) //invalid card holder name
+            hasError = true;
+        if (!setNumber(number)) //invalid card number
+            hasError = true;
+        if (!setCvc(cvc)) //invalid CVC code
+            hasError = true;
+        if (!setExpiryMonth(expiryMonth)) //invalid expiration month
+            hasError = true;
+        if (!setExpiryYear(expiryYear)) //invalid expiration year
+            hasError = true;
+
+        // Output
+        if (hasError) //exception
+            throw new IllegalArgumentException("Sign-up unsuccessful!");
+
+    }
+
     public String getBrand() {
         return brand;
     }
 
-    public void setBrand(String brand) throws IllegalArgumentException {
+    private boolean setBrand(String brand) {
 
-        if (brand.length() > 0) { //entered field
+        if (validateName(brand, 0)) { //entered field
             this.brand = brand;
+            return true;
         }
         else { //empty field
-            throw new IllegalArgumentException("Please enter a credit card brand name.");
+            return false;
         }
 
     }
@@ -104,18 +119,18 @@ public class CreditCard {
         return name;
     }
 
-    public void setName(String name) throws IllegalArgumentException {
+    public boolean setName(String name) {
 
         // Process: validating the name
-        if (validateName(name)) { //valid
+        if (validateName(name, 2)) { //valid
 
             this.name = name;
+            return true;
 
         }
         else { //invalid
 
-            // Output: error msg
-            throw new IllegalArgumentException("Invalid card holder name");
+            return false;
 
         }
     }
@@ -129,30 +144,46 @@ public class CreditCard {
      * @return
      *  whether the name is valid
      */
-    private boolean validateName(String name) {
+    private boolean validateName(String name, int index) {
 
-        if (name.length() > 0) { //not empty
+        // Process: checking name length
+        if (name.length() > 0) { //at least 1 char
 
             // Variable Declaration
             char[] charsInName = name.toCharArray();
 
-            // Process: looping through the name
+            // Process: validating input
             for (int i = 0; i < charsInName.length; i++) {
 
-                if (!((charsInName[i] >= 65 && charsInName[i] <= 90) ||
-                        (charsInName[i] >= 97 && charsInName[i] <= 122) ||
-                        (charsInName[i] == 32))) { //only letters or space
+                // Process: checking for all letters
+                if (!Character.isLetter(charsInName[i])) { //is not letter
 
-                    return false;
+                    if (!(charsInName[i] == 45 || charsInName[i] == 32)) {
+
+                        SignupActivity.getCurrentFieldsCredit(index).setBackgroundResource(R.drawable.edterror);
+
+                        SignupActivity.getCurrentFieldsCredit(index).setError("Illegal characters in field"); //setting error icon & msg
+
+                        return false;
+
+                    }
 
                 }
 
             }
 
+            SignupActivity.getCurrentFieldsCredit(index).setBackgroundResource(R.drawable.edtnormal);
+
+            SignupActivity.getCurrentFieldsCredit(index).setError(null); //setting error icon & msg
+
             return true;
 
         }
-        else { //empty field
+        else { //nothing inputted
+
+            SignupActivity.getCurrentFields(index).setBackgroundResource(R.drawable.edterror);
+
+            SignupActivity.getCurrentFields(index).setError("Field cannot be empty"); //setting error icon & msg
 
             return false;
 
@@ -167,20 +198,20 @@ public class CreditCard {
     /**
      * Sets the credit card number
      * @param number
-     * @throws IllegalArgumentException
+     * @return whether the set is successful
      */
-    public void setNumber(String number) throws IllegalArgumentException {
+    public boolean setNumber(String number) {
 
         // Process: validating the number
         if (validateNumber(number)) { //valid
 
             this.number = number;
+            return true;
 
         }
         else { //invalid
 
-            // Output: error msg
-            throw new IllegalArgumentException("Invalid credit card number");
+            return false;
 
         }
     }
@@ -207,10 +238,18 @@ public class CreditCard {
                 // Process: checking for numbers only
                 if (!Character.isDigit(charsInNumber[i])) { //is not number
 
+                    SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
+
+                    SignupActivity.getCurrentFieldsCredit(1).setError("Must only contain numbers"); //setting error icon & msg
+
                     return false;
 
                 }
                 else if (!(charsInNumber.length >= 13 && charsInNumber.length <= 16)) { //wrong length
+
+                    SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
+
+                    SignupActivity.getCurrentFieldsCredit(1).setError("Number must be between 13 to 16 digits long"); //setting error icon & msg
 
                     return false;
 
@@ -218,10 +257,18 @@ public class CreditCard {
 
             }
 
+            SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edtnormal);
+
+            SignupActivity.getCurrentFieldsCredit(1).setError(null); //setting error icon & msg
+
             return true;
 
         }
         else { //empty
+
+            SignupActivity.getCurrentFieldsCredit(1).setBackgroundResource(R.drawable.edterror);
+
+            SignupActivity.getCurrentFieldsCredit(1).setError("Credit card number cannot be empty"); //setting error icon & msg
 
             return false;
 
@@ -233,17 +280,17 @@ public class CreditCard {
         return cvc;
     }
 
-    public void setCvc(String cvc) throws IllegalArgumentException {
+    public boolean setCvc(String cvc) {
         // Process: validating the cvc number
         if (validateCVC(cvc)) { //valid
 
             this.cvc = cvc;
+            return true;
 
         }
         else { //invalid
 
-            // Output: error msg
-            throw new IllegalArgumentException("Invalid CVC");
+            return false;
 
         }
     }
@@ -254,9 +301,17 @@ public class CreditCard {
      * @return valid or not
      */
     private boolean validateCVC(String number) {
-        if (true )
+        /*if (number.length() == 3) {
+            SignupActivity.getCurrentFieldsCredit(5).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFieldsCredit(5).setError(null); //setting error icon & msg
             return true;
-        return false;
+        }
+        else {
+            SignupActivity.getCurrentFieldsCredit(5).setBackgroundResource(R.drawable.edterror);
+            SignupActivity.getCurrentFieldsCredit(5).setError("Must be 3 digits long"); //setting error icon & msg
+            return false;
+        }*/
+        return true;
     }
 
     public int getExpiryMonth() {
@@ -266,19 +321,18 @@ public class CreditCard {
     /**
      * Sets the expiry month of the credit card after validating
      * @param expiryMonth
-     * @throws IllegalArgumentException
      */
-    public void setExpiryMonth(int expiryMonth) throws IllegalArgumentException {
+    public boolean setExpiryMonth(int expiryMonth) {
             // Process: validating the expiry month
             if (validateExpiryMonth(expiryMonth)) { //valid
 
                 this.expiryMonth = expiryMonth;
+                return true;
 
             }
             else { //invalid
 
-                // Output: error msg
-                throw new IllegalArgumentException("Invalid expiry month");
+                return false;
 
             }
         }
@@ -289,8 +343,13 @@ public class CreditCard {
      * @return valid or not
      */
     private boolean validateExpiryMonth(int month) {
-            if (month>=1 && month<=12 )
+            if (month>=1 && month<=12 ) {
+                SignupActivity.getCurrentFieldsCredit(3).setBackgroundResource(R.drawable.edtnormal);
+                SignupActivity.getCurrentFieldsCredit(3).setError(null); //setting error icon & msg
                 return true;
+            }
+            SignupActivity.getCurrentFieldsCredit(3).setBackgroundResource(R.drawable.edterror);
+            SignupActivity.getCurrentFieldsCredit(3).setError("Month must be between 1 and 12"); //setting error icon & msg
             return false;
         }
 
@@ -301,19 +360,18 @@ public class CreditCard {
     /**
      * Sets the expiry year of the credit card
      * @param expiryYear
-     * @throws IllegalArgumentException
      */
-    public void setExpiryYear(int expiryYear) throws IllegalArgumentException {
+    public boolean setExpiryYear(int expiryYear) {
         // Process: validating the expiry year
         if (validateExpiryYear(expiryYear)) { //valid
 
             this.expiryYear = expiryYear;
+            return true;
 
         }
         else { //invalid
 
-            // Output: error msg
-            throw new IllegalArgumentException("Invalid expiry year");
+            return false;
 
         }
     }
@@ -324,9 +382,16 @@ public class CreditCard {
      * @return valid or not
      */
     private boolean validateExpiryYear(int year) {
+        // Variable Declaration
         int currentYear = Calendar.getInstance().get(Calendar.YEAR)%2000;
-        if (year >= currentYear)
+
+        if (year >= currentYear) {
+            SignupActivity.getCurrentFieldsCredit(4).setBackgroundResource(R.drawable.edtnormal);
+            SignupActivity.getCurrentFieldsCredit(4).setError(null); //setting error icon & msg
             return true;
+        }
+        SignupActivity.getCurrentFieldsCredit(4).setBackgroundResource(R.drawable.edterror);
+        SignupActivity.getCurrentFieldsCredit(4).setError("Must be a valid expiration year"); //setting error icon & msg
         return false;
     }
 
