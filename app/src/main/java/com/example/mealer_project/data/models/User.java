@@ -65,6 +65,27 @@ public class User {
     }
 
     /**
+     * Constructor for creating an instance of Admin (which only requires certain attributes)
+     * @param userId user id of admin
+     * @param firstName First name of the admin
+     * @param lastName Last name of the admin
+     * @param email email of the admin
+     * @param role role of the user
+     */
+    protected User(String userId,String firstName, String lastName, String email, UserRoles role) {
+        if (role != UserRoles.ADMIN) {
+            throw new IllegalArgumentException("Invalid role. This constructor only supports users of type Admin");
+        }
+
+        // validate data and set values
+        setUserId(userId);
+        setFirstName(firstName);
+        setLastName(lastName);
+        setEmail(email);
+        setRole(role);
+    }
+
+    /**
      * Get user's first name
      * @return String representing user's first name
      */

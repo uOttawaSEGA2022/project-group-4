@@ -40,9 +40,9 @@ public class Chef extends User {
         this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
     }
 
-    public Chef(UserEntityModel userData, UserRoles role, Address address, String description, String voidCheque) throws IllegalArgumentException {
+    public Chef(UserEntityModel userData, Address address, String description, String voidCheque) throws IllegalArgumentException {
         // instantiate Admins data members
-        super(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getPassword(), address, role);
+        super(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getPassword(), address, userData.getRole());
         this.setDescription(description);
         this.setVoidCheque(voidCheque);
         this.setNumOfMealsSold(0);
