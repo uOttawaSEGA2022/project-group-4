@@ -26,9 +26,6 @@ public class SignupActivity extends AppCompatActivity {
     UserRoles userRole;
     boolean userRegistrationInProgress;
 
-    static EditText[] currentFields;
-    static EditText[] currentFieldsCredit;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,29 +41,6 @@ public class SignupActivity extends AppCompatActivity {
         // methods that the asynchronous firebase code calls backs after completing registration
         // sets this to false
         userRegistrationInProgress = false;
-
-        currentFields = new EditText[]{(EditText) findViewById(R.id.signupFirstName),
-                (EditText) findViewById(R.id.signupLastName),
-                (EditText) findViewById(R.id.signupEmailAddress),
-                (EditText) findViewById(R.id.signupPassword),
-                (EditText) findViewById(R.id.signupStreetAddress),
-                (EditText) findViewById(R.id.signupCity),
-                (EditText) findViewById(R.id.signupPincode),
-                (EditText) findViewById(R.id.signupCountry),
-                (EditText)findViewById(R.id.signupAssociatedBrand),
-                (EditText)findViewById(R.id.signupCreditCardNumber),
-                (EditText)findViewById(R.id.signupCreditCardName),
-                (EditText)findViewById(R.id.signupCreditCardMonth),
-                (EditText)findViewById(R.id.signupCreditCardYear),
-                (EditText)findViewById(R.id.signupCreditCardCVC)};
-
-        currentFieldsCredit = new EditText[]{(EditText)findViewById(R.id.signupAssociatedBrand),
-                (EditText)findViewById(R.id.signupCreditCardNumber),
-                (EditText)findViewById(R.id.signupCreditCardName),
-                (EditText)findViewById(R.id.signupCreditCardMonth),
-                (EditText)findViewById(R.id.signupCreditCardYear),
-                (EditText)findViewById(R.id.signupCreditCardCVC)};
-
     }
 
     private void attachOnClickListeners() {
@@ -110,25 +84,9 @@ public class SignupActivity extends AppCompatActivity {
 
         // check confirm password is correct
         if (!checkConfirmPasswordMatches()) {
-            EditText textPassword = (EditText)findViewById(R.id.signupPassword);
-           // textPassword.setBackgroundResource(R.drawable.edterror);
-            textPassword.setError("Password doesn't match");
-
-            EditText textConfirmPassword = (EditText)findViewById(R.id.signupConfirmPassword);
-          //  textConfirmPassword.setBackgroundResource(R.drawable.edterror);
-            textConfirmPassword.setError("Password doesn't match");
-
             displayErrorToast("Passwords do not match. Try again.");
             return;
         }
-
-        EditText textPassword = (EditText)findViewById(R.id.signupPassword);
-       // textPassword.setBackgroundResource(R.drawable.edtnormal);
-        textPassword.setError(null);
-
-        EditText textConfirmPassword = (EditText)findViewById(R.id.signupConfirmPassword);
-       // textConfirmPassword.setBackgroundResource(R.drawable.edtnormal);
-        textConfirmPassword.setError(null);
 
         userRegistrationInProgress = true;
 
@@ -199,19 +157,11 @@ public class SignupActivity extends AppCompatActivity {
                 // if failed to create credit card entity due to data validation error
                 return new Response(false, creditCardEntityCreation.getErrorObject());
             }
-        } else if (userRole == UserRoles.CHEF) {
+        } else if (userRole == UserRoles.CHEF){
             // registering a new chef
             // get short description
-            EditText chefShortDesc = (EditText) findViewById(R.id.signupChefShortDescription);
+            EditText chefShortDesc = (EditText)findViewById(R.id.signupChefShortDescription);
             String chefShortDescription = chefShortDesc.getText().toString();
-
-            if (chefShortDescription == "") {
-              //  chefShortDesc.setBackgroundResource(R.drawable.edterror);
-                chefShortDesc.setError("Description cannot be empty");
-            } else{
-               // chefShortDesc.setBackgroundResource(R.drawable.edtnormal);
-                chefShortDesc.setError(null);
-            }
 
             // TO-DO: to be implemented. Temporarily empty string
             String voidCheque = "";
@@ -247,112 +197,34 @@ public class SignupActivity extends AppCompatActivity {
 
         AddressEntityModel userAddress = new AddressEntityModel();
 
-        // Getting text from text fields
+        // Get text from text fields
         EditText textFirst = (EditText)findViewById(R.id.signupFirstName);
-        EditText textLast = (EditText)findViewById(R.id.signupLastName);
-
-        EditText textEmail = (EditText)findViewById(R.id.signupEmailAddress);
-
-        EditText textPassword = (EditText)findViewById(R.id.signupPassword);
-
-        EditText textAddress = (EditText)findViewById(R.id.signupStreetAddress);
-        EditText textCity = (EditText)findViewById(R.id.signupCity);
-        EditText textPostalCode = (EditText)findViewById(R.id.signupPincode);
-        EditText textCountry = (EditText)findViewById(R.id.signupCountry);
-
-        // Setting current text fields
-        setCurrentFields(textFirst, textLast, textEmail, textPassword, textAddress, textCity,
-                textPostalCode, textCountry);
-
-        // Setting user data
         user.setFirstName(textFirst.getText().toString());
+
+        EditText textLast = (EditText)findViewById(R.id.signupLastName);
         user.setLastName(textLast.getText().toString());
 
+        EditText textEmail = (EditText)findViewById(R.id.signupEmailAddress);
         user.setEmail(textEmail.getText().toString());
 
+        EditText textPassword = (EditText)findViewById(R.id.signupPassword);
         user.setPassword(textPassword.getText().toString());
 
+        EditText textAddress = (EditText)findViewById(R.id.signupStreetAddress);
         userAddress.setStreetAddress(textAddress.getText().toString());
+
+        EditText textCity = (EditText)findViewById(R.id.signupCity);
         userAddress.setCity(textCity.getText().toString());
+
+        EditText textPostalCode = (EditText)findViewById(R.id.signupPincode);
         userAddress.setPostalCode(textPostalCode.getText().toString());
+
+        EditText textCountry = (EditText)findViewById(R.id.signupCountry);
         userAddress.setCountry(textCountry.getText().toString());
+
         user.setAddress(userAddress);
 
         return user;
-    }
-
-    /**
-     * this helper method saves and sets the current text fields on the sign-up screen
-     * @param textFirst EditText that contains the first name
-     * @param textLast EditText that contains the last name
-     * @param textEmail EditText that contains the email
-     * @param textPassword EditText that contains the password
-     * @param textAddress EditText that contains the street address
-     * @param textCity EditText that contains the city
-     * @param textPostalCode EditText that contains the postal code
-     * @param textCountry EditText that contains the country
-     */
-    private void setCurrentFields(EditText textFirst, EditText textLast, EditText textEmail,
-                                  EditText textPassword, EditText textAddress, EditText textCity,
-                                  EditText textPostalCode, EditText textCountry) {
-
-        currentFields[0] = textFirst;
-        currentFields[1] = textLast;
-        currentFields[2] = textEmail;
-        currentFields[3] = textPassword;
-        currentFields[4] = textAddress;
-        currentFields[5] = textCity;
-        currentFields[6] = textPostalCode;
-        currentFields[7] = textCountry;
-
-    }
-
-    /**
-     * this helper method returns the current text field
-     *
-     * it is called in the <code>User</code> class during validation
-     *
-     * @return the current EditText field at the specified index in the currentFields array
-     */
-    public static EditText getCurrentFields(int index) {
-
-        return currentFields[index];
-
-    }
-
-    /**
-     * this helper method saves and sets the current text fields on the sign-up screen for the credit card info
-     * @param textCardBrand EditText that contains the credit card brand
-     * @param textCardNumber EditText that contains the credit card number
-     * @param textCardName EditText that contains the card holder name
-     * @param textCardMonth EditText that contains the expiration month
-     * @param textCardYear EditText that contains the expiration year
-     * @param textCardCVC EditText that contains the credit card CVC security code
-     */
-    private void setCurrentFieldsCredit(EditText textCardBrand, EditText textCardNumber,
-                                        EditText textCardName, EditText textCardMonth,
-                                        EditText textCardYear, EditText textCardCVC) {
-
-        currentFieldsCredit[0] = textCardBrand;
-        currentFieldsCredit[1] = textCardNumber;
-        currentFieldsCredit[2] = textCardName;
-        currentFieldsCredit[3] = textCardMonth;
-        currentFieldsCredit[4] = textCardYear;
-        currentFieldsCredit[5] = textCardCVC;
-
-    }
-
-    /**
-     * this helper method returns the current text field
-     *
-     * it is called in the <code>CreditCard</code> class during validation
-     *
-     * @return the current EditText field at the specified index in the currentFieldsCredit array
-     */
-    public static EditText getCurrentFieldsCredit(int index) {
-
-        return currentFieldsCredit[index];
-
     }
 
     public Result<CreditCardEntityModel, String> getCreditCardEntityModel() {
@@ -383,9 +255,6 @@ public class SignupActivity extends AppCompatActivity {
         EditText textCardCVC = (EditText)findViewById(R.id.signupCreditCardCVC);
 
         creditCard.setCvc(textCardCVC.toString());
-
-        setCurrentFieldsCredit(textCardBrand, textCardNumber, textCardName, textCardMonth, textCardYear,
-                textCardCVC);
 
         // return Result containing creditCard instance and no error object
         return new Result<>(creditCard, null);

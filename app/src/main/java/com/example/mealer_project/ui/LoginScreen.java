@@ -35,25 +35,16 @@ public class LoginScreen extends AppCompatActivity {
                 EditText textEmail = (EditText)findViewById(R.id.loginUsername);
                 String email = textEmail.getText().toString();
                 if (email.equals("")) {
-                   // textEmail.setBackgroundResource(R.drawable.edterror);
-                    textEmail.setError("Field cannot be empty");
                     displayErrorToast("Please enter your email address.");
                     return;
                 }
 
-               // textEmail.setBackgroundResource(R.drawable.edtnormal);
-                textEmail.setError(null);
-
                 EditText textPassword = (EditText)findViewById(R.id.loginPassword);
                 String password = textPassword.getText().toString();
                 if (password.equals("")) {
-                  //  textPassword.setBackgroundResource(R.drawable.edterror);
-                    textPassword.setError("Field cannot be empty");
                     displayErrorToast("Please enter your password.");
                     return;
                 }
-              //  textPassword.setBackgroundResource(R.drawable.edtnormal);
-                textPassword.setError(null);
 
                 login(email, password);
             }

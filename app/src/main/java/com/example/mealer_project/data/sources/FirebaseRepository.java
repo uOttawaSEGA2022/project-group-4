@@ -200,8 +200,7 @@ public class FirebaseRepository {
                             if (loginScreen != null && r.isSuccess()) {
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
-                                Log.e("Login failed for client", r.getErrorMessage());
-                                loginScreen.userLoginFailed("Login failed for client: " + r.getErrorMessage());
+                                loginScreen.userLoginFailed("Login failed for user: " + task.getException());
                             }
 
                             if (r.isError()) {
@@ -239,9 +238,8 @@ public class FirebaseRepository {
             newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
             newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
             newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
-
-            newCreditCard.setExpiryMonth((Integer.parseInt(document.getData().get("creditCardExpiryMonth").toString())));
-            newCreditCard.setExpiryYear((Integer.parseInt(document.getData().get("creditCardExpiryYear").toString())));
+            newCreditCard.setExpiryMonth(Math.toIntExact((int) document.getData().get("creditCardExpiryMonth")));
+            newCreditCard.setExpiryYear(Math.toIntExact((int) document.getData().get("creditCardExpiryYear")));
             newCreditCard.setCvc(String.valueOf(document.getData().get("creditCardCvc")));
 
             Address address = new Address(newAddress);
@@ -278,8 +276,7 @@ public class FirebaseRepository {
                             if (loginScreen != null && r.isSuccess()) {
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
-                                Log.e("Login failed for client", r.getErrorMessage());
-                                loginScreen.userLoginFailed("Login failed for chef: " + r.getErrorMessage());
+                                loginScreen.userLoginFailed("Login failed for user: " + task.getException());
                             }
                         }
 
@@ -314,9 +311,8 @@ public class FirebaseRepository {
             String voidCheque = String.valueOf(document.getData().get("voidCheque"));
 
             Address address = new Address(newAddress);
-            Log.e("##### Address ####", "Address okay");
+
             Chef newChef = new Chef(newUser, UserRoles.CHEF, address, description, voidCheque);
-            Log.e("##### Chef ####", "Chef okay");
 
             App.getAppInstance().setUser(newChef);
 
