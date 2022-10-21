@@ -200,7 +200,8 @@ public class FirebaseRepository {
                             if (loginScreen != null && r.isSuccess()) {
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
-                                loginScreen.userLoginFailed("Login failed for user: " + task.getException());
+                                Log.e("Login failed for client", r.getErrorMessage());
+                                loginScreen.userLoginFailed("Login failed for user: " + r.getErrorMessage());
                             }
 
                             if (r.isError()) {
@@ -238,8 +239,8 @@ public class FirebaseRepository {
             newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
             newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
             newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
-            newCreditCard.setExpiryMonth(Math.toIntExact((int) document.getData().get("creditCardExpiryMonth")));
-            newCreditCard.setExpiryYear(Math.toIntExact((int) document.getData().get("creditCardExpiryYear")));
+            newCreditCard.setExpiryMonth(Integer.parseInt(document.getData().get("creditCardExpiryMonth").toString()));
+            newCreditCard.setExpiryYear(Integer.parseInt(document.getData().get("creditCardExpiryYear").toString()));
             newCreditCard.setCvc(String.valueOf(document.getData().get("creditCardCvc")));
 
             Address address = new Address(newAddress);
@@ -276,7 +277,8 @@ public class FirebaseRepository {
                             if (loginScreen != null && r.isSuccess()) {
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
-                                loginScreen.userLoginFailed("Login failed for user: " + task.getException());
+                                Log.e("Login failed for chef", r.getErrorMessage());
+                                loginScreen.userLoginFailed("Login failed for user: " + r.getErrorMessage());
                             }
                         }
 
