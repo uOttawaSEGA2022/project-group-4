@@ -54,5 +54,4 @@ public class ChefAdditionalInfo extends AppCompatActivity {
             imageView.setImageBitmap(bitmap);
         }
     }
-
 }
