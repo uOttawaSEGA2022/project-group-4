@@ -313,7 +313,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("bananas");
+            throw new IllegalArgumentException("Invalid expiry year");
 
         }
     }

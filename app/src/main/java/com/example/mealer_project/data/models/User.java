@@ -242,11 +242,7 @@ public class User {
         else { //invalid
 
             // Output:
-            throw new IllegalArgumentException("Your password should contain:\r\n" +
-                    "at least 8 characters\r\n" +
-                    "at least 1 capital\r\n" +
-                    "at least 1 number\r\n" +
-                    "at least 1 special character");
+            throw new IllegalArgumentException(errorMsg);
 
         }
 
@@ -313,19 +309,45 @@ public class User {
             }
 
             // Process: validating password
-            if (hasCapital && hasLetters && hasNumber && hasSpecial) { //valid
+            if (!hasLetters) {
 
-                return true;
-
-            }
-            else { //invalid
+                errorMsg = "Password must contain at least 1 letter.";
 
                 return false;
+
+            }
+            else if (!hasCapital) {
+
+                errorMsg = "Password must contain at least 1 capital letter.";
+
+                return false;
+
+
+            }
+            else if (!hasNumber) {
+
+                errorMsg = "Password must contain at least 1 number.";
+
+                return false;
+
+            }
+            else if (!hasSpecial) {
+
+                errorMsg = "Password must contain at least 1 special character.";
+
+                return false;
+
+            }
+            else { //valid
+
+                return true;
 
             }
 
         }
         else { //not long enough
+
+            errorMsg = "Password must be at least 8 characters long.";
 
             return false;
 
@@ -427,7 +449,14 @@ public class User {
 
             // Process: checking if street address is valid
             if (!(hasLetters == true && hasNumber == true && hasInvalidSpecial == false)) { //invalid
-                errorMsg = "Invalid characters in street address";
+
+                // Process: checking for incomplete address or special chars
+                if (hasInvalidSpecial) { //wrong chars
+                    errorMsg = "Invalid characters in street address";
+                }
+                else {
+                    errorMsg = "Invalid street address";
+                }
                 return false;
 
             }

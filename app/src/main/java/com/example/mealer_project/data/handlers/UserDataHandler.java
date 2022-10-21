@@ -42,7 +42,7 @@ public class UserDataHandler {
 
         } catch (Exception e) {
             // if at any point, code throws exception (ex: unable to create instance)
-            return new Response(false, "UserDataHandler: " + e.getMessage());
+            return new Response(false, e.getMessage());
         }
     }
 
