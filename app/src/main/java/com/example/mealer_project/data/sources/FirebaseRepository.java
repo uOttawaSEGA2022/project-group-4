@@ -205,7 +205,7 @@ public class FirebaseRepository {
                         }
 
                     } else {
-                        getChefById(userId);
+                        //getChefById(userId);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -233,9 +233,9 @@ public class FirebaseRepository {
         newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
         newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
         newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
-        newCreditCard.setExpiryMonth((Integer) document.getData().get("creditCardExpiryMonth"));
-        newCreditCard.setExpiryYear((Integer) document.getData().get("creditCardExpiryYear"));
-        newCreditCard.setCvc((Integer) document.getData().get("creditCardCvc"));
+        newCreditCard.setExpiryMonth((int) document.getData().get("creditCardExpiryMonth"));
+        newCreditCard.setExpiryYear((int) document.getData().get("creditCardExpiryYear"));
+        newCreditCard.setCvc((int) document.getData().get("creditCardCvc"));
 
         Address address = new Address(newAddress);
         CreditCard creditCard = new CreditCard(newCreditCard);
