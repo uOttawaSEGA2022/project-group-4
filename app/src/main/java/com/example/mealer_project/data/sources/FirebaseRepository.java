@@ -18,6 +18,7 @@ import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
 import com.example.mealer_project.ui.SignupActivity;
+import com.example.mealer_project.utils.Response;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -173,9 +174,8 @@ public class FirebaseRepository {
                         // Sign in success, update UI with the signed-in user's information
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            getUserById(user.getUid());
+                            getUserById(user.getUid(), loginScreen);
                         }
-                        loginScreen.showNextScreen();
                     } else {
                         // If sign in fails, display a message to the user.
                         loginScreen.userLoginFailed("Login failed for user: " + task.getException());
@@ -186,7 +186,7 @@ public class FirebaseRepository {
     }
 
 
-    private void getUserById(String userId) {
+    private void getUserById(String userId, LoginScreen loginScreen) {
 
         database = FirebaseFirestore.getInstance();
 
@@ -201,11 +201,20 @@ public class FirebaseRepository {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         if (document.getData() != null){
-                            makeClientFromFirebase(document);
+                            Response r = makeClientFromFirebase(document);
+                            if (loginScreen != null && r.isSuccess()) {
+                                loginScreen.showNextScreen();
+                            } else if (loginScreen != null){
+                                loginScreen.userLoginFailed("Login failed for user: " + task.getException());
+                            }
+
+                            if (r.isError()) {
+                                Log.e("getUserById: ", r.getErrorMessage());
+                            }
                         }
 
                     } else {
-                        getChefById(userId);
+                        getChefById(userId, loginScreen);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -214,39 +223,45 @@ public class FirebaseRepository {
         });
     }
 
-    private void makeClientFromFirebase(DocumentSnapshot document){
+    private Response makeClientFromFirebase(DocumentSnapshot document){
 
-        UserEntityModel newUser = new UserEntityModel();
-        AddressEntityModel newAddress = new AddressEntityModel();
-        CreditCardEntityModel newCreditCard = new CreditCardEntityModel();
+        try{
+            UserEntityModel newUser = new UserEntityModel();
+            AddressEntityModel newAddress = new AddressEntityModel();
+            CreditCardEntityModel newCreditCard = new CreditCardEntityModel();
 
-        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
-        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
-        newUser.setEmail(String.valueOf(document.getData().get("email")));
-        newUser.setRole(UserRoles.CLIENT);
+            newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
+            newUser.setLastName(String.valueOf(document.getData().get("lastName")));
+            newUser.setEmail(String.valueOf(document.getData().get("email")));
+            newUser.setRole(UserRoles.CLIENT);
 
-        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
-        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
-        newAddress.setCountry(String.valueOf(document.getData().get("country")));
-        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
+            newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
+            newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
+            newAddress.setCountry(String.valueOf(document.getData().get("country")));
+            newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
 
-        newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
-        newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
-        newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
-        newCreditCard.setExpiryMonth(Math.toIntExact((long) document.getData().get("creditCardExpiryMonth")));
-        newCreditCard.setExpiryYear(Math.toIntExact((long) document.getData().get("creditCardExpiryYear")));
-        newCreditCard.setCvc(Math.toIntExact((long) document.getData().get("creditCardCvc")));
+            newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
+            newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
+            newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
+            newCreditCard.setExpiryMonth(Math.toIntExact((long) document.getData().get("creditCardExpiryMonth")));
+            newCreditCard.setExpiryYear(Math.toIntExact((long) document.getData().get("creditCardExpiryYear")));
+            newCreditCard.setCvc(Math.toIntExact((long) document.getData().get("creditCardCvc")));
 
-        Address address = new Address(newAddress);
-        CreditCard creditCard = new CreditCard(newCreditCard);
+            Address address = new Address(newAddress);
+            CreditCard creditCard = new CreditCard(newCreditCard);
 
-        Client newClient = new Client(newUser, address, creditCard);
+            Client newClient = new Client(newUser, address, creditCard);
 
-        App.getAppInstance().setUser(newClient);
+            App.getAppInstance().setUser(newClient);
+
+            return new Response(true);
+        } catch (Exception e) {
+            return new Response(false, "makeChefFromFirebase: " + e.getMessage());
+        }
     }
 
 
-    private void getChefById(String userId) {
+    private void getChefById(String userId, LoginScreen loginScreen) {
 
         database = FirebaseFirestore.getInstance();
 
@@ -261,7 +276,13 @@ public class FirebaseRepository {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         if (document.getData() != null){
-                            makeChefFromFirebase(document);
+                            Response r = makeChefFromFirebase(document);
+
+                            if (loginScreen != null && r.isSuccess()) {
+                                loginScreen.showNextScreen();
+                            } else if (loginScreen != null){
+                                loginScreen.userLoginFailed("Login failed for user: " + task.getException());
+                            }
                         }
 
                     } else {
@@ -275,29 +296,35 @@ public class FirebaseRepository {
 
     }
 
-    private void makeChefFromFirebase(DocumentSnapshot document){
+    private Response makeChefFromFirebase(DocumentSnapshot document){
 
-        UserEntityModel newUser = new UserEntityModel();
-        AddressEntityModel newAddress = new AddressEntityModel();
+        try {
+            UserEntityModel newUser = new UserEntityModel();
+            AddressEntityModel newAddress = new AddressEntityModel();
 
-        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
-        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
-        newUser.setEmail(String.valueOf(document.getData().get("email")));
-        newUser.setRole(UserRoles.CLIENT);
+            newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
+            newUser.setLastName(String.valueOf(document.getData().get("lastName")));
+            newUser.setEmail(String.valueOf(document.getData().get("email")));
+            newUser.setRole(UserRoles.CLIENT);
 
-        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
-        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
-        newAddress.setCountry(String.valueOf(document.getData().get("country")));
-        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
+            newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
+            newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
+            newAddress.setCountry(String.valueOf(document.getData().get("country")));
+            newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
 
-        String description = String.valueOf(document.getData().get("description"));
-        String voidCheque = String.valueOf(document.getData().get("voidCheque"));
+            String description = String.valueOf(document.getData().get("description"));
+            String voidCheque = String.valueOf(document.getData().get("voidCheque"));
 
-        Address address = new Address(newAddress);
+            Address address = new Address(newAddress);
 
-        Chef newChef = new Chef(newUser, UserRoles.CHEF, address, description, voidCheque);
+            Chef newChef = new Chef(newUser, UserRoles.CHEF, address, description, voidCheque);
 
-        App.getAppInstance().setUser(newChef);
+            App.getAppInstance().setUser(newChef);
+
+            return new Response(true);
+        } catch (Exception e) {
+            return new Response(false, "makeChefFromFirebase: " + e.getMessage());
+        }
     }
 
 
