@@ -15,10 +15,9 @@ import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
-import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
-import com.example.mealer_project.ui.SignupActivity;
+import com.example.mealer_project.ui.SignupScreen;
 import com.example.mealer_project.utils.Response;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,7 +47,7 @@ public class FirebaseRepository {
 
     public class AuthActions {
 
-        public void registerClient(String email, String password, SignupActivity signupActivity, Client newUser) {
+        public void registerClient(String email, String password, SignupScreen signupScreen, Client newUser) {
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -84,23 +83,23 @@ public class FirebaseRepository {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     // let signup activity display next screen now
-                                                    signupActivity.showNextScreen();
+                                                    signupScreen.showNextScreen();
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    signupActivity.userRegistrationFailed("Unable to add Client's data to the Client collection: " + e.getMessage());
+                                                    signupScreen.userRegistrationFailed("Unable to add Client's data to the Client collection: " + e.getMessage());
                                                 }
                                             });
                                 } else {
-                                    signupActivity.userRegistrationFailed("User registration returned no user info");
+                                    signupScreen.userRegistrationFailed("User registration returned no user info");
                                 }
                             } else {
                                 if (task.getException() != null) {
-                                    signupActivity.userRegistrationFailed(task.getException().toString());
+                                    signupScreen.userRegistrationFailed(task.getException().toString());
                                 } else {
-                                    signupActivity.userRegistrationFailed("createUserWithEmailAndPassword failed: for unknown reasons");
+                                    signupScreen.userRegistrationFailed("createUserWithEmailAndPassword failed: for unknown reasons");
                                 }
 
                             }
@@ -108,7 +107,7 @@ public class FirebaseRepository {
                     });
         }
 
-        public void registerChef(String email, String password, SignupActivity signupActivity, Chef newUser) {
+        public void registerChef(String email, String password, SignupScreen signupScreen, Chef newUser) {
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -139,23 +138,23 @@ public class FirebaseRepository {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
                                                     // let signup activity display next screen now
-                                                    signupActivity.showNextScreen();
+                                                    signupScreen.showNextScreen();
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    signupActivity.userRegistrationFailed("Unable to add Chef's data to the Chef collection: " + e.getMessage());
+                                                    signupScreen.userRegistrationFailed("Unable to add Chef's data to the Chef collection: " + e.getMessage());
                                                 }
                                             });
                                 } else {
-                                    signupActivity.userRegistrationFailed("User registration returned no user info");
+                                    signupScreen.userRegistrationFailed("User registration returned no user info");
                                 }
                             } else {
                                 if (task.getException() != null) {
-                                    signupActivity.userRegistrationFailed(task.getException().toString());
+                                    signupScreen.userRegistrationFailed(task.getException().toString());
                                 } else {
-                                    signupActivity.userRegistrationFailed("createUserWithEmailAndPassword failed: for unknown reasons");
+                                    signupScreen.userRegistrationFailed("createUserWithEmailAndPassword failed: for unknown reasons");
                                 }
 
                             }

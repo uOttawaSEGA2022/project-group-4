@@ -28,7 +28,7 @@ public class IntroScreen extends AppCompatActivity {
     public void OnSetSignUp(View view) {
 
         // Variable Declaration
-        Intent intent = new Intent(getApplicationContext(), SignupActivity.class); //where SignUp.class is the sign up activity
+        Intent intent = new Intent(getApplicationContext(), SignupScreen.class); //where SignUp.class is the sign up activity
         startActivity (intent);
     }
 

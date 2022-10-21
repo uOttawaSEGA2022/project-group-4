@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import com.example.mealer_project.R;
 
 
-public class ChefAdditionalInfo extends AppCompatActivity {
+public class VoidChequeScreen extends AppCompatActivity {
 
     Button submitChequeButton;
     ImageView imageView;
@@ -34,8 +34,8 @@ public class ChefAdditionalInfo extends AppCompatActivity {
         imageView = findViewById(R.id.voidCheque);
         takePictureButton = findViewById(R.id.imageButton);
 
-        if (ContextCompat.checkSelfPermission(ChefAdditionalInfo.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(ChefAdditionalInfo.this, new String[]{
+        if (ContextCompat.checkSelfPermission(VoidChequeScreen.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(VoidChequeScreen.this, new String[]{
                     Manifest.permission.CAMERA
             }, 100);
         }
