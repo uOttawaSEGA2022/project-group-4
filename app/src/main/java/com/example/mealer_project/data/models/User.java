@@ -37,7 +37,9 @@ public class User {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEmail(email);
-        this.setPassword(password);
+        if (password != null) {
+            this.setPassword(password);
+        }
         this.setAddress(address);
         // value of role has to be one of accepted user roles
         this.setRole(role);
@@ -233,22 +235,25 @@ public class User {
      */
     public void setPassword(String password) {
 
-        // Process: validating password
-        if (validatePassword(password)) { //valid
+        if (password!= null){
+            // Process: validating password
+            if (validatePassword(password)) { //valid
 
-            this.password = password;
+                this.password = password;
 
+            }
+            else { //invalid
+
+                // Output:
+                throw new IllegalArgumentException("Your password should contain:\r\n" +
+                        "at least 8 characters\r\n" +
+                        "at least 1 capital\r\n" +
+                        "at least 1 number\r\n" +
+                        "at least 1 special character");
+
+            }
         }
-        else { //invalid
 
-            // Output:
-            throw new IllegalArgumentException("Your password should contain:\r\n" +
-                    "at least 8 characters\r\n" +
-                    "at least 1 capital\r\n" +
-                    "at least 1 number\r\n" +
-                    "at least 1 special character");
-
-        }
 
     }
 

@@ -39,6 +39,8 @@ public class Client extends User {
         this.setClientCreditCard(clientCreditCard);
     }
 
+
+
     @Override
     public void setUserId(String userId) {
         super.setUserId(userId);
