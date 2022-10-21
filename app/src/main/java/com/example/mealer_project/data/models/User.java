@@ -233,22 +233,25 @@ public class User {
      */
     public void setPassword(String password) {
 
-        // Process: validating password
-        if (validatePassword(password)) { //valid
+        if (password!= null){
+            // Process: validating password
+            if (validatePassword(password)) { //valid
 
-            this.password = password;
+                this.password = password;
 
+            }
+            else { //invalid
+
+                // Output:
+                throw new IllegalArgumentException("Your password should contain:\r\n" +
+                        "at least 8 characters\r\n" +
+                        "at least 1 capital\r\n" +
+                        "at least 1 number\r\n" +
+                        "at least 1 special character");
+
+            }
         }
-        else { //invalid
 
-            // Output:
-            throw new IllegalArgumentException("Your password should contain:\r\n" +
-                    "at least 8 characters\r\n" +
-                    "at least 1 capital\r\n" +
-                    "at least 1 number\r\n" +
-                    "at least 1 special character");
-
-        }
 
     }
 

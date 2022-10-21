@@ -15,6 +15,7 @@ import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.LoginScreen;
 import com.example.mealer_project.ui.SignupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -167,9 +168,8 @@ public class FirebaseRepository {
                         // Sign in success, update UI with the signed-in user's information
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            getUserById(user.getUid());
+                            getUserById(user.getUid(), loginScreen);
                         }
-                        loginScreen.showNextScreen();
                     } else {
                         // If sign in fails, display a message to the user.
                         loginScreen.userLoginFailed("Login failed for user: " + task.getException());
@@ -180,7 +180,7 @@ public class FirebaseRepository {
     }
 
 
-    private void getUserById(String userId) {
+    private void getUserById(String userId, LoginScreen loginScreen) {
 
         database = FirebaseFirestore.getInstance();
 
@@ -196,10 +196,11 @@ public class FirebaseRepository {
 
                         if (document.getData() != null){
                             makeClientFromFirebase(document);
+                            loginScreen.showNextScreen();
                         }
 
                     } else {
-                        getChefById(userId);
+                        getChefById(userId,loginScreen);
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
@@ -240,7 +241,7 @@ public class FirebaseRepository {
     }
 
 
-    private void getChefById(String userId) {
+    private void getChefById(String userId, LoginScreen loginScreen) {
 
         database = FirebaseFirestore.getInstance();
 
@@ -256,6 +257,7 @@ public class FirebaseRepository {
 
                         if (document.getData() != null){
                             makeChefFromFirebase(document);
+                            loginScreen.showNextScreen();
                         }
 
                     } else {
