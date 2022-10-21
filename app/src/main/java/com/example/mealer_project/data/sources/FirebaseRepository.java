@@ -174,7 +174,7 @@ public class FirebaseRepository {
                         // Sign in success, update UI with the signed-in user's information
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            App.getAppInstance().setCurrentUserName(user.getDisplayName());
+                            getUserById(user.getUid());
                         }
                         loginScreen.showNextScreen();
                     } else {
@@ -187,7 +187,7 @@ public class FirebaseRepository {
     }
 
 
-    private User getUserById(String userId) {
+    private void getUserById(String userId) {
 
         database = FirebaseFirestore.getInstance();
 
@@ -201,31 +201,7 @@ public class FirebaseRepository {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        UserEntityModel newUser = new UserEntityModel();
-                        AddressEntityModel newAddress = new AddressEntityModel();
-                        CreditCardEntityModel newCreditCard = new CreditCardEntityModel();
-
-                        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
-                        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
-                        newUser.setEmail(String.valueOf(document.getData().get("email")));
-                        newUser.setRole(UserRoles.CLIENT);
-
-                        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
-                        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
-                        newAddress.setCountry(String.valueOf(document.getData().get("country")));
-                        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
-
-                        newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
-                        newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
-                        newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
-                        newCreditCard.setExpiryMonth((Integer) document.getData().get("creditCardExpiryMonth"));
-                        newCreditCard.setExpiryYear((Integer) document.getData().get("creditCardExpiryYear"));
-                        newCreditCard.setCvc((Integer) document.getData().get("creditCardCvc"));
-
-                        Address address = new Address(newAddress);
-                        CreditCard creditCard = new CreditCard(newCreditCard);
-
-                        Client newClient = new Client(newUser, address, creditCard);
+                        makeClientFromFirebase(document);
 
                     } else {
                         getChefById(userId);
@@ -235,13 +211,41 @@ public class FirebaseRepository {
                 }
             }
         });
+    }
 
-        return null;
+    private void makeClientFromFirebase(DocumentSnapshot document){
 
+        UserEntityModel newUser = new UserEntityModel();
+        AddressEntityModel newAddress = new AddressEntityModel();
+        CreditCardEntityModel newCreditCard = new CreditCardEntityModel();
+
+        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
+        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
+        newUser.setEmail(String.valueOf(document.getData().get("email")));
+        newUser.setRole(UserRoles.CLIENT);
+
+        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
+        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
+        newAddress.setCountry(String.valueOf(document.getData().get("country")));
+        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
+
+        newCreditCard.setBrand(String.valueOf(document.getData().get("creditCardBrand")));
+        newCreditCard.setName(String.valueOf(document.getData().get("creditCardName")));
+        newCreditCard.setNumber(String.valueOf(document.getData().get("creditCardNumber")));
+        newCreditCard.setExpiryMonth((Integer) document.getData().get("creditCardExpiryMonth"));
+        newCreditCard.setExpiryYear((Integer) document.getData().get("creditCardExpiryYear"));
+        newCreditCard.setCvc((Integer) document.getData().get("creditCardCvc"));
+
+        Address address = new Address(newAddress);
+        CreditCard creditCard = new CreditCard(newCreditCard);
+
+        Client newClient = new Client(newUser, address, creditCard);
+
+        App.getAppInstance().setUser(newClient);
     }
 
 
-    private User getChefById(String userId) {
+    private void getChefById(String userId) {
 
         database = FirebaseFirestore.getInstance();
 
@@ -255,25 +259,7 @@ public class FirebaseRepository {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        UserEntityModel newUser = new UserEntityModel();
-                        AddressEntityModel newAddress = new AddressEntityModel();
-
-                        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
-                        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
-                        newUser.setEmail(String.valueOf(document.getData().get("email")));
-                        newUser.setRole(UserRoles.CLIENT);
-
-                        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
-                        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
-                        newAddress.setCountry(String.valueOf(document.getData().get("country")));
-                        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
-
-                        String description = String.valueOf(document.getData().get("description"));
-                        String voidCheque = String.valueOf(document.getData().get("voidCheque"));
-
-                        Address address = new Address(newAddress);
-
-                        Chef newChef = new Chef(newUser, UserRoles.CHEF, address, description, voidCheque);
+                        makeChefFromFirebase(document);
 
                     } else {
                         Log.d(TAG, "No such document");
@@ -284,8 +270,31 @@ public class FirebaseRepository {
             }
         });
 
-        return null;
+    }
 
+    private void makeChefFromFirebase(DocumentSnapshot document){
+
+        UserEntityModel newUser = new UserEntityModel();
+        AddressEntityModel newAddress = new AddressEntityModel();
+
+        newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
+        newUser.setLastName(String.valueOf(document.getData().get("lastName")));
+        newUser.setEmail(String.valueOf(document.getData().get("email")));
+        newUser.setRole(UserRoles.CLIENT);
+
+        newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
+        newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
+        newAddress.setCountry(String.valueOf(document.getData().get("country")));
+        newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
+
+        String description = String.valueOf(document.getData().get("description"));
+        String voidCheque = String.valueOf(document.getData().get("voidCheque"));
+
+        Address address = new Address(newAddress);
+
+        Chef newChef = new Chef(newUser, UserRoles.CHEF, address, description, voidCheque);
+
+        App.getAppInstance().setUser(newChef);
     }
 
 
