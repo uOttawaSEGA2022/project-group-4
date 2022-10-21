@@ -24,6 +24,20 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        applicationVariants.all{
+            // this method is use to rename your all apk weather
+            // it may be signed or unsigned(debug apk)
+            variant ->
+                variant.outputs.each{
+                    // on below line we are setting a
+                    // name to our apk as GFG.apk
+                    output->
+                        def name = "group4_debug.apk"
+                        // on below line we are setting the
+                        // outputFile Name to our apk file.
+                        output.outputFileName = name
+                }
+       }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
