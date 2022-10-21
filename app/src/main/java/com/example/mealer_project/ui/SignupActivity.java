@@ -136,8 +136,10 @@ public class SignupActivity extends AppCompatActivity {
             try {
                 creditCardEntityCreation = getCreditCardEntityModel();
             } catch (Exception e) {
+
                 userRegistrationInProgress = false;
-                return new Response(false, "Form submitted with invalid or no Credit Card data, please enter correct details and try again!" + e.getMessage());
+                return new Response(false, "Please complete all credit card fields.");
+
             }
 
             if (creditCardEntityCreation.isSuccess()) {
@@ -173,8 +175,9 @@ public class SignupActivity extends AppCompatActivity {
                 return new Response(false, userRegistrationResponse.getErrorMessage());
             }
         } else {
+
             userRegistrationInProgress = false;
-            return new Response(false, "Invalid user role!");
+            return new Response(false, "Please select either Client or Chef.");
         }
 
     }
@@ -242,30 +245,15 @@ public class SignupActivity extends AppCompatActivity {
         String number;
 
         EditText textCardMonth = (EditText)findViewById(R.id.signupCreditCardMonth);
-        // try parsing the user input to integer
-        try {
-            val = Integer.parseInt(textCardMonth.getText().toString());
-        } catch (Exception e) {
-            // return an appropriate error if fails
-            return new Result<>(null, "Invalid Expiry Month value: " + e.getMessage());
-        }
-        // if parsing successful, add info to creditCard instance
-        creditCard.setExpiryMonth(val);
+
+        creditCard.setExpiryMonth(Integer.parseInt(textCardMonth.getText().toString()));
 
         EditText textCardYear = (EditText)findViewById(R.id.signupCreditCardYear);
-        try {
-            val = Integer.parseInt(textCardYear.getText().toString());
-        } catch (Exception e) {
-            return new Result<>(null, "Invalid Expiry Year value: " + e.getMessage());
-        }
-        creditCard.setExpiryYear(val);
+
+        creditCard.setExpiryYear(Integer.parseInt(textCardYear.getText().toString()));
 
         EditText textCardCVC = (EditText)findViewById(R.id.signupCreditCardCVC);
-        try {
-            number = textCardCVC.getText().toString();
-        } catch (Exception e) {
-            return new Result<>(null, "Invalid CVC value: " + e.getMessage());
-        }
+
         creditCard.setCvc(number);
 
         // return Result containing creditCard instance and no error object

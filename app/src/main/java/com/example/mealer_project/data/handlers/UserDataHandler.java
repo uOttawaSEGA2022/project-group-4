@@ -46,6 +46,7 @@ public class UserDataHandler {
 //            // if at any point, code throws exception (ex: unable to create instance)
 //            return new Response(false, "UserDataHandler: " + e.getMessage());
 //        }
+
     }
 
     public Response registerChef(SignupActivity signupActivity, UserEntityModel userData, String chefShortDescription, String voidCheque) {
