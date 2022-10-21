@@ -60,9 +60,12 @@ public class Chef extends User {
      * Set the chef's description
      * @param description String representing the chef's description
      */
-    public void setDescription(String description) {
+    public void setDescription(String description) throws IllegalArgumentException {
         // validate description
-        this.description = description;
+        if (description.length() > 0)
+            this.description = description;
+        else
+            throw new IllegalArgumentException("Please enter a description");
     }
 
     /**
