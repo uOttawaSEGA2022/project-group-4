@@ -11,6 +11,7 @@ import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.Address;
+import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
@@ -169,7 +170,16 @@ public class FirebaseRepository {
                         // Sign in success, update UI with the signed-in user's information
                         FirebaseUser user = mAuth.getCurrentUser();
                         if (user != null) {
-                            getUserById(user.getUid(), loginScreen);
+                            if (email == "admin2@uottawa.ca" && password == "Admin123!"){ // login for admin 1 is admin@gmail.com and Admin123$
+
+                                Address address = new Address("75 Laurier Ave. E", "Ottawa", "K1N6N5", "Canada");
+                                Admin newAdmin = Admin.getInstance("Admin", "Admin", "admin@gmail.com", "Admin123$", address, UserRoles.ADMIN);
+
+                                App.getAppInstance().setUser(newAdmin);
+                                loginScreen.showNextScreen();
+                            }else{
+                                getUserById(user.getUid(), loginScreen);
+                            }
                         }
                     } else {
                         // If sign in fails, display a message to the user.
