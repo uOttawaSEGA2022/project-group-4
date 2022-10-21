@@ -208,9 +208,6 @@ public class SignupActivity extends AppCompatActivity {
         return user;
     }
 
-
-
-
     public Result<CreditCardEntityModel, String> getCreditCardEntityModel() {
 
         CreditCardEntityModel creditCard = new CreditCardEntityModel();
