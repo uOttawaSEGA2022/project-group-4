@@ -3,6 +3,14 @@
 An extraordinary food ordering app providing a one-stop-shop solution for clients to order their favorite meals from exceptional chefs near them. 🌯
 Being built as part of course SEG2105 at University of Ottawa by SEG2105 Group 4.
 
+**Test Accounts:**
+
+Admin: madmin@mealer.com, Seg2@105
+
+Client: kapil@sharma.com, Ottawa@123
+
+Chef: onedirection@life.never, Ottawa@123
+
 ## Application Architecture
 
 **General Details**
@@ -33,7 +41,7 @@ Being built as part of course SEG2105 at University of Ottawa by SEG2105 Group 4
     |     |-- IntroScreen
     |     |-- LoginScreen
     |     |-- SignupScreen
-    |     |-- VoidChequeUploadScreen
+    |     |-- VoidChequeScreen
     |     |-- WelcomeScreen
     |
     |-- utils
@@ -65,6 +73,7 @@ Each of the application's primary data objects has a model stored in the _models
 _entities_models_ are helper classes which provide a representation of corresponding entity object, without any logic or functionality that the entity object might implement. They're used to store unvalidated information of an entity and to facilitate easier transfer of such information through application. This information then could be used to instantiate an object of the corresponding entity object.
 
 Example: The model User has a UserEntityModel. UserEntityModel is used to store unvalidated user information, which could later be used to instantiate a User object. If instantiation fails, we always have access to the user information from the EntityModel.
+
 
 ## Creaters, Designers, Artists, Developers...
 
