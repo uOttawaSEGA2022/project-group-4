@@ -7,6 +7,7 @@ import com.example.mealer_project.data.entity_models.UserEntityModel;
  * Parent class of Client, Chef and Admin
  */
 public class User {
+    static protected String errorMsg = "";
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -234,22 +235,25 @@ public class User {
      */
     public void setPassword(String password) {
 
-        // Process: validating password
-        if (validatePassword(password)) { //valid
+        if (password!= null){
+            // Process: validating password
+            if (validatePassword(password)) { //valid
 
-            this.password = password;
+                this.password = password;
 
+            }
+            else { //invalid
+
+                // Output:
+                throw new IllegalArgumentException("Your password should contain:\r\n" +
+                        "at least 8 characters\r\n" +
+                        "at least 1 capital\r\n" +
+                        "at least 1 number\r\n" +
+                        "at least 1 special character");
+
+            }
         }
-        else { //invalid
 
-            // Output:
-            throw new IllegalArgumentException("Your password should contain:\r\n" +
-                    "at least 8 characters\r\n" +
-                    "at least 1 capital\r\n" +
-                    "at least 1 number\r\n" +
-                    "at least 1 special character");
-
-        }
 
     }
 
@@ -365,7 +369,7 @@ public class User {
         }
         else {
 
-            throw new IllegalArgumentException("Invalid address");
+            throw new IllegalArgumentException(errorMsg);
 
         }
     }
@@ -381,7 +385,7 @@ public class User {
         // Process: checking length of fields
         if (streetAd.length() <= 0 || postalCode.length() <= 0 || city.length() <= 0 ||
                 country.length() <= 0) { //empty
-
+            errorMsg = "Please fill out all Address fields";
             return false;
 
         }
@@ -412,6 +416,7 @@ public class User {
                     if (charsInStreet[i] == 32 || charsInStreet[i] == 45 ||
                             charsInStreet[i] == 46) { //space, hyphen, or period
 
+                        errorMsg = "Invalid characters in street address";
                         hasInvalidSpecial = false; //updating flag
 
                     }
@@ -427,28 +432,28 @@ public class User {
 
             // Process: checking if street address is valid
             if (!(hasLetters == true && hasNumber == true && hasInvalidSpecial == false)) { //invalid
-
+                errorMsg = "Invalid characters in street address";
                 return false;
 
             }
 
             // Process: checking if postal code is valid
             if (!postalCode.matches("[A-Za-z]\\d[A-Za-z]\\d[A-Za-z]\\d")) { //invalid
-
+                errorMsg = "Invalid postal code";
                 return false;
 
             }
 
             // Process: checking if city is valid
             if (!validateName(city)) { //invalid
-
+                errorMsg = "Invalid city";
                 return false;
 
             }
 
             // Process: checking if country is valid
             if (!validateName(country)) { //invalid
-
+                errorMsg = "Invalid country";
                 return false;
 
             }

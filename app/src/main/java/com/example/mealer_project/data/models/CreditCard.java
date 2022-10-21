@@ -278,7 +278,7 @@ public class CreditCard {
             else { //invalid
 
                 // Output: error msg
-                throw new IllegalArgumentException(String.valueOf(expiryMonth));
+                throw new IllegalArgumentException("Invalid expiry month");
 
             }
         }
@@ -313,7 +313,7 @@ public class CreditCard {
         else { //invalid
 
             // Output: error msg
-            throw new IllegalArgumentException("Invalid expiry year");
+            throw new IllegalArgumentException("bananas");
 
         }
     }
@@ -325,7 +325,7 @@ public class CreditCard {
      */
     private boolean validateExpiryYear(int year) {
         int currentYear = Calendar.getInstance().get(Calendar.YEAR)%2000;
-        if (year >= currentYear )
+        if (year >= currentYear)
             return true;
         return false;
     }

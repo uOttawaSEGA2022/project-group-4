@@ -44,7 +44,6 @@ public class FirebaseRepository {
         this.AUTH = new AuthActions();
     }
 
-
     public class AuthActions {
 
         public void registerClient(String email, String password, SignupActivity signupActivity, Client newUser) {
@@ -82,18 +81,16 @@ public class FirebaseRepository {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    // print success statement
+                                                    // let signup activity display next screen now
+                                                    signupActivity.showNextScreen();
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    // print failure statement
+                                                    signupActivity.userRegistrationFailed("Unable to add Client's data to the Client collection: " + e.getMessage());
                                                 }
                                             });
-
-                                    signupActivity.showNextScreen();
-
                                 } else {
                                     signupActivity.userRegistrationFailed("User registration returned no user info");
                                 }
@@ -139,18 +136,16 @@ public class FirebaseRepository {
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
-                                                    // print success statement
+                                                    // let signup activity display next screen now
+                                                    signupActivity.showNextScreen();
                                                 }
                                             })
                                             .addOnFailureListener(new OnFailureListener() {
                                                 @Override
                                                 public void onFailure(@NonNull Exception e) {
-                                                    // print failure statement
+                                                    signupActivity.userRegistrationFailed("Unable to add Chef's data to the Chef collection: " + e.getMessage());
                                                 }
                                             });
-
-                                    signupActivity.showNextScreen();
-
                                 } else {
                                     signupActivity.userRegistrationFailed("User registration returned no user info");
                                 }
