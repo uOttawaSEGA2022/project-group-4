@@ -36,7 +36,9 @@ public class User {
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setEmail(email);
-        this.setPassword(password);
+        if (password != null) {
+            this.setPassword(password);
+        }
         this.setAddress(address);
         // value of role has to be one of accepted user roles
         this.setRole(role);
