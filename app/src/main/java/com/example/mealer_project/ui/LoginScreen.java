@@ -35,14 +35,14 @@ public class LoginScreen extends AppCompatActivity {
                 EditText textEmail = (EditText)findViewById(R.id.loginUsername);
                 String email = textEmail.getText().toString();
                 if (email.equals("")) {
-                    displayErrorToast("Invalid email address! Try again!");
+                    displayErrorToast("Please enter your email address.");
                     return;
                 }
 
                 EditText textPassword = (EditText)findViewById(R.id.loginPassword);
                 String password = textPassword.getText().toString();
                 if (password.equals("")) {
-                    displayErrorToast("Must provide a value for password! Try again!");
+                    displayErrorToast("Please enter your password.");
                     return;
                 }
 

@@ -19,8 +19,11 @@ public class UserDataHandler {
 
     public Response registerClient(SignupActivity signupActivity, UserEntityModel userData, CreditCardEntityModel creditCardData) {
         // guard clause
-        if (userData == null || creditCardData == null) {
-            return new Response(false, "registerClient failed: No User and Credit Card Info Provided");
+        if (userData == null) {
+            return new Response(false, "Please complete all fields.");
+        }
+        else if (creditCardData == null) { //no description
+            return new Response(false, "Please complete all credit card fields.");
         }
 
         // set the appropriate role for the user
@@ -37,18 +40,21 @@ public class UserDataHandler {
             App.getPrimaryDatabase().AUTH
                     .registerClient(userData.getEmail(), userData.getPassword(), signupActivity, newClient);
 
-            return new Response(true, "User login submitted");
+            return new Response(true, "User login submitted!");
         } catch (Exception e) {
             // if at any point, code throws exception (ex: unable to create instance)
-            return new Response(false, "UserDataHandler: " + e.getMessage());
+            return new Response(false, e.getMessage());
         }
 
     }
 
     public Response registerChef(SignupActivity signupActivity, UserEntityModel userData, String chefShortDescription, String voidCheque) {
         // guard clause
-        if (userData == null || (chefShortDescription != null && chefShortDescription.equals(""))) {
-            return new Response(false, "registerChef failed: No user or short description provided");
+        if (userData == null) {
+            return new Response(false, "Please complete all fields.");
+        }
+        else if (chefShortDescription != null && chefShortDescription.equals("")) { //no description
+            return new Response(false, "Please provide a short description of yourself.");
         }
 
         // set the appropriate role for the user
@@ -70,7 +76,7 @@ public class UserDataHandler {
 
         } catch (Exception e) {
             // if at any point, code throws exception (ex: unable to create instance)
-            return new Response(false, "UserDataHandler: " + e.getMessage());
+            return new Response(false, e.getMessage());
         }
     }
 

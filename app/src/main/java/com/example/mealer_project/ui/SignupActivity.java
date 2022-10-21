@@ -52,7 +52,7 @@ public class SignupActivity extends AppCompatActivity {
                 if (!userRegistrationInProgress) {
                     signupFormSubmissionHandler(v);
                 } else {
-                    displayErrorToast("Already processing a sign up request. Please wait and try again!");
+                    displayErrorToast("Currently processing a sign-up request. Please wait, and try again.");
                 }
             }
         });
@@ -84,7 +84,7 @@ public class SignupActivity extends AppCompatActivity {
 
         // check confirm password is correct
         if (!checkConfirmPasswordMatches()) {
-            displayErrorToast("Passwords do not match. Try again");
+            displayErrorToast("Passwords do not match. Try again.");
             return;
         }
 

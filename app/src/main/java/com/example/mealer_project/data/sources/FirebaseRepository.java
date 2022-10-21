@@ -173,7 +173,7 @@ public class FirebaseRepository {
                         }
                     } else {
                         // If sign in fails, display a message to the user.
-                        loginScreen.userLoginFailed("Login failed for user: " + task.getException());
+                        loginScreen.userLoginFailed("Incorrect login information: please try again.");
                     }
                 }
             });
