@@ -48,15 +48,14 @@ public class SignupScreen extends AppCompatActivity {
         userRegistrationInProgress = false;
     }
 
-    private boolean isCVCValid() {
+    private Response isCVCValid() {
         String cvcNum = cvcValue.getText().toString();
         int numChars = cvcNum.toCharArray().length;
         if (numChars != 3) {
-            displayErrorToast("Invalid CVC value. CVC must be 3 digit number between 000 - 999");
-            return false;
+            return new Response(false, "Invalid CVC value. CVC must be 3 digit number between 000 - 999");
         }
 
-        return true;
+        return new Response(true);
     }
 
     private void attachOnClickListeners() {
@@ -103,17 +102,10 @@ public class SignupScreen extends AppCompatActivity {
 
         // check confirm password is correct
         if (!checkConfirmPasswordMatches()) {
+            userRegistrationInProgress = false;
             displayErrorToast("Passwords do not match. Try again.");
             return;
         }
-
-        // check CVC
-        if (!isCVCValid()) {
-            userRegistrationInProgress = false;
-            return;
-        }
-
-
 
         // pass all sign up form details to controller
         Response response = signUpSubmitButtonClickHandler();
@@ -155,6 +147,13 @@ public class SignupScreen extends AppCompatActivity {
 
         // registering a new Client user
         if (userRole == UserRoles.CLIENT) {
+
+            // check CVC
+            Response cvcCheck = isCVCValid();
+            if (cvcCheck.isError()) {
+                return cvcCheck;
+            }
+
             // first try to create credit card entity model (to collect credit card data) [performs some validation]
             // get a Result object back as representation of results of creating credit card entity model
             Result<CreditCardEntityModel, String> creditCardEntityCreation;
@@ -264,10 +263,6 @@ public class SignupScreen extends AppCompatActivity {
 
         EditText textCardName = (EditText)findViewById(R.id.signupCreditCardName);
         creditCard.setName(textCardName.getText().toString());
-
-        // holder for validating integer data going forward
-        int val;
-        String number;
 
         EditText textCardMonth = (EditText)findViewById(R.id.signupCreditCardMonth);
 
