@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui;
+package com.example.mealer_project.ui.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
