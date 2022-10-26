@@ -62,7 +62,6 @@
         android:id="@+id/submitCheque"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="goBack"
         android:text="@string/submit_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

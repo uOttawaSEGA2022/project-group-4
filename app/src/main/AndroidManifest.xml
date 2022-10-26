@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".ui.IntroScreen"
+            android:name=".ui.screens.IntroScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -32,12 +32,12 @@
         </activity>
 
         <activity
-            android:name=".ui.LoginScreen"
+            android:name=".ui.screens.LoginScreen"
             android:exported="false"
             android:label="@string/title_activity_login" />
 
         <activity
-            android:name=".ui.SignupScreen"
+            android:name=".ui.screens.SignupScreen"
             android:exported="false"
             android:label="SignupActivity">
             <meta-data
@@ -46,14 +46,14 @@
         </activity>
 
         <activity
-            android:name=".ui.VoidChequeScreen"
+            android:name=".ui.screens.VoidChequeScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.WelcomeScreen"
+            android:name=".ui.screens.WelcomeScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

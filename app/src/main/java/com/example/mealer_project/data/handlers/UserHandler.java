@@ -8,15 +8,19 @@ import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.UserRoles;
-import com.example.mealer_project.ui.LoginScreen;
-import com.example.mealer_project.ui.SignupScreen;
+import com.example.mealer_project.ui.screens.LoginScreen;
+import com.example.mealer_project.ui.screens.SignupScreen;
 import com.example.mealer_project.utils.Response;
 
-public class UserDataHandler {
+public class UserHandler {
 
-    public UserDataHandler() {
-    }
-
+    /**
+     * Register a new Client account
+     * @param signupScreen instance of login screen (required in asynchronous callback function to indicate success or failure)
+     * @param userData user entity model containing all unvalidated user data
+     * @param creditCardData credit card entity model containing all unvalidated credit card data
+     * @return a Response object containing error or success message
+     */
     public Response registerClient(SignupScreen signupScreen, UserEntityModel userData, CreditCardEntityModel creditCardData) {
         // guard clause
         if (userData == null) {
@@ -40,7 +44,7 @@ public class UserDataHandler {
             App.getPrimaryDatabase().AUTH
                     .registerClient(userData.getEmail(), userData.getPassword(), signupScreen, newClient);
 
-            return new Response(true, "User login submitted!");
+            return new Response(true, "User signup submitted!");
         } catch (Exception e) {
             // if at any point, code throws exception (ex: unable to create instance)
             return new Response(false, e.getMessage());
@@ -48,6 +52,14 @@ public class UserDataHandler {
 
     }
 
+    /**
+     * Register a new Chef account
+     * @param signupScreen instance of login screen (required in asynchronous callback function to indicate success or failure)
+     * @param userData user entity model containing all unvalidated user data
+     * @param chefShortDescription a short description provided by chef
+     * @param voidCheque void cheque image provided by chef
+     * @return a Response object containing error or success message
+     */
     public Response registerChef(SignupScreen signupScreen, UserEntityModel userData, String chefShortDescription, String voidCheque) {
         // guard clause
         if (userData == null) {
@@ -62,7 +74,7 @@ public class UserDataHandler {
 
         try {
 
-            // Try to instantiate three objects: Address object, CreditCard object, and finally, Client object
+            // Try to instantiate two objects: Address object & the Chef object itself
             // if any of these throw exception (i.e., if unable to create instance) we handle and return response
             Chef newChef = new Chef(userData, new Address(userData.getAddress()), chefShortDescription, voidCheque);
 
@@ -72,7 +84,7 @@ public class UserDataHandler {
             App.getPrimaryDatabase().AUTH
                     .registerChef(userData.getEmail(), userData.getPassword(), signupScreen, newChef);
 
-            return new Response(true, "User login submitted");
+            return new Response(true, "User signup submitted");
 
         } catch (Exception e) {
             // if at any point, code throws exception (ex: unable to create instance)
@@ -80,7 +92,12 @@ public class UserDataHandler {
         }
     }
 
-
+    /**
+     * Method to login user
+     * @param loginScreen instance of login screen (required in asynchronous callback function to indicate success or failure)
+     * @param email email address of the user
+     * @param password password provided by the user
+     */
     public void logInUser(LoginScreen loginScreen, String email, String password) {
         App.getPrimaryDatabase().AUTH.logInUser(email, password, loginScreen);
     }

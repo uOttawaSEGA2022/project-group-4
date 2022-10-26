@@ -1,9 +1,8 @@
 package com.example.mealer_project.app;
 
 import com.example.mealer_project.data.handlers.DataHandlers;
-import com.example.mealer_project.data.handlers.UserDataHandler;
+import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.sources.FirebaseRepository;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class App {
     static AppInstance app = new AppInstance();
@@ -20,7 +19,7 @@ public class App {
         return app.getPrimaryDatabase();
     }
 
-    public static UserDataHandler getUserDataHandler() {
+    public static UserHandler getUserDataHandler() {
         return app.getAppDataHandler().getUserDataHandler();
     }
 
