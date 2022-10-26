@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 
 
-import com.example.mealer_project.ui.LoginScreen;
-import com.example.mealer_project.ui.SignupScreen;
+import com.example.mealer_project.ui.screens.LoginScreen;
+import com.example.mealer_project.ui.screens.SignupScreen;
 
 public class MainActivity extends AppCompatActivity {
 

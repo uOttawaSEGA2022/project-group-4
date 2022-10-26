@@ -1,15 +1,19 @@
-package com.example.mealer_project.ui;
+package com.example.mealer_project.ui.screens;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.InputFilter;
+import android.util.Log;
 import android.widget.EditText;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
@@ -17,16 +21,28 @@ import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.UserRoles;
+import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
 
 
-public class SignupScreen extends AppCompatActivity {
+public class SignupScreen extends UIScreen implements StatefulView {
+    UserRoles userRole;
+    EditText cvcValue;
+    Button selectUserTypeClientBtn;
+    Button selectUserTypeChefBtn;
     LinearLayout clientSpecificInfo;
     LinearLayout chefSpecificInfo;
-    UserRoles userRole;
+    boolean clientButtonClicked;
+    boolean chefButtonClicked;
     boolean userRegistrationInProgress;
-    EditText cvcValue;
+    // define states being observed
+    enum observedStates {
+        VOID_CHEQUE_IMAGE
+    }
+    // store void cheque image
+    Bitmap voidChequeImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,27 +51,18 @@ public class SignupScreen extends AppCompatActivity {
 
         // attach onClick handlers to buttons
         attachOnClickListeners();
-        // instantiate linear layouts need for user type selection
+        // instantiate variables needed for user type selection
         clientSpecificInfo = (LinearLayout) findViewById(R.id.clientSpecificInfoContainer);
         chefSpecificInfo = (LinearLayout) findViewById(R.id.chefSpecificInfoContainer);
+        clientButtonClicked = false;
+        chefButtonClicked = false;
         // add input filter to CVC form field to limit number of characters
         cvcValue = findViewById(R.id.signupCreditCardCVC);
-
         // to keep track of when user sign up completes on the Firebase
         // it gets set to true, when first time submit button it clicked
         // methods that the asynchronous firebase code calls backs after completing registration
         // sets this to false
-        userRegistrationInProgress = false;
-    }
-
-    private Response isCVCValid() {
-        String cvcNum = cvcValue.getText().toString();
-        int numChars = cvcNum.toCharArray().length;
-        if (numChars != 3) {
-            return new Response(false, "Invalid CVC value. CVC must be 3 digit number between 000 - 999");
-        }
-
-        return new Response(true);
+        setRegistrationInProgress(false);
     }
 
     private void attachOnClickListeners() {
@@ -65,7 +72,8 @@ public class SignupScreen extends AppCompatActivity {
         signupSubmitBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 if (!userRegistrationInProgress) {
-                    signupFormSubmissionHandler(v);
+                    // handle submission
+                    signUpSubmitButtonClickHandler();
                 } else {
                     displayErrorToast("Currently processing a sign-up request. Please wait, and try again.");
                 }
@@ -73,76 +81,129 @@ public class SignupScreen extends AppCompatActivity {
         });
 
         // handle displaying of conditional information (dependent on type of user)
-        Button selectUserTypeClientBtn = (Button) findViewById(R.id.userTypeClientBtn);
+        this.selectUserTypeClientBtn = (Button) findViewById(R.id.userTypeClientBtn);
         selectUserTypeClientBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                setUserTypeClient();
+                clientButtonClicked = true;
+                updateUI();
             }
         });
-        Button selectUserTypeChefBtn = (Button) findViewById(R.id.userTypeChefBtn);
+        this.selectUserTypeChefBtn = (Button) findViewById(R.id.userTypeChefBtn);
         selectUserTypeChefBtn.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                setUserTypeChef();
+                chefButtonClicked = true;
+                updateUI();
             }
         });
 
         Button voidChequeBtnHandler = (Button) findViewById(R.id.signupChefVoidChequeBtn);
         voidChequeBtnHandler.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), VoidChequeScreen.class); //where SignUp.class is the sign up activity
-                startActivityForResult (intent,0);
+                startVoidChequeActivity.launch(new Intent(getApplicationContext(), VoidChequeScreen.class));
             }
         });
     }
 
-    private void signupFormSubmissionHandler(View v) {
-
-        // set sign up in progress
-        userRegistrationInProgress = true;
-
-        // check confirm password is correct
-        if (!checkConfirmPasswordMatches()) {
-            userRegistrationInProgress = false;
-            displayErrorToast("Passwords do not match. Try again.");
-            return;
+    ActivityResultLauncher<Intent> startVoidChequeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult result) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Intent intent = result.getData();
+                if (intent != null) {
+                    updateVoidChequeImage(intent);
+                } else {
+                    Log.e("VoidChequeActivity", "intent null");
+                    displayErrorToast("Unable to process void cheque image!");
+                }
+            }
         }
+    });
 
-        // pass all sign up form details to controller
-        Response response = signUpSubmitButtonClickHandler();
-        if (response.isSuccess()) {
-            displaySuccessToast(response.getSuccessMessage());
-        } else {
-            userRegistrationInProgress = false;
-            displayErrorToast(response.getErrorMessage());
+    private void updateVoidChequeImage(Intent intent) {
+        Object img = intent.getExtras().getParcelable(observedStates.VOID_CHEQUE_IMAGE.toString());
+        try {
+            if (img != null) {
+                this.voidChequeImage = (Bitmap) img;
+            } else {
+                throw new NullPointerException("No image in intent for the key");
+            }
+        } catch (Exception e) {
+            Log.e("updateVoidCheque", "failed to load image for void cheque. Error: " + e.getMessage());
+            displayErrorToast("failed to load image for void cheque");
         }
-
     }
 
+    /**
+     * Centralised method to update UI on state changes as well as handle
+     * side effects (one state change, causing UI changes at multiple spots)
+     */
+     public void updateUI() {
+        // update user type selection
+        if (clientButtonClicked || chefButtonClicked) {
+            if (clientButtonClicked) {
+                // set client
+                setUserTypeClient();
+                clientButtonClicked = false;
+            } else {
+                // set chef
+                setUserTypeChef();
+                chefButtonClicked = false;
+            }
+        }
+
+        // if user signup in progress, display loading spinner
+         if (userRegistrationInProgress) {
+             // display loading spinner
+             // displayLoadingSpinner();
+         } else {
+             // hide loading spinner
+             //hideLoadingSpinner();
+         }
+    };
+
     private void setUserTypeClient() {
+        // update client & chef buttons color
+        // selectUserTypeClientBtn.setBackgroundColor(90648947);
+        // selectUserTypeChefBtn.setBackgroundColor( 30648947);
         userRole = UserRoles.CLIENT;
         clientSpecificInfo.setVisibility(View.VISIBLE);
         chefSpecificInfo.setVisibility(View.GONE);
     }
 
     private void setUserTypeChef() {
+        // update client & chef buttons color
+        // selectUserTypeClientBtn.setBackgroundColor(30648947);
+        // selectUserTypeChefBtn.setBackgroundColor( 90648947);
         userRole = UserRoles.CHEF;
         clientSpecificInfo.setVisibility(View.GONE); // takes it out of the view
         chefSpecificInfo.setVisibility(View.VISIBLE);
     }
 
-    private boolean checkConfirmPasswordMatches() {
-        EditText textPassword = (EditText)findViewById(R.id.signupPassword);
-        String password = textPassword.getText().toString();
+    // logic for handling sign up submission
+    public void signUpSubmitButtonClickHandler() {
 
-        EditText textConfirmPassword = (EditText)findViewById(R.id.signupConfirmPassword);
-        String confirmPassword = textConfirmPassword.getText().toString();
+        // set sign up in progress, user can't re-submit form for processing
+        setRegistrationInProgress(true);
 
-        return password.equals(confirmPassword);
+        // check confirm password is correct
+        if (!checkConfirmPasswordMatches()) {
+            setRegistrationInProgress(false);
+            displayErrorToast("Passwords do not match. Try again.");
+            return;
+        }
+
+        // pass all sign up form details to controller
+        Response response = signupFormSubmissionHandler();
+        if (response.isSuccess()) {
+            displaySuccessToast(response.getSuccessMessage());
+        } else {
+            // setting below false let's user submit signup form again
+            setRegistrationInProgress(false);
+            displayErrorToast(response.getErrorMessage());
+        }
     }
 
-    // logic for handling sign up submission
-    public Response signUpSubmitButtonClickHandler() {
-
+    private Response signupFormSubmissionHandler() {
         UserEntityModel userEntityModel = getUserEntityModel();
 
         // registering a new Client user
@@ -160,24 +221,19 @@ public class SignupScreen extends AppCompatActivity {
             try {
                 creditCardEntityCreation = getCreditCardEntityModel();
             } catch (Exception e) {
-
-                userRegistrationInProgress = false;
                 return new Response(false, "Please complete all credit card fields.");
-
             }
 
             if (creditCardEntityCreation.isSuccess()) {
-                // register the new user by passing data to UserDataHandler of the app instance
+                // register the new user by passing data to UserHandler of the app instance
                 Response userRegistrationResponse = App.getUserDataHandler().registerClient(this, userEntityModel, creditCardEntityCreation.getSuccessObject());
                 if (userRegistrationResponse.isSuccess()) {
                     return new Response(true, userRegistrationResponse.getSuccessMessage());
                 } else {
-                    userRegistrationInProgress = false;
                     return new Response(false, userRegistrationResponse.getErrorMessage());
                 }
 
             } else {
-                userRegistrationInProgress = false;
                 // if failed to create credit card entity due to data validation error
                 return new Response(false, creditCardEntityCreation.getErrorObject());
             }
@@ -190,32 +246,67 @@ public class SignupScreen extends AppCompatActivity {
             // TO-DO: to be implemented. Temporarily empty string
             String voidCheque = "";
 
-            // register the new user by passing data to UserDataHandler of the app instance
+            // register the new user by passing data to UserHandler of the app instance
             Response userRegistrationResponse = App.getUserDataHandler().registerChef(this, userEntityModel, chefShortDescription, voidCheque);
             if (userRegistrationResponse.isSuccess()) {
                 return new Response(true, userRegistrationResponse.getSuccessMessage());
             } else {
-                userRegistrationInProgress = false;
                 return new Response(false, userRegistrationResponse.getErrorMessage());
             }
         } else {
-
-            userRegistrationInProgress = false;
             return new Response(false, "Please select either Client or Chef.");
         }
-
     }
 
+    private boolean checkConfirmPasswordMatches() {
+        EditText textPassword = (EditText)findViewById(R.id.signupPassword);
+        String password = textPassword.getText().toString();
+
+        EditText textConfirmPassword = (EditText)findViewById(R.id.signupConfirmPassword);
+        String confirmPassword = textConfirmPassword.getText().toString();
+
+        return password.equals(confirmPassword);
+    }
+
+    private Response isCVCValid() {
+        String cvcNum = cvcValue.getText().toString();
+        int numChars = cvcNum.toCharArray().length;
+        if (numChars != 3) {
+            return new Response(false, "Invalid CVC value. CVC must be 3 digit number between 000 - 999");
+        }
+
+        return new Response(true);
+    }
+
+    /**
+     * Method to display next screen - Welcome Screen
+     * This method also sets userRegistrationInProgress to false to indicate user sign completed
+     */
     public void showNextScreen() {
-        userRegistrationInProgress = false;
+        setRegistrationInProgress(false);
         Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class); //where SignUp.class is the sign up activity
         startActivity(intent);
     }
+
+    /**
+     * Method to indicate signup failure
+     * @param message error message
+     */
     public void userRegistrationFailed(String message) {
-        userRegistrationInProgress = false;
+        setRegistrationInProgress(false);
         displayErrorToast(message);
     }
 
+    private void setRegistrationInProgress(boolean inProgress) {
+        this.userRegistrationInProgress = inProgress;
+        // hide or show loading spinner
+        updateUI();
+    }
+
+    /**
+     * Method to create a UserEntityModel for storing and transferring unvalidated User data
+     * @return UserEntityModel containing information from signup form
+     */
     private UserEntityModel getUserEntityModel () {
         UserEntityModel user = new UserEntityModel();
 
@@ -251,6 +342,10 @@ public class SignupScreen extends AppCompatActivity {
         return user;
     }
 
+    /**
+     * Method to create a CreditCardEntityModel for storing and transferring unvalidated credit card data
+     * @return CreditCardEntityModel containing information from signup form
+     */
     public Result<CreditCardEntityModel, String> getCreditCardEntityModel() {
 
         CreditCardEntityModel creditCard = new CreditCardEntityModel();
@@ -280,22 +375,8 @@ public class SignupScreen extends AppCompatActivity {
         return new Result<>(creditCard, null);
     }
 
-    private void displaySuccessToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void displayErrorToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-    }
-
-    public void goBack(View view){
-        Intent intent = new Intent(getApplicationContext(), SignupScreen.class);
-        startActivityForResult (intent,0);
-    }
-
     public String getChefDescription() {
         EditText textDescription = (EditText)findViewById(R.id.signupChefShortDescription);
-        String description = textDescription.getText().toString();
-        return description;
+        return textDescription.getText().toString();
     }
 }

@@ -6,18 +6,18 @@ public class DataHandlers {
 
     private FirebaseRepository firebaseRepository;
     // instance handlers
-    private UserDataHandler userDataHandler;
+    private UserHandler userHandler;
 //    public MealDataHandler MealHandler;
 //    public OrderDataHandler OrderHandler;
 
     // instantiate repository and handlers
     public DataHandlers(FirebaseRepository firebaseRepository) {
         this.firebaseRepository = firebaseRepository;
-        this.userDataHandler = new UserDataHandler();
+        this.userHandler = new UserHandler();
     }
 
-    public UserDataHandler getUserDataHandler() {
-        return userDataHandler;
+    public UserHandler getUserDataHandler() {
+        return userHandler;
     }
 
 }
