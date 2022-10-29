@@ -26,7 +26,7 @@ import java.util.Map;
 public class InboxActions {
     FirebaseFirestore database;
     FirebaseRepository firebaseRepository;
-    final static private String COMPLAINT_COLLECTION = "Complaint";
+    final static private String COMPLAINTS_COLLECTION = "Complaints";
 
     public InboxActions(FirebaseFirestore database, FirebaseRepository firebaseRepository) {
         this.database = database;
@@ -39,7 +39,7 @@ public class InboxActions {
      */
     public void getAllComplaints(InboxHandler inboxHandler) {
         // get all complaints from Firestore and once done, call appropriate method in inboxHandler
-        database.collection(COMPLAINT_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        database.collection(COMPLAINTS_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -76,7 +76,7 @@ public class InboxActions {
         if (Preconditions.isNotNull(complaint) && Preconditions.isNotNull(inboxHandler)) {
             Map<String, Object> complaintData = complaint.getComplaintDataMap();
 
-            database.collection(COMPLAINT_COLLECTION)
+            database.collection(COMPLAINTS_COLLECTION)
                     .add(complaintData)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
@@ -111,7 +111,7 @@ public class InboxActions {
     public void removeComplaint(String complaintId, InboxHandler inboxHandler) {
         // proceed only if preconditions satisfied
         if (Preconditions.isNotEmptyString(complaintId) && Preconditions.isNotNull(inboxHandler)) {
-            database.collection(COMPLAINT_COLLECTION)
+            database.collection(COMPLAINTS_COLLECTION)
                     .document(complaintId)
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
