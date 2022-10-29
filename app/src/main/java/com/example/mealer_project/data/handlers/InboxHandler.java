@@ -3,6 +3,7 @@ package com.example.mealer_project.data.handlers;
 import android.util.Log;
 
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.utils.Preconditions;
@@ -11,8 +12,23 @@ import com.example.mealer_project.utils.Result;
 
 import java.util.List;
 
+/**
+ * Class to handle operations related to Admin's Inbox
+ */
 public class InboxHandler {
 //     private InboxView inboxView;
+
+     /**
+      * Checks if current user has access to admin only resources
+      * @return Response object indicating success or failure (with error message if any)
+      */
+     private Response userHasAccess() {
+          if (App.userIsAdmin()) {
+               return new Response(true);
+          } else {
+               return new Response(false, "Access denied. User is not an admin.");
+          }
+     }
 
      /**
       * Get App's admin inbox if current user has access
@@ -66,7 +82,7 @@ public class InboxHandler {
                App.setAdminInbox(new AdminInbox(complaints));
 
                // call method in inboxView to update inbox so admin can see all complaints
-               // inboxView.updateInboxUI();
+               // inboxView.successLoadingAdminInbox();
           } else {
                // display error in inbox view
                // inboxView.failedToLoadComplaints("No complaints available for admin inbox");
@@ -84,14 +100,95 @@ public class InboxHandler {
      }
 
      /**
-      * Checks if current user has access to admin only resources
-      * @return Response object indicating success or failure (with error message if any)
+      * Add new complaint to the App's admin inbox and 'Complaint' collection on database
+      * @param complaintEntityModel unvalidated complaint data
+      * @return Response indicating error, if current user doesn't have access
       */
-     private Response userHasAccess() {
-          if (App.userIsAdmin()) {
-               return new Response(true);
-          } else {
-               return new Response(false, "Access denied. User is not an admin.");
+     public Response addNewComplaint(ComplaintEntityModel complaintEntityModel) {
+          // check if user has access
+          if (userHasAccess().isError()) {
+               return userHasAccess();
           }
+
+          Complaint complaint = null;
+
+          try {
+               // try to create a Complaint object using unvalidated complaint data
+               complaint = new Complaint(complaintEntityModel);
+               // if data validation successful, initiate process to add complaint to database
+               // once complaint has been added to database, it will be added locally to AdminInbox by successAddingComplaint
+               App.getPrimaryDatabase().INBOX.addComplaint(complaint, this);
+          } catch (Exception e) {
+               errorAddingComplaint("Failed to create Complaint from ComplaintEntityModel: " + e.getMessage());
+          }
+
+          // make the async call to add complaint to database
+
+          return new Response(false, "method not implemented yet");
+     }
+
+     /**
+      * Method to let UI know async operation to add complaint to database completed
+      */
+     public void successAddingComplaint(Complaint complaint) {
+          // once complaint has been added to database (it will have an id)
+          try {
+               App.getAdminInbox().addComplaint(complaint);
+               // let ui know adding complaint has completed
+               // inboxView.successAddingComplaint();
+          } catch (Exception e) {
+               errorAddingComplaint("complaint added on database, but failed to add to AdminInbox" + e.getMessage());
+          }
+     }
+
+     /**
+      * Handle any error if it happens during adding complaint to the database
+      * @param message error message
+      */
+     public void errorAddingComplaint(String message) {
+          // display error on inbox view
+          // inboxView.handleError("Failed to add complaint to the database");
+          Log.d("errorAddingComplaint", message );
+     }
+
+     /**
+      * Remove a complaint from App's AdminInbox and 'Complaint' collection on database
+      * @param complaintId id of the complaint to be removed
+      * @return Response indicating error, if current user doesn't have access
+      */
+     public Response removeComplaint(String complaintId) {
+          // check if user has access
+          if (userHasAccess().isError()) {
+               return userHasAccess();
+          }
+
+          try {
+               // remove complaint from App's AdminInbox
+               App.getAdminInbox().removeComplaint(complaintId);
+               // remove complaint from firebase
+               App.getPrimaryDatabase().INBOX.removeComplaint(complaintId, this);
+          } catch (Exception e) {
+               return new Response(false, e.getMessage());
+          }
+
+          return new Response(false, "method not implemented yet");
+     }
+
+     /**
+      * Method to let UI know async operation to remove complaint from database completed
+      */
+     public void successRemovingComplaint() {
+          // let ui know adding complaint has completed
+          // inboxView.successRemovingComplaint();
+     }
+
+     /**
+      * Handle any error if it happens during adding complaint to the database
+      * @param message error message
+      */
+     public void errorRemovingComplaint(String message) {
+          // display error on inbox view
+          // inboxView.handleError("Failed to remove complaint from the database");
+          Log.d("errorRemovingComplaint", message );
      }
 }

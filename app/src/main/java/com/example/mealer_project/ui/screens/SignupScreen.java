@@ -226,7 +226,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
 
             if (creditCardEntityCreation.isSuccess()) {
                 // register the new user by passing data to UserHandler of the app instance
-                Response userRegistrationResponse = App.getUserDataHandler().registerClient(this, userEntityModel, creditCardEntityCreation.getSuccessObject());
+                Response userRegistrationResponse = App.getUserHandler().registerClient(this, userEntityModel, creditCardEntityCreation.getSuccessObject());
                 if (userRegistrationResponse.isSuccess()) {
                     return new Response(true, userRegistrationResponse.getSuccessMessage());
                 } else {
@@ -247,7 +247,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
             String voidCheque = "";
 
             // register the new user by passing data to UserHandler of the app instance
-            Response userRegistrationResponse = App.getUserDataHandler().registerChef(this, userEntityModel, chefShortDescription, voidCheque);
+            Response userRegistrationResponse = App.getUserHandler().registerChef(this, userEntityModel, chefShortDescription, voidCheque);
             if (userRegistrationResponse.isSuccess()) {
                 return new Response(true, userRegistrationResponse.getSuccessMessage());
             } else {

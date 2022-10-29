@@ -2,8 +2,12 @@ package com.example.mealer_project.data.models.inbox;
 
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Complaint class to create instances of complaints which will be stored in an inbox
@@ -39,15 +43,15 @@ public class Complaint implements Comparator<Complaint> {
     /**
      * Constructor to create a new complaint instance by providing ComplaintEntityModel
      * @param complaintData ComplaintEntityModel containing unvalidated date
-     * @param complaintDate Date object representing the date on which complaint was submitted
      */
-    public Complaint(ComplaintEntityModel complaintData, Date complaintDate) {
+    public Complaint(ComplaintEntityModel complaintData) throws ParseException {
         setId(complaintData.getId());
         setTitle(complaintData.getTitle());
         setDescription(complaintData.getDescription());
         setClientId(complaintData.getClientId());
         setChefId(complaintData.getChefId());
-        setDateSubmitted(complaintDate);
+        // set the date submitted, receives value as string, throws ParseException if format is incorrect
+        setDateSubmitted(complaintData.getDateSubmitted());
     }
 
     public String getId() {
@@ -96,6 +100,20 @@ public class Complaint implements Comparator<Complaint> {
 
     public void setDateSubmitted(Date dateSubmitted) {
         this.dateSubmitted = dateSubmitted;
+    }
+
+    private void setDateSubmitted(String dateSubmitted) throws ParseException {
+        this.dateSubmitted = DateFormat.getDateInstance().parse(dateSubmitted);
+    }
+
+    public Map<String, Object> getComplaintDataMap() {
+        HashMap<String, Object> complaintDataMap = new HashMap<>();
+        complaintDataMap.put("title", this.title);
+        complaintDataMap.put("description", this.description);
+        complaintDataMap.put("clientId", this.clientId);
+        complaintDataMap.put("chefId", this.chefId);
+        complaintDataMap.put("dateSubmitted", this.dateSubmitted);
+        return complaintDataMap;
     }
 
     /**
