@@ -8,7 +8,7 @@ import com.example.mealer_project.utils.Preconditions;
 /**
  * Complaints inbox of Admin
  */
-public abstract class AdminInbox implements Inbox {
+public class AdminInbox implements Inbox {
     // store complaints in a Map for quickly accessing any complaint by it's id without need for traversal
     HashMap<String, Complaint> complaints;
 

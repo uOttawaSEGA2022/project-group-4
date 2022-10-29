@@ -1,15 +1,20 @@
 package com.example.mealer_project.app;
 
+import android.util.Log;
+
 import com.example.mealer_project.data.handlers.DataHandlers;
 import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
+import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.sources.FirebaseRepository;
+import com.example.mealer_project.utils.Preconditions;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class AppInstance {
     private FirebaseRepository primaryDatabase;
     private DataHandlers appDataHandlers;
     private User user;
-    private String currentUserName; // need it only because we don't yet have persistent storage for users
+    private AdminInbox adminInbox;
 
     public AppInstance() {
         this.initializeApp();
@@ -41,11 +46,33 @@ public class AppInstance {
         return this.user;
     }
 
-    public String getCurrentUserName() {
-        return currentUserName;
+    public boolean userIsAdmin() {
+        return (user != null && user.getRole() == UserRoles.ADMIN);
     }
 
-    public void setCurrentUserName(String currentUserName) {
-        this.currentUserName = currentUserName;
+    /**
+     * Sets app's admin inbox
+     * @param adminInbox AdminInbox instance
+     */
+    public void setAdminInbox(AdminInbox adminInbox) throws NullPointerException {
+        if (Preconditions.isNotNull(adminInbox)) {
+            this.adminInbox = adminInbox;
+        } else {
+            Log.e("setAdminInbox", "App instance received a null object for adminInbox");
+            throw new NullPointerException("Unable to create admin inbox");
+        }
+    }
+
+    /**
+     * @return Returns AdminInbox if current user is admin
+     * @throws IllegalAccessException if user is not admin but tries to access AdminInbox
+     */
+    public AdminInbox getAdminInbox() throws IllegalAccessException {
+        if (userIsAdmin()) {
+            return this.adminInbox;
+        } else {
+            Log.e("getAdminInbox", "Either user is null or user role is not admin");
+            throw new IllegalAccessException("User does not have access to admin inbox");
+        }
     }
 }
