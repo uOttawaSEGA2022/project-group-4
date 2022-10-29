@@ -63,7 +63,7 @@ public class LoginScreen extends UIScreen implements StatefulView {
         }
 
         // initiate login process (async process, no blocking return)
-        App.getUserDataHandler().logInUser(this, email, password);
+        App.getUserHandler().logInUser(this, email, password);
 
         return new Response(true, "Login submitted, please wait");
     }

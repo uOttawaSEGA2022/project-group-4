@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -16,6 +17,8 @@ public class Chef extends User {
     private String voidCheque;
     private int chefRating;
     private int numOfMealsSold;
+    private boolean isSuspended;
+    private Date suspensionDate;
     private Map<String, Meal> chefMenu;
     /**
      * Create a single instance of chef
@@ -138,5 +141,21 @@ public class Chef extends User {
      */
     public void removeMeal(@NonNull Meal removeMeal) {
         chefMenu.remove(removeMeal.getMealID());
+    }
+
+    public boolean isSuspended() {
+        return isSuspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        isSuspended = suspended;
+    }
+
+    public Date getSuspensionDate() {
+        return suspensionDate;
+    }
+
+    public void setSuspensionDate(Date suspensionDate) {
+        this.suspensionDate = suspensionDate;
     }
 }
