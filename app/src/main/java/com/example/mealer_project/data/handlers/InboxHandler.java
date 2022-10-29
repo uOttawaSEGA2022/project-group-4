@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.handlers;
 
+import android.util.Log;
+
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
@@ -10,6 +12,25 @@ import com.example.mealer_project.utils.Result;
 import java.util.List;
 
 public class InboxHandler {
+//     private InboxView inboxView;
+
+     /**
+      * Get App's admin inbox if current user has access
+      * @return Result object - if operation successful, contains AdminInbox, else String containing error message
+      */
+     public Result<AdminInbox, String> getAdminInbox() {
+          // check if current user does not have access (user is not an admin)
+          if (userHasAccess().isError()) {
+               return new Result<>(null, userHasAccess().getErrorMessage());
+          }
+          // attempt to get Admin's inbox
+          try {
+               return new Result<>(App.getAdminInbox(), null);
+          } catch (IllegalAccessException e) {
+               return new Result<>(null, "Could not retrieve admin inbox. Access denied.");
+          }
+     }
+
      /**
       * Method to update App's AdminInbox
       * Retrieves all complaints from the database and creates a new AdminInbox
@@ -22,58 +43,44 @@ public class InboxHandler {
                return userHasAccess();
           }
 
-          // attempt to get all complaints
-          Result<List<Complaint>, String> getAllComplaintsResult = getAllComplaints();
-          // if getting list of all complaints failed
-          if (getAllComplaintsResult.isError()) {
-               // set response to be failure, and send back error message
-               return new Response(false, getAllComplaintsResult.getErrorObject());
-          }
+          // set inbox view
+          // this.inboxView = inboxView;
 
-          // get the list of complaints if getting complaints was successful
-          List<Complaint> complaints = getAllComplaintsResult.getSuccessObject();
+          // make async call to fetch all complaints from database
+          App.getPrimaryDatabase().INBOX.getAllComplaints(this);
 
-          try {
-               // validate complaints
-               if (Preconditions.isNotEmptyList(complaints)) {
-                    // instantiate a new admin inbox
-                    AdminInbox adminInbox = new AdminInbox(complaints.size());
+          // return response once request to get all complaints has been submitted
+          return new Response(true, "retrieving complaints for admin");
+     }
 
-                    // add all complaints to the admin inbox
-                    for (Complaint complaint: complaints) {
-                         adminInbox.addComplaint(complaint);
-                    }
+     /**
+      * Handles the response from async call made to obtain all complaints from database in updateAdminInbox method
+      * Creates AdminInbox using the list of complaints and updates App's admin inbox
+      * @param complaints list of complaints retrieved from database
+      */
+     public void createNewAdminInbox(List<Complaint> complaints){
+          // validate complaints
+          if (Preconditions.isNotEmptyList(complaints)) {
+               // instantiate a new admin inbox by providing it list of complaints
+               // set App's new admin inbox
+               App.setAdminInbox(new AdminInbox(complaints));
 
-                    // set the new App's admin inbox
-                    App.setAdminInbox(adminInbox);
-
-                    // send response to indicate operation success
-                    return new Response(true);
-               } else {
-                    throw new NullPointerException("No complaints available for admin inbox");
-               }
-          } catch (Exception e) {
-               // indicate operation failure and return the error message
-               return new Response(false, e.getMessage());
+               // call method in inboxView to update inbox so admin can see all complaints
+               // inboxView.updateInboxUI();
+          } else {
+               // display error in inbox view
+               // inboxView.failedToLoadComplaints("No complaints available for admin inbox");
           }
      }
 
      /**
-      * Get all complaints from database
-      * @return Result object - if success, contains list of complaints, else error message as string
+      * Handle any error if it happens during retrieval of complaints from database
+      * @param message error message
       */
-     public Result<List<Complaint>, String> getAllComplaints() {
-          // check if current user does not have access (user is not an admin)
-          if (userHasAccess().isError()) {
-               return new Result<>(null, userHasAccess().getErrorMessage());
-          }
-          // attempt to get all complaints
-          try {
-               return App.getPrimaryDatabase().INBOX.getAllComplaints();
-          } catch (Exception e) {
-               // set result to be failure, and send back error message
-               return new Result<>(null, e.getMessage());
-          }
+     public void errorGettingComplaints(String message) {
+          // display error on inbox view
+          // inboxView.failedToLoadComplaints("Error getting complaints from database");
+          Log.d("errorGettingComplaints", message );
      }
 
      /**

@@ -28,12 +28,12 @@ public class Complaint implements Comparator<Complaint> {
      * @param dateSubmitted date on which complaint is submitted
      */
     public Complaint(String id, String title, String description, String clientId, String chefId, Date dateSubmitted) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.clientId = clientId;
-        this.chefId = chefId;
-        this.dateSubmitted = dateSubmitted;
+        setId(id);
+        setTitle(title);
+        setDescription(description);
+        setClientId(clientId);
+        setChefId(chefId);
+        setDateSubmitted(dateSubmitted);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.example.mealer_project.data.models.inbox;
 
 import android.util.Log;
 import java.util.HashMap;
+import java.util.List;
 
 import com.example.mealer_project.utils.Preconditions;
 
@@ -28,6 +29,15 @@ public class AdminInbox implements Inbox {
     }
 
     /**
+     * Create a new admin inbox by providing list of complaints
+     * @param inboxComplaints list of complaints to be added to the inbox
+     */
+    public AdminInbox(List<Complaint> inboxComplaints) {
+        complaints = new HashMap<>(inboxComplaints.size());
+        this.addComplaints(inboxComplaints);
+    }
+
+    /**
      * Add a complaint to the inbox
      * @param complaint Complaint object to be added to inbox
      * @throws NullPointerException if provided complaint ID object is null
@@ -43,6 +53,26 @@ public class AdminInbox implements Inbox {
 
         // add complaint
         complaints.put(complaint.getId(), complaint);
+    }
+
+    /**
+     * Add multiple complaints by providing a list of complaints
+     * @param complaints list of complaints to be added to the inbox
+     * @throws NullPointerException if provided list of complaints is null
+     */
+    public void addComplaints(List<Complaint> complaints) throws NullPointerException {
+        // validate complaint object
+        if (Preconditions.isNotEmptyList(complaints)) {
+            // log for programmer, and exception message for client
+            Log.e("addComplaints", "addComplaints: List<Complaint> provided is null");
+            throw new NullPointerException("No complaints provided to be added to the inbox!");
+        }
+
+        // add all complaints to the admin inbox
+        for (Complaint complaint: complaints) {
+            // add complaint, throws NullPointerException if complaint is null
+            this.addComplaint(complaint);
+        }
     }
 
     /**
