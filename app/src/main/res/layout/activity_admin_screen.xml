@@ -44,7 +44,7 @@
             android:layout_marginRight="0dp"
             android:layout_toRightOf="@id/mealer_logo"
             android:fontFamily="sans-serif-medium"
-            android:text="Welcome!"
+            android:text="Welcome Admin!"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:constraint_referenced_tags="1" />
