@@ -7,14 +7,16 @@ public class ComplaintEntityModel {
     private String id;
     private String title;
     private String description;
+    private String mealId;
     private String clientId;
     private String chefId;
     private String dateSubmitted;
 
-    public ComplaintEntityModel(String id, String title, String description, String clientId, String chefId, String dateSubmitted) {
+    public ComplaintEntityModel(String id, String title, String description,String mealId, String clientId, String chefId, String dateSubmitted) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.mealId = mealId;
         this.clientId = clientId;
         this.chefId = chefId;
         this.dateSubmitted = dateSubmitted;
@@ -42,6 +44,14 @@ public class ComplaintEntityModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getMealId() {
+        return mealId;
+    }
+
+    public void setMealId(String mealId) {
+        this.clientId = mealId;
     }
 
     public String getClientId() {

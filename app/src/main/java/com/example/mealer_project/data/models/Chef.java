@@ -119,6 +119,34 @@ public class Chef extends User {
     }
 
     /**
+     * Get a true/false whether chef is banned
+     * @return boolean suspended or not
+     */
+    public boolean getIsSuspended() { return isSuspended; }
+
+    /**
+     * Set the boolean for suspended or not
+     * @param isSuspended suspended or not
+     */
+    public void setIsSuspended(boolean isSuspended) {
+        this.isSuspended = isSuspended;
+    }
+
+    /**
+     * Get the end of suspension date
+     * @return Date of end of suspension
+     */
+    public Date getSuspensionDate() { return suspensionDate; }
+
+    /**
+     * Set the boolean for suspended or not
+     * @param suspensionDate date of end of suspension
+     */
+    public void setSuspensionDate(Date suspensionDate) {
+        this.suspensionDate = suspensionDate;
+    }
+
+    /**
      * Retrieve a meal from the chef's menu
      * @param mealID representing the ID of the meal
      * @return Meal instance from chef's menu

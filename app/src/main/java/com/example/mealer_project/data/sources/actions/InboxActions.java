@@ -63,7 +63,7 @@ public class InboxActions {
         // convert date
         Date dateSubmitted = Date.valueOf(complaintData.get("dateSubmitted"));
         // return complaint object
-        return new Complaint(complaintData.get("id"), complaintData.get("title"), complaintData.get("description"), complaintData.get("clientId"), complaintData.get("chefId"), dateSubmitted);
+        return new Complaint(complaintData.get("id"), complaintData.get("title"), complaintData.get("description"), complaintData.get("mealId"), complaintData.get("clientId"), complaintData.get("chefId"), dateSubmitted);
     }
 
     /**
@@ -136,6 +136,14 @@ public class InboxActions {
                 Log.e("removeComplaint", "Invalid object values for complaintId and inboxHandler");
             }
         }
+
+    }
+
+
+    private void handleChefComplaint(String chefId, boolean ban, Date suspentionDate){
+
+
+
 
     }
 }
