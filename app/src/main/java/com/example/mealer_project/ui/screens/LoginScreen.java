@@ -12,7 +12,7 @@ import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Response;
 
-public class    LoginScreen extends UIScreen implements StatefulView {
+public class LoginScreen extends UIScreen implements StatefulView {
     boolean loginInProcess;
 
     @Override
