@@ -224,6 +224,8 @@ public class UserActions {
             Address address = new Address(newAddress);
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
+            newChef.setIsSuspended((Boolean)document.getData().get("isSuspended"));
+            newChef.
 
             App.getAppInstance().setUser(newChef);
 
