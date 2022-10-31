@@ -14,6 +14,7 @@ import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
 
@@ -78,8 +79,11 @@ public class WelcomeScreen extends AppCompatActivity {
         }
         else { //finite time
 
+            // var declaration: date formatter
+            SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
+
             // setting the text
-            editText.setText("Your account has been temporarily suspended until " + suspensionDate.toString());
+            editText.setText("Your account has been temporarily suspended until " + formatter.format(suspensionDate));
             editText.setVisibility(View.VISIBLE); //visible
 
         }
