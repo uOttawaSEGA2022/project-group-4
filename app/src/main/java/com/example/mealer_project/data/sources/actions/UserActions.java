@@ -24,6 +24,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Date;
+
 public class UserActions {
 
     FirebaseFirestore database;
@@ -225,7 +227,7 @@ public class UserActions {
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
             newChef.setIsSuspended((Boolean)document.getData().get("isSuspended"));
-            newChef.
+            newChef.setSuspensionDate((Date)document.getData().get("suspensionDate"));
 
             App.getAppInstance().setUser(newChef);
 
