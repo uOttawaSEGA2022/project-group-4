@@ -48,7 +48,8 @@ public class Admin extends User {
     /**
      * Method for Admin to suspend Cook either temporarily or indefinitely
      */
-    public void suspend() {
+    public void suspend(String chefId) {
+
         //Information about Cook's suspension & changes to Database
     }
 

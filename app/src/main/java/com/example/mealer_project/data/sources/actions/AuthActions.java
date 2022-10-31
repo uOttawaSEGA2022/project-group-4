@@ -110,6 +110,8 @@ public class AuthActions {
                                 databaseUser.put("firstName", newUser.getFirstName());
                                 databaseUser.put("lastName", newUser.getLastName());
                                 databaseUser.put("email", newUser.getEmail());
+                                databaseUser.put("isSuspended", newUser.getIsSuspended());
+                                databaseUser.put("suspensionDate", newUser.getSuspensionDate());
                                 databaseUser.put("addressStreet", newUser.getAddress().getStreetAddress());
                                 databaseUser.put("addressCity", newUser.getAddress().getCity());
                                 databaseUser.put("country", newUser.getAddress().getCountry());

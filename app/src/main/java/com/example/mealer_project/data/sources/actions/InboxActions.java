@@ -138,4 +138,12 @@ public class InboxActions {
         }
 
     }
+
+
+    private void handleChefComplaint(String chefId, boolean ban, Date suspentionDate){
+
+
+
+
+    }
 }
