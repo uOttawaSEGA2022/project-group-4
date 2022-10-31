@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UserActions {
@@ -226,8 +227,10 @@ public class UserActions {
             Address address = new Address(newAddress);
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
+
+            Date suspensionDate = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(document.getData().get("suspensionDate")));
+            newChef.setSuspensionDate(suspensionDate);
             newChef.setIsSuspended((Boolean)document.getData().get("isSuspended"));
-            newChef.setSuspensionDate((Date)document.getData().get("suspensionDate"));
 
             App.getAppInstance().setUser(newChef);
 
