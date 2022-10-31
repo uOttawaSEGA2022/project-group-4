@@ -87,7 +87,8 @@
                 android:text="suspension msg"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:visibility="visible" />
+                android:visibility="invisible" />
+
         </RelativeLayout>
 
     </LinearLayout>
