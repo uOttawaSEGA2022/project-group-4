@@ -230,7 +230,7 @@ public class UserActions {
 
             newChef.setIsSuspended((Boolean)document.getData().get("isSuspended"));
 
-            if (document.getData().get("suspensionDate") != null){
+            if (String.valueOf(document.getData().get("suspensionDate")) != ""){
                 Date suspensionDate = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(document.getData().get("suspensionDate")));
                 newChef.setSuspensionDate(suspensionDate);
             }
