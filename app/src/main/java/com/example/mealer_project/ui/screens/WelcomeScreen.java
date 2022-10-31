@@ -83,7 +83,7 @@ public class WelcomeScreen extends AppCompatActivity {
             SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
 
             // setting the text
-            editText.setText("Your account has been temporarily suspended until " + formatter.format(suspensionDate));
+            editText.setText("Your account has been temporarily suspended until " + formatter.format(suspensionDate) + ".");
             editText.setVisibility(View.VISIBLE); //visible
 
         }
