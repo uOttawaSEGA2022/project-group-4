@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
 import com.google.firebase.auth.FirebaseAuth;
 
 
@@ -20,6 +22,14 @@ public class WelcomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         User currentUser = App.getAppInstance().getUser();
+
+        // checks if User is Chef and is supsended
+        if (currentUser.getRole() == UserRoles.CHEF){
+            Chef chefUser = (Chef) currentUser;
+            if (chefUser.getIsSuspended()){
+                //showSuspensionMessage(chefUser.getSuspensionDate());
+            }
+        }
         // Change text to proper welcome message when opened
         String message = "";
         if (App.getAppInstance().isUserAuthenticated()) {
@@ -38,5 +48,9 @@ public class WelcomeScreen extends AppCompatActivity {
         startActivity(intent);
         //finish(); // change later to proper code
         FirebaseAuth.getInstance().signOut();
+    }
+
+    private void showSuspensionMessage(){
+
     }
 }

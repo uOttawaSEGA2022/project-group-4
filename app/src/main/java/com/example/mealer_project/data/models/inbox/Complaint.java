@@ -1,7 +1,6 @@
 package com.example.mealer_project.data.models.inbox;
 
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
-import com.example.mealer_project.data.models.Meal;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -19,7 +18,6 @@ public class Complaint implements Comparator<Complaint> {
     private String id;
     private String title;
     private String description;
-    private String mealId;
     private String clientId;
     private String chefId;
     private Date dateSubmitted;
@@ -29,16 +27,14 @@ public class Complaint implements Comparator<Complaint> {
      * @param id complaint id
      * @param title title of complaint
      * @param description description of complaint
-     * @param mealId mealId of meal being complained about
      * @param clientId id of client who submitted the complaint
      * @param chefId id of chef regarding whom complaint has been submitted
      * @param dateSubmitted date on which complaint is submitted
      */
-    public Complaint(String id, String title, String description, String mealId, String clientId, String chefId, Date dateSubmitted) {
+    public Complaint(String id, String title, String description, String clientId, String chefId, Date dateSubmitted) {
         setId(id);
         setTitle(title);
         setDescription(description);
-        setMealId(mealId);
         setClientId(clientId);
         setChefId(chefId);
         setDateSubmitted(dateSubmitted);
@@ -76,14 +72,6 @@ public class Complaint implements Comparator<Complaint> {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setMealId(String mealId) {
-        this.mealId = mealId;
-    }
-
-    public String getMealId() {
-        return mealId;
     }
 
     public void setDescription(String description) {

@@ -41,6 +41,8 @@ public class Chef extends User {
         this.setNumOfMealsSold(numOfMealsSold);
         this.setChefRating(chefRating);
         this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
+        this.isSuspended = false;
+        this.suspensionDate = null;
     }
 
     public Chef(UserEntityModel userData, Address address, String description, String voidCheque) throws IllegalArgumentException {
@@ -51,6 +53,8 @@ public class Chef extends User {
         this.setNumOfMealsSold(0);
         this.setChefRating(0);
         this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
+        this.isSuspended = false;
+        this.suspensionDate = null;
     }
 
     /**
@@ -171,19 +175,4 @@ public class Chef extends User {
         chefMenu.remove(removeMeal.getMealID());
     }
 
-    public boolean isSuspended() {
-        return isSuspended;
-    }
-
-    public void setSuspended(boolean suspended) {
-        isSuspended = suspended;
-    }
-
-    public Date getSuspensionDate() {
-        return suspensionDate;
-    }
-
-    public void setSuspensionDate(Date suspensionDate) {
-        this.suspensionDate = suspensionDate;
-    }
 }
