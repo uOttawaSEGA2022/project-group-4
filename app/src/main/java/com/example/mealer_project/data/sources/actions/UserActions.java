@@ -228,9 +228,14 @@ public class UserActions {
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
 
-            Date suspensionDate = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(document.getData().get("suspensionDate")));
-            newChef.setSuspensionDate(suspensionDate);
             newChef.setIsSuspended((Boolean)document.getData().get("isSuspended"));
+
+            if (document.getData().get("suspensionDate") != null){
+                Date suspensionDate = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(document.getData().get("suspensionDate")));
+                newChef.setSuspensionDate(suspensionDate);
+            }
+
+
 
             App.getAppInstance().setUser(newChef);
 
