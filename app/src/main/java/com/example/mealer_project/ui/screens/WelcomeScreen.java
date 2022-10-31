@@ -14,6 +14,8 @@ import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Date;
+
 
 public class WelcomeScreen extends AppCompatActivity {
 
@@ -23,7 +25,7 @@ public class WelcomeScreen extends AppCompatActivity {
 
         User currentUser = App.getAppInstance().getUser();
 
-        // checks if User is Chef and is supsended
+        // checks if User is Chef and is suspended
         if (currentUser.getRole() == UserRoles.CHEF){
             Chef chefUser = (Chef) currentUser;
             if (chefUser.getIsSuspended()){
@@ -50,7 +52,7 @@ public class WelcomeScreen extends AppCompatActivity {
         FirebaseAuth.getInstance().signOut();
     }
 
-    private void showSuspensionMessage(){
+    private void showSuspensionMessage(Date suspensionDate){
 
     }
 }
