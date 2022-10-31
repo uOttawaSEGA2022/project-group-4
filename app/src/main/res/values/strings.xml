@@ -22,4 +22,12 @@
     <string name="title">Mealer</string>
     <string name="signUpBtn">SIGN UP</string>
     <string name="loginBtn">LOG IN</string>
+    <string name="complaint_header">Complaint Title Here</string>
+    <string name="client_name">Client:</string>
+    <string name="chef_name" />
+    <string name="chefs_name">Chef:</string>
+    <string name="meal_name">Meal:</string>
+    <string name="description_title">Description:</string>
+    <string name="ban_chef">Ban Chef</string>
+    <string name="dismiss">Dismiss</string>
 </resources>
