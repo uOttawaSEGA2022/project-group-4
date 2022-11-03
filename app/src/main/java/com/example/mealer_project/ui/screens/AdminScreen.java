@@ -37,15 +37,15 @@ public class AdminScreen extends UIScreen implements StatefulView {
         ListView complaintList = findViewById(R.id.complaintList);
         List<String> list = new ArrayList<String>();
 
-        /*
+        
         list.add("Complaint 1");
         list.add("Complaint 2");
         list.add("Complaint 3");
         list.add("Complaint 4");
         list.add("Complaint 5");
-        */
+
         InboxHandler adminInboxHandler = App.getInboxHandler();
-        adminInboxHandler.updateAdminInbox();
+        adminInboxHandler.updateAdminInbox(this);
 
         AdminInbox adminInbox = adminInboxHandler.getAdminInbox().getSuccessObject();
 
@@ -83,5 +83,12 @@ public class AdminScreen extends UIScreen implements StatefulView {
         startActivity(intent);
         //finish(); // change later to proper code
         FirebaseAuth.getInstance().signOut();
+    }
+    //Display complaints
+    public void successLoadingAdminInbox() {
+
+    }
+
+    public void failedToLoadComplaints(String s) {
     }
 }

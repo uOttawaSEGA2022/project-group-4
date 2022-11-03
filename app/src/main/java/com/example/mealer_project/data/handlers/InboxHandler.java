@@ -6,6 +6,7 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
+import com.example.mealer_project.ui.screens.AdminScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
@@ -16,7 +17,7 @@ import java.util.List;
  * Class to handle operations related to Admin's Inbox
  */
 public class InboxHandler {
-//     private InboxView inboxView;
+     private AdminScreen inboxView;
 
      /**
       * Checks if current user has access to admin only resources
@@ -53,14 +54,15 @@ public class InboxHandler {
       * Stores the inbox by setting AppInstance's adminInbox to this new inbox
       * @return Response object indicating success or failure
       */
-     public Response updateAdminInbox() {
+     public Response updateAdminInbox(AdminScreen inboxView) {
           // check if current user does not have access (user is not an admin)
           if (userHasAccess().isError()) {
                return userHasAccess();
           }
 
           // set inbox view
-          // this.inboxView = inboxView;
+          this.inboxView = inboxView;
+
 
           // make async call to fetch all complaints from database
           App.getPrimaryDatabase().INBOX.getAllComplaints(this);
@@ -82,10 +84,10 @@ public class InboxHandler {
                App.setAdminInbox(new AdminInbox(complaints));
 
                // call method in inboxView to update inbox so admin can see all complaints
-               // inboxView.successLoadingAdminInbox();
+               inboxView.successLoadingAdminInbox();
           } else {
                // display error in inbox view
-               // inboxView.failedToLoadComplaints("No complaints available for admin inbox");
+               inboxView.failedToLoadComplaints("No complaints available for admin inbox");
           }
      }
 
