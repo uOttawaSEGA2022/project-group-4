@@ -44,7 +44,7 @@ public class AdminScreen extends UIScreen implements StatefulView {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 startActivity(new Intent(getApplicationContext(), ComplaintScreen.class));
             }
-        });*/
+        });
     }
 
     @Override

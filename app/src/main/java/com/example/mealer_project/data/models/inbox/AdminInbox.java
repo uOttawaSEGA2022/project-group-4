@@ -123,13 +123,4 @@ public class AdminInbox implements Inbox {
         }
     }
 
-    /**
-     * This is a getter method for the return Hash Map
-     * @return the complaints hash map
-     */
-    public HashMap<String, Complaint> getComplaints () {
-        return complaints;
-    }
-
-
 }
