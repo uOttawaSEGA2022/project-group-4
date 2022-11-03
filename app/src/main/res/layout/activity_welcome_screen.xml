@@ -7,66 +7,90 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF">
 
-    <RelativeLayout
-        android:id="@+id/heading_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/header"
+        <RelativeLayout
+            android:id="@+id/heading_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="false"
-            android:background="#98c377"
-            android:clipToPadding="true"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
-            app:contentInsetStart="16dp"
-            app:contentInsetStartWithNavigation="72dp"/>
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/mealer_logo"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_centerHorizontal="false"
-            android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            app:srcCompat="@drawable/mealer" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="false"
+                android:background="#98c377"
+                android:clipToPadding="true"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:contentInsetStart="16dp"
+                app:contentInsetStartWithNavigation="72dp" />
 
-        <TextView
-            android:id="@+id/welcome_message"
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_centerHorizontal="false"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:fitsSystemWindows="false"
+                app:srcCompat="@drawable/mealer" />
+
+            <TextView
+                android:id="@+id/welcome_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="false"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:layout_toRightOf="@id/logo"
+                android:fontFamily="sans-serif-medium"
+                android:text="Welcome!"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:constraint_referenced_tags="1" />
+
+            <ImageButton
+                android:id="@+id/logout_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="5dp"
+                android:background="#00FFFFFF"
+                android:contentDescription="menu to log out"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:onClick="clickLogout"
+                android:translationX="5dp"
+                app:srcCompat="@drawable/ic_baseline_logout_24" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentRight="false"
-            android:layout_centerInParent="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="17dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginRight="0dp"
-            android:layout_toRightOf="@id/mealer_logo"
-            android:fontFamily="sans-serif-medium"
-            android:text="Welcome!"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            app:constraint_referenced_tags="1" />
+            android:layout_height="wrap_content">
 
-        <ImageButton
-            android:id="@+id/logout_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginRight="5dp"
-            android:background="#00FFFFFF"
-            android:contentDescription="menu to log out"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:onClick="clickLogout"
-            android:translationX="5dp"
-            app:srcCompat="@drawable/ic_baseline_logout_24" />
+            <TextView
+                android:id="@+id/suspensionMsg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="suspension msg"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:visibility="invisible" />
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

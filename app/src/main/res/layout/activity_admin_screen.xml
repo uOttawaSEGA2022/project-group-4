@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/linearLayout2">
 
     <RelativeLayout
         android:id="@+id/heading_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_conversion_absoluteHeight="56dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="411dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/header"
@@ -73,5 +79,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1" />
+  
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_conversion_absoluteHeight="675dp"
+        tools:layout_conversion_absoluteWidth="411dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="56dp" />
 
 </LinearLayout>

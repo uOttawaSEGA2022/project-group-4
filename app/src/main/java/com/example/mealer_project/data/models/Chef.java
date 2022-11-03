@@ -41,6 +41,8 @@ public class Chef extends User {
         this.setNumOfMealsSold(numOfMealsSold);
         this.setChefRating(chefRating);
         this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
+        this.isSuspended = false;
+        this.suspensionDate = null;
     }
 
     public Chef(UserEntityModel userData, Address address, String description, String voidCheque) throws IllegalArgumentException {
@@ -51,6 +53,8 @@ public class Chef extends User {
         this.setNumOfMealsSold(0);
         this.setChefRating(0);
         this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
+        this.isSuspended = false;
+        this.suspensionDate = null;
     }
 
     /**
@@ -119,6 +123,34 @@ public class Chef extends User {
     }
 
     /**
+     * Get a true/false whether chef is banned
+     * @return boolean suspended or not
+     */
+    public boolean getIsSuspended() { return isSuspended; }
+
+    /**
+     * Set the boolean for suspended or not
+     * @param isSuspended suspended or not
+     */
+    public void setIsSuspended(boolean isSuspended) {
+        this.isSuspended = isSuspended;
+    }
+
+    /**
+     * Get the end of suspension date
+     * @return Date of end of suspension
+     */
+    public Date getSuspensionDate() { return suspensionDate; }
+
+    /**
+     * Set the boolean for suspended or not
+     * @param suspensionDate date of end of suspension
+     */
+    public void setSuspensionDate(Date suspensionDate) {
+        this.suspensionDate = suspensionDate;
+    }
+
+    /**
      * Retrieve a meal from the chef's menu
      * @param mealID representing the ID of the meal
      * @return Meal instance from chef's menu
@@ -143,19 +175,4 @@ public class Chef extends User {
         chefMenu.remove(removeMeal.getMealID());
     }
 
-    public boolean isSuspended() {
-        return isSuspended;
-    }
-
-    public void setSuspended(boolean suspended) {
-        isSuspended = suspended;
-    }
-
-    public Date getSuspensionDate() {
-        return suspensionDate;
-    }
-
-    public void setSuspensionDate(Date suspensionDate) {
-        this.suspensionDate = suspensionDate;
-    }
 }

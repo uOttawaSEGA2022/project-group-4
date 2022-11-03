@@ -8,6 +8,8 @@ import android.widget.EditText;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.R;
+import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Response;
@@ -71,10 +73,16 @@ public class LoginScreen extends UIScreen implements StatefulView {
     @Override
     public void showNextScreen() {
         // this method gets called when login completed
+        User currentUser = App.getAppInstance().getUser();
         setLoginInProcess(false);
-
-        Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
-        startActivity(intent);
+      
+        if (currentUser.getRole() == UserRoles.ADMIN){
+            Intent intent = new Intent(getApplicationContext(), AdminScreen.class);
+            startActivity(intent);
+        }else {
+            Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
+            startActivity(intent);
+        }
     }
 
     @Override
