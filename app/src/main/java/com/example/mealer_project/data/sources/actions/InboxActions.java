@@ -204,15 +204,6 @@ public class InboxActions {
                             Log.w("Error", "Error updating document", e);
                         }
                     });
-
         }
-
-
-
-
-
-
-
-
     }
 }
