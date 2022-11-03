@@ -15,7 +15,7 @@ import com.example.mealer_project.utils.Preconditions;
  */
 public class AdminInbox implements Inbox {
     // store complaints in a Map for quickly accessing any complaint by it's id without need for traversal
-    public HashMap<String, Complaint> complaints;
+    private HashMap<String, Complaint> complaints;
 
     /**
      * Create a new admin inbox
@@ -114,6 +114,14 @@ public class AdminInbox implements Inbox {
             Log.e("getComplaint", "complaintId provided is null");
             throw new NullPointerException("No complaint ID provided!");
         }
+    }
+
+    /**
+     * This is a getter method for the return Hash Map
+     * @return the complaints hash map
+     */
+    public HashMap<String, Complaint> getComplaints () {
+        return complaints;
     }
 
 
