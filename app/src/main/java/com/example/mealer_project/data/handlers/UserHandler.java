@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.handlers;
 
+import android.util.Log;
+
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
@@ -12,6 +14,7 @@ import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.ui.screens.SignupScreen;
 import com.example.mealer_project.utils.Response;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class UserHandler {
@@ -104,9 +107,29 @@ public class UserHandler {
         App.getPrimaryDatabase().AUTH.logInUser(email, password, loginScreen);
     }
 
-    public void suspendChef(String chefId, Date suspensionDate){
+    /**
+     * Method to suspend chef
+     * @param chef Chef involved with complaint
+     * @param suspensionDate end date of suspension
+     */
+    public void suspendChef(Chef chef, Date suspensionDate){
 
-        App.getPrimaryDatabase().USER.suspendChefInFirebase(chefId, suspensionDate);
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
+        String suspension= formatter.format(suspensionDate);
 
+        App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), true, suspension);
+    }
+
+    /**
+     * Method to update chef (check if date has passed)
+     * @param chef Chef involved with complaint
+     */
+    public void updateChef(Chef chef){
+
+        if (new Date().after(chef.getSuspensionDate())) { // if the date has passed, we change info in firebase
+            chef.setIsSuspended(false);
+            chef.setSuspensionDate(null);
+            App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), false, null);
+        }
     }
 }

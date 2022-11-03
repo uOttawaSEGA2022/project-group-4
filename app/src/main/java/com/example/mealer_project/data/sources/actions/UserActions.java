@@ -236,9 +236,6 @@ public class UserActions {
                 Date suspensionDate = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(document.getData().get("suspensionDate")));
                 newChef.setSuspensionDate(suspensionDate);
             }
-
-
-
             App.getAppInstance().setUser(newChef);
 
             return new Response(true);
@@ -251,18 +248,17 @@ public class UserActions {
      * Method changes fields (isSuspended and suspensionDate) of chef in firebase based on admin response
      * to complaint
      * @param chefId id of the chef associated with the complaint
+     * @param isSuspended boolean whether chef is suspended
      * @param suspensionDate end date of suspension
      */
-    public void suspendChefInFirebase(String chefId, Date suspensionDate){
 
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
-        DocumentReference chefUser = database.collection("Chefs").document(chefId);
+    public void updateChefSuspension(String chefId, boolean isSuspended, String suspensionDate){
 
         // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
-        chefUser
+        database.collection("Chefs").document(chefId)
                 .update(
-                        "isSuspended", true,
-                        "suspensionDate",formatter.format(suspensionDate))
+                        "isSuspended", isSuspended,
+                        "suspensionDate",suspensionDate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
