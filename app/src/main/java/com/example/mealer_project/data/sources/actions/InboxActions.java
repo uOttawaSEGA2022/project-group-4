@@ -46,7 +46,12 @@ public class InboxActions {
                     List<Complaint> complaints = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("getAllComplaints", document.getId() + " => " + document.getData());
-                        complaints.add(getComplaintObject(document.getData()));
+                        try {
+                            complaints.add(getComplaintObject(document.getData()));
+                        } catch (IllegalArgumentException e) {
+                            inboxHandler.errorGettingComplaints("Failed to get complaints!");
+                            Log.e("getAllComplaints", "Failed to get complaints. Error: " + e.getMessage());
+                        }
                     }
                     // pass complaints to inbox handler
                     inboxHandler.createNewAdminInbox(complaints);
@@ -57,7 +62,7 @@ public class InboxActions {
         });
     }
 
-    private Complaint getComplaintObject(Map<String, Object> data) {
+    private Complaint getComplaintObject(Map<String, Object> data) throws IllegalArgumentException {
         // cast object values in data to string
         Map<String, String> complaintData = Utilities.convertMapValuesToString(data);
         // convert date

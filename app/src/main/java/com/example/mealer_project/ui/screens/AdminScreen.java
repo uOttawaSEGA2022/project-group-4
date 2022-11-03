@@ -2,6 +2,7 @@ package com.example.mealer_project.ui.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,39 +28,16 @@ import java.util.Map;
 public class AdminScreen extends UIScreen implements StatefulView {
 
     int numOfButtons;
-
+    ListView complaintList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_screen);
 
-        ListView complaintList = findViewById(R.id.complaintList);
-        List<String> list = new ArrayList<String>();
+        App.getInboxHandler().updateAdminInbox(this);
 
-        
-        list.add("Complaint 1");
-        list.add("Complaint 2");
-        list.add("Complaint 3");
-        list.add("Complaint 4");
-        list.add("Complaint 5");
-
-        InboxHandler adminInboxHandler = App.getInboxHandler();
-        adminInboxHandler.updateAdminInbox(this);
-
-        AdminInbox adminInbox = adminInboxHandler.getAdminInbox().getSuccessObject();
-
-        System.out.println("SIZE: " + adminInbox.complaints.size());
-        for(Map.Entry<String, Complaint> complaintSet: adminInbox.complaints.entrySet()) {
-            Complaint complaintInformation = complaintSet.getValue();
-
-            //ComplaintTitle
-            list.add(complaintInformation.getTitle());
-        }
-
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
-        complaintList.setAdapter(arrayAdapter);
-
+        complaintList = findViewById(R.id.complaintList);
         complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -84,11 +62,33 @@ public class AdminScreen extends UIScreen implements StatefulView {
         //finish(); // change later to proper code
         FirebaseAuth.getInstance().signOut();
     }
-    //Display complaints
-    public void successLoadingAdminInbox() {
+
+    private void displayComplaints() {
+        try {
+            Log.e("NUMBER COMPLAINTS", String.valueOf(App.getAdminInbox().complaints.size()));
+
+            List<String> complaintTitles = new ArrayList<String>();
+
+            for (Complaint eachComplaint: App.getAdminInbox().complaints.values()) {
+                complaintTitles.add(eachComplaint.getTitle());
+            }
+
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, complaintTitles);
+            complaintList.setAdapter(arrayAdapter);
+        } catch (Exception e) {
+            Log.e("displayComplaints", "user doesn't have access");
+        }
 
     }
 
+    //Display complaints
+    public void successLoadingAdminInbox() {
+        displayComplaints();
+        displaySuccessToast("Complaints loaded!");
+    }
+
     public void failedToLoadComplaints(String s) {
+        displayErrorToast(s);
     }
 }
