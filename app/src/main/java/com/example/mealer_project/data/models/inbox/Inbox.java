@@ -16,7 +16,7 @@ public interface Inbox {
      * Remove a complaint by ID
      * @param complaintId ID of complaint to be removed
      */
-    void removeComplaint(String complaintId, boolean isSuspended, Date suspensionDate);
+    void removeComplaint(String complaintId);
 
     /**
      * Get a complaint by id

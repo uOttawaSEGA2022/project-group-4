@@ -36,36 +36,6 @@ public class AdminScreen extends UIScreen implements StatefulView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_screen);
 
-        try {
-            AdminInbox adminInbox = App.getAppInstance().getAdminInbox();
-            ListView complaintList = findViewById(R.id.complaintList);
-            List<Complaint> list = new ArrayList<Complaint>();
-            HashMap<String, Complaint> hashMap = adminInbox.getComplaints();
-
-            // iterator to go through hash map
-            Iterator iterator = hashMap.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry pair = (Map.Entry)iterator.next();
-                list.add((Complaint) pair.getValue()); // adds each compliant to the list
-            }
-
-            // puts complaints onto admin screen list
-            ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.activity_admin_screen, list);
-            ListView listView = findViewById(R.id.complaintList);
-            listView.setAdapter(arrayAdapter);
-
-            complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    startActivity(new Intent(getApplicationContext(), ComplaintScreen.class));
-                }
-            });
-
-        }
-        catch (NullPointerException | IllegalAccessException e){
-            Log.e("null admin inbox", "cannot find admin inbox");
-        }
-
 
         /*list.add("Complaint 1");
         list.add("Complaint 2");

@@ -12,6 +12,8 @@ import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.ui.screens.SignupScreen;
 import com.example.mealer_project.utils.Response;
 
+import java.util.Date;
+
 public class UserHandler {
 
     /**
@@ -100,5 +102,11 @@ public class UserHandler {
      */
     public void logInUser(LoginScreen loginScreen, String email, String password) {
         App.getPrimaryDatabase().AUTH.logInUser(email, password, loginScreen);
+    }
+
+    public void suspendChef(String chefId, Date suspensionDate){
+
+        App.getPrimaryDatabase().USER.suspendChefInFirebase(chefId, suspensionDate);
+
     }
 }

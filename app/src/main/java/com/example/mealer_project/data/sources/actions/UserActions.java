@@ -19,6 +19,8 @@ import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -243,5 +245,35 @@ public class UserActions {
         } catch (Exception e) {
             return new Response(false, "makeChefFromFirebase: " + e.getMessage());
         }
+    }
+
+    /**
+     * Method changes fields (isSuspended and suspensionDate) of chef in firebase based on admin response
+     * to complaint
+     * @param chefId id of the chef associated with the complaint
+     * @param suspensionDate end date of suspension
+     */
+    public void suspendChefInFirebase(String chefId, Date suspensionDate){
+
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
+        DocumentReference chefUser = database.collection("Chefs").document(chefId);
+
+        // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
+        chefUser
+                .update(
+                        "isSuspended", true,
+                        "suspensionDate",formatter.format(suspensionDate))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Success", "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error", "Error updating document", e);
+                    }
+                });
     }
 }

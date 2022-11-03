@@ -85,11 +85,11 @@ public class AdminInbox implements Inbox {
      * @throws NullPointerException if provided complaint ID object is null
      */
     @Override
-    public void removeComplaint(String complaintId, boolean isSuspended, Date suspensionDate) throws NullPointerException {
+    public void removeComplaint(String complaintId) throws NullPointerException {
         if (Preconditions.isNotEmptyString(complaintId)) {
             // remove the complaint
             complaints.remove(complaintId);
-            App.getAppDataHandler().getInboxHandler().removeComplaint(complaintId, isSuspended, suspensionDate);
+
 
         } else {
             // log for programmer, and exception message for client

@@ -168,7 +168,7 @@ public class InboxHandler {
                //App.getAdminInbox().removeComplaint(complaintId);
 
                // remove complaint from firebase
-               App.getPrimaryDatabase().INBOX.removeComplaint(complaintId, this, isSuspended, suspensionDate);
+               App.getPrimaryDatabase().INBOX.removeComplaint(complaintId, this);
 
           } catch (Exception e) {
                return new Response(false, e.getMessage());

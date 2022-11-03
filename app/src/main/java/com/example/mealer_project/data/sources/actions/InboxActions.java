@@ -116,42 +116,16 @@ public class InboxActions {
      * @param complaintId id of complaint to be removed
      * @param inboxHandler reference to instance of inbox handler to pass operation response
      */
-    public void removeComplaint(String complaintId, InboxHandler inboxHandler, boolean isSuspended, Date suspensionDate) {
+    public void removeComplaint(String complaintId, InboxHandler inboxHandler) {
 
-        DocumentReference complaint = database.collection(COMPLAINTS_COLLECTION).document(complaintId);
-
-        complaint.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                        if (document.getData() != null){
-                            chefId = String.valueOf(document.getData().get("chefId"));
-                        }
-                        else { //just in case bros
-                            Log.e("null data", "Document data is null: can't retrieve chefId");
-                        }
-
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
         // proceed only if preconditions satisfied
         if (Preconditions.isNotEmptyString(complaintId) && Preconditions.isNotNull(inboxHandler)) {
-            complaint
+            database.collection(COMPLAINTS_COLLECTION).document(complaintId)
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             inboxHandler.successRemovingComplaint();
-                            handleChefComplaint(chefId, isSuspended, suspensionDate); // updates chef info in firebase accordingly
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -173,37 +147,5 @@ public class InboxActions {
 
     }
 
-    /**
-     * Method changes fields (isSuspended and suspensionDate) of chef in firebase based on admin response
-     * to complaint
-     * @param chefId id of the chef associated with the complaint
-     * @param ban boolean that says whether the chef is banned or not
-     * @param suspensionDate end date of suspension
-     */
-    private void handleChefComplaint(String chefId, boolean ban, Date suspensionDate){
 
-        if (ban == true){
-
-            SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
-            DocumentReference chefUser = database.collection("Chefs").document(chefId);
-
-            // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
-            chefUser
-                    .update(
-                            "isSuspended", ban,
-                            "suspensionDate",formatter.format(suspensionDate))
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d("Success", "DocumentSnapshot successfully updated!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w("Error", "Error updating document", e);
-                        }
-                    });
-        }
-    }
 }
