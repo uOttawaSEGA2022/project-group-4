@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.models.inbox;
 
+import java.sql.Date;
+
 /**
  * Generic Inbox Interface to enforce implementation of certain methods
  */
@@ -14,7 +16,7 @@ public interface Inbox {
      * Remove a complaint by ID
      * @param complaintId ID of complaint to be removed
      */
-    void removeComplaint(String complaintId);
+    void removeComplaint(String complaintId, boolean isSuspended, Date suspensionDate);
 
     /**
      * Get a complaint by id

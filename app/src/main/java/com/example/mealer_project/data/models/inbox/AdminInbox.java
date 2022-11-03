@@ -1,10 +1,13 @@
 package com.example.mealer_project.data.models.inbox;
 
 import android.util.Log;
+
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import com.example.mealer_project.app.App;
 import com.example.mealer_project.utils.Preconditions;
 
 /**
@@ -82,10 +85,12 @@ public class AdminInbox implements Inbox {
      * @throws NullPointerException if provided complaint ID object is null
      */
     @Override
-    public void removeComplaint(String complaintId) throws NullPointerException {
+    public void removeComplaint(String complaintId, boolean isSuspended, Date suspensionDate) throws NullPointerException {
         if (Preconditions.isNotEmptyString(complaintId)) {
             // remove the complaint
             complaints.remove(complaintId);
+            App.getAppDataHandler().getInboxHandler().removeComplaint(complaintId, isSuspended, suspensionDate);
+
         } else {
             // log for programmer, and exception message for client
             Log.e("removeComplaint", "complaintId provided is null");
