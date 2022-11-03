@@ -75,6 +75,7 @@ public class LoginScreen extends UIScreen implements StatefulView {
         // this method gets called when login completed
         User currentUser = App.getAppInstance().getUser();
         setLoginInProcess(false);
+      
         if (currentUser.getRole() == UserRoles.ADMIN){
             Intent intent = new Intent(getApplicationContext(), AdminScreen.class);
             startActivity(intent);
