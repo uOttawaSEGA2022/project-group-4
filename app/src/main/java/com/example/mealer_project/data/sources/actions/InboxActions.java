@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -183,13 +184,14 @@ public class InboxActions {
 
         if (ban == true){
 
+            SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
             DocumentReference chefUser = database.collection("Chefs").document(chefId);
 
             // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
             chefUser
                     .update(
                             "isSuspended", ban,
-                            "suspensionDate",suspensionDate)
+                            "suspensionDate",formatter.format(suspensionDate))
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
