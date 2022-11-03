@@ -24,6 +24,7 @@ public class AppInstance {
         // set firebase to be the primary database
         primaryDatabase = new FirebaseRepository(FirebaseAuth.getInstance());
         appDataHandlers = new DataHandlers(primaryDatabase);
+
     }
 
     public boolean isUserAuthenticated() {

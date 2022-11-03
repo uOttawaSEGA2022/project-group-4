@@ -6,6 +6,7 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
+import com.example.mealer_project.ui.screens.AdminScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
@@ -17,7 +18,7 @@ import java.util.List;
  * Class to handle operations related to Admin's Inbox
  */
 public class InboxHandler {
-//     private InboxView inboxView;
+     private AdminScreen adminScreen;
 
      /**
       * Checks if current user has access to admin only resources
@@ -54,14 +55,15 @@ public class InboxHandler {
       * Stores the inbox by setting AppInstance's adminInbox to this new inbox
       * @return Response object indicating success or failure
       */
-     public Response updateAdminInbox() {
+     public Response updateAdminInbox(AdminScreen inboxView) {
           // check if current user does not have access (user is not an admin)
           if (userHasAccess().isError()) {
                return userHasAccess();
           }
 
           // set inbox view
-          // this.inboxView = inboxView;
+          this.adminScreen = inboxView;
+
 
           // make async call to fetch all complaints from database
           App.getPrimaryDatabase().INBOX.getAllComplaints(this);
@@ -80,13 +82,26 @@ public class InboxHandler {
           if (Preconditions.isNotEmptyList(complaints)) {
                // instantiate a new admin inbox by providing it list of complaints
                // set App's new admin inbox
-               App.setAdminInbox(new AdminInbox(complaints));
+               try {
+                    App.setAdminInbox(new AdminInbox(complaints));
+               } catch (NullPointerException e) {
+                    Log.e("createNewAdminInbox", "one of the complaints is null: " + e.getMessage());
+                    adminScreen.failedToLoadComplaints("Failed to load complaints");
+               } catch (Exception e) {
+                    Log.e("createNewAdminInbox", "an exception occurred while creating Admin Inbox: " + e.getMessage());
+                    adminScreen.failedToLoadComplaints("Failed to load complaints");
+               }
+
+               // guard-clause - make sure we have a valid instance of admin screen
+               if (adminScreen == null) {
+                    Log.e("createNewAdminInbox", "adminScreen has not been instantiated yet, is null");
+               }
 
                // call method in inboxView to update inbox so admin can see all complaints
-               // inboxView.successLoadingAdminInbox();
+               adminScreen.successLoadingAdminInbox();
           } else {
                // display error in inbox view
-               // inboxView.failedToLoadComplaints("No complaints available for admin inbox");
+               adminScreen.failedToLoadComplaints("No complaints available for admin inbox");
           }
      }
 

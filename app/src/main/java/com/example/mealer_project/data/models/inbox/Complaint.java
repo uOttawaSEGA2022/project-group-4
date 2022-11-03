@@ -4,9 +4,11 @@ import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -23,6 +25,20 @@ public class Complaint implements Comparator<Complaint> {
     private Date dateSubmitted;
 
     /**
+     * Using enum to define property names of a complaint in a structured (and more rigid) manner
+     * Prevents use of hard-coded string throughout application where property of a complaints to be used
+     * Used in InboxActions, as property names here are same as field names on firebase
+     */
+    public enum COMPLAINT_PROPERTY {
+        id,
+        title,
+        description,
+        clientId,
+        chefId,
+        dateSubmitted
+    };
+
+    /**
      * Constructor to create a new complaint instance by providing values for all instance variables
      * @param id complaint id
      * @param title title of complaint
@@ -32,6 +48,15 @@ public class Complaint implements Comparator<Complaint> {
      * @param dateSubmitted date on which complaint is submitted
      */
     public Complaint(String id, String title, String description, String clientId, String chefId, Date dateSubmitted) {
+        setId(id);
+        setTitle(title);
+        setDescription(description);
+        setClientId(clientId);
+        setChefId(chefId);
+        setDateSubmitted(dateSubmitted);
+    }
+
+    public Complaint(String id, String title, String description, String clientId, String chefId, String dateSubmitted) throws ParseException {
         setId(id);
         setTitle(title);
         setDescription(description);
@@ -103,16 +128,17 @@ public class Complaint implements Comparator<Complaint> {
     }
 
     private void setDateSubmitted(String dateSubmitted) throws ParseException {
-        this.dateSubmitted = DateFormat.getDateInstance().parse(dateSubmitted);
+        // mm-dd--yyyy
+        this.dateSubmitted = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(dateSubmitted);
     }
 
     public Map<String, Object> getComplaintDataMap() {
         HashMap<String, Object> complaintDataMap = new HashMap<>();
-        complaintDataMap.put("title", this.title);
-        complaintDataMap.put("description", this.description);
-        complaintDataMap.put("clientId", this.clientId);
-        complaintDataMap.put("chefId", this.chefId);
-        complaintDataMap.put("dateSubmitted", this.dateSubmitted);
+        complaintDataMap.put(COMPLAINT_PROPERTY.title.toString(), this.title);
+        complaintDataMap.put(COMPLAINT_PROPERTY.description.toString(), this.description);
+        complaintDataMap.put(COMPLAINT_PROPERTY.clientId.toString(), this.clientId);
+        complaintDataMap.put(COMPLAINT_PROPERTY.chefId.toString(), this.chefId);
+        complaintDataMap.put(COMPLAINT_PROPERTY.dateSubmitted.toString(), this.dateSubmitted);
         return complaintDataMap;
     }
 
