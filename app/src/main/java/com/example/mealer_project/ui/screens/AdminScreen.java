@@ -10,12 +10,17 @@ import android.widget.ListView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.InboxHandler;
+import com.example.mealer_project.data.models.inbox.AdminInbox;
+import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class AdminScreen extends UIScreen implements StatefulView {
@@ -31,7 +36,16 @@ public class AdminScreen extends UIScreen implements StatefulView {
         ListView complaintList = findViewById(R.id.complaintList);
         List<String> list = new ArrayList<String>();
 
+        AdminInbox adminInbox = new AdminInbox();
 
+        System.out.println(adminInbox.complaints.size());
+
+        for(Map.Entry<String, Complaint> complaintSet: adminInbox.complaints.entrySet()) {
+            Complaint complaintInformation = complaintSet.getValue();
+
+            //ComplaintTitle
+            list.add(complaintInformation.getTitle());
+        }
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
         complaintList.setAdapter(arrayAdapter);

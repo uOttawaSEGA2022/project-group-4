@@ -2,6 +2,7 @@ package com.example.mealer_project.data.models.inbox;
 
 import android.util.Log;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import com.example.mealer_project.utils.Preconditions;
@@ -11,7 +12,7 @@ import com.example.mealer_project.utils.Preconditions;
  */
 public class AdminInbox implements Inbox {
     // store complaints in a Map for quickly accessing any complaint by it's id without need for traversal
-    HashMap<String, Complaint> complaints;
+    public HashMap<String, Complaint> complaints;
 
     /**
      * Create a new admin inbox
@@ -109,4 +110,6 @@ public class AdminInbox implements Inbox {
             throw new NullPointerException("No complaint ID provided!");
         }
     }
+
+
 }
