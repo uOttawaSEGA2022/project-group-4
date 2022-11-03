@@ -19,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +46,9 @@ public class InboxActions {
                 if (task.isSuccessful()) {
                     List<Complaint> complaints = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d("getAllComplaints", document.getId() + " => " + document.getData());
                         try {
-                            complaints.add(getComplaintObject(document.getData()));
-                        } catch (IllegalArgumentException e) {
+                            complaints.add(getComplaintObject(document.getId(), document.getData()));
+                        } catch (Exception e) {
                             inboxHandler.errorGettingComplaints("Failed to get complaints!");
                             Log.e("getAllComplaints", "Failed to get complaints. Error: " + e.getMessage());
                         }
@@ -62,13 +62,11 @@ public class InboxActions {
         });
     }
 
-    private Complaint getComplaintObject(Map<String, Object> data) throws IllegalArgumentException {
+    private Complaint getComplaintObject(String complaintId, Map<String, Object> data) throws ParseException {
         // cast object values in data to string
         Map<String, String> complaintData = Utilities.convertMapValuesToString(data);
-        // convert date
-        Date dateSubmitted = Date.valueOf(complaintData.get("dateSubmitted"));
         // return complaint object
-        return new Complaint(complaintData.get("id"), complaintData.get("title"), complaintData.get("description"), complaintData.get("clientId"), complaintData.get("chefId"), dateSubmitted);
+        return new Complaint(complaintId, complaintData.get("title"), complaintData.get("description"), complaintData.get("clientId"), complaintData.get("chefId"), complaintData.get("dateSubmitted"));
     }
 
     /**

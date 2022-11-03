@@ -65,11 +65,11 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
     private void displayComplaints() {
         try {
-            Log.e("NUMBER COMPLAINTS", String.valueOf(App.getAdminInbox().complaints.size()));
+            Log.e("NUMBER COMPLAINTS", String.valueOf(App.getAdminInbox().getComplaints().size()));
 
             List<String> complaintTitles = new ArrayList<String>();
 
-            for (Complaint eachComplaint: App.getAdminInbox().complaints.values()) {
+            for (Complaint eachComplaint: App.getAdminInbox().getComplaints().values()) {
                 complaintTitles.add(eachComplaint.getTitle());
             }
 
