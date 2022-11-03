@@ -77,16 +77,17 @@ public class InboxHandler {
       * @param complaints list of complaints retrieved from database
       */
      public void createNewAdminInbox(List<Complaint> complaints){
-          Log.e("createNewAdminInbox", "# of complaints from firebase: " + complaints.size());
           // validate complaints
           if (Preconditions.isNotEmptyList(complaints)) {
                // instantiate a new admin inbox by providing it list of complaints
                // set App's new admin inbox
                try {
                     App.setAdminInbox(new AdminInbox(complaints));
-                    Log.e("createNewAdminInbox", "# complaints stored locally: " + App.getAdminInbox().getComplaints().size());
+               } catch (NullPointerException e) {
+                    Log.e("createNewAdminInbox", "one of the complaints is null: " + e.getMessage());
+                    adminScreen.failedToLoadComplaints("Failed to load complaints");
                } catch (Exception e) {
-                    Log.e("createNewAdminInbox", "one of the complaints is null");
+                    Log.e("createNewAdminInbox", "an exception occurred while creating Admin Inbox: " + e.getMessage());
                     adminScreen.failedToLoadComplaints("Failed to load complaints");
                }
 

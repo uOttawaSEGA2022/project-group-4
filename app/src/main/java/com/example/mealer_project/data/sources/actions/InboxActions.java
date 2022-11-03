@@ -62,11 +62,25 @@ public class InboxActions {
         });
     }
 
+    /**
+     * Uses the provided data and returns a new Complaint instance
+     * @param complaintId id of complaint
+     * @param data Map containing all other required complaint data with the required property (key) names
+     * @return a new Complaint object with associated data
+     * @throws ParseException throws ParseException if creation of Complaint fails due to invalid dateSubmitted format
+     */
     private Complaint getComplaintObject(String complaintId, Map<String, Object> data) throws ParseException {
         // cast object values in data to string
         Map<String, String> complaintData = Utilities.convertMapValuesToString(data);
         // return complaint object
-        return new Complaint(complaintId, complaintData.get("title"), complaintData.get("description"), complaintData.get("clientId"), complaintData.get("chefId"), complaintData.get("dateSubmitted"));
+        return new Complaint(
+                complaintId,
+                complaintData.get(Complaint.COMPLAINT_PROPERTY.title.toString()),
+                complaintData.get(Complaint.COMPLAINT_PROPERTY.description.toString()),
+                complaintData.get(Complaint.COMPLAINT_PROPERTY.clientId.toString()),
+                complaintData.get(Complaint.COMPLAINT_PROPERTY.chefId.toString()),
+                complaintData.get(Complaint.COMPLAINT_PROPERTY.dateSubmitted.toString())
+        );
     }
 
     /**
