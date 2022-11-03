@@ -175,6 +175,7 @@ public class UserActions {
             newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
             newUser.setLastName(String.valueOf(document.getData().get("lastName")));
             newUser.setEmail(String.valueOf(document.getData().get("email")));
+            newUser.setUserId(document.getId());
             newUser.setRole(UserRoles.CLIENT);
 
             newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
@@ -216,6 +217,7 @@ public class UserActions {
             newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
             newUser.setLastName(String.valueOf(document.getData().get("lastName")));
             newUser.setEmail(String.valueOf(document.getData().get("email")));
+            newUser.setUserId(document.getId());
             newUser.setRole(UserRoles.CHEF);
 
             newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
