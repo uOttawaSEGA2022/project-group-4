@@ -17,7 +17,7 @@ import java.util.List;
  * Class to handle operations related to Admin's Inbox
  */
 public class InboxHandler {
-     private AdminScreen inboxView;
+     private AdminScreen adminScreen;
 
      /**
       * Checks if current user has access to admin only resources
@@ -61,7 +61,7 @@ public class InboxHandler {
           }
 
           // set inbox view
-          this.inboxView = inboxView;
+          this.adminScreen = inboxView;
 
 
           // make async call to fetch all complaints from database
@@ -83,11 +83,16 @@ public class InboxHandler {
                // set App's new admin inbox
                App.setAdminInbox(new AdminInbox(complaints));
 
+               // guard-clause - make sure we have a valid instance of admin screen
+               if (adminScreen == null) {
+                    Log.e("createNewAdminInbox", "adminScreen has not been instantiated yet, is null");
+               }
+
                // call method in inboxView to update inbox so admin can see all complaints
-               inboxView.successLoadingAdminInbox();
+               adminScreen.successLoadingAdminInbox();
           } else {
                // display error in inbox view
-               inboxView.failedToLoadComplaints("No complaints available for admin inbox");
+               adminScreen.failedToLoadComplaints("No complaints available for admin inbox");
           }
      }
 
