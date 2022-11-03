@@ -2,7 +2,6 @@ package com.example.mealer_project.data.models.inbox;
 
 import android.util.Log;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import com.example.mealer_project.utils.Preconditions;
@@ -12,7 +11,7 @@ import com.example.mealer_project.utils.Preconditions;
  */
 public class AdminInbox implements Inbox {
     // store complaints in a Map for quickly accessing any complaint by it's id without need for traversal
-    public HashMap<String, Complaint> complaints;
+    private HashMap<String, Complaint> complaints;
 
     /**
      * Create a new admin inbox
@@ -33,9 +32,17 @@ public class AdminInbox implements Inbox {
      * Create a new admin inbox by providing list of complaints
      * @param inboxComplaints list of complaints to be added to the inbox
      */
-    public AdminInbox(List<Complaint> inboxComplaints) {
+    public AdminInbox(List<Complaint> inboxComplaints) throws NullPointerException {
         complaints = new HashMap<>(inboxComplaints.size());
         this.addComplaints(inboxComplaints);
+    }
+
+    /**
+     * Method to get all complaints
+     * @return a HashMap structure with keys as complaint id and values as Complaint objects
+     */
+    public HashMap<String, Complaint> getComplaints() {
+        return this.complaints;
     }
 
     /**
@@ -45,15 +52,15 @@ public class AdminInbox implements Inbox {
      */
     @Override
     public void addComplaint(Complaint complaint) throws NullPointerException {
+
         // validate complaint object
         if (complaint == null) {
             // log for programmer, and exception message for client
             Log.e("addComplaint", "addComplaint: Complaint object provided is null");
             throw new NullPointerException("Trying to add an invalid complaint!");
         }
-
         // add complaint
-        complaints.put(complaint.getId(), complaint);
+        this.complaints.put(complaint.getId(), complaint);
     }
 
     /**
@@ -64,15 +71,15 @@ public class AdminInbox implements Inbox {
     public void addComplaints(List<Complaint> complaints) throws NullPointerException {
         // validate complaint object
         if (Preconditions.isNotEmptyList(complaints)) {
+            // add all complaints to the admin inbox
+            for (Complaint complaint: complaints) {
+                // add complaint, throws NullPointerException if complaint is null
+                this.addComplaint(complaint);
+            }
+        } else {
             // log for programmer, and exception message for client
             Log.e("addComplaints", "addComplaints: List<Complaint> provided is null");
             throw new NullPointerException("No complaints provided to be added to the inbox!");
-        }
-
-        // add all complaints to the admin inbox
-        for (Complaint complaint: complaints) {
-            // add complaint, throws NullPointerException if complaint is null
-            this.addComplaint(complaint);
         }
     }
 
