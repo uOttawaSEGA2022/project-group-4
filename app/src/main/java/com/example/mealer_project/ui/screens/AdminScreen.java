@@ -37,9 +37,18 @@ public class AdminScreen extends UIScreen implements StatefulView {
         ListView complaintList = findViewById(R.id.complaintList);
         List<String> list = new ArrayList<String>();
 
+        list.add("Complaint 1");
+        list.add("Complaint 2");
+        list.add("Complaint 3");
+        list.add("Complaint 4");
+        list.add("Complaint 5");
+
+        //Implementation required
+        /**
         AdminInbox adminInbox = null;
         try {
             adminInbox = App.getAppInstance().getAdminInbox();
+            System.out.println("SIZE: " + adminInbox.complaints.size());
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -49,7 +58,7 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
             //ComplaintTitle
             list.add(complaintInformation.getTitle());
-        }
+        }*/
 
         ArrayAdapter arrayAdapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, list);
         complaintList.setAdapter(arrayAdapter);
