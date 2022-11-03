@@ -62,6 +62,7 @@ public class User {
         this.setAddress(userAddress);
         // value of role has to be one of accepted user roles
         this.setRole(userData.getRole());
+        this.setUserId(userData.getUserId());
     }
 
     /**

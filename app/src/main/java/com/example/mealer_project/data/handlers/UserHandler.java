@@ -129,9 +129,7 @@ public class UserHandler {
         if (new Date().after(chef.getSuspensionDate())) { // if the date has passed, we change info in firebase
             chef.setIsSuspended(false);
             chef.setSuspensionDate(null);
-
-            Log.d("CHEFIDFIREBASE", chef.getUserId());
-            App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), false, null);
+            App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), false, "");
         }
     }
 }
