@@ -81,7 +81,15 @@ public class InboxHandler {
           if (Preconditions.isNotEmptyList(complaints)) {
                // instantiate a new admin inbox by providing it list of complaints
                // set App's new admin inbox
-               App.setAdminInbox(new AdminInbox(complaints));
+               try {
+                    App.setAdminInbox(new AdminInbox(complaints));
+               } catch (NullPointerException e) {
+                    Log.e("createNewAdminInbox", "one of the complaints is null: " + e.getMessage());
+                    adminScreen.failedToLoadComplaints("Failed to load complaints");
+               } catch (Exception e) {
+                    Log.e("createNewAdminInbox", "an exception occurred while creating Admin Inbox: " + e.getMessage());
+                    adminScreen.failedToLoadComplaints("Failed to load complaints");
+               }
 
                // guard-clause - make sure we have a valid instance of admin screen
                if (adminScreen == null) {

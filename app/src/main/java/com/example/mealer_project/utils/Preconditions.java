@@ -27,6 +27,6 @@ public abstract class Preconditions {
      * @return true if list is not null and empty, else false
      */
     static public boolean isNotEmptyList(List list) {
-        return isNotNull(list) && (list.isEmpty());
+        return isNotNull(list) && (!list.isEmpty());
     }
 }
