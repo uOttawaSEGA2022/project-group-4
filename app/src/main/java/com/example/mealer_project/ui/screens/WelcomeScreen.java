@@ -42,7 +42,14 @@ public class WelcomeScreen extends AppCompatActivity {
             Chef chefUser = (Chef) currentUser; //casting to chef
 
             if (chefUser.getIsSuspended()) { //suspended
-                showSuspensionMessage(chefUser.getSuspensionDate());
+
+                if (chefUser.getSuspensionDate().after(new Date())) { //still suspended
+                    showSuspensionMessage(chefUser.getSuspensionDate());
+                }
+                else { //no longer suspended
+                    chefUser.setIsSuspended(false);
+                    //show normal chef screen after
+                }
             } else { //show normal chef screen
                 //implement this
             }
