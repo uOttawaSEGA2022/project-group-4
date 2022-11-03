@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.InboxHandler;
+import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
@@ -36,9 +37,12 @@ public class AdminScreen extends UIScreen implements StatefulView {
         ListView complaintList = findViewById(R.id.complaintList);
         List<String> list = new ArrayList<String>();
 
-        AdminInbox adminInbox = new AdminInbox();
-
-        System.out.println(adminInbox.complaints.size());
+        AdminInbox adminInbox = null;
+        try {
+            adminInbox = App.getAppInstance().getAdminInbox();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
         for(Map.Entry<String, Complaint> complaintSet: adminInbox.complaints.entrySet()) {
             Complaint complaintInformation = complaintSet.getValue();
