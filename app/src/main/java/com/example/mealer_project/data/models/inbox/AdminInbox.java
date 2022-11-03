@@ -1,9 +1,12 @@
 package com.example.mealer_project.data.models.inbox;
 
 import android.util.Log;
+
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import com.example.mealer_project.app.App;
 import com.example.mealer_project.utils.Preconditions;
 
 /**
@@ -93,6 +96,8 @@ public class AdminInbox implements Inbox {
         if (Preconditions.isNotEmptyString(complaintId)) {
             // remove the complaint
             complaints.remove(complaintId);
+
+
         } else {
             // log for programmer, and exception message for client
             Log.e("removeComplaint", "complaintId provided is null");
@@ -116,6 +121,14 @@ public class AdminInbox implements Inbox {
             Log.e("getComplaint", "complaintId provided is null");
             throw new NullPointerException("No complaint ID provided!");
         }
+    }
+
+    /**
+     * This is a getter method for the return Hash Map
+     * @return the complaints hash map
+     */
+    public HashMap<String, Complaint> getComplaints () {
+        return complaints;
     }
 
 

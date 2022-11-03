@@ -19,6 +19,8 @@ import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -173,6 +175,7 @@ public class UserActions {
             newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
             newUser.setLastName(String.valueOf(document.getData().get("lastName")));
             newUser.setEmail(String.valueOf(document.getData().get("email")));
+            newUser.setUserId(document.getId());
             newUser.setRole(UserRoles.CLIENT);
 
             newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
@@ -214,6 +217,7 @@ public class UserActions {
             newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
             newUser.setLastName(String.valueOf(document.getData().get("lastName")));
             newUser.setEmail(String.valueOf(document.getData().get("email")));
+            newUser.setUserId(document.getId());
             newUser.setRole(UserRoles.CHEF);
 
             newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
@@ -234,14 +238,40 @@ public class UserActions {
                 Date suspensionDate = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(document.getData().get("suspensionDate")));
                 newChef.setSuspensionDate(suspensionDate);
             }
-
-
-
             App.getAppInstance().setUser(newChef);
 
             return new Response(true);
         } catch (Exception e) {
             return new Response(false, "makeChefFromFirebase: " + e.getMessage());
         }
+    }
+
+    /**
+     * Method changes fields (isSuspended and suspensionDate) of chef in firebase based on admin response
+     * to complaint
+     * @param chefId id of the chef associated with the complaint
+     * @param isSuspended boolean whether chef is suspended
+     * @param suspensionDate end date of suspension
+     */
+
+    public void updateChefSuspension(String chefId, boolean isSuspended, String suspensionDate){
+
+        // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
+        database.collection("Chefs").document(chefId)
+                .update(
+                        "isSuspended", isSuspended,
+                        "suspensionDate",suspensionDate)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Success", "DocumentSnapshot successfully updated!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("Error", "Error updating document", e);
+                    }
+                });
     }
 }

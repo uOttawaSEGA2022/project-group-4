@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class AdminScreen extends UIScreen implements StatefulView {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 startActivity(new Intent(getApplicationContext(), ComplaintScreen.class));
             }
-        });
+        });*/
     }
 
     @Override

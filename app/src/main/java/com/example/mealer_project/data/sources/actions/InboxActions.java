@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.sources.actions;
 
+import static android.content.ContentValues.TAG;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -8,17 +10,20 @@ import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Utilities;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,9 +34,12 @@ public class InboxActions {
     FirebaseRepository firebaseRepository;
     final static private String COMPLAINTS_COLLECTION = "Complaints";
 
+    private String chefId;
+
     public InboxActions(FirebaseFirestore database, FirebaseRepository firebaseRepository) {
         this.database = database;
         this.firebaseRepository = firebaseRepository;
+        this.chefId = "";
     }
 
     /**
@@ -126,10 +134,10 @@ public class InboxActions {
      * @param inboxHandler reference to instance of inbox handler to pass operation response
      */
     public void removeComplaint(String complaintId, InboxHandler inboxHandler) {
+
         // proceed only if preconditions satisfied
         if (Preconditions.isNotEmptyString(complaintId) && Preconditions.isNotNull(inboxHandler)) {
-            database.collection(COMPLAINTS_COLLECTION)
-                    .document(complaintId)
+            database.collection(COMPLAINTS_COLLECTION).document(complaintId)
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
@@ -157,10 +165,4 @@ public class InboxActions {
     }
 
 
-    private void handleChefComplaint(String chefId, boolean ban, Date suspentionDate){
-
-
-
-
-    }
 }

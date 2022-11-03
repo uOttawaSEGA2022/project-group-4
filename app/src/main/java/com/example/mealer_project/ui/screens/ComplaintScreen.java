@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.ui.core.StatefulView;
@@ -28,7 +29,37 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
 
     @Override
     public void updateUI() {
+    }
 
+
+    /**
+     * Updates the text on the complaint screen
+     * @param title
+     * @param client
+     * @param chef
+     * @param meal
+     * @param description
+     */
+    public void updateUI(String title, String client, String chef, String meal, String description) {
+        // sets the complaint header title
+        TextView textTitle = (TextView)findViewById(R.id.complaintHeader);
+        textTitle.setText(title);
+
+        // sets the text for client name
+        TextView textClient = (TextView)findViewById(R.id.clientName);
+        textClient.setText("Client: " + client);
+
+        // sets the text for chef name
+        TextView textChef = (TextView)findViewById(R.id.chefName);
+        textChef.setText("Chef: " + chef);
+
+        // sets the text for meal
+        TextView textMeal = (TextView)findViewById(R.id.mealName);
+        textMeal.setText("Meal: " + meal);
+
+        // sets the text for description
+        TextView textDescription = (TextView)findViewById(R.id.descriptionTitle);
+        textDescription.setText("Description: " + description);
     }
 
     @Override

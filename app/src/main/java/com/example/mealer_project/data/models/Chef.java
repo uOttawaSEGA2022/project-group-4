@@ -47,7 +47,7 @@ public class Chef extends User {
 
     public Chef(UserEntityModel userData, Address address, String description, String voidCheque) throws IllegalArgumentException {
         // instantiate Admins data members
-        super(userData.getFirstName(), userData.getLastName(), userData.getEmail(), userData.getPassword(), address, userData.getRole());
+        super(userData, address);
         this.setDescription(description);
         this.setVoidCheque(voidCheque);
         this.setNumOfMealsSold(0);

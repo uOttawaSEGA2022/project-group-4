@@ -11,6 +11,7 @@ import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -171,7 +172,7 @@ public class InboxHandler {
       * @param complaintId id of the complaint to be removed
       * @return Response indicating error, if current user doesn't have access
       */
-     public Response removeComplaint(String complaintId) {
+     public Response removeComplaint(String complaintId, boolean isSuspended, Date suspensionDate) {
           // check if user has access
           if (userHasAccess().isError()) {
                return userHasAccess();
@@ -179,9 +180,11 @@ public class InboxHandler {
 
           try {
                // remove complaint from App's AdminInbox
-               App.getAdminInbox().removeComplaint(complaintId);
+               //App.getAdminInbox().removeComplaint(complaintId);
+
                // remove complaint from firebase
                App.getPrimaryDatabase().INBOX.removeComplaint(complaintId, this);
+
           } catch (Exception e) {
                return new Response(false, e.getMessage());
           }

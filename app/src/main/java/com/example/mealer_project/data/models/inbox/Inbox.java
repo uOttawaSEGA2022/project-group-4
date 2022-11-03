@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.models.inbox;
 
+import java.sql.Date;
+
 /**
  * Generic Inbox Interface to enforce implementation of certain methods
  */

@@ -40,13 +40,13 @@ public class WelcomeScreen extends AppCompatActivity {
         // checks if User is Chef and is suspended
         if (currentUser.getRole() == UserRoles.CHEF) { //chef
             Chef chefUser = (Chef) currentUser; //casting to chef
+            App.getUserHandler().updateChef(chefUser);
 
             if (chefUser.getIsSuspended()) { //suspended
                 showSuspensionMessage(chefUser.getSuspensionDate());
             } else { //show normal chef screen
                 //implement this
             }
-
         }
 
     }
