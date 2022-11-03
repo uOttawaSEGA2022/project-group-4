@@ -44,7 +44,7 @@
             android:layout_marginRight="0dp"
             android:layout_toRightOf="@id/mealer_logo"
             android:fontFamily="sans-serif-medium"
-            android:text="Welcome Admin!"
+            android:text="Welcome! You are logged in as Admin"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:constraint_referenced_tags="1" />
@@ -69,8 +69,9 @@
 
 
     <ListView
+        android:id="@+id/complaintList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1" />
 
 </LinearLayout>

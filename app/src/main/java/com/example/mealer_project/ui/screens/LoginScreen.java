@@ -72,6 +72,7 @@ public class LoginScreen extends UIScreen implements StatefulView {
     public void showNextScreen() {
         // this method gets called when login completed
         setLoginInProcess(false);
+
         Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
         startActivity(intent);
     }

@@ -210,6 +210,7 @@
             android:layout_marginTop="90dp"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
+            android:minHeight="32dp"
             android:text="Submit -->"
             android:textColor="#FFFFFF"
             android:textSize="30dp"
