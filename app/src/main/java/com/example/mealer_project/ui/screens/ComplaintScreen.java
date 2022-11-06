@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,6 +22,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     private Button banButton;
     private DatePickerDialog datePickerDialog;
     DatePickerDialog.OnDateSetListener dateSetListener;
+    Complaint complaintData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,18 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         setContentView(R.layout.activity_complaint_screen);
         banButton = findViewById(R.id.ban_chef);
 
-        updateComplaintScreen();
+        try {
+
+            complaintData = (Complaint) getIntent().getSerializableExtra(AdminScreen.COMPLAINT_OBJ_INTENT_KEY);
+
+            updateComplaintScreen(complaintData.getTitle(), complaintData.getClientId(), complaintData.getChefId(), complaintData.getOrderId(), complaintData.getDescription());
+
+        }catch (Exception e) {
+            Log.e("ComplaintScreen", "unable to create complaint object");
+            displayErrorToast("Unable to display complaint!");
+        }
+
+
     }
 
     @Override
@@ -80,5 +93,13 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         datePickerDialog = new DatePickerDialog(ComplaintScreen.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
         datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         datePickerDialog.show();
+    }
+
+
+    public void onDateSet (DatePicker view,
+                                    int year,
+                                    int month,
+                                    int dayOfMonth) {
+
     }
 }

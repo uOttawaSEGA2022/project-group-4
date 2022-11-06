@@ -2,9 +2,9 @@ package com.example.mealer_project.data.models.inbox;
 
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,13 +15,14 @@ import java.util.Map;
  * Complaint class to create instances of complaints which will be stored in an inbox
  * Implements Comparator to enable sorting of complaints by date submitted
  */
-public class Complaint implements Comparator<Complaint> {
+public class Complaint implements Comparator<Complaint>, Serializable {
     // instance variables
     private String id;
     private String title;
     private String description;
     private String clientId;
     private String chefId;
+    private String orderId;
     private Date dateSubmitted;
 
     /**
@@ -117,6 +118,14 @@ public class Complaint implements Comparator<Complaint> {
 
     public void setChefId(String chefId) {
         this.chefId = chefId;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public Date getDateSubmitted() {

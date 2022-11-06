@@ -6,30 +6,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.InboxHandler;
-import com.example.mealer_project.data.models.User;
-import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 
 public class AdminScreen extends UIScreen implements StatefulView {
 
     int numOfButtons;
-    ListView complaintList;
+    ListView complaintListView;
+    List<Complaint> complaintsData;
+    public final static String COMPLAINT_OBJ_INTENT_KEY = "complaint";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +33,37 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
         App.getInboxHandler().updateAdminInbox(this);
 
-        complaintList = findViewById(R.id.complaintList);
-        complaintList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        complaintListView = findViewById(R.id.complaintList);
+        complaintListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getApplicationContext(), ComplaintScreen.class));
+
+                // guard-clause
+                if (complaintsData == null) {
+                    Log.e("setOnItemClickListener", "complaintsData is null");
+                    displayErrorToast("No complaints available");
+                }
+
+                // get the complaint
+                Complaint complaint = null;
+
+                try {
+
+                    Log.e("fgf", "id: " + complaint);
+                    Log.e("fgf", "pos: " + position);
+                    Log.e("fgf", "val: " + complaintListView.getItemAtPosition(position));
+
+                    complaint = complaintsData.get(position);
+
+                    // complaint = complaints[pos]
+                    Intent complaintScreenIntent = new Intent(getApplicationContext(), ComplaintScreen.class);
+                    complaintScreenIntent.putExtra(COMPLAINT_OBJ_INTENT_KEY, complaint);
+                    startActivity(complaintScreenIntent);
+                } catch (Exception e) {
+                    Log.e("setOnItemClickListener", "unable to create complaint object: " + e.getMessage());
+                    displayErrorToast("Unable to process request!");
+                }
+
             }
         });
     }
@@ -66,19 +87,19 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
     private void displayComplaints() {
         try {
-            Log.e("NUMBER COMPLAINTS", String.valueOf(App.getAdminInbox().getComplaints().size()));
+            complaintsData = App.getAdminInbox().getListOfComplaints();
+
+            Log.e("NUMBER COMPLAINTS", String.valueOf(complaintsData.size()));
 
             List<String> complaintTitles = new ArrayList<String>();
 
-            for (Complaint eachComplaint: App.getAdminInbox().getComplaints().values()) {
+            for (Complaint eachComplaint: complaintsData) {
                 complaintTitles.add(eachComplaint.getTitle());
             }
-
-
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, complaintTitles);
-            complaintList.setAdapter(arrayAdapter);
+            complaintListView.setAdapter(arrayAdapter);
         } catch (Exception e) {
-            Log.e("displayComplaints", "user doesn't have access");
+            Log.e("displayComplaints", "unable to display complaints: " + e.getMessage());
         }
 
     }

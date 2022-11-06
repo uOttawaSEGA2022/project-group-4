@@ -1,10 +1,13 @@
 package com.example.mealer_project.data.models.inbox;
 
+import android.os.Build;
 import android.util.Log;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.utils.Preconditions;
@@ -46,6 +49,10 @@ public class AdminInbox implements Inbox {
      */
     public HashMap<String, Complaint> getComplaints() {
         return this.complaints;
+    }
+
+    public ArrayList<Complaint> getListOfComplaints() {
+        return new ArrayList<>(this.complaints.values());
     }
 
     /**
