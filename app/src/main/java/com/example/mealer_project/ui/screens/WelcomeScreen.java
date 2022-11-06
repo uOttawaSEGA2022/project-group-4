@@ -16,10 +16,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 
 
 public class WelcomeScreen extends AppCompatActivity {
+
+    public final static int INFINITE_YEAR = 9999;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +72,11 @@ public class WelcomeScreen extends AppCompatActivity {
         final long HUNDRED_YEARS = 3155692597470L;
         TextView editText = (TextView) findViewById(R.id.suspensionMsg);
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(suspensionDate);
+
         // Process: checking for finite or infinite ban
-        if (suspensionDate.getTime() - new Date().getTime() > HUNDRED_YEARS) { //infinite
+        if (calendar.get(Calendar.YEAR) == INFINITE_YEAR) { //infinite
 
             // setting the text
             editText.setText("Your account has been permanently suspended.");

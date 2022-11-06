@@ -13,12 +13,10 @@ import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Preconditions;
-import com.example.mealer_project.utils.Response;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,18 +26,22 @@ import java.util.Locale;
 
 public class ComplaintScreen extends UIScreen implements StatefulView{
     private Button dismissButton;
-    private Button banButton;
+    private Button banTempButton;
+    private Button banPermButton;
     private DatePickerDialog datePickerDialog;
     DatePickerDialog.OnDateSetListener dateSetListener;
     Complaint complaintData;
     String[] clientAndChefNames;
+    public final static String INFINITE_SUSPENSION_DATE = "01/01/9999";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_screen);
         dismissButton = (Button) findViewById(R.id.dismiss);
-        banButton = findViewById(R.id.ban_chef);
+        banTempButton = (Button) findViewById(R.id.ban_chef);
+        banPermButton = (Button) findViewById(R.id.ban_permament);
 
         // get the complaint data
         try {
@@ -55,7 +57,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         // get client and chef user names
         getClientAndChefNames();
 
-        banButton.setOnClickListener(new View.OnClickListener() {
+        banTempButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
@@ -69,10 +71,15 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
             }
         });
 
+        banPermButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                suspendChef(INFINITE_SUSPENSION_DATE);
+            }});
+
         dateSetListener = new DatePickerDialog.OnDateSetListener(){
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                System.out.println("THIS GOT CALLED");
                 String suspendString = Integer.toString(month + 1) + "/" + Integer.toString(dayOfMonth) + "/" + Integer.toString(year);
                 Date suspendDate = null;
                 try {
@@ -80,7 +87,8 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                App.getUserHandler().suspendChef(complaintData.getChefId(), suspendDate);
+                // suspend the chef
+                suspendChef(suspendString);
             }
         };
 
@@ -93,14 +101,12 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
             public void onClick(View v) {
                 App.getPrimaryDatabase().INBOX.removeComplaint(complaintData.getId(), App.getInboxHandler()); //Remove complaint from primary database of Admin Inbox
                 showNextScreen(); //Redirect to Admin Screen
-
             }
         });
     }
 
     @Override
     public void updateUI() {
-
         try {
             updateComplaintScreen(complaintData.getTitle(), clientAndChefNames[0], clientAndChefNames[1], complaintData.getOrderId(), complaintData.getDescription());
         }catch (Exception e) {
@@ -108,7 +114,6 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
             displayErrorToast("Unable to display complaint!");
         }
     }
-
 
     /**
      * Updates the text on the complaint screen
@@ -183,5 +188,12 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
 
     public void handleNamesRetrievalFailure(String error) {
         displayErrorToast(error);
+    }
+
+    private void suspendChef(String suspensionDate) {
+        // suspend the chef
+        App.getUserHandler().suspendChef(complaintData.getChefId(), suspensionDate);
+        // take back to admin screen
+        showNextScreen();
     }
 }

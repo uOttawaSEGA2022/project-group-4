@@ -48,11 +48,6 @@ public class AdminScreen extends UIScreen implements StatefulView {
                 Complaint complaint = null;
 
                 try {
-
-                    Log.e("fgf", "id: " + complaint);
-                    Log.e("fgf", "pos: " + position);
-                    Log.e("fgf", "val: " + complaintListView.getItemAtPosition(position));
-
                     complaint = complaintsData.get(position);
 
                     // complaint = complaints[pos]

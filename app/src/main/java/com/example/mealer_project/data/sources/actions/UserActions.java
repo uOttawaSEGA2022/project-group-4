@@ -27,8 +27,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class UserActions {
 
@@ -93,12 +95,11 @@ public class UserActions {
 
                         if (document.getData() != null){
                             Response r = makeChefFromFirebase(document);
-
                             if (loginScreen != null && r.isSuccess()) {
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
                                 Log.e("Login failed for chef", r.getErrorMessage());
-                                loginScreen.userLoginFailed("Login failed for user: " + r.getErrorMessage());
+                                loginScreen.userLoginFailed("Login failed, " + r.getErrorMessage());
                             }
                         }
 
@@ -217,6 +218,14 @@ public class UserActions {
                 throw new NullPointerException("makeChefFromFirebase: invalid document object");
             }
 
+            boolean isSuspended = (Boolean) document.getData().get("isSuspended");
+            String chefSuspensionDate = String.valueOf(document.getData().get("suspensionDate"));
+
+
+            if (isSuspended) {
+                new Response(false, "Chef is suspended till: " + chefSuspensionDate);
+            }
+
             UserEntityModel newUser = new UserEntityModel();
             AddressEntityModel newAddress = new AddressEntityModel();
 
@@ -238,12 +247,10 @@ public class UserActions {
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
 
-            newChef.setIsSuspended((Boolean)document.getData().get("isSuspended"));
+            newChef.setIsSuspended(isSuspended);
 
-            if (String.valueOf(document.getData().get("suspensionDate")) != ""){
-                Date suspensionDate = new SimpleDateFormat("dd/MM/yyyy").parse(String.valueOf(document.getData().get("suspensionDate")));
-                newChef.setSuspensionDate(suspensionDate);
-            }
+            newChef.setSuspensionDate(DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(chefSuspensionDate));
+
             App.getAppInstance().setUser(newChef);
 
             return new Response(true);
@@ -260,7 +267,7 @@ public class UserActions {
      * @param suspensionDate end date of suspension
      */
 
-    public void updateChefSuspension(String chefId, boolean isSuspended, Date suspensionDate){
+    public void updateChefSuspension(String chefId, boolean isSuspended, String suspensionDate){
 
         // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
         database.collection(CHEF_COLLECTION).document(chefId)

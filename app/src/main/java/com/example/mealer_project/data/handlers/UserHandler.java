@@ -116,7 +116,7 @@ public class UserHandler {
      * @param chefID Chef involved with complaint
      * @param suspensionDate end date of suspension
      */
-    public void suspendChef(String chefID, Date suspensionDate){
+    public void suspendChef(String chefID, String suspensionDate){
         App.getPrimaryDatabase().USER.updateChefSuspension(chefID, true, suspensionDate);
     }
 
