@@ -109,11 +109,11 @@ public class UserHandler {
 
     /**
      * Method to suspend chef
-     * @param chef Chef involved with complaint
+     * @param chefID Chef involved with complaint
      * @param suspensionDate end date of suspension
      */
-    public void suspendChef(Chef chef, Date suspensionDate){
-        App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), true, suspensionDate);
+    public void suspendChef(String chefID, Date suspensionDate){
+        App.getPrimaryDatabase().USER.updateChefSuspension(chefID, true, suspensionDate);
     }
 
     /**
