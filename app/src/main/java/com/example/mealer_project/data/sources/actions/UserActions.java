@@ -16,6 +16,7 @@ import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.UserRoles;
+import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +33,11 @@ import java.util.Date;
 public class UserActions {
 
     FirebaseFirestore database;
+    private final static String CLIENT_COLLECTION = "Clients";
+    private final static String CHEF_COLLECTION = "Chefs";
+    private final static String ADMIN_COLLECTION = "Admin";
+
+
 
     public UserActions(FirebaseFirestore database) {
         this.database = database;
@@ -41,7 +47,7 @@ public class UserActions {
         // first check if Admin
         // then check if Client
         // then check if Chef
-        DocumentReference userReference = database.collection("Admin").document(userId);
+        DocumentReference userReference = database.collection(ADMIN_COLLECTION).document(userId);
 
         userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -75,7 +81,7 @@ public class UserActions {
     }
 
     protected void getChefById(String userId, LoginScreen loginScreen) {
-        DocumentReference userReference = database.collection("Chefs").document(userId);
+        DocumentReference userReference = database.collection(CHEF_COLLECTION).document(userId);
 
         userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -107,7 +113,7 @@ public class UserActions {
     }
 
     protected void getClientById(String userId, LoginScreen loginScreen) {
-        DocumentReference userReference = database.collection("Clients").document(userId);
+        DocumentReference userReference = database.collection(CLIENT_COLLECTION).document(userId);
 
         userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -257,7 +263,7 @@ public class UserActions {
     public void updateChefSuspension(String chefId, boolean isSuspended, Date suspensionDate){
 
         // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
-        database.collection("Chefs").document(chefId)
+        database.collection(CHEF_COLLECTION).document(chefId)
                 .update(
                         "isSuspended", isSuspended,
                         "suspensionDate",suspensionDate)
@@ -271,6 +277,72 @@ public class UserActions {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w("Error", "Error updating document", e);
+                    }
+                });
+    }
+
+    public void getClientAndChefNamesByIds(String clientId, String chefId, ComplaintScreen complaintScreen) {
+        // first get client name
+        database
+                .collection(CLIENT_COLLECTION)
+                .document(clientId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                if (document.getData() != null){
+                                    complaintScreen
+                                            .handleNamesRetrievalSuccess(
+                                                    document.getData().get("firstName")
+                                                    + " " +
+                                                    document.getData().get("lastName")
+                                            );
+                                } else {
+                                    Log.e("getClientChefName", "document data null");
+                                    complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                                }
+                            } else {
+                                Log.e("getClientChefName", "client not found for id: " + clientId);
+                                complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                            }
+                        } else {
+                            Log.e(TAG, "getClientChefName failed with ", task.getException());
+                        }
+                    }
+                });
+
+        // first get client name
+        database
+                .collection(CHEF_COLLECTION)
+                .document(chefId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                if (document.getData() != null){
+                                    complaintScreen
+                                            .handleNamesRetrievalSuccess(
+                                                    document.getData().get("firstName")
+                                                            + " " +
+                                                            document.getData().get("lastName")
+                                            );
+                                } else {
+                                    Log.e("getClientChefName", "document data null");
+                                    complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                                }
+                            } else {
+                                Log.e("getClientChefName", "chef not found for provided id: " + chefId);
+                                complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                            }
+                        } else {
+                            Log.e(TAG, "getClientChefName failed with ", task.getException());
+                        }
                     }
                 });
     }

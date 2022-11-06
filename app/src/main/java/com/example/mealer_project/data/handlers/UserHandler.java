@@ -1,15 +1,19 @@
 package com.example.mealer_project.data.handlers;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.Address;
+import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.UserRoles;
+import com.example.mealer_project.ui.screens.AdminScreen;
+import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.ui.screens.SignupScreen;
 import com.example.mealer_project.utils.Response;
@@ -130,4 +134,9 @@ public class UserHandler {
             }
         }
     }
+
+    public void getClientAndChefNamesByIds(String clientId, String chefId, ComplaintScreen complaintScreen) {
+        App.getPrimaryDatabase().USER.getClientAndChefNamesByIds(clientId, chefId, complaintScreen);
+    }
+
 }

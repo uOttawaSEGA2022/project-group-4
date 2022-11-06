@@ -17,6 +17,8 @@ import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.utils.Response;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -30,6 +32,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     private DatePickerDialog datePickerDialog;
     DatePickerDialog.OnDateSetListener dateSetListener;
     Complaint complaintData;
+    String[] clientAndChefNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +41,19 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         dismissButton = (Button) findViewById(R.id.dismiss);
         banButton = findViewById(R.id.ban_chef);
 
+        // get the complaint data
         try {
-
             complaintData = (Complaint) getIntent().getSerializableExtra(AdminScreen.COMPLAINT_OBJ_INTENT_KEY);
-            updateComplaintScreen(complaintData.getTitle(), complaintData.getClientId(), complaintData.getChefId(), complaintData.getOrderId(), complaintData.getDescription());
-
         } catch (Exception e) {
             Log.e("ComplaintScreen", "unable to create complaint object");
             displayErrorToast("Unable to display complaint!");
         }
+
+        // initialize array to hold client and chef names
+        clientAndChefNames = new String[2];
+
+        // get client and chef user names
+        getClientAndChefNames();
 
         banButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +100,15 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
 
     @Override
     public void updateUI() {
+
+        try {
+            updateComplaintScreen(complaintData.getTitle(), clientAndChefNames[0], clientAndChefNames[1], complaintData.getOrderId(), complaintData.getDescription());
+        }catch (Exception e) {
+            Log.e("ComplaintScreen", "unable to create complaint object");
+            displayErrorToast("Unable to display complaint!");
+        }
     }
+
 
     /**
      * Updates the text on the complaint screen
@@ -104,6 +119,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
      * @param description
      */
     public void updateComplaintScreen(String title, String client, String chef, String meal, String description) {
+
         // sets the complaint header title
         TextView textTitle = (TextView)findViewById(R.id.complaintHeader);
         textTitle.setText(title);
@@ -117,8 +133,8 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         textChef.setText(chef);
 
         // sets the text for meal
-        TextView textMeal = (TextView)findViewById(R.id.mealComplaintName);
-        textMeal.setText(meal);
+        // TextView textMeal = (TextView)findViewById(R.id.mealComplaintName);
+        // textMeal.setText(meal);
 
         // sets the text for description
         TextView textDescription = (TextView)findViewById(R.id.complaintDescription);
@@ -131,5 +147,41 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     @Override
     public void showNextScreen() {
         startActivity(new Intent(getApplicationContext(), AdminScreen.class));
+    }
+
+    private void getClientAndChefNames() {
+
+        // we need complaint data to retrieve chef and client names by ids
+        if (complaintData == null) {
+            Log.e("getClientAndChefNames", "complaintData is null");
+            displayErrorToast("not a valid complaint data");
+        }
+
+        // send the request to get id
+        App.getUserHandler().getClientAndChefNamesByIds(complaintData.getClientId(), complaintData.getChefId(), this);
+    }
+
+    public void handleNamesRetrievalSuccess(String name) {
+        if (clientAndChefNames == null) {
+            Log.e("handleNames", "clientAndChefNames is null");
+            displayErrorToast("Unable to process request");
+        }
+
+        // if names array is empty, set client name
+        if (!Preconditions.isNotEmptyString(clientAndChefNames[0])) {
+            clientAndChefNames[0] = name;
+        } else {
+            // set chef's name
+            clientAndChefNames[1] = name;
+        }
+
+        // if we have now received both client and chef names
+        if (Preconditions.isNotEmptyString(clientAndChefNames[0]) && Preconditions.isNotEmptyString(clientAndChefNames[1])) {
+            updateUI();
+        }
+    }
+
+    public void handleNamesRetrievalFailure(String error) {
+        displayErrorToast(error);
     }
 }
