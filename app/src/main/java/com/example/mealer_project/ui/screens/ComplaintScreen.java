@@ -1,6 +1,7 @@
 package com.example.mealer_project.ui.screens;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class ComplaintScreen extends UIScreen implements StatefulView{
+    private Button dismissButton;
     private Button banButton;
     private DatePickerDialog datePickerDialog;
     DatePickerDialog.OnDateSetListener dateSetListener;
@@ -33,15 +35,15 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_screen);
+        dismissButton = (Button) findViewById(R.id.dismiss);
         banButton = findViewById(R.id.ban_chef);
 
         try {
 
             complaintData = (Complaint) getIntent().getSerializableExtra(AdminScreen.COMPLAINT_OBJ_INTENT_KEY);
-
             updateComplaintScreen(complaintData.getTitle(), complaintData.getClientId(), complaintData.getChefId(), complaintData.getOrderId(), complaintData.getDescription());
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e("ComplaintScreen", "unable to create complaint object");
             displayErrorToast("Unable to display complaint!");
         }
@@ -74,12 +76,24 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
                 App.getUserHandler().suspendChef(complaintData.getChefId(), suspendDate);
             }
         };
+
+        /**
+         * On-Click Listener for Dismiss Button in Complaint Screen
+         * When clicked, the complaint will be dismissed, and user will be redirected back to admin screen
+         */
+        dismissButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                App.getPrimaryDatabase().INBOX.removeComplaint(complaintData.getId(), App.getInboxHandler()); //Remove complaint from primary database of Admin Inbox
+                showNextScreen(); //Redirect to Admin Screen
+
+            }
+        });
     }
 
     @Override
     public void updateUI() {
     }
-
 
     /**
      * Updates the text on the complaint screen
@@ -111,8 +125,11 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         textDescription.setText(description);
     }
 
+    /**
+     * This method creates a new activity with the updated admin screen & inbox
+     */
     @Override
     public void showNextScreen() {
-
+        startActivity(new Intent(getApplicationContext(), AdminScreen.class));
     }
 }
