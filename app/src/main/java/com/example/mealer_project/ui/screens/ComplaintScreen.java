@@ -10,6 +10,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 
@@ -25,6 +27,8 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complaint_screen);
         banButton = findViewById(R.id.ban_chef);
+
+        updateComplaintScreen();
     }
 
     @Override
@@ -40,26 +44,26 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
      * @param meal
      * @param description
      */
-    public void updateUI(String title, String client, String chef, String meal, String description) {
+    public void updateComplaintScreen(String title, String client, String chef, String meal, String description) {
         // sets the complaint header title
         TextView textTitle = (TextView)findViewById(R.id.complaintHeader);
         textTitle.setText(title);
 
         // sets the text for client name
-        TextView textClient = (TextView)findViewById(R.id.clientName);
-        textClient.setText("Client: " + client);
+        TextView textClient = (TextView)findViewById(R.id.clientComplaintName);
+        textClient.setText(client);
 
         // sets the text for chef name
-        TextView textChef = (TextView)findViewById(R.id.chefName);
-        textChef.setText("Chef: " + chef);
+        TextView textChef = (TextView)findViewById(R.id.chefComplaintName);
+        textChef.setText(chef);
 
         // sets the text for meal
-        TextView textMeal = (TextView)findViewById(R.id.mealName);
-        textMeal.setText("Meal: " + meal);
+        TextView textMeal = (TextView)findViewById(R.id.mealComplaintName);
+        textMeal.setText(meal);
 
         // sets the text for description
-        TextView textDescription = (TextView)findViewById(R.id.descriptionTitle);
-        textDescription.setText("Description: " + description);
+        TextView textDescription = (TextView)findViewById(R.id.complaintDescription);
+        textDescription.setText(description);
     }
 
     @Override
