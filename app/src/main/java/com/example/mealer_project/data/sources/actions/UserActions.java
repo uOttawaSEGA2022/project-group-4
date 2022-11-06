@@ -254,7 +254,7 @@ public class UserActions {
      * @param suspensionDate end date of suspension
      */
 
-    public void updateChefSuspension(String chefId, boolean isSuspended, String suspensionDate){
+    public void updateChefSuspension(String chefId, boolean isSuspended, Date suspensionDate){
 
         // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
         database.collection("Chefs").document(chefId)

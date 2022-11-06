@@ -113,11 +113,7 @@ public class UserHandler {
      * @param suspensionDate end date of suspension
      */
     public void suspendChef(Chef chef, Date suspensionDate){
-
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy");
-        String suspension= formatter.format(suspensionDate);
-
-        App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), true, suspension);
+        App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), true, suspensionDate);
     }
 
     /**
@@ -130,7 +126,7 @@ public class UserHandler {
             if (new Date().after(chef.getSuspensionDate())) { // if the date has passed, we change info in firebase
                 chef.setIsSuspended(false);
                 chef.setSuspensionDate(null);
-                App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), false, "");
+                App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), false, null);
             }
         }
     }

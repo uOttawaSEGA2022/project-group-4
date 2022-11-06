@@ -95,11 +95,11 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         datePickerDialog.show();
     }
 
-
-    public void onDateSet (DatePicker view,
+    public void dateSetListener (DatePicker view,
                                     int year,
                                     int month,
                                     int dayOfMonth) {
+
 
     }
 }
