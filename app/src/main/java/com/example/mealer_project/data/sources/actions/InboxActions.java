@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.data.sources.FirebaseRepository;
@@ -126,6 +127,25 @@ public class InboxActions {
                 Log.e("addComplaint", "Invalid object values for complaint and inboxHandler");
             }
         }
+    }
+
+    public void addSampleComplaint(Complaint complaint) {
+        Map<String, Object> complaintData = complaint.getComplaintDataMap();
+        database.collection(COMPLAINTS_COLLECTION)
+                .add(complaintData)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        // update complaint id
+                        complaint.setId(documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("addSampleComplaint", "Failed to add complaint to database: " + e.getMessage());
+                    }
+                });
     }
 
     /**

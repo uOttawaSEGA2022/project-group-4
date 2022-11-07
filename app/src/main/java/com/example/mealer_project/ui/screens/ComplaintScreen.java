@@ -99,7 +99,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         dismissButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.getPrimaryDatabase().INBOX.removeComplaint(complaintData.getId(), App.getInboxHandler()); //Remove complaint from primary database of Admin Inbox
+                App.getInboxHandler().removeComplaint(complaintData.getId()); //Remove complaint from primary database of Admin Inbox
                 showNextScreen(); //Redirect to Admin Screen
             }
         });
@@ -193,6 +193,8 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     private void suspendChef(String suspensionDate) {
         // suspend the chef
         App.getUserHandler().suspendChef(complaintData.getChefId(), suspensionDate);
+        // remove the complaint
+        App.getInboxHandler().removeComplaint(complaintData.getId());
         // take back to admin screen
         showNextScreen();
     }

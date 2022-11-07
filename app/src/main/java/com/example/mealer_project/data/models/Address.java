@@ -53,4 +53,8 @@ public class Address {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public static Address getSampleAddress() {
+        return new Address("23 St", "Barrie", "L4M7B6", "Canada");
+    }
 }

@@ -23,6 +23,7 @@ public class Complaint implements Comparator<Complaint>, Serializable {
     private String clientId;
     private String chefId;
     private String orderId;
+    private boolean isResolved;
     private Date dateSubmitted;
 
     /**
@@ -55,6 +56,7 @@ public class Complaint implements Comparator<Complaint>, Serializable {
         setClientId(clientId);
         setChefId(chefId);
         setDateSubmitted(dateSubmitted);
+        setResolved(false);
     }
 
     public Complaint(String id, String title, String description, String clientId, String chefId, String dateSubmitted) throws ParseException {
@@ -64,6 +66,7 @@ public class Complaint implements Comparator<Complaint>, Serializable {
         setClientId(clientId);
         setChefId(chefId);
         setDateSubmitted(dateSubmitted);
+        setResolved(false);
     }
 
     /**
@@ -71,13 +74,14 @@ public class Complaint implements Comparator<Complaint>, Serializable {
      * @param complaintData ComplaintEntityModel containing unvalidated date
      */
     public Complaint(ComplaintEntityModel complaintData) throws ParseException {
-        setId(complaintData.getId());
+//        setId(complaintData.getId());
         setTitle(complaintData.getTitle());
         setDescription(complaintData.getDescription());
         setClientId(complaintData.getClientId());
         setChefId(complaintData.getChefId());
         // set the date submitted, receives value as string, throws ParseException if format is incorrect
         setDateSubmitted(complaintData.getDateSubmitted());
+        setResolved(false);
     }
 
     public String getId() {
@@ -139,6 +143,14 @@ public class Complaint implements Comparator<Complaint>, Serializable {
     private void setDateSubmitted(String dateSubmitted) throws ParseException {
         // mm-dd--yyyy
         this.dateSubmitted = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(dateSubmitted);
+    }
+
+    public boolean isResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(boolean resolved) {
+        isResolved = resolved;
     }
 
     public Map<String, Object> getComplaintDataMap() {
