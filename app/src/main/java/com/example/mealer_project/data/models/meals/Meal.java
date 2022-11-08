@@ -14,6 +14,7 @@ public class Meal {
     private String allergens;
     private String description;
     private boolean offered;
+    private boolean onMenu;
     private double price;
     /**
      * Create an instance of meal
@@ -26,10 +27,11 @@ public class Meal {
      * @param allergens Potential allergens in meal
      * @param description Short description of the meal
      * @param offered Whether the meal is currently offered or not
+     * @param onMenu Whether the meal is part of menu or not
      * @param price Current price of the meal
      */
     Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
-         String ingredients, String allergens, String description, boolean offered, double price) {
+         String ingredients, String allergens, String description, boolean offered, boolean onMenu, double price) {
 
         this.setName(name);
         this.setMealID(mealID);
@@ -40,6 +42,7 @@ public class Meal {
         this.setAllergens(allergens);
         this.setDescription(description);
         this.setOffered(offered);
+        this.setOnMenu(onMenu);
         this.setPrice(price);
     }
 
@@ -159,7 +162,7 @@ public class Meal {
      * Check if a meal is currently being offered by a chef or not
      * @return Boolean representing True if offered, False if not offered
      */
-    public boolean isOffered() { return offered; }
+    public boolean isOffered() { return this.offered; }
 
     /**
      * Set/Change the state of whether meal is offered or not
@@ -167,6 +170,20 @@ public class Meal {
      */
     public void setOffered(boolean offered) {
         this.offered = offered;
+    }
+
+    /**
+     * Check if a meal is currently part of Chef's menu or not
+     * @return Boolean representing True if part of menu, False if not
+     */
+    public boolean isOnMenu() { return this.onMenu; }
+
+    /**
+     * Set/Change the state of whether meal is part of menu or not
+     * @param onMenu part of menu or not
+     */
+    public void setOnMenu(boolean onMenu) {
+        this.onMenu = onMenu;
     }
 
     /**

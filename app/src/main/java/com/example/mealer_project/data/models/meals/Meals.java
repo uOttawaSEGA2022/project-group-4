@@ -11,12 +11,13 @@ import java.util.Map;
 
 public class Meals {
 
-    //<MealID, Meal> key-value pairs
-    private final Map<String, Meal> menu;
+    // Store Meals in a Map<MealID, Meal> key-value pairs
     private final Map<String, Meal> meals;
 
+    /**
+     * Default constructor initializes a HashMap for storing Meals
+     */
     public Meals() {
-        this.menu = new HashMap<>(); //<MealID, Meal> key-value pair
         this.meals = new HashMap<>(); //<MealID, Meal> key-value pair
     }
 
@@ -69,11 +70,11 @@ public class Meals {
         // guard-clause
         if (Preconditions.isNotEmptyString(mealId)) {
             // check if meal exists and has a valid object
-            if (this.menu.get(mealId) != null) {
+            if (this.meals.get(mealId) != null) {
                 // check if meal if offered
-                if (this.menu.get(mealId).isOffered()) {
+                if (this.meals.get(mealId).isOffered()) {
                     // add meal to the menu
-                    this.menu.put(mealId, this.menu.get(mealId));
+                    this.meals.get(mealId).setOnMenu(true);
                     // return success
                     return new Response(true);
                 } else {
@@ -116,11 +117,16 @@ public class Meals {
         // guard-clause
         if (Preconditions.isNotEmptyString(mealId)) {
             // check if meal exists
-            if (this.menu.get(mealId) != null) {
-                // remove the meal
-                this.menu.remove(mealId);
-                // return operation success
-                return new Response(true);
+            if (this.meals.get(mealId) != null) {
+                // check if meal is currently on menu
+                if (this.meals.get(mealId).isOnMenu()) {
+                    // remove meal from menu
+                    this.meals.get(mealId).setOnMenu(false);
+                    // return operation success
+                    return new Response(true);
+                } else {
+                    return new Response(false, "Meal not part of Chef's menu");
+                }
             } else {
                 return new Response(false, "Could not find any meal for the provided meal ID");
             }
@@ -134,7 +140,16 @@ public class Meals {
      * @return a Map containing Meal ID's as keys and Meal objects as values
      */
     protected Map<String, Meal> getMenu() {
-        return this.menu;
+        // map to store the result
+        HashMap<String, Meal> menu = new HashMap<>();
+        // filter and add menu meal items to above map
+        for (Meal meal : this.meals.values()) {
+            if (meal.isOnMenu()) {
+                menu.put(meal.getMealID(), meal);
+            }
+        }
+        // return the result
+        return menu;
     }
 
     /**
