@@ -39,4 +39,13 @@ public class UserTest {
         UserRoles actual = user.getRole();
         assertEquals("Last name does not match", expected, actual);
     }
+
+    @Test
+    public void getSuspended() {
+        Chef user = new Chef("Henry", "Cavil", "hc@gm.com", "Ottawa@123", Address.getSampleAddress(), UserRoles.CHEF, "description", "", 1, 1);
+        boolean expected = false;
+        boolean actual = user.getIsSuspended();
+        assertEquals("Chef suspension does not match", expected, actual);
+    }
+
 }
