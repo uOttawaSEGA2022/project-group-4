@@ -1,12 +1,9 @@
 package com.example.mealer_project.data.models;
 
-import androidx.annotation.NonNull;
-
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.models.meals.Meals;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.HashMap;
 
 /**
  * This class instantiates an instance of Chef for Mealer App
@@ -19,7 +16,10 @@ public class Chef extends User {
     private int numOfMealsSold;
     private boolean isSuspended;
     private Date suspensionDate;
-    private Map<String, Meal> chefMenu;
+    // storing Chef's meals in an instance of Meals class which provides methods to work with a collection of meals
+    // variable is public for accessibility, but also final
+    public final Meals MEALS;
+
     /**
      * Create a single instance of chef
      * @param firstName First name of the chef
@@ -40,7 +40,8 @@ public class Chef extends User {
         this.setVoidCheque(voidCheque);
         this.setNumOfMealsSold(numOfMealsSold);
         this.setChefRating(chefRating);
-        this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
+        // instantiate a meals object where Chef's meals will be stored
+        this.MEALS = new Meals();
         this.isSuspended = false;
         this.suspensionDate = null;
     }
@@ -52,7 +53,8 @@ public class Chef extends User {
         this.setVoidCheque(voidCheque);
         this.setNumOfMealsSold(0);
         this.setChefRating(0);
-        this.chefMenu = new HashMap<String, Meal>(); //<MealID, Meal> key-value pair
+        // instantiate a meals object where Chef's meals will be stored
+        this.MEALS = new Meals();
         this.isSuspended = false;
         this.suspensionDate = null;
     }
@@ -151,28 +153,19 @@ public class Chef extends User {
     }
 
     /**
-     * Retrieve a meal from the chef's menu
-     * @param mealID representing the ID of the meal
-     * @return Meal instance from chef's menu
+     * to check if check if suspended
+     * @return true is Chef is suspended, else false
      */
-    public Meal getMeal(String mealID) {
-        return this.chefMenu.get(mealID);
+    public boolean isSuspended() {
+        return isSuspended;
     }
 
     /**
-     * Add a new meal to the chef's menu
-     * @param newMeal Meal to be added to menu
+     * Method to specify if Chef is suspended or not
+     * @param suspended accepts true to set Chef as suspended, else false
      */
-    public void addMeal(@NonNull Meal newMeal) {
-        chefMenu.put(newMeal.getMealID(), newMeal);
-    }
-
-    /**
-     * Remove a meal from the chef's menu
-     * @param removeMeal Meal to be removed from menu
-     */
-    public void removeMeal(@NonNull Meal removeMeal) {
-        chefMenu.remove(removeMeal.getMealID());
+    public void setSuspended(boolean suspended) {
+        isSuspended = suspended;
     }
 
 }

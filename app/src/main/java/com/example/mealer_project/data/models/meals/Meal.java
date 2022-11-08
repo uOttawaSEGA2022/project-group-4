@@ -1,4 +1,4 @@
-package com.example.mealer_project.data.models;
+package com.example.mealer_project.data.models.meals;
 
 
 /**
