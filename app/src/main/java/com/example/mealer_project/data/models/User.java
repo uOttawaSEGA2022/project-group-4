@@ -232,15 +232,7 @@ public class User {
         if (email.length() > 0) { //not empty
 
             // Process: checking if email matches the email pattern
-            if (email.matches(emailPattern)) { //success
-
-                return true;
-
-            } else { //invalid
-
-                return false;
-
-            }
+            return email.matches(emailPattern);
 
         }
         else { //empty field
@@ -272,7 +264,6 @@ public class User {
             }
         }
 
-
     }
 
     /**
@@ -295,7 +286,6 @@ public class User {
          */
 
         // Variable Declaration
-        boolean atLeast8 = false;
         boolean hasLetters = false;
         boolean hasCapital = false;
         boolean hasNumber = false;
@@ -303,10 +293,8 @@ public class User {
 
         char[] charsInPassword = password.toCharArray();
 
-        // Process: checking for password length
+        // Process: checking for password length (has at least 8 letters)
         if (charsInPassword.length >= 8) { //valid
-
-            atLeast8 = true;
 
             // Process: looping through password
             for (int i = 0; i < charsInPassword.length; i++) {
@@ -380,15 +368,6 @@ public class User {
 
         }
 
-    }
-
-    /**
-     * Validate user's password against the supplied password
-     * @param password password to validate
-     * @return True, if passwords match, else False
-     */
-    private Boolean checkMatchingPasswords(String password) {
-        return this.password.equals(password);
     }
 
     /**

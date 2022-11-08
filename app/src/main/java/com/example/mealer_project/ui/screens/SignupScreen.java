@@ -258,6 +258,10 @@ public class SignupScreen extends UIScreen implements StatefulView {
         }
     }
 
+    /**
+     * Validate user's password against the supplied password
+     * @return True, if passwords match, else False
+     */
     private boolean checkConfirmPasswordMatches() {
         EditText textPassword = (EditText)findViewById(R.id.signupPassword);
         String password = textPassword.getText().toString();
