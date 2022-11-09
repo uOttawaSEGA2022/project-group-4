@@ -94,12 +94,36 @@ public class UserActions {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         if (document.getData() != null){
-                            Response r = makeChefFromFirebase(document);
-                            if (loginScreen != null && r.isSuccess()) {
-                                loginScreen.showNextScreen();
-                            } else if (loginScreen != null){
-                                Log.e("Login failed for chef", r.getErrorMessage());
-                                loginScreen.userLoginFailed("Login failed, " + r.getErrorMessage());
+
+                            // if chef is suspended, we don't need to store Chef data locally
+
+                            // get value of isSuspended for check
+                            boolean isSuspended = (Boolean) document.getData().get("isSuspended");
+
+                            // if chef is suspended, return right away with empty chef
+                            if (isSuspended) {
+                                // get suspension date
+                                if (document.getData().get("suspensionDate") != null) {
+                                    String chefSuspensionDate = String.valueOf((document.getData().get("suspensionDate")));
+
+                                    // inform UI that Chef is suspended and provide it suspension date
+                                    loginScreen.handleSuspendedChefLogin(chefSuspensionDate, String.valueOf(document.getData().get("firstName")));
+                                } else {
+                                    loginScreen.userLoginFailed("Could not retrieve a valid date for suspended chef");
+                                }
+                                // return
+                                new Response(false, "Chef is suspended");
+                            }
+
+                            // if Chef is not suspended, we create the Chef instance
+                            else {
+                                Response r = makeChefFromFirebase(document);
+                                if (loginScreen != null && r.isSuccess()) {
+                                    loginScreen.showNextScreen();
+                                } else if (loginScreen != null){
+                                    Log.e("Login failed for chef", r.getErrorMessage());
+                                    loginScreen.userLoginFailed("Login failed, " + r.getErrorMessage());
+                                }
                             }
                         }
 
@@ -218,14 +242,6 @@ public class UserActions {
                 throw new NullPointerException("makeChefFromFirebase: invalid document object");
             }
 
-            boolean isSuspended = (Boolean) document.getData().get("isSuspended");
-            String chefSuspensionDate = String.valueOf(document.getData().get("suspensionDate"));
-
-
-            if (isSuspended) {
-                new Response(false, "Chef is suspended till: " + chefSuspensionDate);
-            }
-
             UserEntityModel newUser = new UserEntityModel();
             AddressEntityModel newAddress = new AddressEntityModel();
 
@@ -247,9 +263,13 @@ public class UserActions {
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
 
-            newChef.setIsSuspended(isSuspended);
+            newChef.setIsSuspended((Boolean) document.getData().get("isSuspended"));
 
-            newChef.setSuspensionDate(DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(chefSuspensionDate));
+            // if suspension date is NOT null (meaning we do have a value)
+            newChef.setSuspensionDate(
+                    document.getData().get("suspensionDate") != null ?
+                    DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(String.valueOf((document.getData().get("suspensionDate")))):
+                    null);
 
             App.getAppInstance().setUser(newChef);
 

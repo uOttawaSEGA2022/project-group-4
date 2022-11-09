@@ -32,4 +32,6 @@
     <string name="dismiss">Dismiss</string>
     <string name="complaint_information">Complaint Here</string>
     <string name="ban_permanent">Ban Indefinitely</string>
+    <string name="chef_permanent_ban_message">Your account has been permanently suspended.</string>
+    <string name="chef_temp_ban_message">Your account has been temporarily suspended until </string>
 </resources>
