@@ -14,8 +14,6 @@ public class MealHandler {
 
     public void successAddingMealToSearchableList(Map meal){}
 
-    public void successRemovingMeal(Meal meal){}
-
     public void errorRemovingMeal(String message){}
 
     public void successRemovingMeal(String mealId){}

@@ -23,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -226,15 +227,16 @@ public class MealActions {
      * @param mealId The mealId of meal
      * @param chefId The chefId of chef
      */
-/////////////FIX THIS!!!////////////////////
+    /////////////FIX THIS!!!////////////////////
     protected Meal getMealFromMealId (String mealId, String chefId){
 
         Meal meal;
-        DocumentReference userReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION).document(mealId);
+        DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION).document(mealId);
 
-        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
@@ -256,6 +258,70 @@ public class MealActions {
         return meal;
     }
 
+    /**
+     * Return map of meals from Firebase given the current chef's chefId
+     */
+    /////////////FIX THIS!!!////////////////////
+    protected Map getMeals(){
+
+        Map meals;
+        CollectionReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION);
+
+        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        if (document.getData() != null){
+                            meals = (Map)document.getData();
+                        }
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        return meals;
+    }
+
+
+    protected void updateMealInfo(Meal meal){
+
+        if (Preconditions.isNotNull(meal)) {
+
+            database.collection(CHEF_COLLECTION)
+                    .document(chefId)
+                    .collection("meals")
+                    .document(meal.getMealID())
+                    .update("name",meal.getName(),
+                            "cuisineType", meal.getCuisineType(),
+                            "mealType")
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            mealHandler.successRemovingMeal(mealId);
+                            removeMealFromSearchableList(mealId);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            mealHandler.errorRemovingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
+                        }
+                    });
+        } else {
+            // if Preconditions fail
+            Log.e("removeMealFromOffered", "Invalid object value for mealId");
+        }
+    }
 
 
     private Meal makeMealFromFirebase(DocumentSnapshot document) {
