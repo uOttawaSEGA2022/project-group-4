@@ -12,11 +12,15 @@ public class MealHandler {
 
     public void successAddingMealToOfferedList(String mealId){}
 
-    public void errorAddingMealToOfferedList(String message){}
-
     public void successAddingMealToSearchableList(Map meal){}
 
-    public void errorAddingMealToSearchableList(String message){}
+    public void errorRemovingMeal(String message){}
+
+    public void successRemovingMeal(String mealId){}
+
+    public void successUpdatingMealInfo(Meal meal){}
+
+    public void errorUpdatingMealInfo(String message){}
 
 
 }

@@ -1,6 +1,8 @@
 package com.example.mealer_project.data.models;
 
 
+import com.example.mealer_project.data.entity_models.MealEntityModel;
+
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
  */
@@ -46,7 +48,26 @@ public class Meal {
     }
 
     /**
-     * Create an instance of new meal
+     * Create an instance of meal using MealEntityModel
+     * @param mealEntityModel meal info to create
+     */
+    public Meal (MealEntityModel mealEntityModel){
+
+        this.setName( mealEntityModel.getName());
+        this.setMealID( mealEntityModel.getMealID());
+        this.setChefID( mealEntityModel.getChefID());
+        this.setCuisineType( mealEntityModel.getCuisineType());
+        this.setMealType( mealEntityModel.getMealType());
+        this.setIngredients( mealEntityModel.getIngredients());
+        this.setAllergens( mealEntityModel.getAllergens());
+        this.setDescription( mealEntityModel.getDescription());
+        this.setOffered( mealEntityModel.isOffered());
+        this.setPrice( mealEntityModel.getPrice());
+
+    }
+    
+    /**
+     * Create an instance of a new meal
      * @param name Name of the meal
      * @param chefID Chef ID of the meal
      * @param cuisineType Cuisine Type of the meal (Italian, Chinese, Greek)
@@ -70,7 +91,7 @@ public class Meal {
         this.setDescription(description);
         this.setOffered(offered);
         this.setPrice(price);
-
+        
     }
 
     /**
