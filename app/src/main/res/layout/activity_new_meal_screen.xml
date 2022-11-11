@@ -90,7 +90,7 @@
                     android:id="@+id/allergens"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="5dp"
+                    android:minHeight="48dp"
                     android:text="@string/allergen"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
@@ -99,175 +99,183 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
                         android:id="@+id/gluten_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
+                        android:checked="false"
                         android:ems="10"
-                        android:text="@string/gluten" />
+                        android:text="@string/gluten"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/peanuts_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/peanuts" />
+                        android:text="@string/peanuts"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
                         android:id="@+id/treenuts_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/treenuts" />
+                        android:text="@string/treenuts"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/celery_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/celery" />
+                        android:text="@string/celery"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
                         android:id="@+id/mustard_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/mustard" />
+                        android:text="@string/mustard"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/eggs_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/eggs" />
+                        android:text="@string/eggs"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
                         android:id="@+id/milk_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/milk" />
+                        android:text="@string/milk"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/sesame_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/sesame" />
+                        android:text="@string/sesame"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
                         android:id="@+id/fish_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/fish" />
+                        android:text="@string/fish"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/crustaceans_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/crustaceans" />
+                        android:text="@string/crustaceans"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
                         android:id="@+id/molluscs_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/molluscs" />
+                        android:text="@string/molluscs"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/soya_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/soya" />
+                        android:text="@string/soya"
+                        tools:ignore="TouchTargetSizeCheck" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
                         android:id="@+id/sulphites_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/sulphites" />
+                        android:text="@string/sulphites"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/lupin_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:button="@drawable/ic_baseline_radio_button_unchecked_24"
                         android:ems="10"
-                        android:text="@string/lupin" />
+                        android:text="@string/lupin"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                 </LinearLayout>
 
@@ -281,7 +289,8 @@
                 android:ems="10"
                 android:hint="@string/price"
                 android:inputType="number"
-                android:minHeight="48dp" />
+                android:minHeight="48dp"
+                tools:ignore="TouchTargetSizeCheck" />
 
             <EditText
                 android:id="@+id/description"
@@ -293,6 +302,14 @@
                 android:hint="@string/description_title"
                 android:inputType="textMultiLine"
                 android:lines="5" />
+
+            <Switch
+                android:id="@+id/offer_meal_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans"
+                android:padding="10dp"
+                android:text="@string/offer_meal" />
 
             <LinearLayout
                 android:id="@+id/button_layout"

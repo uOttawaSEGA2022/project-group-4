@@ -26,7 +26,7 @@
     <string name="client_name">Client:</string>
     <string name="chef_name" />
     <string name="chefs_name">Chef:</string>
-    <string name="meal_name">Meal:</string>
+    <string name="meal_name">Meal</string>
     <string name="description_title">Description:</string>
     <string name="ban_chef">Ban Until</string>
     <string name="dismiss">Dismiss</string>
@@ -39,6 +39,7 @@
     <string name="what_meal_would_you_like_to_add">What meal would you like to add?</string>
     <string name="meal_type">Meal type:</string>
     <string-array name="menu_types_array">
+        <item>(Select meal type)</item>
         <item>Vegan</item>
         <item>Vegetarian</item>
         <item>Breakfast</item>
@@ -53,9 +54,9 @@
         <item>Bakery</item>
         <item>Beverages</item>
     </string-array>
-    <string name="cuisine_type">Cuisine Type:</string>
+    <string name="cuisine_type">Cuisine Type</string>
     <string name="ingredients">Ingredients:</string>
-    <string name="allergen">Allergens</string>
+    <string name="allergen">Allergens:</string>
     <string name="gluten">Gluten</string>
     <string name="peanuts">Peanuts</string>
     <string name="treenuts">Treenuts</string>
@@ -76,6 +77,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_item">Add Meal</string>
+    <string name="offer_meal">Offer meal?</string>
 
 
 </resources>
