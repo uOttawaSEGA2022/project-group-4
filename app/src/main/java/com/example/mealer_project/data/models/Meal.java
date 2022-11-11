@@ -1,6 +1,8 @@
 package com.example.mealer_project.data.models;
 
 
+import com.example.mealer_project.data.entity_models.MealEntityModel;
+
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
  */
@@ -30,7 +32,7 @@ public class Meal {
      * @param offered Whether the meal is currently offered or not
      * @param price Current price of the meal
      */
-    Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
+    public Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
          String ingredients, String allergens, String description, boolean offered, double price) {
 
         this.setName(name);
@@ -46,30 +48,21 @@ public class Meal {
     }
 
     /**
-     * Create an instance of new meal
-     * @param name Name of the meal
-     * @param chefID Chef ID of the meal
-     * @param cuisineType Cuisine Type of the meal (Italian, Chinese, Greek)
-     * @param mealType Meal Type (Main dish, Soup, Desert)
-     * @param ingredients Ingredients used in the meal
-     * @param allergens Potential allergens in meal
-     * @param description Short description of the meal
-     * @param offered Whether the meal is currently offered or not
-     * @param price Current price of the meal
+     * Create an instance of meal using MealEntityModel
+     * @param mealEntityModel meal info to create
      */
-    Meal(String name, String chefID, String cuisineType, String mealType, String ingredients,
-         String allergens, String description, boolean offered, double price) {
+    public Meal (MealEntityModel mealEntityModel){
 
-        // Initialization
-        this.setName(name);
-        this.setChefID(chefID);
-        this.setCuisineType(cuisineType);
-        this.setMealType(mealType);
-        this.setIngredients(ingredients);
-        this.setAllergens(allergens);
-        this.setDescription(description);
-        this.setOffered(offered);
-        this.setPrice(price);
+        this.setName( mealEntityModel.getName());
+        this.setMealID( mealEntityModel.getMealID());
+        this.setChefID( mealEntityModel.getChefID());
+        this.setCuisineType( mealEntityModel.getCuisineType());
+        this.setMealType( mealEntityModel.getMealType());
+        this.setIngredients( mealEntityModel.getIngredients());
+        this.setAllergens( mealEntityModel.getAllergens());
+        this.setDescription( mealEntityModel.getDescription());
+        this.setOffered( mealEntityModel.isOffered());
+        this.setPrice( mealEntityModel.getPrice());
 
     }
 
