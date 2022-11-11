@@ -1,5 +1,6 @@
 package com.example.mealer_project.data.handlers;
 
+import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.models.Meal;
 
 import java.util.Map;
@@ -21,6 +22,8 @@ public class MealHandler {
     public void successUpdatingMealInfo(Meal meal){}
 
     public void errorUpdatingMealInfo(String message){}
+
+    public void addMeal(MealEntityModel mealEntityModel){}
 
 
 }

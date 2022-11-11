@@ -32,6 +32,21 @@ public class MealEntityModel {
         this.setPrice(price);
     }
 
+    public MealEntityModel(String name, String chefID, String cuisineType, String mealType,
+                           String ingredients, String allergens, String description, boolean offered, double price) {
+
+        this.setName(name);
+        this.setMealID(mealID);
+        this.setChefID(chefID);
+        this.setCuisineType(cuisineType);
+        this.setMealType(mealType);
+        this.setIngredients(ingredients);
+        this.setAllergens(allergens);
+        this.setDescription(description);
+        this.setOffered(offered);
+        this.setPrice(price);
+    }
+
 
     public String getName() { return name;}
 

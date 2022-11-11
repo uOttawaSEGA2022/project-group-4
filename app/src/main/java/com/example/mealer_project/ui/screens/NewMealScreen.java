@@ -13,6 +13,7 @@ import android.widget.Switch;
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.app.AppInstance;
+import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Meal;
@@ -198,19 +199,14 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             // Initialization
             priceValue = Double.parseDouble(price.getText().toString());
 
-            Meal meal = new Meal(mealName.getText().toString(), chefID, cuisineType.getText().toString(),
+            // Variable Declaration
+            MealEntityModel mealEntityModel = new MealEntityModel(mealName.getText().toString(), chefID, cuisineType.getText().toString(),
                   mealType.getSelectedItem().toString(), ingredients.getText().toString(), allergens,
-                  description.getText().toString(), offered.isChecked(), Double.parseDouble(price.getText().toString()));
+                  description.getText().toString(), offered.isChecked(), priceValue);
 
-           /* // pass all sign up form details to controller
-            MealHandler mealHandler = App.getMealHandler();
+           MealHandler mealHandler = App.getMealHandler(); //getting mealer
 
-            if (mealHandler.successAddingMeal(meal)) {
-                displaySuccessToast("success!");
-            }
-            else {
-                displayErrorToast(response.getErrorMessage());
-            }*/
+           mealHandler.addMeal(mealEntityModel); //calling add meal method from mealhandler
 
         }
         catch(NumberFormatException e) {
