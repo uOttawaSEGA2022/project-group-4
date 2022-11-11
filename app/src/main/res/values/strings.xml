@@ -26,7 +26,7 @@
     <string name="client_name">Client:</string>
     <string name="chef_name" />
     <string name="chefs_name">Chef:</string>
-    <string name="meal_name">Meal</string>
+    <string name="meal_name">Meal:</string>
     <string name="description_title">Description:</string>
     <string name="ban_chef">Ban Until</string>
     <string name="dismiss">Dismiss</string>
@@ -36,7 +36,7 @@
     <string name="chef_temp_ban_message">Your account has been temporarily suspended until </string>
     <string name="view_orders">View Orders</string>
     <string name="my_menu">My Menu</string>
-    <string name="what_meal_would_you_like_to_add">What meal would you like to add?</string>
+    <string name="what_meal_would_you_like_to_add">WHAT MEAL WOULD YOU LIKE TO ADD?</string>
     <string name="meal_type">Meal type:</string>
     <string-array name="menu_types_array">
         <item>(Select meal type)</item>
