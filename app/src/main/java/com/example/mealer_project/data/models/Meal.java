@@ -65,6 +65,34 @@ public class Meal {
         this.setPrice( mealEntityModel.getPrice());
 
     }
+    
+    /**
+     * Create an instance of a new meal
+     * @param name Name of the meal
+     * @param chefID Chef ID of the meal
+     * @param cuisineType Cuisine Type of the meal (Italian, Chinese, Greek)
+     * @param mealType Meal Type (Main dish, Soup, Desert)
+     * @param ingredients Ingredients used in the meal
+     * @param allergens Potential allergens in meal
+     * @param description Short description of the meal
+     * @param offered Whether the meal is currently offered or not
+     * @param price Current price of the meal
+     */
+    public Meal(String name, String chefID, String cuisineType, String mealType, String ingredients,
+         String allergens, String description, boolean offered, double price) {
+
+        // Initialization
+        this.setName(name);
+        this.setChefID(chefID);
+        this.setCuisineType(cuisineType);
+        this.setMealType(mealType);
+        this.setIngredients(ingredients);
+        this.setAllergens(allergens);
+        this.setDescription(description);
+        this.setOffered(offered);
+        this.setPrice(price);
+        
+    }
 
     /**
      * Get the name of the meal
