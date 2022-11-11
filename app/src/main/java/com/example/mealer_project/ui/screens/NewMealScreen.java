@@ -14,10 +14,12 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.app.AppInstance;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Meal;
+import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.core.UIScreen;
 
 import java.util.List;
 
-public class NewMealScreen extends AppCompatActivity {
+public class NewMealScreen extends UIScreen implements StatefulView {
 
     // Variable Declaration
     protected String allergens = "";
@@ -208,4 +210,14 @@ public class NewMealScreen extends AppCompatActivity {
 
     }
 
+    @Override
+    public void updateUI() {
+
+    }
+
+    @Override
+    public void showNextScreen() {
+
+    }
+    
 }
