@@ -166,4 +166,9 @@ public class AuthActions {
             }
         });
     }
+
+    public void logOutUser() {
+        // log out the current user
+        mAuth.signOut();
+    }
 }

@@ -2,6 +2,7 @@ package com.example.mealer_project.ui.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 
 public class LoginScreen extends UIScreen implements StatefulView {
@@ -75,12 +77,15 @@ public class LoginScreen extends UIScreen implements StatefulView {
         // this method gets called when login completed
         User currentUser = App.getAppInstance().getUser();
         setLoginInProcess(false);
-      
+
         if (currentUser.getRole() == UserRoles.ADMIN){
             Intent intent = new Intent(getApplicationContext(), AdminScreen.class);
             startActivity(intent);
-        }else {
-            Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
+        }else if (currentUser.getRole() == UserRoles.CHEF){
+            Intent intent = new Intent(getApplicationContext(), ChefScreen.class);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(getApplicationContext(), ClientScreen.class);
             startActivity(intent);
         }
     }
@@ -111,5 +116,28 @@ public class LoginScreen extends UIScreen implements StatefulView {
     private void setLoginInProcess(boolean inProcess) {
         this.loginInProcess = inProcess;
         updateUI();
+    }
+
+    /**
+     * Method called when a Chef who logs in is currently suspended
+     * @param chefSuspensionDate date until which chef is suspended
+     * @param chefName name of the Chef for displaying message
+     */
+    public void handleSuspendedChefLogin(String chefSuspensionDate, String chefName) {
+
+        setLoginInProcess(false);
+
+        // if we have a valid suspension date
+        if (Preconditions.isNotEmptyString(chefSuspensionDate)){
+            // pass data to Welcome screen so a message can be shown
+            Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
+            // set intent data
+            intent.putExtra(WelcomeScreen.CHEF_SUSPENSION_DATE_KEY, chefSuspensionDate);
+            intent.putExtra(WelcomeScreen.CHEF_NAME_KEY, chefName);
+            startActivity(intent);
+        } else {
+            Log.e("handleSuspendedChef", "Received invalid suspension date");
+           displayErrorToast("Cannot process login request");
+        }
     }
 }
