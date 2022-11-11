@@ -303,7 +303,12 @@ public class MealActions {
                     .document(meal.getMealID())
                     .update("name",meal.getName(),
                             "cuisineType", meal.getCuisineType(),
-                            "mealType")
+                            "mealType", meal.getMealType(),
+                            "ingredients", meal.getIngredients(),
+                            "allergens", meal.getAllergens(),
+                            "description", meal.getDescription(),
+                            "isOffered", meal.isOffered(),
+                            "price", meal.getPrice())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -313,7 +318,7 @@ public class MealActions {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorUpdatingMealInfo("Failed to add meal to offered list in chef in database: " + e.getMessage());
+                            mealHandler.errorUpdatingMealInfo("Failed to update meal to list in chef in database: " + e.getMessage());
                         }
                     });
         } else {
