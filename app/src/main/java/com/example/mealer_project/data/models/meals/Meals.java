@@ -26,7 +26,7 @@ public class Meals {
      * @param mealID representing the ID of the meal
      * @return a Result object containing the meal is successful in getting the associated meal, else error message
      */
-    protected Result<Meal, String> getMeal(@NonNull String mealID) {
+    public Result<Meal, String> getMeal(@NonNull String mealID) {
         // guard-clause
         if (Preconditions.isNotEmptyString(mealID)) {
             // check if meal exists
@@ -41,10 +41,10 @@ public class Meals {
     }
 
     /**
-     * Add a new meal to the chef's list of meals (not menu)
+     * Add a new meal to the chef's list of meals (menu)
      * @param newMeal Meal to be added
      */
-    protected Response addMeal(@NonNull Meal newMeal) {
+    public Response addMeal(@NonNull Meal newMeal) {
         // guard-clause
         // meal must have a valid id which will be used as a key
         if (Preconditions.isNotEmptyString(newMeal.getMealID())) {
@@ -62,24 +62,19 @@ public class Meals {
     }
 
     /**
-     * Add a new meal to the chef's menu
+     * Add a meal to the chef's offered meal
      * @param mealId ID of the meal that needs to be added to the menu
      * @return Response object indicating success, or failure (with an error message)
      */
-    protected Response addMealToMenu(@NonNull String mealId) {
+    public Response addMealToOfferedList(@NonNull String mealId) {
         // guard-clause
         if (Preconditions.isNotEmptyString(mealId)) {
             // check if meal exists and has a valid object
             if (this.meals.get(mealId) != null) {
-                // check if meal if offered
-                if (this.meals.get(mealId).isOffered()) {
-                    // add meal to the menu
-                    this.meals.get(mealId).setOnMenu(true);
-                    // return success
-                    return new Response(true);
-                } else {
-                    return new Response(false, "Meal is currently not being offered by the chef");
-                }
+                // add meal to the menu
+                this.meals.get(mealId).setOffered(true);
+                // return success
+                return new Response(true);
             } else {
                 return new Response(false, "Could not find the any meal for the provided ID");
             }
@@ -92,7 +87,7 @@ public class Meals {
      * Remove a meal from the list of all meals added by a Chef
      * @param mealId ID of the meal to be removed
      */
-    protected Response removeMeal(@NonNull String mealId) {
+    public Response removeMeal(@NonNull String mealId) {
         // guard-clause
         if (Preconditions.isNotEmptyString(mealId)) {
             // check if meal exists
@@ -110,23 +105,18 @@ public class Meals {
     }
 
     /**
-     * Remove a meal from Chef's menu
+     * Remove a meal from Chef's offered meals
      * @param mealId ID of the meal to be removed
      */
-    protected Response removeMealFromMenu(@NonNull String mealId) {
+    public Response removeMealFromOfferedList(@NonNull String mealId) {
         // guard-clause
         if (Preconditions.isNotEmptyString(mealId)) {
             // check if meal exists
             if (this.meals.get(mealId) != null) {
-                // check if meal is currently on menu
-                if (this.meals.get(mealId).isOnMenu()) {
-                    // remove meal from menu
-                    this.meals.get(mealId).setOnMenu(false);
-                    // return operation success
-                    return new Response(true);
-                } else {
-                    return new Response(false, "Meal not part of Chef's menu");
-                }
+                // remove meal from menu
+                this.meals.get(mealId).setOffered(false);
+                // return operation success
+                return new Response(true);
             } else {
                 return new Response(false, "Could not find any meal for the provided meal ID");
             }
@@ -136,27 +126,10 @@ public class Meals {
     };
 
     /**
-     * Method to retrieve a map object containing meals which are part of Chef's menu
-     * @return a Map containing Meal ID's as keys and Meal objects as values
-     */
-    protected Map<String, Meal> getMenu() {
-        // map to store the result
-        HashMap<String, Meal> menu = new HashMap<>();
-        // filter and add menu meal items to above map
-        for (Meal meal : this.meals.values()) {
-            if (meal.isOnMenu()) {
-                menu.put(meal.getMealID(), meal);
-            }
-        }
-        // return the result
-        return menu;
-    }
-
-    /**
      * Method to retrieve a map object containing meals which are currently being offered by Chef
      * @return a Map containing Meal ID's as keys and Meal objects as values
      */
-    protected Map<String, Meal> getOfferedMeals() {
+    public Map<String, Meal> getOfferedMeals() {
         // map to store the result
         HashMap<String, Meal> offeredMeals = new HashMap<>();
         // filter and add offered meals to above map
@@ -173,7 +146,7 @@ public class Meals {
      * Method to retrieve a map object containing all meals added by the Chef
      * @return a Map containing Meal ID's as keys and Meal objects as values
      */
-    protected Map<String, Meal> getAllMeals() {
+    public Map<String, Meal> getMenu() {
         return this.meals;
     };
 }
