@@ -38,7 +38,7 @@ public class MealActions {
 
             // Retrieve chefId and MealHandler from App instance
             String chefId = App.getAppInstance().getUser().getUserId();
-            Handler mealHandler = App.getMealHandler();
+            MealHandler mealHandler = App.getMealHandler();
 
             Map<String, Object> databaseMeal = new HashMap<>();
 
@@ -106,7 +106,7 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            mealHandler.successAddingMealToOfferedList(meal);
+                            mealHandler.successAddingMealToOfferedList(mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -123,6 +123,8 @@ public class MealActions {
 
 
     protected void addMealToSearchableList(Map meal){
+
+        MealHandler mealHandler = App.getMealHandler();
 
         database.collection(MEAL_COLLECTION)
                 .document(String.valueOf(meal.get("mealID")))
