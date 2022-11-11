@@ -1,36 +1,22 @@
 package com.example.mealer_project.data.sources.actions;
 
-import static android.content.ContentValues.TAG;
-
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.entity_models.AddressEntityModel;
-import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
-import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
-import com.example.mealer_project.data.models.Address;
-import com.example.mealer_project.data.models.Client;
-import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.Meal;
-import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.utils.Preconditions;
-import com.example.mealer_project.utils.Response;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
 
 public class MealActions {
 
@@ -259,15 +245,26 @@ public class MealActions {
 //    }
 
     /**
-     * Return map of meals from Firebase given the current chef's chefId
+     * Return map of meals from Firebase using app instance's current chef's ID
      */
     /////////////IMPLEMENT THIS!!!////////////////////
-//    protected Map getMeals(){
+    protected Map getMeals(){
 
-//    }
+        return null;
+    }
+
+    /**
+     * Return map of offered meals from Firebase using app instance's current chef's ID
+     */
+    /////////////IMPLEMENT THIS!!!////////////////////
+    protected Map getOfferedMeals(){
+
+        return null;
+    }
 
     /**
      * Update meal info in Firebase in chef object and searchable meals list if it is offered
+     * Removes list from offered list and searchable list if isOffered boolean is updated to false
      * @param meal new Meal object with info to update
      */
     protected void updateMealInfo(Meal meal){
@@ -334,6 +331,15 @@ public class MealActions {
             // if Preconditions fail
             Log.e("updateMealInfo", "Invalid object value for meal");
         }
+    }
+
+    /**
+     * Update offered meals list and searchable list of meals in firebase accordingly
+     * @param meals Map of meal IDs and boolean isOffered of each meal
+     */
+    /////////////IMPLEMENT THIS!!!////////////////////
+    protected void updateOfferedMeals(Map <String,Boolean> meals){
+
     }
 
 
