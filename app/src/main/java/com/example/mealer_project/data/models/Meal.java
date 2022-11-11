@@ -5,6 +5,8 @@ package com.example.mealer_project.data.models;
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
  */
 public class Meal {
+    private String errorMsg = "";
+
     private String name;
     private String mealID;
     private String chefID;
@@ -50,11 +52,55 @@ public class Meal {
     public String getName() { return name; }
 
     /**
-     * Set/Change the name of the meal
+     * validates and sets/changes the name of the meal
      * @param name Meal's name
      */
     public void setName(String name) {
-        this.name = name;
+
+        // Process: validating the name
+        if (validateName(name) == true) { //valid
+
+            this.name = name; //setting name
+
+        }
+        else { //invalid
+
+            // Output: error message
+            throw new IllegalArgumentException(errorMsg);
+
+        }
+
+    }
+
+    /**
+     * this helper method validates the name and checks that it's not empty
+     * @param name the name of the meal
+     * @return whether the name is valid or not
+     */
+    private boolean validateName(String name) {
+
+        // Process: checking name length
+        if (name.length() > 0) { //at least 1 char
+
+            if (name.length() > 50) { //too long
+
+                errorMsg = "Please limit the meal name to 50 characters"; //updating error msg
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+        else { //nothing inputted
+
+            errorMsg = "Meal cannot be unnamed"; //updating error msg
+
+            return false;
+
+        }
+
     }
 
     /**
@@ -92,11 +138,66 @@ public class Meal {
     public String getCuisineType() { return cuisineType; }
 
     /**
-     * Change Meal's Cuisine Type
+     * validates & sets/changes Meal's Cuisine Type
      * @param cuisineType of meal
      */
     public void setCuisineType(String cuisineType) {
-        this.cuisineType = cuisineType;
+
+        // Process: validating the cuisine type
+        if (validateCuisine(cuisineType)) { //valid
+
+            this.cuisineType = cuisineType;
+
+        }
+        else { //invalid
+
+            throw new IllegalArgumentException(errorMsg);
+
+        }
+
+    }
+
+    /**
+     * this helper method validates the cuisine type
+     * @param cuisineType the cuisine type
+     * @return whether it is valid or not
+     */
+    private boolean validateCuisine(String cuisineType) {
+
+        if (cuisineType.length() > 0) { //at least 1 char
+
+            // Variable Declaration
+            char[] charsInCuisine = cuisineType.toCharArray();
+
+            // Process: validating input
+            for (int i = 0; i < charsInCuisine.length; i++) {
+
+                // Process: checking for all letters
+                if (!Character.isLetter(charsInCuisine[i])) { //is not letter
+
+                    if (!(charsInCuisine[i] == 45 || charsInCuisine[i] == 32)) { //not hyphen or space
+
+                        errorMsg = "Invalid characters in cuisine type";
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+            return true;
+
+        }
+        else { //nothing inputted
+
+            errorMsg = "Cuisine type cannot be empty";
+
+            return false;
+
+        }
+
     }
 
     /**
@@ -124,7 +225,19 @@ public class Meal {
      * @param ingredients list
      */
     public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
+
+        // Process: validating the cuisine type
+        if (ingredients.length() > 0) { //valid
+
+            this.ingredients = ingredients;
+
+        }
+        else { //invalid
+
+            throw new IllegalArgumentException("Please specify the ingredients in this meal");
+
+        }
+
     }
 
     /**
@@ -152,7 +265,18 @@ public class Meal {
      * @param description of meal
      */
     public void setDescription(String description) {
-        this.description = description;
+
+        if (description.length() >= 20) { //valid
+
+            this.description = description;
+
+        }
+        else { //too short or nothing inputted
+
+            throw new IllegalArgumentException("Description should be at least 20 characters long");
+
+        }
+
     }
 
     /**
