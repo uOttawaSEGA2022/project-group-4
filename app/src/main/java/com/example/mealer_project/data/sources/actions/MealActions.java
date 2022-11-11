@@ -20,6 +20,7 @@ import java.util.logging.Handler;
 public class MealActions {
 
     FirebaseFirestore database;
+    private final MealHandler mealHandler = App.getMealHandler();
     private final static String MEAL_COLLECTION = "Meals";
     private final static String CHEF_COLLECTION = "Chefs";
 
@@ -36,14 +37,12 @@ public class MealActions {
 
         if (Preconditions.isNotNull(meal)) {
 
-            // Retrieve chefId and MealHandler from App instance
+            // Retrieve chefId from App instance
             String chefId = App.getAppInstance().getUser().getUserId();
-            MealHandler mealHandler = App.getMealHandler();
 
             Map<String, Object> databaseMeal = new HashMap<>();
 
             databaseMeal.put("name", meal.getName());
-            databaseMeal.put("mealID", meal.getMealID());
             databaseMeal.put("chefID", meal.getChefID());
             databaseMeal.put("cuisineType", meal.getCuisineType());
             databaseMeal.put("mealType", meal.getMealType());
@@ -95,7 +94,6 @@ public class MealActions {
 
             // Retrieve chefId and MealHandler from App instance
             String chefId = App.getAppInstance().getUser().getUserId();
-            MealHandler mealHandler = App.getMealHandler();
 
 
             database.collection(CHEF_COLLECTION)
@@ -103,45 +101,53 @@ public class MealActions {
                     .collection("meals")
                     .document(mealId)
                     .update("isOffered", true)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onSuccess(DocumentReference documentReference) {
+                        public void onSuccess(Void aVoid) {
                             mealHandler.successAddingMealToOfferedList(mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorAddingMealToOfferedList("Failed to set meal to offered in chef in database: " + e.getMessage());
+                            mealHandler.errorAddingMealToOfferedList("Failed to add meal to offered list in chef in database: " + e.getMessage());
                         }
                     });
         } else {
             // if Preconditions fail
-            Log.e("addMeal", "Invalid object value for meal");
+            Log.e("addMealToOfferedList", "Invalid object value for mealId");
         }
     }
 
-
+    /*
+    * Add meal to searchable list of meals in Firebase
+    * @param meal The meal in a map format to be added
+    */
     protected void addMealToSearchableList(Map meal){
 
-        MealHandler mealHandler = App.getMealHandler();
+        if (Preconditions.isNotNull(meal)) {
 
-        database.collection(MEAL_COLLECTION)
-                .document(String.valueOf(meal.get("mealID")))
-                .set(meal)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        mealHandler.successAddingMealToSearchableList(meal);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        mealHandler.errorAddingMealToSearchableList("Failed to add meal to meals list in database: " + e.getMessage());
-                    }
-                });
+            MealHandler mealHandler = App.getMealHandler();
 
+            database.collection(MEAL_COLLECTION)
+                    .document(String.valueOf(meal.get("MealID")))
+                    .set(meal)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            mealHandler.successAddingMealToSearchableList(meal);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            mealHandler.errorAddingMealToSearchableList("Failed to add meal to searchable list in database: " + e.getMessage());
+                        }
+                    });
+        } else {
+            // if Preconditions fail
+            Log.e("addMealToSearchableList", "Invalid object value for meal");
+        }
     }
 
 
