@@ -307,14 +307,13 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            mealHandler.successRemovingMeal(mealId);
-                            removeMealFromSearchableList(mealId);
+                            mealHandler.successUpdatingMealInfo(meal);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorRemovingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
+                            mealHandler.errorUpdatingMealInfo("Failed to add meal to offered list in chef in database: " + e.getMessage());
                         }
                     });
         } else {

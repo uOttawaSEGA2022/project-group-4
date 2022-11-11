@@ -18,5 +18,9 @@ public class MealHandler {
 
     public void successRemovingMeal(String mealId){}
 
+    public void successUpdatingMealInfo(Meal meal){}
+
+    public void errorUpdatingMealInfo(String message){}
+
 
 }
