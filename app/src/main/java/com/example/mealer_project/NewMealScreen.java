@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class NewMealScreen extends AppCompatActivity {
+import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.core.UIScreen;
+
+public class NewMealScreen extends UIScreen implements StatefulView {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,5 +27,15 @@ public class NewMealScreen extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+    }
+
+    @Override
+    public void updateUI() {
+
+    }
+
+    @Override
+    public void showNextScreen() {
+
     }
 }
