@@ -19,10 +19,11 @@
                 android:id="@+id/welcome_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:fontFamily="@font/baloo_bhai"
                 android:minHeight="50dp"
+                android:padding="20dp"
                 android:text="@string/what_meal_would_you_like_to_add"
+                android:textAlignment="center"
                 android:textColor="@color/green_primary"
                 android:textSize="34sp"
                 android:textStyle="bold" />
