@@ -116,7 +116,7 @@ public class MealActions {
                         @Override
                         public void onSuccess(Void aVoid) {
                             mealHandler.successAddingMealToOfferedList(mealId);
-                            addMealToSearchableList(mealToMapConversion(getMealFromMealId(mealId, chefId)));
+                            //addMealToSearchableList(mealToMapConversion(getMealFromMealId(mealId, chefId)));
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -228,99 +228,108 @@ public class MealActions {
      * @param chefId The chefId of chef
      */
     /////////////FIX THIS!!!////////////////////
-    protected Meal getMealFromMealId (String mealId, String chefId){
-
-        Meal meal;
-        DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION).document(mealId);
-
-        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                        if (document.getData() != null){
-                           meal = makeMealFromFirebase(document);
-                        }
-
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        return meal;
-    }
+//    protected Meal getMealFromMealId (String mealId, String chefId){
+//
+//        Meal meal;
+//        DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION).document(mealId);
+//
+//        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//
+//                        if (document.getData() != null){
+//                           meal = makeMealFromFirebase(document);
+//                        }
+//
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            }
+//        });
+//
+//        return meal;
+//    }
 
     /**
      * Return map of meals from Firebase given the current chef's chefId
      */
-    /////////////FIX THIS!!!////////////////////
-    protected Map getMeals(){
+    /////////////IMPLEMENT THIS!!!////////////////////
+//    protected Map getMeals(){
 
-        Map meals;
-        CollectionReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION);
+//    }
 
-        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                        if (document.getData() != null){
-                            meals = (Map)document.getData();
-                        }
-
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        return meals;
-    }
-
-
+    /**
+     * Update meal info in Firebase in chef object and searchable meals list if it is offered
+     * @param meal new Meal object with info to update
+     */
     protected void updateMealInfo(Meal meal){
 
         if (Preconditions.isNotNull(meal)) {
 
-            database.collection(CHEF_COLLECTION)
-                    .document(chefId)
-                    .collection("meals")
-                    .document(meal.getMealID())
-                    .update("name",meal.getName(),
-                            "cuisineType", meal.getCuisineType(),
-                            "mealType", meal.getMealType(),
-                            "ingredients", meal.getIngredients(),
-                            "allergens", meal.getAllergens(),
-                            "description", meal.getDescription(),
-                            "isOffered", meal.isOffered(),
-                            "price", meal.getPrice())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            mealHandler.successUpdatingMealInfo(meal);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorUpdatingMealInfo("Failed to update meal to list in chef in database: " + e.getMessage());
-                        }
-                    });
+            if (meal.isOffered()){
+
+                database.collection(CHEF_COLLECTION)
+                        .document(chefId)
+                        .collection("meals")
+                        .document(meal.getMealID())
+                        .update("name",meal.getName(),
+                                "cuisineType", meal.getCuisineType(),
+                                "mealType", meal.getMealType(),
+                                "ingredients", meal.getIngredients(),
+                                "allergens", meal.getAllergens(),
+                                "description", meal.getDescription(),
+                                "isOffered", meal.isOffered(),
+                                "price", meal.getPrice())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                mealHandler.successUpdatingMealInfo(meal);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                mealHandler.errorUpdatingMealInfo("Failed to update meal to list in chef in database: " + e.getMessage());
+                            }
+                        });
+
+                database.collection(MEAL_COLLECTION)
+                        .document(meal.getMealID())
+                        .update("name",meal.getName(),
+                                "cuisineType", meal.getCuisineType(),
+                                "mealType", meal.getMealType(),
+                                "ingredients", meal.getIngredients(),
+                                "allergens", meal.getAllergens(),
+                                "description", meal.getDescription(),
+                                "isOffered", meal.isOffered(),
+                                "price", meal.getPrice())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                mealHandler.successUpdatingMealInfo(meal);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                mealHandler.errorUpdatingMealInfo("Failed to update meal to searchable list in database: " + e.getMessage());
+                            }
+                        });
+            }
+
+            else{
+                removeMealFromOfferedList(meal.getMealID());
+                removeMealFromSearchableList(meal.getMealID());
+
+            }
         } else {
             // if Preconditions fail
             Log.e("updateMealInfo", "Invalid object value for meal");
