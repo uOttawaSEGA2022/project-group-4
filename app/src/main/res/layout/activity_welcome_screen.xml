@@ -41,7 +41,7 @@
                 tools:ignore="ImageContrastCheck" />
 
             <TextView
-                android:id="@+id/welcome_message"
+                android:id="@+id/welcome_message_chef"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="false"
@@ -60,7 +60,7 @@
                 tools:ignore="TextContrastCheck" />
 
             <ImageButton
-                android:id="@+id/logout_btn"
+                android:id="@+id/logout_btn_chef"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
