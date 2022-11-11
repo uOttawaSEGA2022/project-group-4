@@ -7,7 +7,7 @@ import com.example.mealer_project.data.entity_models.UserEntityModel;
  * Parent class of Client, Chef and Admin
  */
 public class User {
-    static protected String errorMsg = "";
+    private String errorMsg = "";
     protected String firstName;
     protected String lastName;
     protected String email;
