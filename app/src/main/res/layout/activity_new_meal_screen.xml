@@ -321,6 +321,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:fontFamily="@font/baloo_bhai"
+                    android:onClick="onAddMeal"
                     android:text="@string/add_meal"
                     android:textColor="@color/green_primary"
                     android:textSize="20sp" />
