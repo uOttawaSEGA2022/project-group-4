@@ -35,9 +35,10 @@
                 android:layout_height="55dp"
                 android:layout_centerHorizontal="false"
                 android:layout_marginStart="5dp"
-                android:layout_marginLeft="5dp"
+                android:contentDescription="@string/logoDescription"
                 android:fitsSystemWindows="false"
-                app:srcCompat="@drawable/mealer" />
+                app:srcCompat="@drawable/mealer"
+                tools:ignore="ImageContrastCheck" />
 
             <TextView
                 android:id="@+id/welcome_message"
@@ -55,7 +56,8 @@
                 android:text="Welcome!"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                app:constraint_referenced_tags="1" />
+                app:constraint_referenced_tags="1"
+                tools:ignore="TextContrastCheck" />
 
             <ImageButton
                 android:id="@+id/logout_btn"
@@ -71,7 +73,8 @@
                 android:minHeight="48dp"
                 android:onClick="clickLogout"
                 android:translationX="5dp"
-                app:srcCompat="@drawable/ic_baseline_logout_24" />
+                app:srcCompat="@drawable/ic_baseline_logout_24"
+                tools:ignore="ImageContrastCheck" />
 
         </RelativeLayout>
 
