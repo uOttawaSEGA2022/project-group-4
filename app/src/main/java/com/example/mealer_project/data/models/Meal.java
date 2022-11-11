@@ -1,6 +1,8 @@
 package com.example.mealer_project.data.models;
 
 
+import com.example.mealer_project.data.entity_models.MealEntityModel;
+
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
  */
@@ -28,7 +30,7 @@ public class Meal {
      * @param offered Whether the meal is currently offered or not
      * @param price Current price of the meal
      */
-    Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
+    public Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
          String ingredients, String allergens, String description, boolean offered, double price) {
 
         this.setName(name);
@@ -41,6 +43,24 @@ public class Meal {
         this.setDescription(description);
         this.setOffered(offered);
         this.setPrice(price);
+    }
+
+    /**
+     * Create an instance of meal using MealEntityModel
+     * @param mealEntityModel meal info to create
+     */
+    public Meal (MealEntityModel mealEntityModel){
+
+        this.setName( mealEntityModel.getName());
+        this.setMealID( mealEntityModel.getMealID());
+        this.setChefID( mealEntityModel.getChefID());
+        this.setCuisineType( mealEntityModel.getCuisineType());
+        this.setMealType( mealEntityModel.getMealType());
+        this.setIngredients( mealEntityModel.getIngredients());
+        this.setAllergens( mealEntityModel.getAllergens());
+        this.setDescription( mealEntityModel.getDescription());
+        this.setOffered( mealEntityModel.isOffered());
+        this.setPrice( mealEntityModel.getPrice());
     }
 
     /**
