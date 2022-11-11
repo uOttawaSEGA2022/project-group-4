@@ -323,7 +323,7 @@ public class MealActions {
                     });
         } else {
             // if Preconditions fail
-            Log.e("removeMealFromOffered", "Invalid object value for mealId");
+            Log.e("updateMealInfo", "Invalid object value for meal");
         }
     }
 
@@ -335,6 +335,7 @@ public class MealActions {
         }
 
         MealEntityModel newMeal = new MealEntityModel();
+        Meal meal = new Meal(newMeal);
 
         newMeal.setName(String.valueOf(document.getData().get("name")));
         newMeal.setChefID(String.valueOf(document.getData().get("chefId")));
@@ -345,8 +346,6 @@ public class MealActions {
         newMeal.setDescription(String.valueOf(document.getData().get("description")));
         newMeal.setOffered((Boolean) document.getData().get("isOffered"));
         newMeal.setPrice((Double) document.getData().get("price"));
-
-        Meal meal = new Meal(newMeal);
 
         return meal;
 
