@@ -30,7 +30,7 @@ public class Meal {
      * @param offered Whether the meal is currently offered or not
      * @param price Current price of the meal
      */
-    Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
+    public Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
          String ingredients, String allergens, String description, boolean offered, double price) {
 
         this.setName(name);
@@ -57,7 +57,7 @@ public class Meal {
      * @param offered Whether the meal is currently offered or not
      * @param price Current price of the meal
      */
-    Meal(String name, String chefID, String cuisineType, String mealType, String ingredients,
+    public Meal(String name, String chefID, String cuisineType, String mealType, String ingredients,
          String allergens, String description, boolean offered, double price) {
 
         // Initialization
