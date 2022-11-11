@@ -1,10 +1,14 @@
-package com.example.mealer_project.data.models.meals;
+package com.example.mealer_project.data.models;
 
+
+import com.example.mealer_project.data.entity_models.MealEntityModel;
 
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
  */
 public class Meal {
+    private String errorMsg = "";
+
     private String name;
     private String mealID;
     private String chefID;
@@ -14,10 +18,9 @@ public class Meal {
     private String allergens;
     private String description;
     private boolean offered;
-    private boolean onMenu;
     private double price;
     /**
-     * Create an instance of meal
+     * Create an instance of an existing meal with a mealID from FireBase
      * @param name Name of the meal
      * @param mealID ID number of the meal
      * @param chefID Chef ID of the meal
@@ -27,11 +30,10 @@ public class Meal {
      * @param allergens Potential allergens in meal
      * @param description Short description of the meal
      * @param offered Whether the meal is currently offered or not
-     * @param onMenu Whether the meal is part of menu or not
      * @param price Current price of the meal
      */
-    Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
-         String ingredients, String allergens, String description, boolean offered, boolean onMenu, double price) {
+    public Meal(String name, String mealID, String chefID, String cuisineType, String mealType,
+         String ingredients, String allergens, String description, boolean offered, double price) {
 
         this.setName(name);
         this.setMealID(mealID);
@@ -42,8 +44,54 @@ public class Meal {
         this.setAllergens(allergens);
         this.setDescription(description);
         this.setOffered(offered);
-        this.setOnMenu(onMenu);
         this.setPrice(price);
+    }
+
+    /**
+     * Create an instance of meal using MealEntityModel
+     * @param mealEntityModel meal info to create
+     */
+    public Meal (MealEntityModel mealEntityModel){
+
+        this.setName( mealEntityModel.getName());
+        this.setMealID( mealEntityModel.getMealID());
+        this.setChefID( mealEntityModel.getChefID());
+        this.setCuisineType( mealEntityModel.getCuisineType());
+        this.setMealType( mealEntityModel.getMealType());
+        this.setIngredients( mealEntityModel.getIngredients());
+        this.setAllergens( mealEntityModel.getAllergens());
+        this.setDescription( mealEntityModel.getDescription());
+        this.setOffered( mealEntityModel.isOffered());
+        this.setPrice( mealEntityModel.getPrice());
+
+    }
+    
+    /**
+     * Create an instance of a new meal
+     * @param name Name of the meal
+     * @param chefID Chef ID of the meal
+     * @param cuisineType Cuisine Type of the meal (Italian, Chinese, Greek)
+     * @param mealType Meal Type (Main dish, Soup, Desert)
+     * @param ingredients Ingredients used in the meal
+     * @param allergens Potential allergens in meal
+     * @param description Short description of the meal
+     * @param offered Whether the meal is currently offered or not
+     * @param price Current price of the meal
+     */
+    public Meal(String name, String chefID, String cuisineType, String mealType, String ingredients,
+         String allergens, String description, boolean offered, double price) {
+
+        // Initialization
+        this.setName(name);
+        this.setChefID(chefID);
+        this.setCuisineType(cuisineType);
+        this.setMealType(mealType);
+        this.setIngredients(ingredients);
+        this.setAllergens(allergens);
+        this.setDescription(description);
+        this.setOffered(offered);
+        this.setPrice(price);
+        
     }
 
     /**
@@ -53,11 +101,55 @@ public class Meal {
     public String getName() { return name; }
 
     /**
-     * Set/Change the name of the meal
+     * validates and sets/changes the name of the meal
      * @param name Meal's name
      */
     public void setName(String name) {
-        this.name = name;
+
+        // Process: validating the name
+        if (validateName(name) == true) { //valid
+
+            this.name = name; //setting name
+
+        }
+        else { //invalid
+
+            // Output: error message
+            throw new IllegalArgumentException(errorMsg);
+
+        }
+
+    }
+
+    /**
+     * this helper method validates the name and checks that it's not empty
+     * @param name the name of the meal
+     * @return whether the name is valid or not
+     */
+    private boolean validateName(String name) {
+
+        // Process: checking name length
+        if (name.length() > 0) { //at least 1 char
+
+            if (name.length() > 50) { //too long
+
+                errorMsg = "Please limit the meal name to 50 characters"; //updating error msg
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+        else { //nothing inputted
+
+            errorMsg = "Meal cannot be unnamed"; //updating error msg
+
+            return false;
+
+        }
+
     }
 
     /**
@@ -95,11 +187,66 @@ public class Meal {
     public String getCuisineType() { return cuisineType; }
 
     /**
-     * Change Meal's Cuisine Type
+     * validates & sets/changes Meal's Cuisine Type
      * @param cuisineType of meal
      */
     public void setCuisineType(String cuisineType) {
-        this.cuisineType = cuisineType;
+
+        // Process: validating the cuisine type
+        if (validateCuisine(cuisineType)) { //valid
+
+            this.cuisineType = cuisineType;
+
+        }
+        else { //invalid
+
+            throw new IllegalArgumentException(errorMsg);
+
+        }
+
+    }
+
+    /**
+     * this helper method validates the cuisine type
+     * @param cuisineType the cuisine type
+     * @return whether it is valid or not
+     */
+    private boolean validateCuisine(String cuisineType) {
+
+        if (cuisineType.length() > 0) { //at least 1 char
+
+            // Variable Declaration
+            char[] charsInCuisine = cuisineType.toCharArray();
+
+            // Process: validating input
+            for (int i = 0; i < charsInCuisine.length; i++) {
+
+                // Process: checking for all letters
+                if (!Character.isLetter(charsInCuisine[i])) { //is not letter
+
+                    if (!(charsInCuisine[i] == 45 || charsInCuisine[i] == 32)) { //not hyphen or space
+
+                        errorMsg = "Invalid characters in cuisine type";
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+            return true;
+
+        }
+        else { //nothing inputted
+
+            errorMsg = "Cuisine type cannot be empty";
+
+            return false;
+
+        }
+
     }
 
     /**
@@ -127,7 +274,19 @@ public class Meal {
      * @param ingredients list
      */
     public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
+
+        // Process: validating the cuisine type
+        if (ingredients.length() > 0) { //valid
+
+            this.ingredients = ingredients;
+
+        }
+        else { //invalid
+
+            throw new IllegalArgumentException("Please specify the ingredients in this meal");
+
+        }
+
     }
 
     /**
@@ -155,14 +314,25 @@ public class Meal {
      * @param description of meal
      */
     public void setDescription(String description) {
-        this.description = description;
+
+        if (description.length() >= 20) { //valid
+
+            this.description = description;
+
+        }
+        else { //too short or nothing inputted
+
+            throw new IllegalArgumentException("Description should be at least 20 characters long");
+
+        }
+
     }
 
     /**
      * Check if a meal is currently being offered by a chef or not
      * @return Boolean representing True if offered, False if not offered
      */
-    public boolean isOffered() { return this.offered; }
+    public boolean isOffered() { return offered; }
 
     /**
      * Set/Change the state of whether meal is offered or not
@@ -170,20 +340,6 @@ public class Meal {
      */
     public void setOffered(boolean offered) {
         this.offered = offered;
-    }
-
-    /**
-     * Check if a meal is currently part of Chef's menu or not
-     * @return Boolean representing True if part of menu, False if not
-     */
-    public boolean isOnMenu() { return this.onMenu; }
-
-    /**
-     * Set/Change the state of whether meal is part of menu or not
-     * @param onMenu part of menu or not
-     */
-    public void setOnMenu(boolean onMenu) {
-        this.onMenu = onMenu;
     }
 
     /**

@@ -112,6 +112,16 @@ public class UserHandler {
     }
 
     /**
+     * Method to logout user
+     */
+    public void logOutUser() {
+        // log out user through firebase
+        App.getPrimaryDatabase().AUTH.logOutUser();
+        // remove current user
+        App.getAppInstance().setUser(null);
+    }
+
+    /**
      * Method to suspend chef
      * @param chefID Chef involved with complaint
      * @param suspensionDate end date of suspension
