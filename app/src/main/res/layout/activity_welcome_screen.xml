@@ -40,7 +40,7 @@
                 app:srcCompat="@drawable/mealer" />
 
             <TextView
-                android:id="@+id/welcome_message"
+                android:id="@+id/welcome_message_chef"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="false"
@@ -58,7 +58,7 @@
                 app:constraint_referenced_tags="1" />
 
             <ImageButton
-                android:id="@+id/logout_btn"
+                android:id="@+id/logout_btn_chef"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

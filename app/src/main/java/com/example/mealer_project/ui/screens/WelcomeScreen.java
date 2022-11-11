@@ -1,7 +1,5 @@
 package com.example.mealer_project.ui.screens;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,16 +8,12 @@ import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.User;
-import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Utilities;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -37,7 +31,7 @@ public class WelcomeScreen extends UIScreen {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_welcome_screen);
-        editText = (TextView) findViewById(R.id.welcome_message);
+        editText = (TextView) findViewById(R.id.welcome_message_chef);
 
         // First handle a suspended chef logging in, since in that case no retrieval of additional info is required
         // if we have a value for chef suspension date to be displayed - means Chef is suspended

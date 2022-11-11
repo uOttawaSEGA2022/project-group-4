@@ -34,4 +34,9 @@
     <string name="ban_permanent">Ban Indefinitely</string>
     <string name="chef_permanent_ban_message">Your account has been permanently suspended.</string>
     <string name="chef_temp_ban_message">Your account has been temporarily suspended until </string>
+    <string name="view_orders">View Orders</string>
+    <string name="my_menu">My Menu</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_item">Add Meal</string>
 </resources>
