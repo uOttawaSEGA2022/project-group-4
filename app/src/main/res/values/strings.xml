@@ -32,4 +32,50 @@
     <string name="dismiss">Dismiss</string>
     <string name="complaint_information">Complaint Here</string>
     <string name="ban_permanent">Ban Indefinitely</string>
+    <string name="chef_permanent_ban_message">Your account has been permanently suspended.</string>
+    <string name="chef_temp_ban_message">Your account has been temporarily suspended until </string>
+    <string name="view_orders">View Orders</string>
+    <string name="my_menu">My Menu</string>
+    <string name="what_meal_would_you_like_to_add">What meal would you like to add?</string>
+    <string name="meal_type">Meal type:</string>
+    <string-array name="menu_types_array">
+        <item>Vegan</item>
+        <item>Vegetarian</item>
+        <item>Breakfast</item>
+        <item>Lunch</item>
+        <item>Brunch</item>
+        <item>Dinner</item>
+        <item>Appetizer</item>
+        <item>Side Dishes</item>
+        <item>Main</item>
+        <item>Soup</item>
+        <item>Desert</item>
+        <item>Bakery</item>
+        <item>Beverages</item>
+    </string-array>
+    <string name="cuisine_type">Cuisine Type:</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="allergen">Allergens</string>
+    <string name="gluten">Gluten</string>
+    <string name="peanuts">Peanuts</string>
+    <string name="treenuts">Treenuts</string>
+    <string name="celery">Celery</string>
+    <string name="mustard">Mustard</string>
+    <string name="eggs">Eggs</string>
+    <string name="milk">Milk</string>
+    <string name="sesame">Sesame</string>
+    <string name="crustaceans">Crustaceans</string>
+    <string name="fish">Fish</string>
+    <string name="molluscs">Molluscs</string>
+    <string name="soya">Soya</string>
+    <string name="sulphites">Sulphites</string>
+    <string name="lupin">Lupin</string>
+    <string name="price">Price</string>
+    <string name="back">Back</string>
+    <string name="add_meal">Add Meal</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_item">Add Meal</string>
+
+
 </resources>
