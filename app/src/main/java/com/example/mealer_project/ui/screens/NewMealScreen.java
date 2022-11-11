@@ -8,14 +8,17 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.app.AppInstance;
+import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.utils.Response;
 
 import java.util.List;
 
@@ -181,10 +184,11 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
         EditText mealName = (EditText) findViewById(R.id.meal_name);
         EditText cuisineType = (EditText) findViewById(R.id.cuisine_type);
-        //EditText mealType = (EditText) findViewById(R.id.meal_type);
+        Spinner mealType = (Spinner) findViewById(R.id.meal_type);
         EditText ingredients = (EditText) findViewById(R.id.ingredients);
         EditText description = (EditText) findViewById(R.id.description);
         EditText price = (EditText) findViewById(R.id.price);
+        Switch offered = (Switch)findViewById((R.id.offer_meal_switch));
 
         double priceValue;
 
@@ -194,12 +198,19 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             // Initialization
             priceValue = Double.parseDouble(price.getText().toString());
 
-            //Meal meal = new Meal(mealName.getText().toString(), chefID, cuisineType.getText().toString(),
-              //    mealType.getText().toString(), ingredients.getText().toString(), allergens,
-                //  description.getText().toString(), offered, Double.parseDouble(price.getText().toString()));
+            Meal meal = new Meal(mealName.getText().toString(), chefID, cuisineType.getText().toString(),
+                  mealType.getSelectedItem().toString(), ingredients.getText().toString(), allergens,
+                  description.getText().toString(), offered.isChecked(), Double.parseDouble(price.getText().toString()));
 
-            // Process: adding meal to chef's menu
-            //chef.addMeal(meal);
+           /* // pass all sign up form details to controller
+            MealHandler mealHandler = App.getMealHandler();
+
+            if (mealHandler.successAddingMeal(meal)) {
+                displaySuccessToast("success!");
+            }
+            else {
+                displayErrorToast(response.getErrorMessage());
+            }*/
 
         }
         catch(NumberFormatException e) {
@@ -219,5 +230,11 @@ public class NewMealScreen extends UIScreen implements StatefulView {
     public void showNextScreen() {
 
     }
+
+    /*private Response addMealHandler() {
+
+
+
+    }*/
     
 }
