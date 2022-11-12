@@ -321,12 +321,11 @@
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
                 android:ems="10"
+                android:fontFamily="@font/nunito_sans"
                 android:hint="@string/price"
-                android:inputType="number"
-                android:minHeight="50dp"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:inputType="numberDecimal"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/description"
@@ -350,6 +349,10 @@
                 android:padding="10dp"
                 android:text="@string/offer_meal"
                 android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
 
             <LinearLayout
                 android:id="@+id/button_layout"

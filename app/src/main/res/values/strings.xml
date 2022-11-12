@@ -26,7 +26,7 @@
     <string name="client_name">Client:</string>
     <string name="chef_name" />
     <string name="chefs_name">Chef:</string>
-    <string name="meal_name">Meal:</string>
+    <string name="meal_name">Meal</string>
     <string name="description_title">Description:</string>
     <string name="ban_chef">Ban Until</string>
     <string name="dismiss">Dismiss</string>
@@ -42,6 +42,7 @@
         <item>(Select meal type)</item>
         <item>Vegan</item>
         <item>Vegetarian</item>
+        <item>Gluten-free</item>
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Brunch</item>
