@@ -12,7 +12,7 @@ import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ChefScreen extends UIScreen implements StatefulView {
+public class ChefScreen extends UIScreen {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +45,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
                         .commit();
             }
         });
-
-    }
-
-    @Override
-    public void updateUI() {
-
-    }
-
-    @Override
-    public void showNextScreen() {
 
     }
 

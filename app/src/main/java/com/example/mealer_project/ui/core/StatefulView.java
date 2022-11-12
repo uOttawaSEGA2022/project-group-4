@@ -11,4 +11,14 @@ public interface StatefulView {
     void updateUI();
     // display next screen based on state changes
     void showNextScreen();
+
+    /**
+     * Method to handle success of a DB operation
+     */
+    void dbOperationSuccessHandler(Object dbOperation, Object payload);
+
+    /**
+     * Method to handle failure of a DB operation
+     */
+    void dbOperationFailureHandler(Object dbOperation, Object payload);
 }

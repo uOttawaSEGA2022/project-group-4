@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.R;
+import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.core.StatefulView;
@@ -67,7 +68,7 @@ public class LoginScreen extends UIScreen implements StatefulView {
         }
 
         // initiate login process (async process, no blocking return)
-        App.getUserHandler().logInUser(this, email, password);
+        App.USER_HANDLER.logInUser(this, email, password);
 
         return new Response(true, "Login submitted, please wait");
     }
@@ -85,7 +86,7 @@ public class LoginScreen extends UIScreen implements StatefulView {
             Intent intent = new Intent(getApplicationContext(), ChefScreen.class);
             startActivity(intent);
         }else{
-            Intent intent = new Intent(getApplicationContext(), ClientScreen.class);
+            Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
             startActivity(intent);
         }
     }
@@ -100,14 +101,27 @@ public class LoginScreen extends UIScreen implements StatefulView {
     }
 
     /**
-     * Method that the database calls for indicating failure in user login
-     * @param message error message
+     * Method to handle success of a DB operation
      */
-    public void userLoginFailed(String message) {
-        // login process failed
-        setLoginInProcess(false);
-        displayErrorToast(message);
-    }
+     @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        if (dbOperation == UserHandler.dbOperations.USER_LOG_IN) {
+            // show next screen
+            showNextScreen();
+        }
+    };
+
+    /**
+     * Method to handle failure of a DB operation
+     */
+     @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+        if (dbOperation == UserHandler.dbOperations.USER_LOG_IN) {
+            // login process failed
+            setLoginInProcess(false);
+            displayErrorToast((String) payload);
+        }
+    };
 
     /**
      * Method to set login process status indicator

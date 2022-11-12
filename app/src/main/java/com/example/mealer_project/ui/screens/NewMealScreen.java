@@ -2,6 +2,7 @@ package com.example.mealer_project.ui.screens;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,10 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
     // Variable Declaration
     protected String allergens = "";
+    // define DB operations handled by NewMealScreen
+    public enum dbOperations {
+      ADD_MEAL
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -225,6 +230,31 @@ public class NewMealScreen extends UIScreen implements StatefulView {
     @Override
     public void showNextScreen() {
 
+    }
+
+    @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        if (dbOperation == dbOperations.ADD_MEAL) {
+            // adding new meal completed
+            displaySuccessToast((String) payload);
+            // finish the activity and return
+            this.setResult(Activity.RESULT_OK);
+            this.finish();
+        }
+    }
+
+    @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+        if (dbOperation == dbOperations.ADD_MEAL) {
+            // failed adding a new meal
+            displayErrorToast("Failed to add meal!");
+        }
+    }
+
+    private void cancelAddingMeal() {
+        // finish the activity and return
+        this.setResult(Activity.RESULT_CANCELED);
+        this.finish();
     }
 
     /*private Response addMealHandler() {
