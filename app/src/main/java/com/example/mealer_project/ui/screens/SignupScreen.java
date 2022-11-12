@@ -293,6 +293,22 @@ public class SignupScreen extends UIScreen implements StatefulView {
     }
 
     /**
+     * Method to handle success of a DB operation
+     */
+    @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+
+    }
+
+    /**
+     * Method to handle failure of a DB operation
+     */
+    @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+
+    }
+
+    /**
      * Method to indicate signup failure
      * @param message error message
      */

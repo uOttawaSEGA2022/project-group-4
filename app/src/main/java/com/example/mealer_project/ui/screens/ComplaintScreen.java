@@ -33,6 +33,9 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     Complaint complaintData;
     String[] clientAndChefNames;
     public final static String INFINITE_SUSPENSION_DATE = "01/01/9999";
+    public enum dbOperations {
+      GET_CLIENT_AND_CHEF_NAMES
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +169,26 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         App.getUserHandler().getClientAndChefNamesByIds(complaintData.getClientId(), complaintData.getChefId(), this);
     }
 
+    /**
+     * Method to handle success of a DB operation
+     */
+    @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        if (dbOperation == dbOperations.GET_CLIENT_AND_CHEF_NAMES) {
+            handleNamesRetrievalSuccess((String) payload);
+        }
+    };
+
+    /**
+     * Method to handle failure of a DB operation
+     */
+    @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+        if (dbOperation == dbOperations.GET_CLIENT_AND_CHEF_NAMES) {
+            displayErrorToast((String) payload);
+        }
+    };
+
     public void handleNamesRetrievalSuccess(String name) {
         if (clientAndChefNames == null) {
             Log.e("handleNames", "clientAndChefNames is null");
@@ -184,10 +207,6 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         if (Preconditions.isNotEmptyString(clientAndChefNames[0]) && Preconditions.isNotEmptyString(clientAndChefNames[1])) {
             updateUI();
         }
-    }
-
-    public void handleNamesRetrievalFailure(String error) {
-        displayErrorToast(error);
     }
 
     private void suspendChef(String suspensionDate) {

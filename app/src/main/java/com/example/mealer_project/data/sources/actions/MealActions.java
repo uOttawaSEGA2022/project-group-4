@@ -21,23 +21,18 @@ import java.util.Map;
 public class MealActions {
 
     FirebaseFirestore database;
-    private final MealHandler mealHandler;
-    private String chefId;
     private final static String MEAL_COLLECTION = "Meals";
     private final static String CHEF_COLLECTION = "Chefs";
 
-
     public MealActions(FirebaseFirestore database) {
         this.database = database;
-        this.mealHandler = App.getMealHandler();
-        this.chefId = App.getAppInstance().getUser().getUserId();
     }
 
     /**
      * Add meal to a specific chef's list of meals in Firebase
      * @param meal The meal to be added
      */
-    protected void addMeal(Meal meal){
+    public void addMeal(Meal meal){
 
         if (Preconditions.isNotNull(meal)) {
 
@@ -55,7 +50,7 @@ public class MealActions {
 
 
             database.collection(CHEF_COLLECTION)
-                    .document(chefId)
+                    .document(App.getUserId())
                     .collection("meals")
                     .add(databaseMeal)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -63,13 +58,13 @@ public class MealActions {
                         public void onSuccess(DocumentReference documentReference) {
                             // update complaint id
                             meal.setMealID(documentReference.getId());
-                            mealHandler.successAddingMeal(meal);
+                            App.MEAL_HANDLER.successAddingMeal(meal);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorAddingMeal("Failed to add meal to chef in database: " + e.getMessage());
+                            App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to chef in database: " + e.getMessage());
                         }
                     });
 
@@ -89,26 +84,26 @@ public class MealActions {
      * Set isOffered property to true to a meal in a specific chef's list of meals in Firebase
      * @param mealId The mealId of meal to be updated
      */
-    protected void addMealToOfferedList(String mealId){
+    public void addMealToOfferedList(String mealId){
 
         if (Preconditions.isNotNull(mealId)) {
 
             database.collection(CHEF_COLLECTION)
-                    .document(chefId)
+                    .document(App.getUserId())
                     .collection("meals")
                     .document(mealId)
                     .update("isOffered", true)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            mealHandler.successAddingMealToOfferedList(mealId);
+                            App.MEAL_HANDLER.successAddingMealToOfferedList(mealId);
                             //addMealToSearchableList(mealToMapConversion(getMealFromMealId(mealId, chefId)));
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorAddingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
+                            App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -122,26 +117,26 @@ public class MealActions {
      * Set isOffered property to false to a meal in a specific chef's list of meals in Firebase
      * @param mealId The mealId of meal to be updated
      */
-    protected void removeMealFromOfferedList(String mealId){
+    public void removeMealFromOfferedList(String mealId){
 
         if (Preconditions.isNotNull(mealId)) {
 
             database.collection(CHEF_COLLECTION)
-                    .document(chefId)
+                    .document(App.getUserId())
                     .collection("meals")
                     .document(mealId)
                     .update("isOffered", false)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            mealHandler.successRemovingMeal(mealId);
+                            App.MEAL_HANDLER.successRemovingMeal(mealId);
                             removeMealFromSearchableList(mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorRemovingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
+                            App.MEAL_HANDLER.errorRemovingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -154,7 +149,7 @@ public class MealActions {
     * Add meal to searchable list of meals in Firebase
     * @param meal The meal in a map format to be added
     */
-    protected void addMealToSearchableList(Map meal){
+    public void addMealToSearchableList(Map meal){
 
         if (Preconditions.isNotNull(meal)) {
 
@@ -164,13 +159,13 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            mealHandler.successAddingMealToSearchableList(meal);
+                            App.MEAL_HANDLER.successAddingMealToSearchableList(meal);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorAddingMeal("Failed to add meal to searchable list in database: " + e.getMessage());
+                            App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to searchable list in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -183,7 +178,7 @@ public class MealActions {
      * Remove meal from searchable list of meals in Firebase
      * @param mealId The mealId of meal to be removed
      */
-    protected void removeMealFromSearchableList(String mealId){
+    public void removeMealFromSearchableList(String mealId){
 
         if (Preconditions.isNotNull(mealId)) {
 
@@ -193,13 +188,13 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            mealHandler.successRemovingMeal(mealId);
+                            App.MEAL_HANDLER.successRemovingMeal(mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            mealHandler.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
+                            App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -248,7 +243,7 @@ public class MealActions {
      * Return map of meals from Firebase using app instance's current chef's ID
      */
     /////////////IMPLEMENT THIS!!!////////////////////
-    protected Map getMeals(){
+    public Map getMeals(){
 
         return null;
     }
@@ -257,7 +252,7 @@ public class MealActions {
      * Return map of offered meals from Firebase using app instance's current chef's ID
      */
     /////////////IMPLEMENT THIS!!!////////////////////
-    protected Map getOfferedMeals(){
+    public Map getOfferedMeals(){
 
         return null;
     }
@@ -267,14 +262,14 @@ public class MealActions {
      * Removes list from offered list and searchable list if isOffered boolean is updated to false
      * @param meal new Meal object with info to update
      */
-    protected void updateMealInfo(Meal meal){
+    public void updateMealInfo(Meal meal){
 
         if (Preconditions.isNotNull(meal)) {
 
             if (meal.isOffered()){
 
                 database.collection(CHEF_COLLECTION)
-                        .document(chefId)
+                        .document(App.getUserId())
                         .collection("meals")
                         .document(meal.getMealID())
                         .update("name",meal.getName(),
@@ -288,13 +283,13 @@ public class MealActions {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                mealHandler.successUpdatingMealInfo(meal);
+                                App.MEAL_HANDLER.successUpdatingMealInfo(meal);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                mealHandler.errorUpdatingMealInfo("Failed to update meal to list in chef in database: " + e.getMessage());
+                                App.MEAL_HANDLER.errorUpdatingMealInfo("Failed to update meal to list in chef in database: " + e.getMessage());
                             }
                         });
 
@@ -311,13 +306,13 @@ public class MealActions {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                mealHandler.successUpdatingMealInfo(meal);
+                                App.MEAL_HANDLER.successUpdatingMealInfo(meal);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                mealHandler.errorUpdatingMealInfo("Failed to update meal to searchable list in database: " + e.getMessage());
+                                App.MEAL_HANDLER.errorUpdatingMealInfo("Failed to update meal to searchable list in database: " + e.getMessage());
                             }
                         });
             }
@@ -338,7 +333,7 @@ public class MealActions {
      * @param meals Map of meal IDs and boolean isOffered of each meal
      */
     /////////////IMPLEMENT THIS!!!////////////////////
-    protected void updateOfferedMeals(Map <String,Boolean> meals){
+    public void updateOfferedMeals(Map <String,Boolean> meals){
 
     }
 

@@ -44,7 +44,11 @@ public class Client extends User {
     @Override
     public void setUserId(String userId) {
         super.setUserId(userId);
-        clientCreditCard.setClientId(userId);
+        // if we have a valid credit card, update client ID there as well
+        if (clientCreditCard != null) {
+            clientCreditCard.setClientId(userId);
+        }
+
     }
 
     /**

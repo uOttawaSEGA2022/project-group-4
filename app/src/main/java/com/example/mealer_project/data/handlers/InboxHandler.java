@@ -86,10 +86,10 @@ public class InboxHandler {
                     App.setAdminInbox(new AdminInbox(complaints));
                } catch (NullPointerException e) {
                     Log.e("createNewAdminInbox", "one of the complaints is null: " + e.getMessage());
-                    adminScreen.failedToLoadComplaints("Failed to load complaints");
+                    adminScreen.dbOperationFailureHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "Failed to load complaints");
                } catch (Exception e) {
                     Log.e("createNewAdminInbox", "an exception occurred while creating Admin Inbox: " + e.getMessage());
-                    adminScreen.failedToLoadComplaints("Failed to load complaints");
+                    adminScreen.dbOperationFailureHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "Failed to load complaints");
                }
 
                // guard-clause - make sure we have a valid instance of admin screen
@@ -98,10 +98,10 @@ public class InboxHandler {
                }
 
                // call method in inboxView to update inbox so admin can see all complaints
-               adminScreen.successLoadingAdminInbox();
+               adminScreen.dbOperationSuccessHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "Complaints loaded!");
           } else {
                // display error in inbox view
-               adminScreen.failedToLoadComplaints("No complaints available for admin inbox");
+               adminScreen.dbOperationFailureHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "No complaints available for admin inbox");
           }
      }
 

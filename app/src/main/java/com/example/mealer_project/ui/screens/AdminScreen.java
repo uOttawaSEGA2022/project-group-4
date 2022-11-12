@@ -25,6 +25,10 @@ public class AdminScreen extends UIScreen implements StatefulView {
     ListView complaintListView;
     List<Complaint> complaintsData;
     public final static String COMPLAINT_OBJ_INTENT_KEY = "complaint";
+    // DB operations performed by AdminScreen
+    public enum dbOperations {
+      GET_COMPLAINTS
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +69,12 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
     @Override
     public void updateUI() {
-
+        // reload complaints anytime update UI is called
+        displayComplaints();
     }
 
     @Override
-    public void showNextScreen() {
-
-    }
+    public void showNextScreen() {}
 
     public void clickLogout(View view) {
         Intent intent = new Intent(this, IntroScreen.class);
@@ -99,13 +102,17 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
     }
 
-    //Display complaints
-    public void successLoadingAdminInbox() {
-        displayComplaints();
-        displaySuccessToast("Complaints loaded!");
+    @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        if (dbOperation == dbOperations.GET_COMPLAINTS) {
+            updateUI();
+            displaySuccessToast((String) payload);
+        }
     }
 
-    public void failedToLoadComplaints(String s) {
-        displayErrorToast(s);
+    @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+        displayErrorToast((String) payload);
     }
+
 }

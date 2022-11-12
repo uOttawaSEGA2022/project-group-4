@@ -3,6 +3,7 @@ package com.example.mealer_project.data.sources.actions;
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.User;
@@ -161,7 +162,7 @@ public class AuthActions {
                     }
                 } else {
                     // If sign in fails, display a message to the user.
-                    loginScreen.userLoginFailed("Incorrect login information: please try again.");
+                    loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN, "Incorrect login information: please try again.");
                 }
             }
         });

@@ -15,9 +15,11 @@ import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
+import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.sources.actions.AuthActions;
 import com.example.mealer_project.data.sources.actions.InboxActions;
+import com.example.mealer_project.data.sources.actions.MealActions;
 import com.example.mealer_project.data.sources.actions.UserActions;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.ui.screens.SignupScreen;
@@ -41,12 +43,14 @@ public class FirebaseRepository {
     public UserActions USER;
     public AuthActions AUTH;
     public InboxActions INBOX;
+    public MealActions MEALS;
 
     public FirebaseRepository(FirebaseAuth mAuth) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         this.USER = new UserActions(db);
         this.AUTH = new AuthActions(mAuth, db, this);
         this.INBOX = new InboxActions(db, this);
+        this.MEALS = new MealActions(db);
     }
 
 

@@ -24,6 +24,13 @@ import java.util.Date;
 public class UserHandler {
 
     /**
+     * DB Operations handled by this handler
+     */
+    public enum dbOperations {
+        USER_LOG_IN
+    };
+
+    /**
      * Register a new Client account
      * @param signupScreen instance of login screen (required in asynchronous callback function to indicate success or failure)
      * @param userData user entity model containing all unvalidated user data

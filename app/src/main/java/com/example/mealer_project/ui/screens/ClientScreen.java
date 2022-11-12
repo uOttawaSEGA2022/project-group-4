@@ -9,22 +9,12 @@ import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class ClientScreen extends UIScreen implements StatefulView {
+public class ClientScreen extends UIScreen {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_screen);
-    }
-
-    @Override
-    public void updateUI() {
-
-    }
-
-    @Override
-    public void showNextScreen() {
-
     }
 
     public void clickLogout(View view) {
