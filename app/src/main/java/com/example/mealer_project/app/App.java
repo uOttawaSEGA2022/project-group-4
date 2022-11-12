@@ -4,6 +4,7 @@ import com.example.mealer_project.data.handlers.DataHandlers;
 import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.handlers.UserHandler;
+import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 
@@ -24,6 +25,9 @@ public class App {
     public static FirebaseRepository getPrimaryDatabase() {
         return app.getPrimaryDatabase();
     }
+
+    public static User getUser() { return app.getUser(); }
+    public static String getUserId() { return app.getUser().getUserId(); }
 
     public static UserHandler getUserHandler() {
         return app.getAppDataHandler().getUserHandler();
