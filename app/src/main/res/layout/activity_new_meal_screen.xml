@@ -19,9 +19,11 @@
                 android:id="@+id/welcome_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:fontFamily="@font/baloo_bhai"
+                android:minHeight="50dp"
+                android:padding="20dp"
                 android:text="@string/what_meal_would_you_like_to_add"
+                android:textAlignment="center"
                 android:textColor="@color/green_primary"
                 android:textSize="34sp"
                 android:textStyle="bold" />
@@ -39,9 +41,10 @@
                     android:layout_weight="1"
                     android:autofillHints=""
                     android:ems="10"
+                    android:fontFamily="@font/nunito_sans"
                     android:hint="@string/meal_name"
                     android:inputType="textPersonName"
-                    android:minHeight="48dp"
+                    android:minHeight="50dp"
                     android:textColor="@android:color/black"
                     tools:ignore="TextContrastCheck" />
 
@@ -52,7 +55,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:contentDescription="@string/meal_type"
-                    android:minHeight="48dp" />
+                    android:theme="@style/SpinnerTheme"
+                    android:minHeight="50dp" />
 
             </LinearLayout>
 
@@ -62,9 +66,10 @@
                 android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:ems="10"
+                android:fontFamily="@font/nunito_sans"
                 android:hint="@string/cuisine_type"
                 android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                android:minHeight="50dp" />
 
             <EditText
                 android:id="@+id/ingredients"
@@ -72,10 +77,12 @@
                 android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:ems="10"
+                android:fontFamily="@font/nunito_sans"
                 android:gravity="start|top"
                 android:hint="@string/ingredients"
                 android:inputType="textMultiLine"
                 android:lines="5"
+                android:minHeight="50dp"
                 tools:ignore="TextContrastCheck" />
 
             <LinearLayout
@@ -90,42 +97,46 @@
                     android:id="@+id/allergens"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
                     android:minHeight="48dp"
                     android:text="@string/allergen"
                     android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    tools:ignore="TouchTargetSizeCheck">
+                    android:layout_height="wrap_content">
 
                     <CheckBox
                         android:id="@+id/gluten_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentStart="true"
                         android:checked="false"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/gluten"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/peanuts_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/gluten_checkbox"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/peanuts"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
-                </LinearLayout>
 
-                <LinearLayout
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     tools:ignore="TouchTargetSizeCheck">
 
@@ -133,25 +144,29 @@
                         android:id="@+id/treenuts_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/treenuts"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/celery_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/treenuts_checkbox"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/celery"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     tools:ignore="TouchTargetSizeCheck">
 
@@ -159,25 +174,29 @@
                         android:id="@+id/mustard_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/mustard"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/eggs_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/mustard_checkbox"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/eggs"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     tools:ignore="TouchTargetSizeCheck">
 
@@ -185,25 +204,29 @@
                         android:id="@+id/milk_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/milk"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/sesame_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/milk_checkbox"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/sesame"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     tools:ignore="TouchTargetSizeCheck">
 
@@ -211,25 +234,29 @@
                         android:id="@+id/fish_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/fish"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/crustaceans_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/fish_checkbox"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/crustaceans"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     tools:ignore="TouchTargetSizeCheck">
 
@@ -237,25 +264,29 @@
                         android:id="@+id/molluscs_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/molluscs"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/soya_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/molluscs_checkbox"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/soya"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     tools:ignore="TouchTargetSizeCheck">
 
@@ -263,21 +294,26 @@
                         android:id="@+id/sulphites_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/sulphites"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
                         android:id="@+id/lupin_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_toEndOf="@id/sulphites_checkbox"
                         android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
                         android:text="@string/lupin"
+                        android:textSize="15sp"
                         tools:ignore="TouchTargetSizeCheck" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -285,12 +321,11 @@
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
                 android:ems="10"
+                android:fontFamily="@font/nunito_sans"
                 android:hint="@string/price"
-                android:inputType="number"
-                android:minHeight="48dp"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:inputType="numberDecimal"
+                android:autofillHints="" />
 
             <EditText
                 android:id="@+id/description"
@@ -298,18 +333,26 @@
                 android:layout_height="wrap_content"
                 android:autofillHints=""
                 android:ems="10"
+                android:fontFamily="@font/nunito_sans"
                 android:gravity="start|top"
                 android:hint="@string/description_title"
                 android:inputType="textMultiLine"
-                android:lines="5" />
+                android:lines="5"
+                android:minHeight="50dp"
+                tools:ignore="TextContrastCheck" />
 
-            <Switch
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/offer_meal_switch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nunito_sans"
+                android:minHeight="50dp"
                 android:padding="10dp"
-                android:text="@string/offer_meal" />
+                android:text="@string/offer_meal"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
 
             <LinearLayout
                 android:id="@+id/button_layout"
@@ -325,6 +368,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:fontFamily="@font/baloo_bhai"
+                    android:minHeight="50dp"
                     android:text="@string/back"
                     android:textAllCaps="true"
                     android:textColor="@color/green_primary"
@@ -338,7 +382,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:fontFamily="@font/baloo_bhai"
-                    android:onClick="onAddMeal"
+                    android:minHeight="50dp"
                     android:text="@string/add_meal"
                     android:textColor="@color/green_primary"
                     android:textSize="20sp" />

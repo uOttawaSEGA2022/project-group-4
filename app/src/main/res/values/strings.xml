@@ -36,12 +36,13 @@
     <string name="chef_temp_ban_message">Your account has been temporarily suspended until </string>
     <string name="view_orders">View Orders</string>
     <string name="my_menu">My Menu</string>
-    <string name="what_meal_would_you_like_to_add">What meal would you like to add?</string>
+    <string name="what_meal_would_you_like_to_add">WHAT MEAL WOULD YOU LIKE TO ADD?</string>
     <string name="meal_type">Meal type:</string>
     <string-array name="menu_types_array">
         <item>(Select meal type)</item>
         <item>Vegan</item>
         <item>Vegetarian</item>
+        <item>Gluten-free</item>
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Brunch</item>

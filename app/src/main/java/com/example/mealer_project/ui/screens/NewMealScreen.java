@@ -206,7 +206,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
            MealHandler mealHandler = App.getMealHandler(); //getting mealer
 
-           mealHandler.addMeal(mealEntityModel); //calling add meal method from mealhandler
+           mealHandler.addMeal(mealEntityModel, this); //calling add meal method from mealhandler
 
         }
         catch(NumberFormatException e) {
