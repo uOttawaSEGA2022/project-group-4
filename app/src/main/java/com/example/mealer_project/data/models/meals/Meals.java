@@ -2,6 +2,7 @@ package com.example.mealer_project.data.models.meals;
 
 import androidx.annotation.NonNull;
 
+import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;

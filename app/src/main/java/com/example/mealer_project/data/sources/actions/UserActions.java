@@ -10,11 +10,13 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
+import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
@@ -63,7 +65,7 @@ public class UserActions {
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
                                 Log.e("Login failed for admin", r.getErrorMessage());
-                                loginScreen.userLoginFailed("Login failed for admin: " + r.getErrorMessage());
+                                loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN, "Login failed for admin: " + r.getErrorMessage());
                             }
 
                             if (r.isError()) {
@@ -109,7 +111,7 @@ public class UserActions {
                                     // inform UI that Chef is suspended and provide it suspension date
                                     loginScreen.handleSuspendedChefLogin(chefSuspensionDate, String.valueOf(document.getData().get("firstName")));
                                 } else {
-                                    loginScreen.userLoginFailed("Could not retrieve a valid date for suspended chef");
+                                    loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Could not retrieve a valid date for suspended chef");
                                 }
                                 // return
                                 new Response(false, "Chef is suspended");
@@ -122,7 +124,7 @@ public class UserActions {
                                     loginScreen.showNextScreen();
                                 } else if (loginScreen != null){
                                     Log.e("Login failed for chef", r.getErrorMessage());
-                                    loginScreen.userLoginFailed("Login failed, " + r.getErrorMessage());
+                                    loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed, " + r.getErrorMessage());
                                 }
                             }
                         }
@@ -154,7 +156,7 @@ public class UserActions {
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
                                 Log.e("Login failed for client", r.getErrorMessage());
-                                loginScreen.userLoginFailed("Login failed for user: " + r.getErrorMessage());
+                                loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed for user: " + r.getErrorMessage());
                             }
 
                             if (r.isError()) {
@@ -230,7 +232,7 @@ public class UserActions {
 
             return new Response(true);
         } catch (Exception e) {
-            return new Response(false, "makeChefFromFirebase: " + e.getMessage());
+            return new Response(false, "makeClientFromFirebase: " + e.getMessage());
         }
     }
 
@@ -321,19 +323,21 @@ public class UserActions {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 if (document.getData() != null){
-                                    complaintScreen
-                                            .handleNamesRetrievalSuccess(
+                                    complaintScreen.dbOperationSuccessHandler(
+                                                    ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
                                                     document.getData().get("firstName")
                                                     + " " +
                                                     document.getData().get("lastName")
                                             );
                                 } else {
                                     Log.e("getClientChefName", "document data null");
-                                    complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                                    complaintScreen.dbOperationFailureHandler(
+                                            ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                                 }
                             } else {
                                 Log.e("getClientChefName", "client not found for id: " + clientId);
-                                complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                                complaintScreen.dbOperationFailureHandler(
+                                        ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                             }
                         } else {
                             Log.e(TAG, "getClientChefName failed with ", task.getException());
@@ -353,19 +357,21 @@ public class UserActions {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 if (document.getData() != null){
-                                    complaintScreen
-                                            .handleNamesRetrievalSuccess(
+                                    complaintScreen.dbOperationSuccessHandler(
+                                            ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
                                                     document.getData().get("firstName")
                                                             + " " +
                                                             document.getData().get("lastName")
                                             );
                                 } else {
                                     Log.e("getClientChefName", "document data null");
-                                    complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                                    complaintScreen.dbOperationFailureHandler(
+                                            ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                                 }
                             } else {
                                 Log.e("getClientChefName", "chef not found for provided id: " + chefId);
-                                complaintScreen.handleNamesRetrievalFailure("unable to process request");
+                                complaintScreen.dbOperationFailureHandler(
+                                        ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                             }
                         } else {
                             Log.e(TAG, "getClientChefName failed with ", task.getException());
