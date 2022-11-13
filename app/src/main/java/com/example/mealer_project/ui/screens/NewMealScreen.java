@@ -1,7 +1,5 @@
 package com.example.mealer_project.ui.screens;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,25 +11,15 @@ import android.widget.Switch;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.app.AppInstance;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.utils.Response;
-
-import java.util.List;
-
 public class NewMealScreen extends UIScreen implements StatefulView {
 
     // Variable Declaration
     protected String allergens = "";
-    // define DB operations handled by NewMealScreen
-    public enum dbOperations {
-      ADD_MEAL
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,9 +197,9 @@ public class NewMealScreen extends UIScreen implements StatefulView {
                   mealType.getSelectedItem().toString(), ingredients.getText().toString(), allergens,
                   description.getText().toString(), offered.isChecked(), priceValue);
 
-           MealHandler mealHandler = App.getMealHandler(); //getting mealer
 
-           mealHandler.addMeal(mealEntityModel, this); //calling add meal method from mealhandler
+            // dispatch the add meal action to the Meal Handler
+            App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL, mealEntityModel, this); //calling add meal method from mealhandler
 
         }
         catch(NumberFormatException e) {
@@ -234,7 +222,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-        if (dbOperation == dbOperations.ADD_MEAL) {
+        if (dbOperation == MealHandler.dbOperations.ADD_MEAL) {
             // adding new meal completed
             displaySuccessToast((String) payload);
             // finish the activity and return
@@ -245,7 +233,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-        if (dbOperation == dbOperations.ADD_MEAL) {
+        if (dbOperation == MealHandler.dbOperations.ADD_MEAL) {
             // failed adding a new meal
             displayErrorToast("Failed to add meal!");
         }
