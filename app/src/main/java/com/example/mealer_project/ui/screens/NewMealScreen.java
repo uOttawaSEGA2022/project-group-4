@@ -260,7 +260,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         catch(NumberFormatException e) {
 
             // error toast here
-            displayErrorToast("Incorrect price formatting!");
+            displayErrorToast("Invalid price");
 
         }
 
@@ -312,6 +312,9 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (dbOperation == MealHandler.dbOperations.ADD_MEAL) {
             // failed adding a new meal
             displayErrorToast("Failed to add meal!");
+        }
+        else {
+            displayErrorToast((String) payload);
         }
     }
     
