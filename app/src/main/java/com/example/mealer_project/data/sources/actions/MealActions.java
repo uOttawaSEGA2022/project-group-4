@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
-import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.utils.Preconditions;
@@ -56,6 +55,7 @@ public class MealActions {
             databaseMeal.put("price", meal.getPrice());
 
 
+            // Add meal to chef's list in firebase
             database.collection(CHEF_COLLECTION)
                     .document(App.getUserId())
                     .collection("meals")
@@ -75,6 +75,7 @@ public class MealActions {
                         }
                     });
 
+            // Add meal to meals collection in Firebase
             database.collection(MEAL_COLLECTION)
                     .document(meal.getMealID())
                     .set(databaseMeal)
@@ -108,6 +109,7 @@ public class MealActions {
 
             Chef chef = (Chef) App.getUser();
 
+            // Remove meal from chef's list in firebase
             database.collection(CHEF_COLLECTION)
                     .document(chef.getUserId())
                     .collection("meals")
@@ -116,29 +118,30 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.successRemovingMeal(mealId);
+                            App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
+                            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal in chef's list in Firebase: " + e.getMessage());
                         }
                     });
 
+            // Remove meal from meals collection in Firebase
             database.collection(MEAL_COLLECTION)
                     .document(mealId)
                     .delete()
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.successRemovingMeal(mealId);
+                            //App.MEAL_HANDLER.successRemovingMeal(mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
+                            //App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -155,6 +158,7 @@ public class MealActions {
 
         if (Preconditions.isNotNull(mealId)) {
 
+            // Set isOffered to true in chef's meals in firebase
             database.collection(CHEF_COLLECTION)
                     .document(App.getUserId())
                     .collection("meals")
@@ -174,10 +178,10 @@ public class MealActions {
                         }
                     });
 
-            // Set isOffered to false in list of meals in firebase
+            // Set isOffered to true in list of meals in firebase
             database.collection(MEAL_COLLECTION)
                     .document(mealId)
-                    .update("isOffered", false)
+                    .update("isOffered", true)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -216,7 +220,6 @@ public class MealActions {
                         @Override
                         public void onSuccess(Void aVoid) {
                             App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, mealId);
-                            removeMealFromSearchableList(mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -352,8 +355,6 @@ public class MealActions {
 
         if (Preconditions.isNotNull(meal)) {
 
-            if (meal.isOffered()){
-
                 database.collection(CHEF_COLLECTION)
                         .document(App.getUserId())
                         .collection("meals")
@@ -401,13 +402,6 @@ public class MealActions {
                                 App.MEAL_HANDLER.handleActionFailure( UPDATE_MEAL_INFO,"Failed to update meal to searchable list in database: " + e.getMessage());
                             }
                         });
-            }
-
-            else{
-                removeMealFromOfferedList(meal.getMealID());
-                removeMealFromSearchableList(meal.getMealID());
-
-            }
         } else {
             // if Preconditions fail
             Log.e("updateMealInfo", "Invalid object value for meal");
