@@ -51,6 +51,7 @@
                 android:layout_marginTop="17dp"
                 android:layout_marginEnd="0dp"
                 android:layout_marginRight="0dp"
+                android:layout_toLeftOf="@id/logout_btn_chef"
                 android:layout_toRightOf="@id/logo"
                 android:fontFamily="sans-serif-medium"
                 android:text="Welcome!"

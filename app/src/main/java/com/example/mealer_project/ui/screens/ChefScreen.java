@@ -4,23 +4,41 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentManager;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ChefScreen extends UIScreen implements StatefulView {
 
+    TextView editText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_screen);
 
+        editText = (TextView) findViewById(R.id.welcome_message_chef);
+
         attachOnClickListeners();
 
+        User currentUser = App.getAppInstance().getUser();
+
+        // Change text to proper welcome message when opened
+        if (App.getAppInstance().isUserAuthenticated()) {
+            setWelcomeMessage("Welcome " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", you're logged in as CHEF");
+        }
+
+    }
+
+    private void setWelcomeMessage(String message) {
+        editText.setText(message, TextView.BufferType.EDITABLE);
     }
 
     private void attachOnClickListeners() {
