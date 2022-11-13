@@ -376,7 +376,6 @@ public class MealActions {
      */
     public void getMeals(String chefId){
 
-
         CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION);
 
         mealsReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

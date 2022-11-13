@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
+import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.Address;
@@ -16,8 +17,10 @@ import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
+import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
+import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
@@ -25,6 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,10 +37,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public class UserActions {
 
     FirebaseFirestore database;
+    FirebaseRepository firebaseRepository;
     private final static String CLIENT_COLLECTION = "Clients";
     private final static String CHEF_COLLECTION = "Chefs";
     private final static String ADMIN_COLLECTION = "Admin";
@@ -44,7 +50,9 @@ public class UserActions {
 
 
     public UserActions(FirebaseFirestore database) {
+
         this.database = database;
+        this.firebaseRepository = firebaseRepository;
     }
 
     protected void getUserById(String userId, LoginScreen loginScreen) {
@@ -272,6 +280,29 @@ public class UserActions {
                     document.getData().get("suspensionDate") != null ?
                     DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(String.valueOf((document.getData().get("suspensionDate")))):
                     null);
+
+            Map<String,Object> meals = (Map) document.getData().get("meals");
+
+            for (String mealId : meals.keySet()) {
+                String key = mealId;
+                Map value = (Map) meals.get(mealId);
+
+                MealEntityModel mealEntityModel = new MealEntityModel();
+
+                mealEntityModel.setMealID(key);
+                mealEntityModel.setName(String.valueOf(value.get("name")));
+                mealEntityModel.setChefID(String.valueOf(value.get("chefId")));
+                mealEntityModel.setCuisineType(String.valueOf(value.get("cuisineType")));
+                mealEntityModel.setMealType(String.valueOf(value.get("mealType")));
+                mealEntityModel.setIngredients(String.valueOf(value.get("ingredients")));
+                mealEntityModel.setAllergens(String.valueOf(value.get("allergens")));
+                mealEntityModel.setDescription(String.valueOf(value.get("description")));
+                mealEntityModel.setOffered((Boolean)value.get("offered"));
+                mealEntityModel.setPrice((Double)value.get("price"));
+
+                Meal meal = new Meal(mealEntityModel);
+                newChef.MEALS.addMeal(meal);
+            }
 
             App.getAppInstance().setUser(newChef);
 
