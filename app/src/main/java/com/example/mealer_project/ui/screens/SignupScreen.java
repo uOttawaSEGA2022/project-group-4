@@ -20,6 +20,7 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
@@ -282,14 +283,27 @@ public class SignupScreen extends UIScreen implements StatefulView {
         return new Response(true);
     }
 
+    // THIS NEEDS TO CHANGE
     /**
      * Method to display next screen - Welcome Screen
      * This method also sets userRegistrationInProgress to false to indicate user sign completed
      */
     public void showNextScreen() {
+
+        // Variable Declaration
+        User currentUser = App.getAppInstance().getUser();
+        Intent intent;
+
         setRegistrationInProgress(false);
-        Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class); //where SignUp.class is the sign up activity
-        startActivity(intent);
+
+        if (currentUser.getRole() == UserRoles.CHEF){ //chef
+            intent = new Intent(getApplicationContext(), ChefScreen.class);
+            startActivity(intent);
+        }
+        else { //client
+            intent = new Intent(getApplicationContext(), WelcomeScreen.class);
+            startActivity(intent);
+        }
     }
 
     /**
