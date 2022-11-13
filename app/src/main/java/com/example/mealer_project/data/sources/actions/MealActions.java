@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.sources.actions;
 
+import static android.content.ContentValues.TAG;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -7,10 +9,13 @@ import androidx.annotation.NonNull;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
+import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.utils.Preconditions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -79,6 +84,9 @@ public class MealActions {
             Log.e("addMeal", "Invalid object value for meal");
         }
     }
+
+    // TODO: Implement method to remove meal
+    public void removeMeal(String mealId) {};
 
     /**
      * Set isOffered property to true to a meal in a specific chef's list of meals in Firebase
@@ -204,40 +212,81 @@ public class MealActions {
     }
 
     /**
+     * Get meal from Firebase for the current logged in chef
+     * @param mealId The mealId of meal
+     */
+    public void getMealById (String mealId) {
+
+        Chef chef;
+
+        try {
+            chef = (Chef) App.getUser();
+
+            DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chef.getUserId()).collection(MEAL_COLLECTION).document(mealId);
+
+            mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                            if (document.getData() != null){
+                                App.MEAL_HANDLER.successGettingMealById(makeMealFromFirebase(document));
+                            }
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                            App.MEAL_HANDLER.errorGettingMealById("Could not find a meal with provided ID");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                        App.MEAL_HANDLER.errorGettingMealById("Failed to retrieve meal");
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            Log.e("getMealById", "Current logged in user is not a chef. Wrong getMealById overloaded method called?: " + e.getMessage());
+            App.MEAL_HANDLER.errorGettingMealById("Unable to process request at this moment");
+        }
+    }
+
+    /**
      * Get meal from Firebase given the mealId AND chefId
      * @param mealId The mealId of meal
-     * @param chefId The chefId of chef
      */
-    /////////////FIX THIS!!!////////////////////
-//    protected Meal getMealFromMealId (String mealId, String chefId){
-//
-//        Meal meal;
-//        DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION).document(mealId);
-//
-//        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//
-//                        if (document.getData() != null){
-//                           meal = makeMealFromFirebase(document);
-//                        }
-//
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//
-//        return meal;
-//    }
+    public void getMealById (String mealId, String chefId) {
+
+        Meal meal;
+        DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION).document(mealId);
+
+        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        if (document.getData() != null){
+                           App.MEAL_HANDLER.successGettingMealById(makeMealFromFirebase(document));
+                        }
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                        App.MEAL_HANDLER.errorGettingMealById("Could not find a meal with provided ID");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                    App.MEAL_HANDLER.errorGettingMealById("Failed to retrieve meal");
+                }
+            }
+        });
+    }
 
     /**
      * Return map of meals from Firebase using app instance's current chef's ID
