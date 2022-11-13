@@ -26,6 +26,8 @@ public class MealHandler {
         REMOVE_MEAL_FROM_OFFERED_LIST,
         UPDATE_MEAL_INFO,
         UPDATE_OFFERED_MEALS,
+        ADD_TO_SEARCHABLE_LIST,
+        REMOVE_FROM_SEARCHABLE_LIST,
         GET_MENU,
         GET_MEAL_BY_ID,
         ERROR
@@ -54,7 +56,7 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof MealEntityModel) {
                             addMeal((MealEntityModel) payload);
                         } else {
-                            errorAddingMeal("Invalid Meal Object provided");
+                            handleActionFailure( operationType, "Invalid Meal Object provided");
                         }
                         break;
 
@@ -63,7 +65,7 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
                             App.getPrimaryDatabase().MEALS.addMealToOfferedList((String) payload);
                         } else {
-                            errorAddingMealToOfferedList("Invalid meal ID provided");
+                            handleActionFailure( operationType, "Invalid meal ID provided");
                         }
                         break;
 
@@ -72,7 +74,7 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
                             App.getPrimaryDatabase().MEALS.removeMeal((String) payload);
                         } else {
-                            errorRemovingMeal("Invalid meal ID provided");
+                            handleActionFailure( operationType, "Invalid meal ID provided");
                         }
                         break;
 
@@ -80,7 +82,7 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
                             App.getPrimaryDatabase().MEALS.removeMealFromOfferedList((String) payload);
                         } else {
-                            errorRemovingMealFromOfferedList("Invalid meal ID provided");
+                            handleActionFailure( operationType, "Invalid meal ID provided");
                         }
                         break;
 
@@ -88,7 +90,7 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
                             App.getPrimaryDatabase().MEALS.updateMealInfo((Meal) payload);
                         } else {
-                            errorUpdatingMealInfo("Invalid Meal instance provided");
+                            handleActionFailure( operationType, "Invalid Meal instance provided");
                         }
                         break;
 
@@ -96,7 +98,7 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
                             App.getPrimaryDatabase().MEALS.updateOfferedMeals((Map<String, Boolean>) payload);
                         } else {
-                            errorUpdatingOfferedMeals("Invalid object provided for map");
+                            handleActionFailure( operationType, "Invalid object provided for map");
                         }
                         break;
 
@@ -118,10 +120,10 @@ public class MealHandler {
                             }
 
                             else {
-                                errorGettingMealById("Invalid arguments provided for getting meal by id");
+                                handleActionFailure( operationType, "Invalid arguments provided for getting meal by id");
                             }
                         } else {
-                            errorGettingMealById("No arugments provided for getMealById");
+                            handleActionFailure( operationType, "No arugments provided for getMealById");
                         }
                 }
             } catch (Exception e) {
@@ -138,17 +140,33 @@ public class MealHandler {
         // ensure we have a valid uiScreen to inform of success
         if(Preconditions.isNotNull(uiScreen)) {
 
-            switch (operationType) {
+            try {
+                switch (operationType) {
 
-                case ADD_MEAL:
-                    successAddingMeal((Meal) payload);
-                case REMOVE_MEAL:
-                    if (Preconditions.isNotNull(payload) && payload instanceof String) {
-                        ((Chef) App.getUser()).MEALS.removeMeal((String) payload);
-                    } else {
-                        errorRemovingMeal("");
-                    }
+                    case ADD_MEAL:
+                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
+                            // add meal locally
+                            ((Chef) App.getUser()).MEALS.addMeal((Meal) payload);
+                            // let UI know about success
+                            uiScreen.dbOperationSuccessHandler(operationType, "Meal added successfully!");
+                        } else {
+                            handleActionFailure(operationType, "Invalid meal object provided");
+                        }
+                        break;
 
+                    case REMOVE_MEAL:
+                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
+                            ((Chef) App.getUser()).MEALS.removeMeal((String) payload);
+                            // let UI know about success
+                            uiScreen.dbOperationSuccessHandler(operationType, "Meal removed successfully!");
+                        } else {
+                            uiScreen.dbOperationFailureHandler(dbOperations.REMOVE_MEAL, "Invalid meal ID");
+                        }
+
+                }
+            } catch (Exception e) {
+                Log.e("handleActionSuccess", "Success handler exception: " + e.getMessage());
+                uiScreen.dbOperationFailureHandler(dbOperations.ERROR, "Failed to process request");
             }
 
         } else {
@@ -228,22 +246,6 @@ public class MealHandler {
         }
     }
 
-    public void successAddingMeal(Meal meal){
-        try {
-            if (Preconditions.isNotNull(meal) && Preconditions.isNotNull(uiScreen)) {
-                // add meal locally
-                Chef chef = (Chef) App.getUser();
-                chef.MEALS.addMeal(meal);
-                // let UI know about success
-                uiScreen.dbOperationSuccessHandler(dbOperations.ADD_MEAL, "Meal added successfully!");
-            } else {
-                handleActionFailure( dbOperations.ADD_MEAL, "Failed to add meal locally: meal is null");
-            }
-        } catch (Exception e) {
-            handleActionFailure( dbOperations.ADD_MEAL, "Failed to add meal locally: " + e.getMessage());
-        }
-    }
-
     /* ------               Add Meal To Offered Lis             ------- */
 
     public void successAddingMealToOfferedList(String mealId){
@@ -263,39 +265,19 @@ public class MealHandler {
 
     /* ------                   Remove Meal                    ------- */
 
-    public void successRemovingMeal(String mealId) {
-        if (Preconditions.isNotEmptyString(mealId) && Preconditions.isNotNull(uiScreen)) {
-
-        } else {
-
-        }
-    }
-
     /* ------        Remove Meal From Offered List              ------- */
 
-    public void successRemovingMealFromOfferedList(String mealId){}
 
     /* ------                   Update Meal                    ------- */
 
-    public void successUpdatingMealInfo(Meal meal){}
 
     /* ------               Update Offered Meals                 ------- */
-
-    public void successUpdatingOfferedMeals(Meal meal){}
 
 
     /* ------             Add to Searchable List               ------- */
 
-    public void successAddingMealToSearchableList(Map meal){}
-
-    public void errorAddingMealToSearchableList(Map meal){}
-
     /* ------                   Get Menu                         ------- */
 
-    public void successGettingMenu(Meal meal){}
-
     /* ------                   Get Meal By ID                   ------- */
-
-    public void successGettingMealById(Meal meal){}
 
 }
