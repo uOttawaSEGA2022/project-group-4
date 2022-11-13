@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -18,7 +17,6 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 public class NewMealScreen extends UIScreen implements StatefulView {
@@ -55,7 +53,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
         // Variable Declaration
         Button addMealButton = (Button) findViewById(R.id.add_meal_button);
-        Button backButton = (Button) findViewById(R.id.back_button);
+        Button backButton = (Button) findViewById(R.id.cancel_button);
 
         // Process: setting the new onClick method for addMeal
         addMealButton.setOnClickListener(new Button.OnClickListener() {

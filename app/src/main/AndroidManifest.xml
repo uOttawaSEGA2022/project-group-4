@@ -12,6 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mealer_Project">
         <activity
+            android:name=".ui.screens.EditMealScreen"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.screens.MealInfoScreen"
             android:exported="false">
             <meta-data

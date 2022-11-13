@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.screens.NewMealScreen">
+    tools:context=".ui.screens.EditMealScreen">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
                 android:fontFamily="@font/baloo_bhai"
                 android:minHeight="50dp"
                 android:padding="20dp"
-                android:text="@string/what_meal_would_you_like_to_add"
+                android:text="@string/editing_meal"
                 android:textAlignment="center"
                 android:textColor="@color/green_primary"
                 android:textSize="34sp"
@@ -369,7 +369,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/baloo_bhai"
                     android:minHeight="50dp"
-                    android:text="@string/back"
+                    android:text="@android:string/cancel"
                     android:textAllCaps="true"
                     android:textColor="@color/green_primary"
                     android:textSize="20sp" />
@@ -383,7 +383,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/baloo_bhai"
                     android:minHeight="50dp"
-                    android:text="@string/add_meal"
+                    android:text="@string/submit"
                     android:textColor="@color/green_primary"
                     android:textSize="20sp" />
             </LinearLayout>
