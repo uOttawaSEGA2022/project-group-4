@@ -252,25 +252,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
                   description.getText().toString(), offered.isChecked(), priceValue);
 
 
-            // Process: adding the meal to firebase & locally
-            try {
-
-                // dispatch the add meal action to the Meal Handler & shows error toast if needed -> firebase
-                App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL, mealEntityModel, this); //calling add meal method from mealhandler
-
-                // adding meal to chef's meals map -> BUT this should only happen when firebase is successful
-                chef.MEALS.addMeal(new Meal(mealEntityModel)); //local
-
-                showNextScreen(); //returning to chef's main screen
-
-            }
-            catch (Exception e) { //error-handling
-
-                // failure msg
-                displayErrorToast(e.getMessage());
-
-            }
-
+            App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL, mealEntityModel, this); //calling add meal method from mealhandler
 
         }
         catch(NumberFormatException e) {
@@ -318,6 +300,8 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             // finish the activity and return
             this.setResult(Activity.RESULT_OK);
             this.finish();
+            
+            showNextScreen(); //returning to chef's main screen
         }
     }
 
