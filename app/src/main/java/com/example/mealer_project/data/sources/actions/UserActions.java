@@ -19,7 +19,6 @@ import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.meals.Meal;
-import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
@@ -38,7 +37,6 @@ import java.util.Map;
 public class UserActions {
 
     FirebaseFirestore database;
-    FirebaseRepository firebaseRepository;
     private final static String CLIENT_COLLECTION = "Clients";
     private final static String CHEF_COLLECTION = "Chefs";
     private final static String ADMIN_COLLECTION = "Admin";
@@ -46,9 +44,7 @@ public class UserActions {
 
 
     public UserActions(FirebaseFirestore database) {
-
         this.database = database;
-        this.firebaseRepository = firebaseRepository;
     }
 
     protected void getUserById(String userId, LoginScreen loginScreen) {
