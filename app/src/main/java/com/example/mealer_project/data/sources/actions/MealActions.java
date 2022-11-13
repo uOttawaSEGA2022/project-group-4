@@ -361,10 +361,11 @@ public class MealActions {
 
                         Meal meal = makeMealFromFirebase(document);
                         meals.put(document.getId(), meal);
-                        // call method to set meals list to chef user in user handler
+                        App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
+                    App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
                 }
             }
         });
@@ -391,10 +392,11 @@ public class MealActions {
 
                         Meal meal = makeMealFromFirebase(document);
                         meals.put(document.getId(), meal);
-                        // call method to set meals list to chef user in user handler
+                        App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
+                    App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
                 }
             }
         });
@@ -461,15 +463,6 @@ public class MealActions {
             // if Preconditions fail
             Log.e("updateMealInfo", "Invalid object value for meal");
         }
-    }
-
-    /**
-     * Update offered meals list and searchable list of meals in firebase accordingly
-     * @param meals Map of meal IDs and boolean isOffered of each meal
-     */
-    /////////////IMPLEMENT THIS!!!////////////////////
-    public void updateOfferedMeals(Map <String,Boolean> meals){
-
     }
 
 
