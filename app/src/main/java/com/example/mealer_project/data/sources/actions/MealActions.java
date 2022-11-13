@@ -22,6 +22,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.example.mealer_project.utils.Result;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -339,89 +341,64 @@ public class MealActions {
     }
 
     /**
-     * Return map of meals from Firebase using app instance's current chef's ID
+     * Set meals list to specific chef locally using App instance user
      */
-    /////////////IMPLEMENT THIS!!!////////////////////
     public void getMeals(){
 
         Chef chef = (Chef) App.getUser();
 
         CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chef.getUserId()).collection(MEAL_COLLECTION);
 
-        mealsReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        mealsReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        if (document.getData() != null){
-                            Result r = makeMealsFromFirebase(document);
-                        }
+                    Map<String, Meal> meals = new HashMap<String, Meal>();
 
-                    } else {
-                        Log.d(TAG, "No such document");
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+
+                        Meal meal = makeMealFromFirebase(document);
+                        meals.put(document.getId(), meal);
+                        // call method to set meals list to chef user in user handler
                     }
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    Log.d(TAG, "Error getting documents: ", task.getException());
                 }
             }
         });
     }
 
-
-    private Result makeMealsFromFirebase(DocumentSnapshot document){
-
-        try{
-
-            if (document.getData() == null) {
-                throw new NullPointerException("makeClientFromFirebase: invalid document object");
-            }
-
-            Map<String, Meal> meals = new HashMap<String, Meal>();
-
-            for (Map.Entry<String, Object> entry : document.getData().entrySet()) {
-                String key = entry.getKey();
-                Map value = (Map) entry.getValue();
-
-
-                MealEntityModel mealEntityModel = new MealEntityModel();
-                mealEntityModel.setMealID(key);
-                mealEntityModel.setName(String.valueOf(value.get("name")));
-                mealEntityModel.setChefID(String.valueOf(value.get("chefID")));
-                mealEntityModel.setCuisineType(String.valueOf(value.get("cuisineTpe")));
-                mealEntityModel.setMealType(String.valueOf(value.get("mealType")));
-                mealEntityModel.setIngredients(String.valueOf(value.get("ingredients")));
-                mealEntityModel.setAllergens(String.valueOf(value.get("allergens")));
-                mealEntityModel.setDescription(String.valueOf(value.get("description")));
-                mealEntityModel.setOffered((Boolean) value.get("isOffered"));
-                mealEntityModel.setPrice((Double) value.get("double"));
-
-                Meal meal = new Meal(mealEntityModel);
-                meals.put(key, meal);
-
-            }
-
-
-            return new Result(meals);
-        } catch (Exception e) {
-            return new Result(false, "makeMealsFromFirebase: " + e.getMessage());
-        }
-    }
-
     /**
-     * Return map of meals from Firebase using app instance's current chef's ID
+     * Set meals list to specific chef locally using chefID
+     * @param chefId Id of chef to get meals from
      */
-    /////////////IMPLEMENT THIS!!!////////////////////
-    public Map getMeals(String chefId){
+    public void getMeals(String chefId){
 
 
+        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION);
 
+        mealsReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
 
+                    Map<String, Meal> meals = new HashMap<String, Meal>();
 
-        return null;
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+
+                        Meal meal = makeMealFromFirebase(document);
+                        meals.put(document.getId(), meal);
+                        // call method to set meals list to chef user in user handler
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
     }
 
     /**
