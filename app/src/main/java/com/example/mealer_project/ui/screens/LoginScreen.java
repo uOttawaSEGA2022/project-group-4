@@ -78,16 +78,12 @@ public class LoginScreen extends UIScreen implements StatefulView {
         // this method gets called when login completed
         User currentUser = App.getAppInstance().getUser();
         setLoginInProcess(false);
-        Log.e("login failure", "over here1");
         if (currentUser.getRole() == UserRoles.ADMIN){
             Intent intent = new Intent(getApplicationContext(), AdminScreen.class);
             startActivity(intent);
         }else if (currentUser.getRole() == UserRoles.CHEF){
-            Log.e("login failure", "over here2");
             Intent intent = new Intent(getApplicationContext(), ChefScreen.class);
-            Log.e("login failure", "over here3");
             startActivity(intent);
-            Log.e("login failure", "over here4");
         }else{
             Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
             startActivity(intent);
