@@ -1,12 +1,14 @@
-package com.example.mealer_project.data.models;
+package com.example.mealer_project.data.models.meals;
 
 
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 
+import java.io.Serializable;
+
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
  */
-public class Meal {
+public class Meal implements Serializable {
     private String errorMsg = "";
 
     private String name;

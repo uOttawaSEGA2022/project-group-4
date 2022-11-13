@@ -16,7 +16,7 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Meal;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 public class NewMealScreen extends UIScreen implements StatefulView {

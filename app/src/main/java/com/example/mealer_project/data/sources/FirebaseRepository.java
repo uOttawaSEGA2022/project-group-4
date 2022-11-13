@@ -15,7 +15,7 @@ import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
-import com.example.mealer_project.data.models.Meal;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.sources.actions.AuthActions;
 import com.example.mealer_project.data.sources.actions.InboxActions;

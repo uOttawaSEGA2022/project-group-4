@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Meal;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
