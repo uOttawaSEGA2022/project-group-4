@@ -17,9 +17,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.mealer_project.utils.Result;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -105,49 +107,57 @@ public class MealActions {
      */
     public void removeMeal(String mealId){
 
-        if (Preconditions.isNotNull(mealId)) {
+        Chef chef;
 
-            Chef chef = (Chef) App.getUser();
+        try {
+            if (Preconditions.isNotNull(mealId)) {
 
-            // Remove meal from chef's list in firebase
-            database.collection(CHEF_COLLECTION)
-                    .document(chef.getUserId())
-                    .collection("meals")
-                    .document(mealId)
-                    .delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal in chef's list in Firebase: " + e.getMessage());
-                        }
-                    });
+                chef = (Chef) App.getUser();
 
-            // Remove meal from meals collection in Firebase
-            database.collection(MEAL_COLLECTION)
-                    .document(mealId)
-                    .delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //App.MEAL_HANDLER.successRemovingMeal(mealId);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
-                        }
-                    });
-        } else {
-            // if Preconditions fail
-            Log.e("removeMealFromSearch", "Invalid object value for meal");
+                // Remove meal from chef's list in firebase
+                database.collection(CHEF_COLLECTION)
+                        .document(chef.getUserId())
+                        .collection("meals")
+                        .document(mealId)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal in chef's list in Firebase: " + e.getMessage());
+                            }
+                        });
+
+                // Remove meal from meals collection in Firebase
+                database.collection(MEAL_COLLECTION)
+                        .document(mealId)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                //App.MEAL_HANDLER.successRemovingMeal(mealId);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                //App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
+                            }
+                        });
+            } else {
+                // if Preconditions fail
+                Log.e("removeMealFromSearch", "Invalid object value for meal");
+            }
+        } catch (Exception e) {
+            Log.e("removeMeal", "Current logged in user is not a chef. Wrong removeMeal overloaded method called?: " + e.getMessage());
+            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Unable to process request at this moment");
         }
+
     }
 
     /**
@@ -332,16 +342,84 @@ public class MealActions {
      * Return map of meals from Firebase using app instance's current chef's ID
      */
     /////////////IMPLEMENT THIS!!!////////////////////
-    public Map getMeals(){
+    public void getMeals(){
 
-        return null;
+        Chef chef = (Chef) App.getUser();
+
+        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chef.getUserId()).collection(MEAL_COLLECTION);
+
+        mealsReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        if (document.getData() != null){
+                            Result r = makeMealsFromFirebase(document);
+                        }
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+
+    private Result makeMealsFromFirebase(DocumentSnapshot document){
+
+        try{
+
+            if (document.getData() == null) {
+                throw new NullPointerException("makeClientFromFirebase: invalid document object");
+            }
+
+            Map<String, Meal> meals = new HashMap<String, Meal>();
+
+            for (Map.Entry<String, Object> entry : document.getData().entrySet()) {
+                String key = entry.getKey();
+                Map value = (Map) entry.getValue();
+
+
+                MealEntityModel mealEntityModel = new MealEntityModel();
+                mealEntityModel.setMealID(key);
+                mealEntityModel.setName(String.valueOf(value.get("name")));
+                mealEntityModel.setChefID(String.valueOf(value.get("chefID")));
+                mealEntityModel.setCuisineType(String.valueOf(value.get("cuisineTpe")));
+                mealEntityModel.setMealType(String.valueOf(value.get("mealType")));
+                mealEntityModel.setIngredients(String.valueOf(value.get("ingredients")));
+                mealEntityModel.setAllergens(String.valueOf(value.get("allergens")));
+                mealEntityModel.setDescription(String.valueOf(value.get("description")));
+                mealEntityModel.setOffered((Boolean) value.get("isOffered"));
+                mealEntityModel.setPrice((Double) value.get("double"));
+
+                Meal meal = new Meal(mealEntityModel);
+                meals.put(key, meal);
+
+            }
+
+
+            return new Result(meals);
+        } catch (Exception e) {
+            return new Result(false, "makeMealsFromFirebase: " + e.getMessage());
+        }
     }
 
     /**
-     * Return map of offered meals from Firebase using app instance's current chef's ID
+     * Return map of meals from Firebase using app instance's current chef's ID
      */
     /////////////IMPLEMENT THIS!!!////////////////////
-    public Map getOfferedMeals(){
+    public Map getMeals(String chefId){
+
+
+
+
 
         return null;
     }
