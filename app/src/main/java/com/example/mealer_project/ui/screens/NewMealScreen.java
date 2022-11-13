@@ -38,6 +38,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.menu_types_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -260,7 +261,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         catch(NumberFormatException e) {
 
             // error toast here
-            displayErrorToast("Incorrect price formatting!");
+            displayErrorToast("Invalid price");
 
         }
 
@@ -312,6 +313,9 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (dbOperation == MealHandler.dbOperations.ADD_MEAL) {
             // failed adding a new meal
             displayErrorToast("Failed to add meal!");
+        }
+        else {
+            displayErrorToast((String) payload);
         }
     }
     
