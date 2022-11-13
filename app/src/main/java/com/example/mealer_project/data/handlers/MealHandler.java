@@ -234,7 +234,7 @@ public class MealHandler {
     }
 
     /* ------                   Add Meal                         ------- */
-    private void addMeal(MealEntityModel meal){
+    private void addMeal(MealEntityModel meal) throws Exception {
         // try to build Meal instance first
         try {
             // below code might cause exception if validation fails or instance can't be created
@@ -243,6 +243,9 @@ public class MealHandler {
             App.getPrimaryDatabase().MEALS.addMeal(newMeal);
         } catch (Exception e) {
             handleActionFailure(dbOperations.ADD_MEAL, "Failed to create Meal instance: " + e.getMessage());
+
+            //rethrow the exception
+            throw new Exception(e.getMessage());
         }
     }
 
