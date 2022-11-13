@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.screens.MealInfoScreen">
+
+    <ImageButton
+        android:id="@+id/back_btn"
+        android:layout_width="48dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/back"
+        android:scaleType="fitXY"
+        android:src="@drawable/backbutton"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/meal_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo_bhai"
+                android:gravity="center"
+                android:paddingTop="80dp"
+                android:text="Meal Name Here"
+                android:textSize="34sp" />
+
+            <TextView
+                android:id="@+id/price_of_meal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo_bhai"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="$69.69"
+                android:textSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/type_of_meal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="30dp"
+                    android:text="Type of Meal:"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/msg_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/type_of_meal"
+                    android:fontFamily="@font/nunito_sans"
+                    android:gravity="center_horizontal"
+                    android:text="unable to get info"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/cuisine_of_meal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="30dp"
+                    android:text="Cuisine Type:"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/msg_cuisine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/cuisine_of_meal"
+                    android:fontFamily="@font/nunito_sans"
+                    android:gravity="center_horizontal"
+                    android:text="unable to get info"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/ingredients_of_meal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="30dp"
+                    android:text="@string/ingredients"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/msg_ingredients"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/ingredients_of_meal"
+                    android:fontFamily="@font/nunito_sans"
+                    android:gravity="center_horizontal"
+                    android:text="unable to get info"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/allergens_of_meal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="30dp"
+                    android:text="@string/allergen"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/msg_allergens"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/allergens_of_meal"
+                    android:fontFamily="@font/nunito_sans"
+                    android:gravity="center_horizontal"
+                    android:text="No allergens"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/description_of_meal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="30dp"
+                    android:text="@string/description_title"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/msg_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/description_of_meal"
+                    android:fontFamily="@font/nunito_sans"
+                    android:gravity="center_horizontal"
+                    android:text="unable to get info"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/menu_info_button_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/edit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:fontFamily="@font/baloo_bhai"
+                        android:text="Edit"
+                        tools:ignore="TextContrastCheck" />
+
+                    <Button
+                        android:id="@+id/offering_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:fontFamily="@font/baloo_bhai"
+                        android:text="offer/unoffer meal"
+                        tools:ignore="TextContrastCheck" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/remove_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="Remove Meal"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
