@@ -1,0 +1,310 @@
+Index: app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.data.handlers;\n\nimport android.util.Log;\n\nimport com.example.mealer_project.app.App;\nimport com.example.mealer_project.data.entity_models.MealEntityModel;\nimport com.example.mealer_project.data.models.Chef;\nimport com.example.mealer_project.data.models.Meal;\nimport com.example.mealer_project.ui.core.StatefulView;\nimport com.example.mealer_project.ui.core.UIScreen;\nimport com.example.mealer_project.ui.screens.AdminScreen;\nimport com.example.mealer_project.ui.screens.NewMealScreen;\nimport com.example.mealer_project.utils.Preconditions;\n\nimport java.util.Map;\n\npublic class MealHandler {\n\n    /**\n     * Specify DB operations handled by Meal Handler\n     */\n    public enum dbOperations {\n        ADD_MEAL,\n        ADD_MEAL_TO_OFFERED_LIST,\n        REMOVE_MEAL,\n        REMOVE_MEAL_FROM_OFFERED_LIST,\n        UPDATE_MEAL_INFO,\n        UPDATE_OFFERED_MEALS,\n        ADD_TO_SEARCHABLE_LIST,\n        REMOVE_FROM_SEARCHABLE_LIST,\n        GET_MENU,\n        GET_MEAL_BY_ID,\n        ERROR\n    };\n\n    private StatefulView uiScreen;\n\n    /**\n     * Using the Dispatch-Action Pattern to handle actions dispatched to Meal Handler\n     * @param operationType one of the specified DB operations handled by MealHandler\n     * @param payload an input data for the handler's operation\n     * @param uiScreen instance of the view which needs to know of the operation's success or failure\n     */\n    public void dispatch(dbOperations operationType, Object payload, StatefulView uiScreen) {\n\n        // guard-clause\n        if (Preconditions.isNotNull(uiScreen)) {\n\n            // set the ui screen, so it can be interacted with later on\n            this.uiScreen = uiScreen;\n\n            try {\n                switch (operationType) {\n\n                    case ADD_MEAL:\n                        if (Preconditions.isNotNull(payload) && payload instanceof MealEntityModel) {\n                            addMeal((MealEntityModel) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid Meal Object provided\");\n                        }\n                        break;\n\n                    case ADD_MEAL_TO_OFFERED_LIST:\n                        // update meal on remote database first\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            App.getPrimaryDatabase().MEALS.addMealToOfferedList((String) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid meal ID provided\");\n                        }\n                        break;\n\n                    case REMOVE_MEAL:\n                        // remove meal on remote database first\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            App.getPrimaryDatabase().MEALS.removeMeal((String) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid meal ID provided\");\n                        }\n                        break;\n\n                    case REMOVE_MEAL_FROM_OFFERED_LIST:\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            App.getPrimaryDatabase().MEALS.removeMealFromOfferedList((String) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid meal ID provided\");\n                        }\n                        break;\n\n                    case UPDATE_MEAL_INFO:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {\n                            App.getPrimaryDatabase().MEALS.updateMealInfo((Meal) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid Meal instance provided\");\n                        }\n                        break;\n\n                    case UPDATE_OFFERED_MEALS:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Map) {\n                            App.getPrimaryDatabase().MEALS.updateOfferedMeals((Map<String, Boolean>) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid object provided for map\");\n                        }\n                        break;\n\n                    case GET_MENU:\n                        App.getPrimaryDatabase().MEALS.getMeals();\n                        break;\n\n                    case GET_MEAL_BY_ID:\n                        if (Preconditions.isNotNull(payload)) {\n                            // if we have been provided with both meal id and a chef id\n                            if (payload instanceof String[]) {\n                                String[] ids = (String[]) payload;\n                                App.getPrimaryDatabase().MEALS.getMealById(ids[0], ids[1]);\n                            }\n\n                            // if we only have meal id\n                            else if (payload instanceof String) {\n                                App.getPrimaryDatabase().MEALS.getMealById((String) payload);\n                            }\n\n                            else {\n                                handleActionFailure( operationType, \"Invalid arguments provided for getting meal by id\");\n                            }\n                        } else {\n                            handleActionFailure( operationType, \"No arugments provided for getMealById\");\n                        }\n                }\n            } catch (Exception e) {\n                Log.e(\"MealHandler Dispatch\", \"Exception: \" + e.getMessage());\n                uiScreen.dbOperationFailureHandler(null, \"Dispatch failed: \" + e.getMessage());\n            }\n\n        } else {\n            Log.e(\"MealHandler Dispatch\", \"Invalid instance provided for uiScreen\");\n        }\n    }\n\n    public void handleActionSuccess(dbOperations operationType, Object payload) {\n        // ensure we have a valid uiScreen to inform of success\n        if(Preconditions.isNotNull(uiScreen)) {\n\n            try {\n                switch (operationType) {\n\n                    case ADD_MEAL:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {\n                            // add meal locally\n                            ((Chef) App.getUser()).MEALS.addMeal((Meal) payload);\n                            // let UI know about success\n                            uiScreen.dbOperationSuccessHandler(operationType, \"Meal added successfully!\");\n                        } else {\n                            handleActionFailure(operationType, \"Invalid meal object provided\");\n                        }\n                        break;\n\n                    case REMOVE_MEAL:\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            ((Chef) App.getUser()).MEALS.removeMeal((String) payload);\n                            // let UI know about success\n                            uiScreen.dbOperationSuccessHandler(operationType, \"Meal removed successfully!\");\n                        } else {\n                            uiScreen.dbOperationFailureHandler(dbOperations.REMOVE_MEAL, \"Invalid meal ID\");\n                        }\n\n                }\n            } catch (Exception e) {\n                Log.e(\"handleActionSuccess\", \"Success handler exception: \" + e.getMessage());\n                uiScreen.dbOperationFailureHandler(dbOperations.ERROR, \"Failed to process request\");\n            }\n\n        } else {\n            Log.e(\"handleActionSuccess\", \"No UI Screen initialized\");\n        }\n    }\n\n    public void handleActionFailure(dbOperations operationType, String message) {\n        // ensure we have a valid uiScreen to inform of failure\n        if(Preconditions.isNotNull(uiScreen)) {\n\n            String tag = \"handleActionFailure\";\n            String userMessage = \"Failed to process request\";\n\n            switch (operationType) {\n\n                case ADD_MEAL:\n                    tag = \"addMeal\";\n                    userMessage= \"Failed to add meal!\";\n                    break;\n\n                case ADD_MEAL_TO_OFFERED_LIST:\n                    tag = \"addingMealToOffered\";\n                    userMessage = \"Failed to set meal as offered!\";\n                    break;\n\n                case REMOVE_MEAL:\n                    tag = \"errorRemovingMeal\";\n                    userMessage = \"Failed to remove meal!\";\n                    break;\n\n                case REMOVE_MEAL_FROM_OFFERED_LIST:\n                    tag = \"removeMealFromOffered\";\n                    userMessage = \"Failed to remove meal from offered list!\";\n                    break;\n\n                case UPDATE_MEAL_INFO:\n                    tag = \"updateMealInfo\";\n                    userMessage = \"Failed to update meal info!\";\n                    break;\n\n                case UPDATE_OFFERED_MEALS:\n                    tag = \"error\";\n                    userMessage = \"Failed to update offered meals!\";\n                    break;\n\n                case GET_MENU:\n                    tag = \"errorGetMenu\";\n                    userMessage = \"Failed to get menu!\";\n                    break;\n\n                case GET_MEAL_BY_ID:\n                    tag = \"errorGettingMealById\";\n                    userMessage = \"Failed to get meal by id!\";\n                    break;\n            }\n\n            // send error\n            Log.e(tag, message);\n            uiScreen.dbOperationFailureHandler(operationType, userMessage);\n\n        } else {\n            Log.e(\"handleActionSuccess\", \"No UI Screen initialized\");\n        }\n    }\n\n    /* ------                   Add Meal                         ------- */\n    private void addMeal(MealEntityModel meal){\n        // try to build Meal instance first\n        try {\n            // below code might cause exception if validation fails or instance can't be created\n            Meal newMeal = new Meal(meal);\n            // if meal creation was success, add the meal to database\n            App.getPrimaryDatabase().MEALS.addMeal(newMeal);\n        } catch (Exception e) {\n            handleActionFailure(dbOperations.ADD_MEAL, \"Failed to create Meal instance: \" + e.getMessage());\n        }\n    }\n\n    /* ------               Add Meal To Offered Lis             ------- */\n\n    public void successAddingMealToOfferedList(String mealId){\n        try {\n            if (Preconditions.isNotEmptyString(mealId) && Preconditions.isNotNull(uiScreen)) {\n                // add meal locally\n                ((Chef) App.getUser()).MEALS.addMealToOfferedList(mealId);\n                // let UI know about success\n                uiScreen.dbOperationSuccessHandler(dbOperations.ADD_MEAL_TO_OFFERED_LIST, \"Meal set as offered!\");\n            } else {\n                handleActionFailure( dbOperations.ADD_MEAL_TO_OFFERED_LIST, \"meal ID or uiScreen is null\");\n            }\n        } catch (Exception e) {\n            handleActionFailure( dbOperations.ADD_MEAL_TO_OFFERED_LIST, \"Failed to set meal as offered: \" + e.getMessage());\n        }\n    }\n\n    /* ------                   Remove Meal                    ------- */\n\n    /* ------        Remove Meal From Offered List              ------- */\n\n\n    /* ------                   Update Meal                    ------- */\n\n\n    /* ------               Update Offered Meals                 ------- */\n\n\n    /* ------             Add to Searchable List               ------- */\n\n    /* ------                   Get Menu                         ------- */\n\n    /* ------                   Get Meal By ID                   ------- */\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java b/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java
+--- a/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java	(revision 9e97b3b87bb57a6fabcdef99e8a58696a11a1b02)
++++ b/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java	(date 1668372265213)
+@@ -2,14 +2,13 @@
+ 
+ import android.util.Log;
+ 
++import androidx.annotation.NonNull;
++
+ import com.example.mealer_project.app.App;
+ import com.example.mealer_project.data.entity_models.MealEntityModel;
+ import com.example.mealer_project.data.models.Chef;
+ import com.example.mealer_project.data.models.Meal;
+ import com.example.mealer_project.ui.core.StatefulView;
+-import com.example.mealer_project.ui.core.UIScreen;
+-import com.example.mealer_project.ui.screens.AdminScreen;
+-import com.example.mealer_project.ui.screens.NewMealScreen;
+ import com.example.mealer_project.utils.Preconditions;
+ 
+ import java.util.Map;
+@@ -54,7 +53,10 @@
+ 
+                     case ADD_MEAL:
+                         if (Preconditions.isNotNull(payload) && payload instanceof MealEntityModel) {
+-                            addMeal((MealEntityModel) payload);
++                            // below code might cause exception if validation fails or instance can't be created
++                            Meal newMeal = new Meal((MealEntityModel) payload);
++                            // if meal creation was success, add the meal to database
++                            App.getPrimaryDatabase().MEALS.addMeal(newMeal);
+                         } else {
+                             handleActionFailure( operationType, "Invalid Meal Object provided");
+                         }
+@@ -96,7 +98,7 @@
+ 
+                     case UPDATE_OFFERED_MEALS:
+                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
+-                            App.getPrimaryDatabase().MEALS.updateOfferedMeals((Map<String, Boolean>) payload);
++                            updateOfferedMeals((Map<String, Boolean>) payload);
+                         } else {
+                             handleActionFailure( operationType, "Invalid object provided for map");
+                         }
+@@ -125,6 +127,10 @@
+                         } else {
+                             handleActionFailure( operationType, "No arugments provided for getMealById");
+                         }
++                        break;
++
++                    default:
++                        Log.e("MealHandler dispatch", "Action not implemented yet");
+                 }
+             } catch (Exception e) {
+                 Log.e("MealHandler Dispatch", "Exception: " + e.getMessage());
+@@ -136,6 +142,11 @@
+         }
+     }
+ 
++    /**
++     * Method which is called AFTER a successful database operation to make updates locally
++     * @param operationType type of database operation which was successful
++     * @param payload data for making changes locally
++     */
+     public void handleActionSuccess(dbOperations operationType, Object payload) {
+         // ensure we have a valid uiScreen to inform of success
+         if(Preconditions.isNotNull(uiScreen)) {
+@@ -154,14 +165,71 @@
+                         }
+                         break;
+ 
++                    case ADD_MEAL_TO_OFFERED_LIST:
++                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
++                            // update meal locally
++                            ((Chef) App.getUser()).MEALS.addMealToOfferedList((String) payload);
++                        } else {
++                            handleActionFailure(operationType, "unable to update meal locally as offered, invalid payload");
++                        }
++
++                        break;
++
+                     case REMOVE_MEAL:
+                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
+                             ((Chef) App.getUser()).MEALS.removeMeal((String) payload);
+                             // let UI know about success
+                             uiScreen.dbOperationSuccessHandler(operationType, "Meal removed successfully!");
+                         } else {
+-                            uiScreen.dbOperationFailureHandler(dbOperations.REMOVE_MEAL, "Invalid meal ID");
++                            handleActionFailure(operationType, "Invalid meal ID");
++                        }
++                        break;
++
++                    case REMOVE_MEAL_FROM_OFFERED_LIST:
++                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
++                            ((Chef) App.getUser()).MEALS.removeMealFromOfferedList((String) payload);
++                            // let UI know about success
++                            uiScreen.dbOperationSuccessHandler(operationType, "Meal removed from offered list!");
++                        } else {
++                            handleActionFailure(operationType, "invalid meal ID");
++                        }
++                        break;
++
++                    case UPDATE_MEAL_INFO:
++                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
++                            // update meal locally
++                            ((Chef) App.getUser()).MEALS.updateMeal((Meal) payload);
++                            uiScreen.dbOperationSuccessHandler(operationType, "updated meal info!");
++                        } else {
++                            handleActionFailure( operationType, "Invalid Meal instance provided");
++                        }
++                        break;
++
++                    case UPDATE_OFFERED_MEALS:
++                        uiScreen.dbOperationSuccessHandler(operationType, "updated offered meals list!");
++                        break;
++
++                    case GET_MENU:
++                        // update the Chef's meals locally
++                        if (Preconditions.isNotNull(payload) && payload instanceof Map) {
++                            Map<String, Meal> meals = (Map<String, Meal>) payload;
++                            ((Chef) App.getUser()).MEALS.setMeals(meals);
++                            uiScreen.dbOperationSuccessHandler(operationType, meals);
++                        } else {
++                            handleActionFailure(operationType, "Invalid payload for getMenu");
+                         }
++                        break;
++
++                    case GET_MEAL_BY_ID:
++                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
++                            uiScreen.dbOperationSuccessHandler(operationType, (Meal) payload);
++                        } else {
++                            handleActionFailure(operationType, "Failed to get meal by ID");
++                        }
++                        break;
++
++                    default:
++                        Log.e("handleActionSuccess", "Action not implemented yet");
+ 
+                 }
+             } catch (Exception e) {
+@@ -174,6 +242,11 @@
+         }
+     }
+ 
++    /**
++     * Method which is called AFTER a failure in a database operation to inform UI
++     * @param operationType type of database operation which failed
++     * @param message a descriptive error message for the developers and analyst (not for client or chef)
++     */
+     public void handleActionFailure(dbOperations operationType, String message) {
+         // ensure we have a valid uiScreen to inform of failure
+         if(Preconditions.isNotNull(uiScreen)) {
+@@ -222,6 +295,9 @@
+                     tag = "errorGettingMealById";
+                     userMessage = "Failed to get meal by id!";
+                     break;
++
++                default:
++                    Log.e("handleActionSuccess", "Action not implemented yet");
+             }
+ 
+             // send error
+@@ -229,55 +305,41 @@
+             uiScreen.dbOperationFailureHandler(operationType, userMessage);
+ 
+         } else {
+-            Log.e("handleActionSuccess", "No UI Screen initialized");
++            Log.e("handleActionFailure", "No UI Screen initialized");
+         }
+     }
+ 
+-    /* ------                   Add Meal                         ------- */
+-    private void addMeal(MealEntityModel meal){
+-        // try to build Meal instance first
+-        try {
+-            // below code might cause exception if validation fails or instance can't be created
+-            Meal newMeal = new Meal(meal);
+-            // if meal creation was success, add the meal to database
+-            App.getPrimaryDatabase().MEALS.addMeal(newMeal);
+-        } catch (Exception e) {
+-            handleActionFailure(dbOperations.ADD_MEAL, "Failed to create Meal instance: " + e.getMessage());
+-        }
+-    }
++    /**
++     * Update meals to be offered or un-offered
++     * @param data map containing IDs of the meals to be updated
++     */
++    private void updateOfferedMeals(@NonNull Map<String, Boolean> data) {
++        Chef chef = (Chef) App.getUser();
++        Map<String, Meal> meals = chef.MEALS.getMenu();
++        // guard-clause
++        if (Preconditions.isNotNull(data)) {
++            for (String mealId: data.keySet()) {
++                // check if meal doesn't exists
++                if (meals.get(mealId) == null) {
++                    handleActionFailure(dbOperations.UPDATE_OFFERED_MEALS, "Could not find a meal for the given meal ID");
++                    return;
++                }
+ 
+-    /* ------               Add Meal To Offered Lis             ------- */
++                // check if meal needs to be updated
++                if (meals.get(mealId).isOffered() != data.get(mealId)) {
+ 
+-    public void successAddingMealToOfferedList(String mealId){
+-        try {
+-            if (Preconditions.isNotEmptyString(mealId) && Preconditions.isNotNull(uiScreen)) {
+-                // add meal locally
+-                ((Chef) App.getUser()).MEALS.addMealToOfferedList(mealId);
+-                // let UI know about success
+-                uiScreen.dbOperationSuccessHandler(dbOperations.ADD_MEAL_TO_OFFERED_LIST, "Meal set as offered!");
+-            } else {
+-                handleActionFailure( dbOperations.ADD_MEAL_TO_OFFERED_LIST, "meal ID or uiScreen is null");
+-            }
+-        } catch (Exception e) {
+-            handleActionFailure( dbOperations.ADD_MEAL_TO_OFFERED_LIST, "Failed to set meal as offered: " + e.getMessage());
++                    // if meal needs to be added to offered list
++                    if (data.get(mealId)) {
++                        dispatch(dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealId, uiScreen);
++                    } else {
++                        dispatch(dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealId, uiScreen);
++                    }
++                }
++            }
++            handleActionSuccess(dbOperations.UPDATE_OFFERED_MEALS, null);
++        } else {
++            handleActionFailure(dbOperations.UPDATE_OFFERED_MEALS, "Invalid data provided to updateOfferedMeals");
+         }
+     }
+-
+-    /* ------                   Remove Meal                    ------- */
+-
+-    /* ------        Remove Meal From Offered List              ------- */
+-
+-
+-    /* ------                   Update Meal                    ------- */
+-
+-
+-    /* ------               Update Offered Meals                 ------- */
+-
+-
+-    /* ------             Add to Searchable List               ------- */
+-
+-    /* ------                   Get Menu                         ------- */
+-
+-    /* ------                   Get Meal By ID                   ------- */
+ 
+ }
+Index: app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.data.models.meals;\n\nimport androidx.annotation.NonNull;\n\nimport com.example.mealer_project.data.models.Meal;\nimport com.example.mealer_project.utils.Preconditions;\nimport com.example.mealer_project.utils.Response;\nimport com.example.mealer_project.utils.Result;\n\nimport java.util.HashMap;\nimport java.util.Map;\n\npublic class Meals {\n\n    // Store Meals in a Map<MealID, Meal> key-value pairs\n    private final Map<String, Meal> meals;\n\n    /**\n     * Default constructor initializes a HashMap for storing Meals\n     */\n    public Meals() {\n        this.meals = new HashMap<>(); //<MealID, Meal> key-value pair\n    }\n\n    /**\n     * Retrieve a meal from all meals of the Chef by meal ID\n     * @param mealID representing the ID of the meal\n     * @return a Result object containing the meal is successful in getting the associated meal, else error message\n     */\n    public Result<Meal, String> getMeal(@NonNull String mealID) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealID)) {\n            // check if meal exists\n            if (this.meals.get(mealID) != null) {\n                return new Result<>(this.meals.get(mealID), null);\n            } else {\n                return new Result<>(null, \"Could not find any meal for the provided meal ID\");\n            }\n        } else {\n            return new Result<>(null, \"Invalid meal ID provided\");\n        }\n    }\n\n    /**\n     * Add a new meal to the chef's list of meals (menu)\n     * @param newMeal Meal to be added\n     */\n    public Response addMeal(@NonNull Meal newMeal) {\n        // guard-clause\n        // meal must have a valid id which will be used as a key\n        if (Preconditions.isNotEmptyString(newMeal.getMealID())) {\n            // check if meal already exists\n            if (this.meals.get(newMeal.getMealID()) != null) {\n                return new Response(false, \"Meal with same ID already exists! Use updateMeal to update an existing meal\");\n            }\n            // add the new meal\n            this.meals.put(newMeal.getMealID(), newMeal);\n            // return success\n            return new Response(true);\n        } else {\n            return new Response(false, \"Meal does not have a valid ID\");\n        }\n    }\n\n    /**\n     * Add a meal to the chef's offered meal\n     * @param mealId ID of the meal that needs to be added to the menu\n     * @return Response object indicating success, or failure (with an error message)\n     */\n    public Response addMealToOfferedList(@NonNull String mealId) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealId)) {\n            // check if meal exists and has a valid object\n            if (this.meals.get(mealId) != null) {\n                // add meal to the menu\n                this.meals.get(mealId).setOffered(true);\n                // return success\n                return new Response(true);\n            } else {\n                return new Response(false, \"Could not find the any meal for the provided ID\");\n            }\n        } else {\n            return new Response(false, \"Meal does not have a valid ID\");\n        }\n    }\n\n    /**\n     * Remove a meal from the list of all meals added by a Chef\n     * @param mealId ID of the meal to be removed\n     */\n    public Response removeMeal(@NonNull String mealId) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealId)) {\n            // check if meal exists\n            if (this.meals.get(mealId) != null) {\n                // remove the meal\n                this.meals.remove(mealId);\n                // return operation success\n                return new Response(true);\n            } else {\n                return new Response(false, \"Could not find any meal for the provided meal ID\");\n            }\n        } else {\n            return new Response(false, \"Invalid meal ID provided\");\n        }\n    }\n\n    /**\n     * Remove a meal from Chef's offered meals\n     * @param mealId ID of the meal to be removed\n     */\n    public Response removeMealFromOfferedList(@NonNull String mealId) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealId)) {\n            // check if meal exists\n            if (this.meals.get(mealId) != null) {\n                // remove meal from menu\n                this.meals.get(mealId).setOffered(false);\n                // return operation success\n                return new Response(true);\n            } else {\n                return new Response(false, \"Could not find any meal for the provided meal ID\");\n            }\n        } else {\n            return new Response(false, \"Invalid meal ID provided\");\n        }\n    };\n\n    /**\n     * Method to retrieve a map object containing meals which are currently being offered by Chef\n     * @return a Map containing Meal ID's as keys and Meal objects as values\n     */\n    public Map<String, Meal> getOfferedMeals() {\n        // map to store the result\n        HashMap<String, Meal> offeredMeals = new HashMap<>();\n        // filter and add offered meals to above map\n        for (Meal meal : this.meals.values()) {\n            if (meal.isOffered()) {\n                offeredMeals.put(meal.getMealID(), meal);\n            }\n        }\n        // return the result\n        return offeredMeals;\n    }\n\n    /**\n     * Method to retrieve a map object containing all meals added by the Chef\n     * @return a Map containing Meal ID's as keys and Meal objects as values\n     */\n    public Map<String, Meal> getMenu() {\n        return this.meals;\n    };\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java b/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java
+--- a/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java	(revision 9e97b3b87bb57a6fabcdef99e8a58696a11a1b02)
++++ b/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java	(date 1668371325455)
+@@ -13,7 +13,7 @@
+ public class Meals {
+ 
+     // Store Meals in a Map<MealID, Meal> key-value pairs
+-    private final Map<String, Meal> meals;
++    private Map<String, Meal> meals;
+ 
+     /**
+      * Default constructor initializes a HashMap for storing Meals
+@@ -41,6 +41,10 @@
+         }
+     }
+ 
++    public void setMeals(@NonNull Map<String, Meal> mealsData) {
++        this.meals = mealsData;
++    }
++
+     /**
+      * Add a new meal to the chef's list of meals (menu)
+      * @param newMeal Meal to be added
+@@ -126,6 +130,28 @@
+         }
+     };
+ 
++    /**
++     * Update an existing meal
++     * @param meal meal instance, must have a valid meal ID
++     * @return Response indicating operation success or failure
++     */
++    public Response updateMeal(@NonNull Meal meal) {
++        // guard-clause
++        // meal must have a valid id which will be used as a key
++        if (Preconditions.isNotEmptyString(meal.getMealID())) {
++            // check if meal doesn't exists
++            if (!this.meals.containsKey(meal.getMealID())) {
++                return new Response(false, "Could not find a meal for the given meal ID");
++            }
++            // update the meal
++            this.meals.put(meal.getMealID(), meal);
++            // return success
++            return new Response(true);
++        } else {
++            return new Response(false, "Meal does not have a valid ID");
++        }
++    }
++
+     /**
+      * Method to retrieve a map object containing meals which are currently being offered by Chef
+      * @return a Map containing Meal ID's as keys and Meal objects as values

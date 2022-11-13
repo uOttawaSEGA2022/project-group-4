@@ -9,14 +9,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
+
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 public class NewMealScreen extends UIScreen implements StatefulView {
@@ -33,9 +33,11 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         Add information to spinner for meal type
          */
         Spinner spinner = (Spinner) findViewById(R.id.meal_type);
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.menu_types_array, android.R.layout.simple_spinner_item);
+
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
@@ -228,7 +230,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
         // Variable Declaration
         Chef chef = (Chef) App.getAppInstance().getUser();
-        String chefID = chef.getUserId();
+        String chefID = App.getUserId();
 
         EditText mealName = (EditText) findViewById(R.id.meal_name);
         EditText cuisineType = (EditText) findViewById(R.id.cuisine_type);
@@ -236,7 +238,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         EditText ingredients = (EditText) findViewById(R.id.ingredients);
         EditText description = (EditText) findViewById(R.id.description);
         EditText price = (EditText) findViewById(R.id.price);
-        Switch offered = (Switch)findViewById((R.id.offer_meal_switch));
+        SwitchCompat offered = (SwitchCompat) findViewById((R.id.offer_meal_switch));
 
         double priceValue;
 
@@ -300,7 +302,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             // finish the activity and return
             this.setResult(Activity.RESULT_OK);
             this.finish();
-            
+
             showNextScreen(); //returning to chef's main screen
         }
     }

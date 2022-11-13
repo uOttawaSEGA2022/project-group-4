@@ -79,6 +79,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_item">Add Meal</string>
     <string name="offer_meal">Offer meal?</string>
+    <string name="meal_item_offered_label">Offered: </string>
+    <string name="meal_item_cuisine_label">Cuisine: </string>
+    <string name="editing_meal">Editing Meal</string>
+    <string name="submit">Submit</string>
 
 
 </resources>

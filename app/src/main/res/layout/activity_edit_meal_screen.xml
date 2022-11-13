@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.screens.EditMealScreen">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/welcome_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo_bhai"
+                android:minHeight="50dp"
+                android:padding="20dp"
+                android:text="@string/editing_meal"
+                android:textAlignment="center"
+                android:textColor="@color/green_primary"
+                android:textSize="34sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/meal_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/meal_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans"
+                    android:hint="@string/meal_name"
+                    android:inputType="textPersonName"
+                    android:minHeight="50dp"
+                    android:textColor="@android:color/black"
+                    tools:ignore="TextContrastCheck" />
+
+                <Spinner
+                    android:id="@+id/meal_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/meal_type"
+                    android:theme="@style/SpinnerTheme"
+                    android:minHeight="50dp" />
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/cuisine_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:fontFamily="@font/nunito_sans"
+                android:hint="@string/cuisine_type"
+                android:inputType="textPersonName"
+                android:minHeight="50dp" />
+
+            <EditText
+                android:id="@+id/ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:fontFamily="@font/nunito_sans"
+                android:gravity="start|top"
+                android:hint="@string/ingredients"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:minHeight="50dp"
+                tools:ignore="TextContrastCheck" />
+
+            <LinearLayout
+                android:id="@+id/allergens_checkboxes"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/allergens"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
+                    android:minHeight="48dp"
+                    android:text="@string/allergen"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <CheckBox
+                        android:id="@+id/gluten_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:checked="false"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/gluten"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <CheckBox
+                        android:id="@+id/peanuts_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/gluten_checkbox"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/peanuts"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
+
+                    <CheckBox
+                        android:id="@+id/treenuts_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/treenuts"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <CheckBox
+                        android:id="@+id/celery_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/treenuts_checkbox"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/celery"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
+
+                    <CheckBox
+                        android:id="@+id/mustard_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/mustard"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <CheckBox
+                        android:id="@+id/eggs_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/mustard_checkbox"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/eggs"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
+
+                    <CheckBox
+                        android:id="@+id/milk_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/milk"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <CheckBox
+                        android:id="@+id/sesame_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/milk_checkbox"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/sesame"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
+
+                    <CheckBox
+                        android:id="@+id/fish_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/fish"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <CheckBox
+                        android:id="@+id/crustaceans_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/fish_checkbox"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/crustaceans"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
+
+                    <CheckBox
+                        android:id="@+id/molluscs_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/molluscs"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <CheckBox
+                        android:id="@+id/soya_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/molluscs_checkbox"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/soya"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="TouchTargetSizeCheck">
+
+                    <CheckBox
+                        android:id="@+id/sulphites_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/sulphites"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                    <CheckBox
+                        android:id="@+id/lupin_checkbox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/sulphites_checkbox"
+                        android:ems="10"
+                        android:fontFamily="@font/nunito_sans"
+                        android:minHeight="50dp"
+                        android:text="@string/lupin"
+                        android:textSize="15sp"
+                        tools:ignore="TouchTargetSizeCheck" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="@font/nunito_sans"
+                android:hint="@string/price"
+                android:inputType="numberDecimal"
+                android:autofillHints="" />
+
+            <EditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints=""
+                android:ems="10"
+                android:fontFamily="@font/nunito_sans"
+                android:gravity="start|top"
+                android:hint="@string/description_title"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:minHeight="50dp"
+                tools:ignore="TextContrastCheck" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/offer_meal_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="50dp"
+                android:padding="10dp"
+                android:text="@string/offer_meal"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="25dp" />
+
+            <LinearLayout
+                android:id="@+id/button_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancel_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:minHeight="50dp"
+                    android:text="@android:string/cancel"
+                    android:textAllCaps="true"
+                    android:textColor="@color/green_primary"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/submit_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:minHeight="50dp"
+                    android:text="@string/submit"
+                    android:textColor="@color/green_primary"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
