@@ -17,9 +17,8 @@ import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
-import com.example.mealer_project.data.models.Meal;
-import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
@@ -28,14 +27,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
