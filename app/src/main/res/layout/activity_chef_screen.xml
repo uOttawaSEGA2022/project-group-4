@@ -123,7 +123,7 @@
                 tools:layout="@layout/fragment_menu" />
 
             <Button
-                android:id="@+id/addButton2"
+                android:id="@+id/addButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"

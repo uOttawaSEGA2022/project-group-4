@@ -28,7 +28,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         // Variable Declaration
         Button menuButton = (Button) findViewById(R.id.menuButton);
         Button viewOrder = (Button) findViewById(R.id.viewOrdersButton);
-        //Button addButton = (Button) findViewById(R.id.addButton);
+        Button addButton = (Button) findViewById(R.id.addButton);
 
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -54,7 +54,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
             }
         });
 
-        /*addButton.setOnClickListener(new View.OnClickListener() {
+        addButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -63,7 +63,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
             }
 
-        });*/
+        });
 
     }
 
@@ -79,6 +79,9 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
     }
 
+    /**
+     * this method goes to the add new meal screen
+     */
     @Override
     public void showNextScreen() {
 

@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
 
+import androidx.appcompat.widget.SwitchCompat;
+
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
@@ -228,7 +230,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
         // Variable Declaration
         Chef chef = (Chef) App.getAppInstance().getUser();
-        String chefID = chef.getUserId();
+        String chefID = App.getUserId();
 
         EditText mealName = (EditText) findViewById(R.id.meal_name);
         EditText cuisineType = (EditText) findViewById(R.id.cuisine_type);
@@ -236,7 +238,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         EditText ingredients = (EditText) findViewById(R.id.ingredients);
         EditText description = (EditText) findViewById(R.id.description);
         EditText price = (EditText) findViewById(R.id.price);
-        Switch offered = (Switch)findViewById((R.id.offer_meal_switch));
+        SwitchCompat offered = (SwitchCompat) findViewById((R.id.offer_meal_switch));
 
         double priceValue;
 
@@ -300,7 +302,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             // finish the activity and return
             this.setResult(Activity.RESULT_OK);
             this.finish();
-            
+
             showNextScreen(); //returning to chef's main screen
         }
     }
