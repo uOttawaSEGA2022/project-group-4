@@ -273,29 +273,31 @@ public class UserActions {
                     DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(String.valueOf((document.getData().get("suspensionDate")))):
                     null);
 
-            Map<String,Object> meals = (Map) document.getData().get("meals");
+            if (document.getData().get("meals") != null){
 
-            for (String mealId : meals.keySet()) {
-                String key = mealId;
-                Map value = (Map) meals.get(mealId);
+                Map<String,Object> meals = (Map) document.getData().get("meals");
 
-                MealEntityModel mealEntityModel = new MealEntityModel();
+                for (String mealId : meals.keySet()) {
+                    String key = mealId;
+                    Map value = (Map) meals.get(mealId);
 
-                mealEntityModel.setMealID(key);
-                mealEntityModel.setName(String.valueOf(value.get("name")));
-                mealEntityModel.setChefID(String.valueOf(value.get("chefId")));
-                mealEntityModel.setCuisineType(String.valueOf(value.get("cuisineType")));
-                mealEntityModel.setMealType(String.valueOf(value.get("mealType")));
-                mealEntityModel.setIngredients(String.valueOf(value.get("ingredients")));
-                mealEntityModel.setAllergens(String.valueOf(value.get("allergens")));
-                mealEntityModel.setDescription(String.valueOf(value.get("description")));
-                mealEntityModel.setOffered((Boolean)value.get("offered"));
-                mealEntityModel.setPrice((Double)value.get("price"));
+                    MealEntityModel mealEntityModel = new MealEntityModel();
 
-                Meal meal = new Meal(mealEntityModel);
-                newChef.MEALS.addMeal(meal);
+                    mealEntityModel.setMealID(key);
+                    mealEntityModel.setName(String.valueOf(value.get("name")));
+                    mealEntityModel.setChefID(String.valueOf(value.get("chefId")));
+                    mealEntityModel.setCuisineType(String.valueOf(value.get("cuisineType")));
+                    mealEntityModel.setMealType(String.valueOf(value.get("mealType")));
+                    mealEntityModel.setIngredients(String.valueOf(value.get("ingredients")));
+                    mealEntityModel.setAllergens(String.valueOf(value.get("allergens")));
+                    mealEntityModel.setDescription(String.valueOf(value.get("description")));
+                    mealEntityModel.setOffered((Boolean)value.get("offered"));
+                    mealEntityModel.setPrice((Double)value.get("price"));
+
+                    Meal meal = new Meal(mealEntityModel);
+                    newChef.MEALS.addMeal(meal);
+                }
             }
-
             App.getAppInstance().setUser(newChef);
 
             return new Response(true);
