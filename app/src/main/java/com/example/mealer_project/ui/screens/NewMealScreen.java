@@ -1,9 +1,11 @@
 package com.example.mealer_project.ui.screens;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -14,6 +16,7 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 public class NewMealScreen extends UIScreen implements StatefulView {
@@ -37,8 +40,59 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        // attach onClick handlers to buttons
+        attachOnClickListeners();
+
     }
 
+    /**
+     * this method attaches the click methods to all the buttons
+     */
+    private void attachOnClickListeners() {
+
+        // Variable Declaration
+        Button addMealButton = (Button) findViewById(R.id.add_meal_button);
+        Button backButton = (Button) findViewById(R.id.back_button);
+
+        // Process: setting the new onClick method for addMeal
+        addMealButton.setOnClickListener(new Button.OnClickListener() {
+
+            /**
+             * this method sets the on click for the add meal button
+             * @param view
+             *  the current view
+             */
+            @Override
+            public void onClick(View view) {
+
+                onAddMeal(view); //calling helper method to add the meal
+
+            }
+
+        });
+
+        // Process: setting the new onClick method for the back button
+        backButton.setOnClickListener(new Button.OnClickListener() {
+
+            /**
+             * this method sets the on click for the back button
+             * @param view
+             *  the current view
+             */
+            @Override
+            public void onClick(View view) {
+
+                cancelAddingMeal(); //stopping the activity
+                showNextScreen(); //returning the previous screen
+
+            }
+
+        });
+
+    }
+
+    // Helper Methods for Adding the Meal------------------------------------------------------------------------
     /**
      * this method adds the selected allergens to the allergens list
      */
@@ -198,28 +252,64 @@ public class NewMealScreen extends UIScreen implements StatefulView {
                   description.getText().toString(), offered.isChecked(), priceValue);
 
 
-            // dispatch the add meal action to the Meal Handler
-            App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL, mealEntityModel, this); //calling add meal method from mealhandler
+            // Process: adding the meal to firebase & locally
+            try {
+
+                // dispatch the add meal action to the Meal Handler & shows error toast if needed -> firebase
+                App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL, mealEntityModel, this); //calling add meal method from mealhandler
+
+                // adding meal to chef's meals map -> BUT this should only happen when firebase is successful
+                chef.MEALS.addMeal(new Meal(mealEntityModel)); //local
+
+                showNextScreen(); //returning to chef's main screen
+
+            }
+            catch (Exception e) { //error-handling
+
+                // failure msg
+                displayErrorToast(e.getMessage());
+
+            }
+
 
         }
         catch(NumberFormatException e) {
 
             // error toast here
+            displayErrorToast("Incorrect price formatting!");
 
         }
 
     }
 
-    @Override
-    public void updateUI() {
-
+    /**
+     * this helper method cancels the add meal action and ends the activity
+     */
+    private void cancelAddingMeal() {
+        // finish the activity and return
+        this.setResult(Activity.RESULT_CANCELED);
+        this.finish();
     }
 
+    // UI Methods-----------------------------------------------------------------------------------------------
+    @Override
+    public void updateUI() {}
+
+    /**
+     * this method returns the chef to the main screen
+     */
     @Override
     public void showNextScreen() {
 
+        // Variable Declaration
+        Intent intent = new Intent(getApplicationContext(), ChefScreen.class);
+
+        // Process: starting new intent
+        startActivity(intent);
+
     }
 
+    // Firebase Methods------------------------------------------------------------------------------------------
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
         if (dbOperation == MealHandler.dbOperations.ADD_MEAL) {
@@ -238,17 +328,5 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             displayErrorToast("Failed to add meal!");
         }
     }
-
-    private void cancelAddingMeal() {
-        // finish the activity and return
-        this.setResult(Activity.RESULT_CANCELED);
-        this.finish();
-    }
-
-    /*private Response addMealHandler() {
-
-
-
-    }*/
     
 }

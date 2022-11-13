@@ -13,7 +13,7 @@ import java.util.Map;
 public class Meals {
 
     // Store Meals in a Map<MealID, Meal> key-value pairs
-    private final Map<String, Meal> meals;
+    private Map<String, Meal> meals;
 
     /**
      * Default constructor initializes a HashMap for storing Meals
@@ -39,6 +39,10 @@ public class Meals {
         } else {
             return new Result<>(null, "Invalid meal ID provided");
         }
+    }
+
+    public void setMeals(@NonNull Map<String, Meal> mealsData) {
+        this.meals = mealsData;
     }
 
     /**
@@ -125,6 +129,28 @@ public class Meals {
             return new Response(false, "Invalid meal ID provided");
         }
     };
+
+    /**
+     * Update an existing meal
+     * @param meal meal instance, must have a valid meal ID
+     * @return Response indicating operation success or failure
+     */
+    public Response updateMeal(@NonNull Meal meal) {
+        // guard-clause
+        // meal must have a valid id which will be used as a key
+        if (Preconditions.isNotEmptyString(meal.getMealID())) {
+            // check if meal doesn't exists
+            if (!this.meals.containsKey(meal.getMealID())) {
+                return new Response(false, "Could not find a meal for the given meal ID");
+            }
+            // update the meal
+            this.meals.put(meal.getMealID(), meal);
+            // return success
+            return new Response(true);
+        } else {
+            return new Response(false, "Meal does not have a valid ID");
+        }
+    }
 
     /**
      * Method to retrieve a map object containing meals which are currently being offered by Chef
