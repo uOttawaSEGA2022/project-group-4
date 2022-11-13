@@ -375,7 +375,7 @@
                     android:textSize="20sp" />
 
                 <Button
-                    android:id="@+id/add_meal_button"
+                    android:id="@+id/submit_button"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
