@@ -2,13 +2,14 @@ package com.example.mealer_project.data.sources.actions;
 
 import static android.content.ContentValues.TAG;
 
+import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.*;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
-import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Meal;
 import com.example.mealer_project.utils.Preconditions;
@@ -63,13 +64,13 @@ public class MealActions {
                         public void onSuccess(DocumentReference documentReference) {
                             // update complaint id
                             meal.setMealID(documentReference.getId());
-                            App.MEAL_HANDLER.successAddingMeal(meal);
+                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to chef in database: " + e.getMessage());
+                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database: " + e.getMessage());
                         }
                     });
 
@@ -104,14 +105,14 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.successAddingMealToOfferedList(mealId);
+                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL_TO_OFFERED_LIST, mealId);
                             //addMealToSearchableList(mealToMapConversion(getMealFromMealId(mealId, chefId)));
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
+                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL_TO_OFFERED_LIST, "Failed to add meal to offered list in chef in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -137,14 +138,14 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.successRemovingMeal(mealId);
+                            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, mealId);
                             removeMealFromSearchableList(mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.errorRemovingMeal("Failed to add meal to offered list in chef in database: " + e.getMessage());
+                            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, "Failed to add meal to offered list in chef in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -167,13 +168,13 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.successAddingMealToSearchableList(meal);
+                            App.MEAL_HANDLER.handleActionSuccess(ADD_TO_SEARCHABLE_LIST, meal);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to searchable list in database: " + e.getMessage());
+                            App.MEAL_HANDLER.handleActionFailure(ADD_TO_SEARCHABLE_LIST,"Failed to add meal to searchable list in database: " + e.getMessage());
                         }
                     });
         } else {
@@ -196,13 +197,13 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.successRemovingMeal(mealId);
+                            App.MEAL_HANDLER.handleActionSuccess(REMOVE_FROM_SEARCHABLE_LIST, mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
+                            App.MEAL_HANDLER.handleActionFailure(REMOVE_FROM_SEARCHABLE_LIST, e.getMessage());
                         }
                     });
         } else {
@@ -234,23 +235,23 @@ public class MealActions {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                             if (document.getData() != null){
-                                App.MEAL_HANDLER.successGettingMealById(makeMealFromFirebase(document));
+                                App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, makeMealFromFirebase(document));
                             }
 
                         } else {
                             Log.d(TAG, "No such document");
-                            App.MEAL_HANDLER.errorGettingMealById("Could not find a meal with provided ID");
+                            App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID,"Could not find a meal with provided ID");
                         }
                     } else {
                         Log.d(TAG, "get failed with ", task.getException());
-                        App.MEAL_HANDLER.errorGettingMealById("Failed to retrieve meal");
+                        App.MEAL_HANDLER.handleActionFailure( GET_MEAL_BY_ID, "Failed to retrieve meal");
                     }
                 }
             });
 
         } catch (Exception e) {
             Log.e("getMealById", "Current logged in user is not a chef. Wrong getMealById overloaded method called?: " + e.getMessage());
-            App.MEAL_HANDLER.errorGettingMealById("Unable to process request at this moment");
+            App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Unable to process request at this moment");
         }
     }
 
@@ -273,16 +274,16 @@ public class MealActions {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         if (document.getData() != null){
-                           App.MEAL_HANDLER.successGettingMealById(makeMealFromFirebase(document));
+                           App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, makeMealFromFirebase(document));
                         }
 
                     } else {
                         Log.d(TAG, "No such document");
-                        App.MEAL_HANDLER.errorGettingMealById("Could not find a meal with provided ID");
+                        App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID,"Could not find a meal with provided ID");
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
-                    App.MEAL_HANDLER.errorGettingMealById("Failed to retrieve meal");
+                    App.MEAL_HANDLER.handleActionFailure( GET_MEAL_BY_ID, "Failed to retrieve meal");
                 }
             }
         });
@@ -332,13 +333,13 @@ public class MealActions {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                App.MEAL_HANDLER.successUpdatingMealInfo(meal);
+                                App.MEAL_HANDLER.handleActionSuccess(UPDATE_MEAL_INFO, meal);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                App.MEAL_HANDLER.errorUpdatingMealInfo("Failed to update meal to list in chef in database: " + e.getMessage());
+                                App.MEAL_HANDLER.handleActionFailure( UPDATE_MEAL_INFO, "Failed to update meal to list in chef in database: " + e.getMessage());
                             }
                         });
 
@@ -355,13 +356,13 @@ public class MealActions {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                App.MEAL_HANDLER.successUpdatingMealInfo(meal);
+                                App.MEAL_HANDLER.handleActionSuccess(UPDATE_MEAL_INFO, meal);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                App.MEAL_HANDLER.errorUpdatingMealInfo("Failed to update meal to searchable list in database: " + e.getMessage());
+                                App.MEAL_HANDLER.handleActionFailure( UPDATE_MEAL_INFO,"Failed to update meal to searchable list in database: " + e.getMessage());
                             }
                         });
             }
@@ -394,7 +395,6 @@ public class MealActions {
         }
 
         MealEntityModel newMeal = new MealEntityModel();
-        Meal meal = new Meal(newMeal);
 
         newMeal.setName(String.valueOf(document.getData().get("name")));
         newMeal.setChefID(String.valueOf(document.getData().get("chefId")));
@@ -406,7 +406,7 @@ public class MealActions {
         newMeal.setOffered((Boolean) document.getData().get("isOffered"));
         newMeal.setPrice((Double) document.getData().get("price"));
 
-        return meal;
+        return new Meal(newMeal);
 
     }
 
