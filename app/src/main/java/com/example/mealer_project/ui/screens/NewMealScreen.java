@@ -19,10 +19,13 @@ import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+
+import java.util.ArrayList;
+
 public class NewMealScreen extends UIScreen implements StatefulView {
 
     // Variable Declaration
-    protected String allergens = "";
+    protected ArrayList<String> allergens = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,124 +109,124 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         // Process: adding allergens to list
         if (currentCheck.isChecked()) { //gluten
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            allergens.add("gluten"); //adding to allergens array
 
         }
+
 
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.peanuts_checkbox);
 
         if (currentCheck.isChecked()) { //peanuts
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            allergens.add("peanuts"); //adding to allergens array
 
         }
 
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.treenuts_checkbox);
-
         if (currentCheck.isChecked()) { //treenuts
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            allergens.add("tree nuts"); //adding to allergens array
 
         }
 
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.celery_checkbox);
-
         if (currentCheck.isChecked()) { //celery
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("celery"); //adding to allergens String
 
         }
 
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.mustard_checkbox);
-
         if (currentCheck.isChecked()) { //mustard
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("mustard");  //adding to allergens String
 
         }
 
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.eggs_checkbox);
-
         if (currentCheck.isChecked()) { //eggs
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("eggs"); //adding to allergens String
 
         }
 
         // updating checkbox
-        currentCheck = (CheckBox) findViewById(R.id.eggs_checkbox);
-
+        currentCheck = (CheckBox) findViewById(R.id.milk_checkbox);
         if (currentCheck.isChecked()) { //milk
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("milk"); //adding to allergens String
 
         }
-
+        
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.sesame_checkbox);
-
         if (currentCheck.isChecked()) { //sesame
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("sesame");  //adding to allergens String
 
         }
-
+        
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.fish_checkbox);
-
         if (currentCheck.isChecked()) { //fish
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("fish");  //adding to allergens String
 
         }
-
+        
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.crustaceans_checkbox);
-
         if (currentCheck.isChecked()) { //crustaceans
 
-             allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("crustaceans");  //adding to allergens String
 
         }
-
+        
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.molluscs_checkbox);
-
         if (currentCheck.isChecked()) { //molluscs
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("molluscs");  //adding to allergens String
 
         }
-
+        
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.soya_checkbox);
-
         if (currentCheck.isChecked()) { //soya
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("soya");  //adding to allergens String
 
         }
-
+        
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.sulphites_checkbox);
-
         if (currentCheck.isChecked()) { //sulphites
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("sulphites");  //adding to allergens String
 
         }
-
+        
         // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.lupin_checkbox);
-
         if (currentCheck.isChecked()) { //lupin
 
-            allergens += ", " + currentCheck.getText().toString(); //adding to allergens String
+            // Initialization
+            allergens.add("lupin"); //adding to allergens String
 
         }
 

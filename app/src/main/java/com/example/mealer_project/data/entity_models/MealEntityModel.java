@@ -1,5 +1,6 @@
 package com.example.mealer_project.data.entity_models;
 
+import java.util.ArrayList;
 
 public class MealEntityModel {
 
@@ -9,7 +10,7 @@ public class MealEntityModel {
     private String cuisineType;
     private String mealType;
     private String ingredients;
-    private String allergens;
+    private ArrayList<String> allergens;
     private String description;
     private boolean offered;
     private double price;
@@ -18,7 +19,7 @@ public class MealEntityModel {
     }
 
     public MealEntityModel(String name, String mealID, String chefID, String cuisineType, String mealType,
-                           String ingredients, String allergens, String description, boolean offered, double price) {
+                           String ingredients, ArrayList<String> allergens, String description, boolean offered, double price) {
 
         this.setName(name);
         this.setMealID(mealID);
@@ -33,7 +34,7 @@ public class MealEntityModel {
     }
 
     public MealEntityModel(String name, String chefID, String cuisineType, String mealType,
-                           String ingredients, String allergens, String description, boolean offered, double price) {
+                           String ingredients, ArrayList<String> allergens, String description, boolean offered, double price) {
 
         this.setName(name);
         //this.setMealID(mealID);
@@ -84,9 +85,9 @@ public class MealEntityModel {
         this.ingredients = ingredients;
     }
 
-    public String getAllergens() { return allergens;}
+    public ArrayList<String> getAllergens() { return allergens;}
 
-    public void setAllergens(String allergens) {
+    public void setAllergens(ArrayList<String> allergens) {
         this.allergens = allergens;
     }
 

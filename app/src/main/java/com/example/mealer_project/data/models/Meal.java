@@ -1,15 +1,14 @@
-package com.example.mealer_project.data.models.meals;
+package com.example.mealer_project.data.models;
 
 
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
  */
-public class Meal implements Serializable {
+public class Meal {
     private String errorMsg = "";
 
     private String name;
@@ -54,7 +53,7 @@ public class Meal implements Serializable {
      * Create an instance of meal using MealEntityModel
      * @param mealEntityModel meal info to create
      */
-    public Meal (MealEntityModel mealEntityModel) {
+    public Meal (MealEntityModel mealEntityModel){
 
         this.setName( mealEntityModel.getName());
         this.setMealID( mealEntityModel.getMealID());
@@ -263,18 +262,7 @@ public class Meal implements Serializable {
      * @param mealType of meal
      */
     public void setMealType(String mealType) {
-
-        // Process: validating the meal type
-        if (mealType.equals("(Select meal type)")) { //invalid
-
-            throw new IllegalArgumentException("Please select a meal type");
-
-        }
-        else { //valid
-
-            this.mealType = mealType;
-
-        }
+        this.mealType = mealType;
     }
 
     /**

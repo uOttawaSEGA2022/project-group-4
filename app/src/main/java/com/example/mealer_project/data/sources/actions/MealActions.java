@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -479,7 +480,7 @@ public class MealActions {
         newMeal.setCuisineType(String.valueOf(document.getData().get("cuisineType")));
         newMeal.setMealType(String.valueOf(document.getData().get("mealType")));
         newMeal.setIngredients(String.valueOf(document.getData().get("ingredients")));
-        newMeal.setAllergens(String.valueOf(document.getData().get("allergens")));
+        newMeal.setAllergens((ArrayList<String>) (document.getData().get("allergens")));
         newMeal.setDescription(String.valueOf(document.getData().get("description")));
         newMeal.setOffered((Boolean) document.getData().get("isOffered"));
         newMeal.setPrice((Double) document.getData().get("price"));

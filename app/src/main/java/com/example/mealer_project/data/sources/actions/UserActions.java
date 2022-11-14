@@ -31,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
@@ -289,7 +290,7 @@ public class UserActions {
                     mealEntityModel.setCuisineType(String.valueOf(value.get("cuisineType")));
                     mealEntityModel.setMealType(String.valueOf(value.get("mealType")));
                     mealEntityModel.setIngredients(String.valueOf(value.get("ingredients")));
-                    mealEntityModel.setAllergens(String.valueOf(value.get("allergens")));
+                    mealEntityModel.setAllergens((ArrayList<String>)(value.get("allergens")));
                     mealEntityModel.setDescription(String.valueOf(value.get("description")));
                     mealEntityModel.setOffered((Boolean)value.get("offered"));
                     mealEntityModel.setPrice((Double)value.get("price"));
