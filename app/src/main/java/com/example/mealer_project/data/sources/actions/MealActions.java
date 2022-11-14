@@ -69,6 +69,22 @@ public class MealActions {
                             // update complaint id
                             meal.setMealID(documentReference.getId());
                             App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
+                            // Add meal to meals collection in Firebase
+                            database.collection(MEAL_COLLECTION)
+                                    .document(meal.getMealID())
+                                    .set(databaseMeal)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            //App.MEAL_HANDLER.successAddingMeal(meal);
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            //App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to list of meals in database: " + e.getMessage());
+                                        }
+                                    });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -78,22 +94,7 @@ public class MealActions {
                         }
                     });
 
-            // Add meal to meals collection in Firebase
-            database.collection(MEAL_COLLECTION)
-                    .document(meal.getMealID())
-                    .set(databaseMeal)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //App.MEAL_HANDLER.successAddingMeal(meal);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to list of meals in database: " + e.getMessage());
-                        }
-                    });
+
 
 
         } else {

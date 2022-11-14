@@ -134,7 +134,7 @@ public class MealHandler {
                 }
             } catch (Exception e) {
                 Log.e("MealHandler Dispatch", "Exception: " + e.getMessage());
-                uiScreen.dbOperationFailureHandler(null, "Dispatch failed: " + e.getMessage());
+                uiScreen.dbOperationFailureHandler(dbOperations.ERROR, "Dispatch failed: " + e.getMessage());
             }
 
         } else {

@@ -36,7 +36,7 @@ public class MealEntityModel {
                            String ingredients, String allergens, String description, boolean offered, double price) {
 
         this.setName(name);
-        this.setMealID(mealID);
+        //this.setMealID(mealID);
         this.setChefID(chefID);
         this.setCuisineType(cuisineType);
         this.setMealType(mealType);
