@@ -7,7 +7,9 @@ import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Meals {
@@ -175,5 +177,13 @@ public class Meals {
      */
     public Map<String, Meal> getMenu() {
         return this.meals;
+    };
+
+    /**
+     * Method to retrieve a list containing all meals added by the Chef
+     * @return a List containing Meal objects
+     */
+    public List<Meal> getListOfMeals() {
+        return new ArrayList<>(this.meals.values());
     };
 }
