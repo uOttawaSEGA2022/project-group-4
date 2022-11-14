@@ -113,36 +113,43 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
         }
 
+
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.peanuts_checkbox);
-        if (currentCheck.isChecked()) { //gluten
+
+        if (currentCheck.isChecked()) { //peanuts
 
             allergens.add("peanuts"); //adding to allergens array
 
         }
 
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.treenuts_checkbox);
-        if (currentCheck.isChecked()) { //gluten
+        if (currentCheck.isChecked()) { //treenuts
 
             allergens.add("tree nuts"); //adding to allergens array
 
         }
 
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.celery_checkbox);
         if (currentCheck.isChecked()) { //celery
 
             // Initialization
-            allergens.add("celery");; //adding to allergens String
+            allergens.add("celery"); //adding to allergens String
 
         }
 
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.mustard_checkbox);
         if (currentCheck.isChecked()) { //mustard
 
             // Initialization
-            allergens.add("mustard");;  //adding to allergens String
+            allergens.add("mustard");  //adding to allergens String
 
         }
 
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.eggs_checkbox);
         if (currentCheck.isChecked()) { //eggs
 
@@ -150,6 +157,8 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             allergens.add("eggs"); //adding to allergens String
 
         }
+
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.milk_checkbox);
         if (currentCheck.isChecked()) { //milk
 
@@ -157,6 +166,8 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             allergens.add("milk"); //adding to allergens String
 
         }
+        
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.sesame_checkbox);
         if (currentCheck.isChecked()) { //sesame
 
@@ -164,13 +175,17 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             allergens.add("sesame");  //adding to allergens String
 
         }
+        
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.fish_checkbox);
         if (currentCheck.isChecked()) { //fish
 
             // Initialization
-            allergens.add("fish");;  //adding to allergens String
+            allergens.add("fish");  //adding to allergens String
 
         }
+        
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.crustaceans_checkbox);
         if (currentCheck.isChecked()) { //crustaceans
 
@@ -178,6 +193,8 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             allergens.add("crustaceans");  //adding to allergens String
 
         }
+        
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.molluscs_checkbox);
         if (currentCheck.isChecked()) { //molluscs
 
@@ -185,6 +202,8 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             allergens.add("molluscs");  //adding to allergens String
 
         }
+        
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.soya_checkbox);
         if (currentCheck.isChecked()) { //soya
 
@@ -192,6 +211,8 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             allergens.add("soya");  //adding to allergens String
 
         }
+        
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.sulphites_checkbox);
         if (currentCheck.isChecked()) { //sulphites
 
@@ -199,11 +220,13 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             allergens.add("sulphites");  //adding to allergens String
 
         }
+        
+        // updating checkbox
         currentCheck = (CheckBox) findViewById(R.id.lupin_checkbox);
         if (currentCheck.isChecked()) { //lupin
 
             // Initialization
-            allergens.add("lupin"); ; //adding to allergens String
+            allergens.add("lupin"); //adding to allergens String
 
         }
 
