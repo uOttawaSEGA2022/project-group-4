@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content">
 
                     <CheckBox
-                        android:id="@+id/gluten_checkbox"
+                        android:id="@+id/gluten_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -121,10 +121,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
-                        android:id="@+id/peanuts_checkbox"
+                        android:id="@+id/peanuts_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/gluten_checkbox"
+                        android:layout_toEndOf="@id/gluten_checkbox1"
                         android:ems="10"
                         android:fontFamily="@font/nunito_sans"
                         android:minHeight="50dp"
@@ -141,7 +141,7 @@
                     tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
-                        android:id="@+id/treenuts_checkbox"
+                        android:id="@+id/treenuts_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -155,7 +155,7 @@
                         android:id="@+id/celery_checkbox"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/treenuts_checkbox"
+                        android:layout_toEndOf="@id/treenuts_checkbox1"
                         android:ems="10"
                         android:fontFamily="@font/nunito_sans"
                         android:minHeight="50dp"
@@ -171,7 +171,7 @@
                     tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
-                        android:id="@+id/mustard_checkbox"
+                        android:id="@+id/mustard_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -182,10 +182,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
-                        android:id="@+id/eggs_checkbox"
+                        android:id="@+id/eggs_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/mustard_checkbox"
+                        android:layout_toEndOf="@id/mustard_checkbox1"
                         android:ems="10"
                         android:fontFamily="@font/nunito_sans"
                         android:minHeight="50dp"
@@ -201,7 +201,7 @@
                     tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
-                        android:id="@+id/milk_checkbox"
+                        android:id="@+id/milk_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -212,10 +212,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
-                        android:id="@+id/sesame_checkbox"
+                        android:id="@+id/sesame_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/milk_checkbox"
+                        android:layout_toEndOf="@id/milk_checkbox1"
                         android:ems="10"
                         android:fontFamily="@font/nunito_sans"
                         android:minHeight="50dp"
@@ -231,7 +231,7 @@
                     tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
-                        android:id="@+id/fish_checkbox"
+                        android:id="@+id/fish_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -242,10 +242,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
-                        android:id="@+id/crustaceans_checkbox"
+                        android:id="@+id/crustaceans_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/fish_checkbox"
+                        android:layout_toEndOf="@id/fish_checkbox1"
                         android:ems="10"
                         android:fontFamily="@font/nunito_sans"
                         android:minHeight="50dp"
@@ -261,7 +261,7 @@
                     tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
-                        android:id="@+id/molluscs_checkbox"
+                        android:id="@+id/molluscs_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -272,10 +272,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
-                        android:id="@+id/soya_checkbox"
+                        android:id="@+id/soya_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/molluscs_checkbox"
+                        android:layout_toEndOf="@id/molluscs_checkbox1"
                         android:ems="10"
                         android:fontFamily="@font/nunito_sans"
                         android:minHeight="50dp"
@@ -291,7 +291,7 @@
                     tools:ignore="TouchTargetSizeCheck">
 
                     <CheckBox
-                        android:id="@+id/sulphites_checkbox"
+                        android:id="@+id/sulphites_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ems="10"
@@ -302,10 +302,10 @@
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <CheckBox
-                        android:id="@+id/lupin_checkbox"
+                        android:id="@+id/lupin_checkbox1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@id/sulphites_checkbox"
+                        android:layout_toEndOf="@id/sulphites_checkbox1"
                         android:ems="10"
                         android:fontFamily="@font/nunito_sans"
                         android:minHeight="50dp"
