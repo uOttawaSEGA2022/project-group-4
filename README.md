@@ -9,6 +9,8 @@ Admin: madmin@mealer.com, Seg@2105
 Client: kapil@sharma.com, Ottawa@123
 Chef: onedirection@life.never, Ottawa@123
 
+## Table of contents:
+
 - [Mealer App](#mealer-app)
   - [Application Architecture](#application-architecture)
     - [Project File Structure & Code Organization](#project-file-structure--code-organization)
