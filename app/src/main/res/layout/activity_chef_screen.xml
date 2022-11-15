@@ -127,8 +127,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="Button"
-                    tools:text="@string/view_offered_meals" />
+                    android:visibility="visible"
+                    android:text="@string/view_offered_meals"
+                    tools:ignore="TextContrastCheck" />
 
             </LinearLayout>
 

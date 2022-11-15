@@ -508,8 +508,6 @@ public class MealActions {
 
         MealEntityModel newMeal = new MealEntityModel();
 
-        Log.e("MealsList", Utilities.getMapPropertyNames(document.getData()));
-
         newMeal.setName(String.valueOf(document.getData().get("name")));
         newMeal.setChefID(String.valueOf(document.getData().get("chefId")));
         newMeal.setCuisineType(String.valueOf(document.getData().get("cuisineType")));

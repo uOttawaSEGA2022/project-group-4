@@ -21,6 +21,7 @@ public class MealsListScreen extends UIScreen {
 
     // list to store meals data
     private List<Meal> mealsData;
+    private List<Meal> meals;
     // key to specify type of meals data being displayed
     public final static String MEALS_TYPE_ARG_KEY = "MEALS_TYPE_ARG_KEY";
     // key to provide custom list of meals through intent
@@ -40,13 +41,16 @@ public class MealsListScreen extends UIScreen {
         // check the meals data to be loaded
         loadMealsData();
 
+        // initialize view data holder
+        meals = new ArrayList<>();
+
         // populate meals listView
         populateMealsList();
     }
 
     private void loadMealsData() {
         // check if have intent data and there is a property specified for meal type
-        if (getIntent() != null && getIntent().hasExtra(MEALS_TYPE_ARG_KEY)) {
+        if (getIntent() != null && getIntent().getStringExtra(MEALS_TYPE_ARG_KEY) != null) {
 
             String mealType = getIntent().getStringExtra(MEALS_TYPE_ARG_KEY);
 
@@ -112,11 +116,12 @@ public class MealsListScreen extends UIScreen {
         // get the meals list
         ListView mealsList = findViewById(R.id.mlMealsList);
         // get the adapter
-        MealsAdapter mealsAdapter = new MealsAdapter(this, 0, this.mealsData);
+        MealsAdapter mealsAdapter = new MealsAdapter(this, R.layout.activity_meals_list_item, this.meals);
         // Attach the adapter to the meals listView
         mealsList.setAdapter(mealsAdapter);
         // add data to the adapter
-        mealsAdapter.addAll(this.mealsData);
-        Log.e("MealsList", "Displaying meals: " + mealsData.size());
+        for (Meal meal: this.mealsData) {
+            mealsAdapter.add(meal);
+        }
     }
 }

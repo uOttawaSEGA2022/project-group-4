@@ -64,7 +64,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
                 // initialize a new intent
                 Intent intent = new Intent(getApplicationContext(), MealsListScreen.class);
                 // specify that we want to display offered meals
-                intent.putExtra(MealsListScreen.MEALS_TYPE_ARG_KEY, MealsListScreen.MEALS_TYPE.OFFERED_MEALS);
+                intent.putExtra(MealsListScreen.MEALS_TYPE_ARG_KEY, MealsListScreen.MEALS_TYPE.OFFERED_MEALS.toString());
                 // display the offered meals list
                 startActivity(intent);
             }

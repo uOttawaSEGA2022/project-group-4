@@ -89,6 +89,7 @@
     <string name="orders_label">Orders</string>
     <string name="view_pending_orders_label">Pending Orders</string>
     <string name="view_all_orders_label">All Orders</string>
+    <string name="meals_title">Meals</string>
 
 
 </resources>
