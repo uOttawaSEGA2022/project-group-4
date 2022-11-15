@@ -158,7 +158,7 @@ public class Meals {
      * Method to retrieve a map object containing meals which are currently being offered by Chef
      * @return a Map containing Meal ID's as keys and Meal objects as values
      */
-    public Map<String, Meal> getOfferedMeals() {
+    public HashMap<String, Meal> getOfferedMeals() {
         // map to store the result
         HashMap<String, Meal> offeredMeals = new HashMap<>();
         // filter and add offered meals to above map

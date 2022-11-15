@@ -129,7 +129,12 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         // sets the text for allergens
         TextView allergensText = (TextView) findViewById(R.id.msg_allergens);
         String allergensString = String.join(", ", allergens); // convert arraylist to string
-        allergensText.setText(allergensString);
+
+        if (allergensString.length() == 0) {
+            allergensText.setText("N/A");
+        } else {
+            allergensText.setText(allergensString);
+        }
 
         // sets the text for description
         TextView descriptionText = (TextView) findViewById(R.id.msg_description);
