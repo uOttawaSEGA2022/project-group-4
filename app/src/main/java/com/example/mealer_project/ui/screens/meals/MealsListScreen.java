@@ -2,8 +2,10 @@ package com.example.mealer_project.ui.screens.meals;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
 
 import com.example.mealer_project.R;
@@ -11,10 +13,9 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.ui.screens.ChefScreen;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MealsListScreen extends UIScreen {
@@ -46,6 +47,11 @@ public class MealsListScreen extends UIScreen {
 
         // populate meals listView
         populateMealsList();
+    }
+
+    // Go back to previous screen
+    public void clickBack(View view) {
+        finish();
     }
 
     private void loadMealsData() {

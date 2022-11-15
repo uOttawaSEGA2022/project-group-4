@@ -16,6 +16,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageButton
+            android:id="@+id/back_btn2"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/back"
+            android:onClick="clickBack"
+            android:scaleType="fitXY"
+            android:src="@drawable/backbutton" />
+
         <TextView
             android:id="@+id/mlTitle"
             android:layout_width="match_parent"

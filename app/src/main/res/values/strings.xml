@@ -38,18 +38,14 @@
     <string name="meal_type">Meal type:</string>
     <string-array name="menu_types_array">
         <item>(Select meal type)</item>
-        <item>Vegan</item>
-        <item>Vegetarian</item>
-        <item>Gluten-free</item>
         <item>Breakfast</item>
         <item>Lunch</item>
         <item>Brunch</item>
         <item>Dinner</item>
         <item>Appetizer</item>
-        <item>Side Dishes</item>
-        <item>Main</item>
-        <item>Soup</item>
+        <item>Entrée</item>
         <item>Desert</item>
+        <item>Soup</item>
         <item>Bakery</item>
         <item>Beverages</item>
     </string-array>

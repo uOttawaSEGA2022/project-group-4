@@ -109,7 +109,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         // Process: adding allergens to list
         if (currentCheck.isChecked()) { //gluten
 
-            allergens.add("gluten"); //adding to allergens array
+            allergens.add("Gluten"); //adding to allergens array
 
         }
 
@@ -119,7 +119,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
 
         if (currentCheck.isChecked()) { //peanuts
 
-            allergens.add("peanuts"); //adding to allergens array
+            allergens.add("Peanuts"); //adding to allergens array
 
         }
 
@@ -127,7 +127,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         currentCheck = (CheckBox) findViewById(R.id.treenuts_checkbox);
         if (currentCheck.isChecked()) { //treenuts
 
-            allergens.add("tree nuts"); //adding to allergens array
+            allergens.add("Tree nuts"); //adding to allergens array
 
         }
 
@@ -136,7 +136,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //celery
 
             // Initialization
-            allergens.add("celery"); //adding to allergens String
+            allergens.add("Celery"); //adding to allergens String
 
         }
 
@@ -145,7 +145,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //mustard
 
             // Initialization
-            allergens.add("mustard");  //adding to allergens String
+            allergens.add("Mustard");  //adding to allergens String
 
         }
 
@@ -154,7 +154,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //eggs
 
             // Initialization
-            allergens.add("eggs"); //adding to allergens String
+            allergens.add("Eggs"); //adding to allergens String
 
         }
 
@@ -163,7 +163,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //milk
 
             // Initialization
-            allergens.add("milk"); //adding to allergens String
+            allergens.add("Milk"); //adding to allergens String
 
         }
         
@@ -172,7 +172,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //sesame
 
             // Initialization
-            allergens.add("sesame");  //adding to allergens String
+            allergens.add("Sesame");  //adding to allergens String
 
         }
         
@@ -181,7 +181,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //fish
 
             // Initialization
-            allergens.add("fish");  //adding to allergens String
+            allergens.add("Fish");  //adding to allergens String
 
         }
         
@@ -190,7 +190,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //crustaceans
 
             // Initialization
-            allergens.add("crustaceans");  //adding to allergens String
+            allergens.add("Crustaceans");  //adding to allergens String
 
         }
         
@@ -199,7 +199,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //molluscs
 
             // Initialization
-            allergens.add("molluscs");  //adding to allergens String
+            allergens.add("Molluscs");  //adding to allergens String
 
         }
         
@@ -208,7 +208,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //soya
 
             // Initialization
-            allergens.add("soya");  //adding to allergens String
+            allergens.add("Soya");  //adding to allergens String
 
         }
         
@@ -217,7 +217,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //sulphites
 
             // Initialization
-            allergens.add("sulphites");  //adding to allergens String
+            allergens.add("Sulphites");  //adding to allergens String
 
         }
         
@@ -226,7 +226,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         if (currentCheck.isChecked()) { //lupin
 
             // Initialization
-            allergens.add("lupin"); //adding to allergens String
+            allergens.add("Lupin"); //adding to allergens String
 
         }
 

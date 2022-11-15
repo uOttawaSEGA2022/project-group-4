@@ -30,6 +30,8 @@ import java.util.List;
 
 public class MealsAdapter extends ArrayAdapter<Meal> {
 
+    public static final String MEALS_DATA_ARG_KEY = "MEAL_DATA_ARG_KEY";
+
     /**
      * Constructor
      *
