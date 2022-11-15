@@ -38,7 +38,7 @@ public class Complaint implements Comparator<Complaint>, Serializable {
         clientId,
         chefId,
         dateSubmitted
-    };
+    }
 
     /**
      * Constructor to create a new complaint instance by providing values for all instance variables
