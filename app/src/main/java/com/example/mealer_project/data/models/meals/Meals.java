@@ -186,4 +186,12 @@ public class Meals {
     public List<Meal> getListOfMeals() {
         return new ArrayList<>(this.meals.values());
     };
+
+    /**
+     * Method to retrieve a list containing meals currently offered by the Chef
+     * @return a List containing Meal objects
+     */
+    public List<Meal> getListOfOfferedMeals() {
+        return new ArrayList<>(getOfferedMeals().values());
+    };
 }

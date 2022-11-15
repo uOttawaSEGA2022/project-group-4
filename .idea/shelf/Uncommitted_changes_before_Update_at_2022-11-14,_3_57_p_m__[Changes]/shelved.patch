@@ -1,0 +1,377 @@
+Index: app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.data.handlers;\n\nimport android.util.Log;\n\nimport androidx.annotation.NonNull;\n\nimport com.example.mealer_project.app.App;\nimport com.example.mealer_project.data.entity_models.MealEntityModel;\nimport com.example.mealer_project.data.models.Chef;\nimport com.example.mealer_project.data.models.meals.Meal;\nimport com.example.mealer_project.ui.core.StatefulView;\nimport com.example.mealer_project.utils.Preconditions;\n\nimport java.util.Map;\n\npublic class MealHandler {\n\n    /**\n     * Specify DB operations handled by Meal Handler\n     */\n    public enum dbOperations {\n        ADD_MEAL,\n        ADD_MEAL_TO_OFFERED_LIST,\n        REMOVE_MEAL,\n        REMOVE_MEAL_FROM_OFFERED_LIST,\n        UPDATE_MEAL_INFO,\n        UPDATE_OFFERED_MEALS,\n        ADD_TO_SEARCHABLE_LIST,\n        REMOVE_FROM_SEARCHABLE_LIST,\n        GET_MENU,\n        GET_MEAL_BY_ID,\n        ERROR\n    };\n\n    private StatefulView uiScreen;\n\n    /**\n     * Using the Dispatch-Action Pattern to handle actions dispatched to Meal Handler\n     * @param operationType one of the specified DB operations handled by MealHandler\n     * @param payload an input data for the handler's operation\n     * @param uiScreen instance of the view which needs to know of the operation's success or failure\n     */\n    public void dispatch(dbOperations operationType, Object payload, StatefulView uiScreen) {\n\n        // guard-clause\n        if (Preconditions.isNotNull(uiScreen)) {\n\n            // set the ui screen, so it can be interacted with later on\n            this.uiScreen = uiScreen;\n\n            try {\n                switch (operationType) {\n\n                    case ADD_MEAL:\n                        if (Preconditions.isNotNull(payload) && payload instanceof MealEntityModel) {\n                            // below code might cause exception if validation fails or instance can't be created\n                            Meal newMeal = new Meal((MealEntityModel) payload);\n                            // if meal creation was success, add the meal to database\n                            App.getPrimaryDatabase().MEALS.addMeal(newMeal);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid Meal Object provided\");\n                        }\n                        break;\n\n                    case ADD_MEAL_TO_OFFERED_LIST:\n                        // update meal on remote database first\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            App.getPrimaryDatabase().MEALS.addMealToOfferedList((String) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid meal ID provided\");\n                        }\n                        break;\n\n                    case REMOVE_MEAL:\n                        // remove meal on remote database first\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            App.getPrimaryDatabase().MEALS.removeMeal((String) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid meal ID provided\");\n                        }\n                        break;\n\n                    case REMOVE_MEAL_FROM_OFFERED_LIST:\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            App.getPrimaryDatabase().MEALS.removeMealFromOfferedList((String) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid meal ID provided\");\n                        }\n                        break;\n\n                    case UPDATE_MEAL_INFO:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {\n                            App.getPrimaryDatabase().MEALS.updateMealInfo((Meal) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid Meal instance provided\");\n                        }\n                        break;\n\n                    case UPDATE_OFFERED_MEALS:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Map) {\n                            updateOfferedMeals((Map<String, Boolean>) payload);\n                        } else {\n                            handleActionFailure( operationType, \"Invalid object provided for map\");\n                        }\n                        break;\n\n                    case GET_MENU:\n                        App.getPrimaryDatabase().MEALS.getMeals();\n                        break;\n\n                    case GET_MEAL_BY_ID:\n                        if (Preconditions.isNotNull(payload)) {\n                            // if we have been provided with both meal id and a chef id\n                            if (payload instanceof String[]) {\n                                String[] ids = (String[]) payload;\n                                App.getPrimaryDatabase().MEALS.getMealById(ids[0], ids[1]);\n                            }\n\n                            // if we only have meal id\n                            else if (payload instanceof String) {\n                                App.getPrimaryDatabase().MEALS.getMealById((String) payload);\n                            }\n\n                            else {\n                                handleActionFailure( operationType, \"Invalid arguments provided for getting meal by id\");\n                            }\n                        } else {\n                            handleActionFailure( operationType, \"No arugments provided for getMealById\");\n                        }\n                        break;\n\n                    default:\n                        Log.e(\"MealHandler dispatch\", \"Action not implemented yet\");\n                }\n            } catch (Exception e) {\n                Log.e(\"MealHandler Dispatch\", \"Exception: \" + e.getMessage());\n                uiScreen.dbOperationFailureHandler(null, \"Dispatch failed: \" + e.getMessage());\n            }\n\n        } else {\n            Log.e(\"MealHandler Dispatch\", \"Invalid instance provided for uiScreen\");\n        }\n    }\n\n    /**\n     * Method which is called AFTER a successful database operation to make updates locally\n     * @param operationType type of database operation which was successful\n     * @param payload data for making changes locally\n     */\n    public void handleActionSuccess(dbOperations operationType, Object payload) {\n        // ensure we have a valid uiScreen to inform of success\n        if(Preconditions.isNotNull(uiScreen)) {\n\n            try {\n                switch (operationType) {\n\n                    case ADD_MEAL:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {\n                            // add meal locally\n                            ((Chef) App.getUser()).MEALS.addMeal((Meal) payload);\n                            // let UI know about success\n                            uiScreen.dbOperationSuccessHandler(operationType, \"Meal added successfully!\");\n                        } else {\n                            handleActionFailure(operationType, \"Invalid meal object provided\");\n                        }\n                        break;\n\n                    case ADD_MEAL_TO_OFFERED_LIST:\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            // update meal locally\n                            ((Chef) App.getUser()).MEALS.addMealToOfferedList((String) payload);\n                        } else {\n                            handleActionFailure(operationType, \"unable to update meal locally as offered, invalid payload\");\n                        }\n\n                        break;\n\n                    case REMOVE_MEAL:\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            ((Chef) App.getUser()).MEALS.removeMeal((String) payload);\n                            // let UI know about success\n                            uiScreen.dbOperationSuccessHandler(operationType, \"Meal removed successfully!\");\n                        } else {\n                            handleActionFailure(operationType, \"Invalid meal ID\");\n                        }\n                        break;\n\n                    case REMOVE_MEAL_FROM_OFFERED_LIST:\n                        if (Preconditions.isNotNull(payload) && payload instanceof String) {\n                            ((Chef) App.getUser()).MEALS.removeMealFromOfferedList((String) payload);\n                            // let UI know about success\n                            uiScreen.dbOperationSuccessHandler(operationType, \"Meal removed from offered list!\");\n                        } else {\n                            handleActionFailure(operationType, \"invalid meal ID\");\n                        }\n                        break;\n\n                    case UPDATE_MEAL_INFO:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {\n                            // update meal locally\n                            ((Chef) App.getUser()).MEALS.updateMeal((Meal) payload);\n                            uiScreen.dbOperationSuccessHandler(operationType, \"updated meal info!\");\n                        } else {\n                            handleActionFailure( operationType, \"Invalid Meal instance provided\");\n                        }\n                        break;\n\n                    case UPDATE_OFFERED_MEALS:\n                        uiScreen.dbOperationSuccessHandler(operationType, \"updated offered meals list!\");\n                        break;\n\n                    case GET_MENU:\n                        // update the Chef's meals locally\n                        if (Preconditions.isNotNull(payload) && payload instanceof Map) {\n                            Map<String, Meal> meals = (Map<String, Meal>) payload;\n                            ((Chef) App.getUser()).MEALS.setMeals(meals);\n                            uiScreen.dbOperationSuccessHandler(operationType, meals);\n                        } else {\n                            handleActionFailure(operationType, \"Invalid payload for getMenu\");\n                        }\n                        break;\n\n                    case GET_MEAL_BY_ID:\n                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {\n                            uiScreen.dbOperationSuccessHandler(operationType, (Meal) payload);\n                        } else {\n                            handleActionFailure(operationType, \"Failed to get meal by ID\");\n                        }\n                        break;\n\n                    default:\n                        Log.e(\"handleActionSuccess\", \"Action not implemented yet\");\n\n                }\n            } catch (Exception e) {\n                Log.e(\"handleActionSuccess\", \"Success handler exception: \" + e.getMessage());\n                uiScreen.dbOperationFailureHandler(dbOperations.ERROR, \"Failed to process request\");\n            }\n\n        } else {\n            Log.e(\"handleActionSuccess\", \"No UI Screen initialized\");\n        }\n    }\n\n    /**\n     * Method which is called AFTER a failure in a database operation to inform UI\n     * @param operationType type of database operation which failed\n     * @param message a descriptive error message for the developers and analyst (not for client or chef)\n     */\n    public void handleActionFailure(dbOperations operationType, String message) {\n        // ensure we have a valid uiScreen to inform of failure\n        if(Preconditions.isNotNull(uiScreen)) {\n\n            String tag = \"handleActionFailure\";\n            String userMessage = \"Failed to process request\";\n\n            switch (operationType) {\n\n                case ADD_MEAL:\n                    tag = \"addMeal\";\n                    userMessage= \"Failed to add meal!\";\n                    break;\n\n                case ADD_MEAL_TO_OFFERED_LIST:\n                    tag = \"addingMealToOffered\";\n                    userMessage = \"Failed to set meal as offered!\";\n                    break;\n\n                case REMOVE_MEAL:\n                    tag = \"errorRemovingMeal\";\n                    userMessage = \"Failed to remove meal!\";\n                    break;\n\n                case REMOVE_MEAL_FROM_OFFERED_LIST:\n                    tag = \"removeMealFromOffered\";\n                    userMessage = \"Failed to remove meal from offered list!\";\n                    break;\n\n                case UPDATE_MEAL_INFO:\n                    tag = \"updateMealInfo\";\n                    userMessage = \"Failed to update meal info!\";\n                    break;\n\n                case UPDATE_OFFERED_MEALS:\n                    tag = \"error\";\n                    userMessage = \"Failed to update offered meals!\";\n                    break;\n\n                case GET_MENU:\n                    tag = \"errorGetMenu\";\n                    userMessage = \"Failed to get menu!\";\n                    break;\n\n                case GET_MEAL_BY_ID:\n                    tag = \"errorGettingMealById\";\n                    userMessage = \"Failed to get meal by id!\";\n                    break;\n\n                default:\n                    Log.e(\"handleActionSuccess\", \"Action not implemented yet\");\n            }\n\n            // send error\n            Log.e(tag, message);\n            uiScreen.dbOperationFailureHandler(operationType, userMessage);\n\n        } else {\n            Log.e(\"handleActionFailure\", \"No UI Screen initialized\");\n        }\n    }\n\n    /**\n     * Update meals to be offered or un-offered\n     * @param data map containing IDs of the meals to be updated\n     */\n    private void updateOfferedMeals(@NonNull Map<String, Boolean> data) {\n        Chef chef = (Chef) App.getUser();\n        Map<String, Meal> meals = chef.MEALS.getMenu();\n        // guard-clause\n        if (Preconditions.isNotNull(data)) {\n            for (String mealId: data.keySet()) {\n                // check if meal doesn't exists\n                if (meals.get(mealId) == null) {\n                    handleActionFailure(dbOperations.UPDATE_OFFERED_MEALS, \"Could not find a meal for the given meal ID\");\n                    return;\n                }\n\n                // check if meal needs to be updated\n                if (meals.get(mealId).isOffered() != data.get(mealId)) {\n\n                    // if meal needs to be added to offered list\n                    if (data.get(mealId)) {\n                        dispatch(dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealId, uiScreen);\n                    } else {\n                        dispatch(dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealId, uiScreen);\n                    }\n                }\n            }\n            handleActionSuccess(dbOperations.UPDATE_OFFERED_MEALS, null);\n        } else {\n            handleActionFailure(dbOperations.UPDATE_OFFERED_MEALS, \"Invalid data provided to updateOfferedMeals\");\n        }\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java b/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java
+--- a/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java	(revision e0bd3973a105f311b43613d9823538c865ffb4c3)
++++ b/app/src/main/java/com/example/mealer_project/data/handlers/MealHandler.java	(date 1668378613502)
+@@ -134,7 +134,7 @@
+                 }
+             } catch (Exception e) {
+                 Log.e("MealHandler Dispatch", "Exception: " + e.getMessage());
+-                uiScreen.dbOperationFailureHandler(null, "Dispatch failed: " + e.getMessage());
++                uiScreen.dbOperationFailureHandler(dbOperations.ERROR, "Dispatch failed: " + e.getMessage());
+             }
+ 
+         } else {
+Index: app/src/main/res/values/dimens.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\n    <!-- Default screen margins, per the Android Design guidelines. -->\n    <dimen name=\"activity_horizontal_margin\">16dp</dimen>\n    <dimen name=\"activity_vertical_margin\">16dp</dimen>\n</resources>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/dimens.xml b/app/src/main/res/values/dimens.xml
+--- a/app/src/main/res/values/dimens.xml	(revision e0bd3973a105f311b43613d9823538c865ffb4c3)
++++ b/app/src/main/res/values/dimens.xml	(date 1668379204579)
+@@ -2,4 +2,5 @@
+     <!-- Default screen margins, per the Android Design guidelines. -->
+     <dimen name="activity_horizontal_margin">16dp</dimen>
+     <dimen name="activity_vertical_margin">16dp</dimen>
++    <dimen name="text_margin">16dp</dimen>
+ </resources>
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_meal_item.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<FrameLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    tools:context=\".ui.screens.MealItemFragment\">\n\n    <!-- TODO: Update blank fragment layout -->\n\n    <LinearLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"match_parent\"\n        android:orientation=\"vertical\">\n\n        <TextView\n            android:id=\"@+id/fMealName\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:minHeight=\"50dp\"\n            android:text=\"Meal Name\" />\n\n        <TextView\n            android:id=\"@+id/fDescription\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"Description\" />\n\n        <TextView\n            android:id=\"@+id/fMealDescription\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:minHeight=\"100dp\"\n            android:text=\"Meal Description\" />\n\n        <LinearLayout\n            android:id=\"@+id/fOfferedLayout\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:orientation=\"horizontal\">\n\n            <TextView\n                android:id=\"@+id/fOfferedLabel\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_weight=\"1\"\n                android:text=\"@string/meal_item_offered_label\" />\n\n            <TextView\n                android:id=\"@+id/fOffered\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:minHeight=\"50dp\"\n                android:text=\"Offered or not\" />\n        </LinearLayout>\n\n        <LinearLayout\n            android:id=\"@+id/fCuisineLayout\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:minHeight=\"50dp\"\n            android:orientation=\"horizontal\">\n\n            <TextView\n                android:id=\"@+id/fCuisineLabel\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_weight=\"1\"\n                android:text=\"@string/meal_item_cuisine_label\" />\n\n            <TextView\n                android:id=\"@+id/fCuisineType\"\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:minHeight=\"50dp\"\n                android:text=\"Cuisine Type\" />\n        </LinearLayout>\n    </LinearLayout>\n\n</FrameLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_meal_item.xml b/app/src/main/res/layout/fragment_meal_item.xml
+--- a/app/src/main/res/layout/fragment_meal_item.xml	(revision e0bd3973a105f311b43613d9823538c865ffb4c3)
++++ b/app/src/main/res/layout/fragment_meal_item.xml	(date 1668383697157)
+@@ -12,6 +12,12 @@
+         android:layout_height="match_parent"
+         android:orientation="vertical">
+ 
++        <TextView
++            android:id="@+id/fMealId"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:visibility="gone" />
++
+         <TextView
+             android:id="@+id/fMealName"
+             android:layout_width="match_parent"
+Index: app/src/main/java/com/example/mealer_project/ui/screens/placeholder/PlaceholderContent.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/placeholder/PlaceholderContent.java b/app/src/main/java/com/example/mealer_project/ui/screens/placeholder/PlaceholderContent.java
+new file mode 100644
+--- /dev/null	(date 1668379204472)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/placeholder/PlaceholderContent.java	(date 1668379204472)
+@@ -0,0 +1,72 @@
++package com.example.mealer_project.ui.screens.placeholder;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++/**
++ * Helper class for providing sample content for user interfaces created by
++ * Android template wizards.
++ * <p>
++ * TODO: Replace all uses of this class before publishing your app.
++ */
++public class PlaceholderContent {
++
++    /**
++     * An array of sample (placeholder) items.
++     */
++    public static final List<PlaceholderItem> ITEMS = new ArrayList<PlaceholderItem>();
++
++    /**
++     * A map of sample (placeholder) items, by ID.
++     */
++    public static final Map<String, PlaceholderItem> ITEM_MAP = new HashMap<String, PlaceholderItem>();
++
++    private static final int COUNT = 25;
++
++    static {
++        // Add some sample items.
++        for (int i = 1; i <= COUNT; i++) {
++            addItem(createPlaceholderItem(i));
++        }
++    }
++
++    private static void addItem(PlaceholderItem item) {
++        ITEMS.add(item);
++        ITEM_MAP.put(item.id, item);
++    }
++
++    private static PlaceholderItem createPlaceholderItem(int position) {
++        return new PlaceholderItem(String.valueOf(position), "Item " + position, makeDetails(position));
++    }
++
++    private static String makeDetails(int position) {
++        StringBuilder builder = new StringBuilder();
++        builder.append("Details about Item: ").append(position);
++        for (int i = 0; i < position; i++) {
++            builder.append("\nMore details information here.");
++        }
++        return builder.toString();
++    }
++
++    /**
++     * A placeholder item representing a piece of content.
++     */
++    public static class PlaceholderItem {
++        public final String id;
++        public final String content;
++        public final String details;
++
++        public PlaceholderItem(String id, String content, String details) {
++            this.id = id;
++            this.content = content;
++            this.details = details;
++        }
++
++        @Override
++        public String toString() {
++            return content;
++        }
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_meals_list_fragement.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_meals_list_fragement.xml b/app/src/main/res/layout/fragment_meals_list_fragement.xml
+new file mode 100644
+--- /dev/null	(date 1668379206501)
++++ b/app/src/main/res/layout/fragment_meals_list_fragement.xml	(date 1668379206501)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:layout_width="wrap_content"
++    android:layout_height="wrap_content"
++    android:orientation="horizontal">
++
++    <TextView
++        android:id="@+id/item_number"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_margin="@dimen/text_margin"
++        android:textAppearance="?attr/textAppearanceListItem" />
++
++    <TextView
++        android:id="@+id/content"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_margin="@dimen/text_margin"
++        android:textAppearance="?attr/textAppearanceListItem" />
++</LinearLayout>
+\ No newline at end of file
+Index: app/src/main/java/com/example/mealer_project/ui/screens/MealsListFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/MealsListFragment.java b/app/src/main/java/com/example/mealer_project/ui/screens/MealsListFragment.java
+new file mode 100644
+--- /dev/null	(date 1668384501893)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/MealsListFragment.java	(date 1668384501893)
+@@ -0,0 +1,83 @@
++package com.example.mealer_project.ui.screens;
++
++import android.content.Context;
++import android.os.Bundle;
++
++import androidx.fragment.app.Fragment;
++import androidx.recyclerview.widget.GridLayoutManager;
++import androidx.recyclerview.widget.LinearLayoutManager;
++import androidx.recyclerview.widget.RecyclerView;
++
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ArrayAdapter;
++
++import com.example.mealer_project.R;
++import com.example.mealer_project.data.models.meals.Meal;
++import com.example.mealer_project.ui.screens.placeholder.PlaceholderContent;
++
++import java.io.Serializable;
++import java.util.List;
++import java.util.Map;
++
++/**
++ * A fragment representing a list of Items.
++ */
++public class MealsListFragment extends Fragment {
++
++    // Property name for setting meals data
++    private static final String MEALS_DATA = "MEALS_DATA";
++    // store meals data
++    private List<Meal> meals = null;
++
++    private ArrayAdapter<Meal> mealsArrayAdapter;
++
++    /**
++     * Mandatory empty constructor for the fragment manager to instantiate the
++     * fragment (e.g. upon screen orientation changes).
++     */
++    public MealsListFragment() {
++    }
++
++    // Get an instance of MealsListFragment
++    public static MealsListFragment newInstance(Map<String, Object> meals) {
++        MealsListFragment fragment = new MealsListFragment();
++        Bundle args = new Bundle();
++        args.putSerializable(MEALS_DATA, (Serializable) meals);
++        fragment.setArguments(args);
++        return fragment;
++    }
++
++    @Override
++    public void onCreate(Bundle savedInstanceState) {
++        super.onCreate(savedInstanceState);
++
++        if (getArguments() != null) {
++            meals = (List<Meal>) getArguments().getSerializable(MEALS_DATA);
++        }
++    }
++
++    @Override
++    public View onCreateView(LayoutInflater inflater, ViewGroup container,
++                             Bundle savedInstanceState) {
++        View view = inflater.inflate(R.layout.fragment_meals_list_fragement_list, container, false);
++
++        // Set the adapter
++        if (view instanceof RecyclerView) {
++            Context context = view.getContext();
++            RecyclerView recyclerView = (RecyclerView) view;
++            if (meals.size() <= 1) {
++                recyclerView.setLayoutManager(new LinearLayoutManager(context));
++            } else {
++                recyclerView.setLayoutManager(new GridLayoutManager(context, meals.size()));
++            }
++
++        }
++        return view;
++    }
++
++    private void populateMealsList() {
++
++    }
++}
+\ No newline at end of file
+Index: app/src/main/res/layout/fragment_meals_list_fragement_list.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/fragment_meals_list_fragement_list.xml b/app/src/main/res/layout/fragment_meals_list_fragement_list.xml
+new file mode 100644
+--- /dev/null	(date 1668379881632)
++++ b/app/src/main/res/layout/fragment_meals_list_fragement_list.xml	(date 1668379881632)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:id="@+id/list"
++    android:name="com.example.mealer_project.ui.screens.MealsListFragement"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent"
++    android:layout_marginLeft="16dp"
++    android:layout_marginRight="16dp"
++    app:layoutManager="LinearLayoutManager"
++    tools:context=".ui.screens.MealsListFragment"
++    tools:listitem="@layout/fragment_meals_list_fragement" />
+\ No newline at end of file
+Index: app/src/main/java/com/example/mealer_project/ui/screens/MealItemFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.ui.screens;\n\nimport android.os.Bundle;\n\nimport androidx.fragment.app.Fragment;\n\nimport android.view.LayoutInflater;\nimport android.view.View;\nimport android.view.ViewGroup;\nimport android.widget.TextView;\n\nimport com.example.mealer_project.R;\nimport com.example.mealer_project.data.models.meals.Meal;\n\n/**\n * A simple {@link Fragment} subclass.\n * Use the {@link MealItemFragment#newInstance} factory method to\n * create an instance of this fragment.\n */\npublic class MealItemFragment extends Fragment {\n\n    // TODO: Rename parameter arguments, choose names that match\n    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER\n    private static final String MEAL_DATA = \"MEAL_DATA\";\n\n    // TODO: Rename and change types of parameters\n    private String mealData;\n\n    public MealItemFragment() {\n        // Required empty public constructor\n    }\n\n    /**\n     * Received a meal instance and returns a new MealItemFragment\n     * @param meal Meal instance\n     * @return A new instance of fragment MealItemFragment\n     */\n    public static MealItemFragment newInstance(Meal meal) {\n        MealItemFragment fragment = new MealItemFragment();\n        Bundle args = new Bundle();\n        args.putSerializable(MEAL_DATA, meal);\n        fragment.setArguments(args);\n        return fragment;\n    }\n\n    @Override\n    public void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        if (getArguments() != null) {\n            mealData = getArguments().getString(MEAL_DATA);\n        }\n    }\n\n    @Override\n    public View onCreateView(LayoutInflater inflater, ViewGroup container,\n                             Bundle savedInstanceState) {\n        // Inflate the layout for this fragment\n        return inflater.inflate(R.layout.fragment_meal_item, container, false);\n    }\n\n    private void populateMealItemData() {\n//        TextView mealName = (TextView)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/MealItemFragment.java b/app/src/main/java/com/example/mealer_project/ui/screens/MealItemFragment.java
+--- a/app/src/main/java/com/example/mealer_project/ui/screens/MealItemFragment.java	(revision e0bd3973a105f311b43613d9823538c865ffb4c3)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/MealItemFragment.java	(date 1668383650942)
+@@ -1,5 +1,6 @@
+ package com.example.mealer_project.ui.screens;
+ 
++import android.os.Build;
+ import android.os.Bundle;
+ 
+ import androidx.fragment.app.Fragment;
+@@ -19,12 +20,11 @@
+  */
+ public class MealItemFragment extends Fragment {
+ 
+-    // TODO: Rename parameter arguments, choose names that match
+-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
++    // Meal data property name
+     private static final String MEAL_DATA = "MEAL_DATA";
+ 
+-    // TODO: Rename and change types of parameters
+-    private String mealData;
++    // store meal data
++    private Meal mealData;
+ 
+     public MealItemFragment() {
+         // Required empty public constructor
+@@ -47,7 +47,9 @@
+     public void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         if (getArguments() != null) {
+-            mealData = getArguments().getString(MEAL_DATA);
++            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
++                mealData = getArguments().getSerializable(MEAL_DATA, Meal.class);
++            }
+         }
+     }
+ 
+@@ -55,10 +57,18 @@
+     public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                              Bundle savedInstanceState) {
+         // Inflate the layout for this fragment
+-        return inflater.inflate(R.layout.fragment_meal_item, container, false);
++         View view = inflater.inflate(R.layout.fragment_meal_item, container, false);
++
++        populateMealItemData(view);
++
++        return view;
+     }
+ 
+-    private void populateMealItemData() {
+-//        TextView mealName = (TextView)
++    private void populateMealItemData(View view) {
++        ((TextView) view.findViewById(R.id.fMealId)).setText(mealData.getMealID());
++        ((TextView) view.findViewById(R.id.fMealName)).setText(mealData.getName());
++        ((TextView) view.findViewById(R.id.fMealDescription)).setText(mealData.getDescription());
++        ((TextView) view.findViewById(R.id.fOffered)).setText(mealData.isOffered() ? "Yes" : "No");
++        ((TextView) view.findViewById(R.id.fCuisineType)).setText(mealData.getCuisineType());
+     }
+ }
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+> plugins {\n    id 'com.android.application'\n    id 'com.google.gms.google-services'\n}\n\nandroid {\n    compileSdkVersion 33\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        applicationId \"com.example.mealer_project\"\n        minSdkVersion 19\n        targetSdkVersion 33\n        versionCode 1\n        versionName \"1.0\"\n        multiDexEnabled true\n\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n        applicationVariants.all{\n            // this method is use to rename your all apk weather\n            // it may be signed or unsigned(debug apk)\n            variant ->\n                variant.outputs.each{\n                    // on below line we are setting a\n                    // name to our apk as GFG.apk\n                    output->\n                        def name = \"group4_debug.apk\"\n                        // on below line we are setting the\n                        // outputFile Name to our apk file.\n                        output.outputFileName = name\n                }\n       }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    buildFeatures {\n        viewBinding true\n    }\n}\n\ndependencies {\n\n    implementation 'androidx.appcompat:appcompat:1.5.1'\n    implementation 'com.google.android.material:material:1.6.1'\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'\n    implementation 'com.google.firebase:firebase-database:20.0.6'\n    implementation 'androidx.annotation:annotation:1.5.0'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'\n    implementation 'com.google.firebase:firebase-auth:21.1.0'\n    implementation 'com.google.firebase:firebase-firestore:24.4.0'\n    testImplementation 'junit:junit:'\n    testImplementation 'org.testng:testng:6.9.6'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.3'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'\n    // Import the BoM for the Firebase platform\n    implementation platform('com.google.firebase:firebase-bom:31.0.0')\n    // Add the dependency for the Firebase Authentication library\n    // When using the BoM, you don't specify versions in Firebase library dependencies\n    implementation 'com.google.firebase:firebase-auth'\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision e0bd3973a105f311b43613d9823538c865ffb4c3)
++++ b/app/build.gradle	(date 1668379206445)
+@@ -59,6 +59,8 @@
+     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+     implementation 'com.google.firebase:firebase-auth:21.1.0'
+     implementation 'com.google.firebase:firebase-firestore:24.4.0'
++    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
++    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+     testImplementation 'junit:junit:'
+     testImplementation 'org.testng:testng:6.9.6'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
