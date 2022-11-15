@@ -6,95 +6,177 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/heading_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="56dp"
+        tools:layout_conversion_absoluteWidth="411dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentTop="false"
+            android:background="#98c377"
+            android:clipToPadding="true"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:contentInsetStart="16dp"
+            app:contentInsetStartWithNavigation="72dp" />
 
-            <RelativeLayout
-                android:id="@+id/heading_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:layout_conversion_absoluteHeight="56dp"
-                tools:layout_conversion_absoluteWidth="411dp">
+        <ImageView
+            android:id="@+id/mealer_logo"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="false"
+            android:layout_marginStart="5dp"
+            android:contentDescription="@string/logoDescription"
+            app:srcCompat="@drawable/mealer"
+            tools:ignore="ImageContrastCheck" />
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/header"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="false"
-                    android:background="#98c377"
-                    android:clipToPadding="true"
-                    android:minHeight="?attr/actionBarSize"
-                    android:theme="?attr/actionBarTheme"
-                    app:contentInsetStart="16dp"
-                    app:contentInsetStartWithNavigation="72dp" />
+        <TextView
+            android:id="@+id/welcome_message_chef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentRight="false"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="21dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_toLeftOf="@id/logout_btn_chef"
+            android:layout_toRightOf="@id/mealer_logo"
+            android:fontFamily="sans-serif-medium"
+            android:text="Welcome! You are logged in as Chef"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:ignore="TextContrastCheck" />
 
-                <ImageView
-                    android:id="@+id/mealer_logo"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_centerHorizontal="false"
-                    android:layout_marginStart="5dp"
-                    android:contentDescription="@string/logoDescription"
-                    app:srcCompat="@drawable/mealer"
-                    tools:ignore="ImageContrastCheck" />
+        <ImageButton
+            android:id="@+id/logout_btn_chef"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="5dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="menu to log out"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:onClick="clickLogout"
+            android:translationX="5dp"
+            app:srcCompat="@drawable/ic_baseline_logout_24"
+            tools:ignore="ImageContrastCheck" />
 
-                <TextView
-                    android:id="@+id/welcome_message_chef"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="false"
-                    android:layout_alignParentRight="false"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="21dp"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginRight="0dp"
-                    android:layout_toLeftOf="@id/logout_btn_chef"
-                    android:layout_toRightOf="@id/mealer_logo"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Welcome! You are logged in as Chef"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    tools:ignore="TextContrastCheck" />
+    </RelativeLayout>
 
-                <ImageButton
-                    android:id="@+id/logout_btn_chef"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerInParent="true"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="5dp"
-                    android:background="#00FFFFFF"
-                    android:contentDescription="menu to log out"
-                    android:minWidth="48dp"
-                    android:minHeight="48dp"
-                    android:onClick="clickLogout"
-                    android:translationX="5dp"
-                    app:srcCompat="@drawable/ic_baseline_logout_24"
-                    tools:ignore="ImageContrastCheck" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heading_layout">
 
-            </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/chefScreenMealsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:minHeight="200dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/chefScreenMealsLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/abril_fatface"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/meals_label"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:id="@+id/chefScreenButtonHolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:gravity="center"
+                android:minHeight="80dp"
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/menuButton"
+                    android:id="@+id/viewMenuButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="25dp"
+                    android:layout_margin="5dp"
                     android:text="@string/my_menu"
+                    android:visibility="visible"
+                    tools:ignore="TextContrastCheck" />
+
+                <Button
+                    android:id="@+id/viewOfferedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="Button"
+                    tools:text="@string/view_offered_meals" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/addMealButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="@string/add_item"
+                tools:ignore="TextContrastCheck" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chefScreenOrdersContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="200dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chefScreenMealsContainer">
+
+            <TextView
+                android:id="@+id/chefScreenOrdersLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abril_fatface"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="@string/orders_label"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:id="@+id/chefScreenOrdersButtonHolder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
+                android:minHeight="80dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/viewPendingOrdersButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:text="@string/view_pending_orders_label"
                     android:visibility="visible"
                     tools:ignore="TextContrastCheck" />
 
@@ -103,34 +185,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="25dp"
-                    android:text="@string/view_orders"
+                    android:text="@string/view_all_orders_label"
                     android:visibility="visible"
                     tools:ignore="TextContrastCheck" />
 
             </LinearLayout>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/fragmentContainerViewChef"
-                android:name="com.example.mealer_project.ui.screens.MenuFragment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.517"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonLayout"
-                app:layout_constraintVertical_bias="0.611"
-                tools:layout="@layout/fragment_menu" />
-
-            <Button
-                android:id="@+id/addButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:text="@string/add_item"
-                tools:ignore="TextContrastCheck" />
-
         </LinearLayout>
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

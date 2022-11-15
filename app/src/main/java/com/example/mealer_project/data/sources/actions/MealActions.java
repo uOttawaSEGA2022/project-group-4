@@ -3,6 +3,7 @@ package com.example.mealer_project.data.sources.actions;
 import static android.content.ContentValues.TAG;
 
 import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.*;
+import static com.example.mealer_project.data.sources.FirebaseCollections.*;
 
 import android.util.Log;
 
@@ -10,9 +11,13 @@ import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
+import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.utils.Utilities;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,8 +36,6 @@ import java.util.Map;
 public class MealActions {
 
     FirebaseFirestore database;
-    private final static String MEAL_COLLECTION = "Meals";
-    private final static String CHEF_COLLECTION = "Chefs";
 
     public MealActions(FirebaseFirestore database) {
         this.database = database;
@@ -348,7 +351,7 @@ public class MealActions {
 
         Chef chef = (Chef) App.getUser();
 
-        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chef.getUserId()).collection(MEAL_COLLECTION);
+        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chef.getUserId()).collection(CHEF_MEALS_COLLECTION);
 
         mealsReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -362,8 +365,8 @@ public class MealActions {
 
                         Meal meal = makeMealFromFirebase(document);
                         meals.put(document.getId(), meal);
-                        App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
                     }
+                    App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                     App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
@@ -378,7 +381,7 @@ public class MealActions {
      */
     public void getMeals(String chefId){
 
-        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION);
+        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chefId).collection(CHEF_MEALS_COLLECTION);
 
         mealsReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -392,15 +395,46 @@ public class MealActions {
 
                         Meal meal = makeMealFromFirebase(document);
                         meals.put(document.getId(), meal);
-                        App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
                     }
+                    App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                     App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
                 }
             }
         });
+    }
 
+    /**
+     * Set meals list to specific chef locally using chefID
+     * @param chefDocument firebase document reference object representing the Chef
+     */
+    public void loadChefMeals(DocumentReference chefDocument, LoginScreen loginScreen){
+
+        chefDocument.collection(CHEF_MEALS_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    Map<String, Meal> meals = new HashMap<String, Meal>();
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+
+                        Meal meal = makeMealFromFirebase(document);
+                        meals.put(document.getId(), meal);
+                    }
+
+                    // add meals to Chef
+                    ((Chef) App.getUser()).MEALS.setMeals(meals);
+                    // let login screen show Chef screen
+                    loginScreen.showNextScreen();
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
+                }
+            }
+        });
     }
 
     /**
@@ -473,7 +507,8 @@ public class MealActions {
         }
 
         MealEntityModel newMeal = new MealEntityModel();
-        Meal meal = new Meal(newMeal);
+
+        Log.e("MealsList", Utilities.getMapPropertyNames(document.getData()));
 
         newMeal.setName(String.valueOf(document.getData().get("name")));
         newMeal.setChefID(String.valueOf(document.getData().get("chefId")));

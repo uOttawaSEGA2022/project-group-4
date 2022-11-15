@@ -6,13 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.fragment.app.FragmentManager;
-
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ChefScreen extends UIScreen implements StatefulView {
@@ -43,44 +42,55 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
     private void attachOnClickListeners() {
 
-        // Variable Declaration
-        Button menuButton = (Button) findViewById(R.id.menuButton);
+        // Meal buttons
+        Button menuButton = (Button) findViewById(R.id.viewMenuButton);
+        Button offeredMealsButton = (Button) findViewById(R.id.viewOfferedButton);
+        Button addButton = (Button) findViewById(R.id.addMealButton);
+        // Order buttons
         Button viewOrder = (Button) findViewById(R.id.viewOrdersButton);
-        Button addButton = (Button) findViewById(R.id.addButton);
+        Button viewPendingOrder = (Button) findViewById(R.id.viewPendingOrdersButton);
+
 
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewChef, MenuFragment.class, null) //goes to desired fragment. Different from intent()
-                        .setReorderingAllowed(true)
-                        .addToBackStack("name")
-                        .commit();
+               startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
+            }
+        });
+
+        offeredMealsButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // initialize a new intent
+                Intent intent = new Intent(getApplicationContext(), MealsListScreen.class);
+                // specify that we want to display offered meals
+                intent.putExtra(MealsListScreen.MEALS_TYPE_ARG_KEY, MealsListScreen.MEALS_TYPE.OFFERED_MEALS);
+                // display the offered meals list
+                startActivity(intent);
+            }
+        });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), NewMealScreen.class)); //show new meal screen
             }
         });
 
         viewOrder.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainerViewChef, OrderFragment.class, null) //goes to desired fragment. Different from intent()
-                        .setReorderingAllowed(true)
-                        .addToBackStack("name")
-                        .commit();
+                displayErrorToast("No orders yet!");
             }
         });
 
-        addButton.setOnClickListener(new View.OnClickListener() {
 
+
+        viewPendingOrder.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                showNextScreen(); //show new meal screen
-
+                displayErrorToast("No pending orders yet!");
             }
-
         });
 
     }

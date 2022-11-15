@@ -1,5 +1,7 @@
 package com.example.mealer_project.utils;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
@@ -23,5 +25,14 @@ public class Utilities {
 
     static public Date getDateFromString(String dateValue) throws ParseException {
         return DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(dateValue);
+    }
+
+    static public String getMapPropertyNames(Map mapObj) {
+        // print in logcat all properties
+        StringBuilder v = new StringBuilder();
+        for (Object k: mapObj.keySet()) {
+            v.append(String.valueOf(k) + ", ");
+        }
+        return v.toString();
     }
 }

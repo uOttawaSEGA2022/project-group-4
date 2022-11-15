@@ -117,5 +117,6 @@ public class MealsListScreen extends UIScreen {
         mealsList.setAdapter(mealsAdapter);
         // add data to the adapter
         mealsAdapter.addAll(this.mealsData);
+        Log.e("MealsList", "Displaying meals: " + mealsData.size());
     }
 }

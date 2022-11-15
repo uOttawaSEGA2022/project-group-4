@@ -34,8 +34,6 @@
     <string name="ban_permanent">Ban Indefinitely</string>
     <string name="chef_permanent_ban_message">Your account has been permanently suspended.</string>
     <string name="chef_temp_ban_message">Your account has been temporarily suspended until </string>
-    <string name="view_orders">View Orders</string>
-    <string name="my_menu">My Menu</string>
     <string name="what_meal_would_you_like_to_add">WHAT MEAL WOULD YOU LIKE TO ADD?</string>
     <string name="meal_type">Meal type:</string>
     <string-array name="menu_types_array">
@@ -74,7 +72,6 @@
     <string name="lupin">Lupin</string>
     <string name="price">Price</string>
     <string name="back">Back</string>
-    <string name="add_meal">Add Meal</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_item">Add Meal</string>
@@ -83,6 +80,15 @@
     <string name="meal_item_cuisine_label">Cuisine: </string>
     <string name="editing_meal">Editing Meal</string>
     <string name="submit">Submit</string>
+
+    <string name="view_orders">View Orders</string>
+    <string name="my_menu">Menu</string>
+    <string name="view_offered_meals">Offered Meals</string>
+    <string name="add_meal">Add Meal</string>
+    <string name="meals_label">Meals</string>
+    <string name="orders_label">Orders</string>
+    <string name="view_pending_orders_label">Pending Orders</string>
+    <string name="view_all_orders_label">All Orders</string>
 
 
 </resources>

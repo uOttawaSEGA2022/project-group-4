@@ -22,6 +22,7 @@ import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
+import static com.example.mealer_project.data.sources.FirebaseCollections.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,9 +39,7 @@ import java.util.Map;
 public class UserActions {
 
     FirebaseFirestore database;
-    private final static String CLIENT_COLLECTION = "Clients";
-    private final static String CHEF_COLLECTION = "Chefs";
-    private final static String ADMIN_COLLECTION = "Admin";
+
 
 
 
@@ -88,6 +87,7 @@ public class UserActions {
     protected void getChefById(String userId, LoginScreen loginScreen) {
         DocumentReference userReference = database.collection(CHEF_COLLECTION).document(userId);
 
+        // get Chef's data
         userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -122,7 +122,8 @@ public class UserActions {
                             else {
                                 Response r = makeChefFromFirebase(document);
                                 if (loginScreen != null && r.isSuccess()) {
-                                    loginScreen.showNextScreen();
+                                    // load Chef's meals
+                                    App.getPrimaryDatabase().MEALS.loadChefMeals(userReference, loginScreen);
                                 } else if (loginScreen != null){
                                     Log.e("Login failed for chef", r.getErrorMessage());
                                     loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed, " + r.getErrorMessage());
@@ -138,6 +139,7 @@ public class UserActions {
                 }
             }
         });
+
     }
 
     protected void getClientById(String userId, LoginScreen loginScreen) {
@@ -274,31 +276,6 @@ public class UserActions {
                     DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(String.valueOf((document.getData().get("suspensionDate")))):
                     null);
 
-            if (document.getData().get("meals") != null){
-
-                Map<String,Object> meals = (Map) document.getData().get("meals");
-
-                for (String mealId : meals.keySet()) {
-                    String key = mealId;
-                    Map value = (Map) meals.get(mealId);
-
-                    MealEntityModel mealEntityModel = new MealEntityModel();
-
-                    mealEntityModel.setMealID(key);
-                    mealEntityModel.setName(String.valueOf(value.get("name")));
-                    mealEntityModel.setChefID(String.valueOf(value.get("chefId")));
-                    mealEntityModel.setCuisineType(String.valueOf(value.get("cuisineType")));
-                    mealEntityModel.setMealType(String.valueOf(value.get("mealType")));
-                    mealEntityModel.setIngredients(String.valueOf(value.get("ingredients")));
-                    mealEntityModel.setAllergens((ArrayList<String>)(value.get("allergens")));
-                    mealEntityModel.setDescription(String.valueOf(value.get("description")));
-                    mealEntityModel.setOffered((Boolean)value.get("offered"));
-                    mealEntityModel.setPrice((Double)value.get("price"));
-
-                    Meal meal = new Meal(mealEntityModel);
-                    newChef.MEALS.addMeal(meal);
-                }
-            }
             App.getAppInstance().setUser(newChef);
 
             return new Response(true);
