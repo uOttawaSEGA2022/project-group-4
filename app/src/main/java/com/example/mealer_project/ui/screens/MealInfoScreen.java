@@ -1,14 +1,19 @@
 package com.example.mealer_project.ui.screens;
 
+import static com.example.mealer_project.ui.screens.meals.MealsListScreen.MEALS_DATA_ARG_KEY;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
@@ -16,19 +21,11 @@ import com.example.mealer_project.ui.screens.meals.MealsAdapter;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class MealInfoScreen extends UIScreen implements StatefulView {
 
-    // button variables
-    private Button editButton;
-    private Button offeringButton;
-    private Button removeButton;
-
-    // the meal's information
+    // create a new object of type meal that contains the respective meal's information/data
     Meal mealData;
-    double priceData;
-    ArrayList<String> allergensData;
 
     // key to pass meal's information through intent
     public final static String MEAL_DATA_ARG_KEY = "MEAL_DATA_ARG_KEY";
@@ -38,9 +35,9 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_info_screen);
 
-        editButton = (Button) findViewById(R.id.edit_btn);
-        offeringButton = (Button) findViewById(R.id.offering_btn);
-        removeButton = (Button) findViewById(R.id.remove_btn);
+        // buttons for onClick methods
+        Button offeringButton = (Button) findViewById(R.id.offering_btn);
+        Button removeButton = (Button) findViewById(R.id.remove_btn);
 
         // get meal data
         try {
@@ -50,6 +47,50 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
             Log.e("MealInfoScreen", "unable to create meal object :(");
             displayErrorToast("Unable to retrieve the meal info!");
         }
+
+        // alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // confirm their click to change offering
+        builder.setCancelable(true);
+        builder.setTitle("Please confirm your selection");
+        // change text
+        if (mealData.isOffered()) { // currently being offered
+            builder.setMessage("You will be unoffering this meal now!");
+        } else { // currently is not offered
+            builder.setMessage("You will be offering this meal now!");
+        }
+
+        offeringButton.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                if (mealData.isOffered()) { // currently offered
+                                    Log.e("Meal ID", "" + mealData.getMealID());
+                                    App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealData.getMealID(), MealInfoScreen.this);
+                                    offeringButton.setText("Offer meal");
+                                } else { // currently not offered
+                                    App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealData.getMealID(), MealInfoScreen.this); // is now offering
+                                    offeringButton.setText("Unoffer meal");
+                                }
+
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
     }
 
 
@@ -58,16 +99,14 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         finish();
     }
 
-    /**
-    CHANGE TO ON CLICK LATER
-     */
     // Go to edit meal screen
     public void clickEdit(View view) {
         Intent intent = new Intent(this, EditMealScreen.class);
         startActivity(intent);
     }
 
-
+    // updates the screen with the information according to the meal that was
+    // clicked on the previous screen
     @Override
     public void updateUI() {
         try {

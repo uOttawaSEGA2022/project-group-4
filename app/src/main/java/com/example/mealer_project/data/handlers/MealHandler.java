@@ -84,7 +84,7 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
                             App.getPrimaryDatabase().MEALS.removeMealFromOfferedList((String) payload);
                         } else {
-                            handleActionFailure( operationType, "Invalid meal ID provided");
+                            handleActionFailure( operationType, "Invalid meal ID provided" + payload);
                         }
                         break;
 
