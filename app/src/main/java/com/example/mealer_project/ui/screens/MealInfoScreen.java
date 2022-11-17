@@ -72,6 +72,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 offeredButtonClickHandler();
+                                showRemoveButton();
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -115,6 +116,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                 }
             }
         });
+        showRemoveButton();
     }
 
     /**
