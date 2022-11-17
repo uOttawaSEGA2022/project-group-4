@@ -38,7 +38,7 @@ public class Chef extends User {
         super(firstName, lastName, email, password, address, role);
         this.setDescription(description);
         this.setVoidCheque(voidCheque);
-        this.setNumOfMealsSold(numOfMealsSold);
+        this.setNumOfMealsSold(numberOfMealsSold);
         this.setChefRating(chefRating);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
