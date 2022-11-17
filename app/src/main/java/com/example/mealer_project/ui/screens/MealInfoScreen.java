@@ -18,6 +18,7 @@ import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.meals.MealsAdapter;
+import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 offeredButtonClickHandler();
-                                showRemoveButton();
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -115,7 +115,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                 }
             }
         });
-        showRemoveButton();
     }
 
     /**

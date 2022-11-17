@@ -315,9 +315,7 @@ public class NewMealScreen extends UIScreen implements StatefulView {
             displaySuccessToast((String) payload);
             // finish the activity and return
             this.setResult(Activity.RESULT_OK);
-            this.finish();
-
-            showNextScreen(); //returning to chef's main screen
+            this.finish(); //returning to chef's main screen
         }
     }
 

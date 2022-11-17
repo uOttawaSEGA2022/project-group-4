@@ -193,43 +193,24 @@
                 android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/menu_info_button_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/edit_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:fontFamily="@font/baloo_bhai"
-                        android:onClick="clickEdit"
-                        android:text="Edit"
-                        tools:ignore="TextContrastCheck" />
-
-                    <Button
-                        android:id="@+id/offering_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"
-                        android:fontFamily="@font/baloo_bhai"
-                        android:text="offer/unoffer meal"
-                        tools:ignore="TextContrastCheck" />
-
-                </LinearLayout>
+                <Button
+                    android:id="@+id/offering_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="offer/unoffer meal"
+                    tools:ignore="TextContrastCheck" />
 
                 <Button
                     android:id="@+id/remove_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:fontFamily="@font/baloo_bhai"
                     android:text="Remove Meal"
                     tools:ignore="TextContrastCheck" />
+
             </LinearLayout>
 
         </LinearLayout>
