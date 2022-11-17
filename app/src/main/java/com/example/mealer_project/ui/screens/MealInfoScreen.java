@@ -142,13 +142,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     public void clickBack(View view) {
         finish();
     }
-
-    // Go to edit meal screen
-    public void clickEdit(View view) {
-        Intent intent = new Intent(this, EditMealScreen.class);
-        startActivity(intent);
-    }
-
+    
     //toggles remove button's visibility on if the meal is offered or not
     public void showRemoveButton(){
         View button = findViewById(R.id.remove_btn);
