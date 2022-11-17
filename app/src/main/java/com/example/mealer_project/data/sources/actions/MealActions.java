@@ -70,8 +70,9 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            // update complaint id
+                            // update meal id
                             meal.setMealID(documentReference.getId());
+                            Log.e("MEAL ID", documentReference.getId());
                             App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
                             // Add meal to meals collection in Firebase
                             database.collection(MEAL_COLLECTION)
@@ -97,9 +98,6 @@ public class MealActions {
                             App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database: " + e.getMessage());
                         }
                     });
-
-
-
 
         } else {
             // if Preconditions fail
