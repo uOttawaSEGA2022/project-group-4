@@ -27,8 +27,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     // create a new object of type meal that contains the respective meal's information/data
     Meal mealData;
 
-    Button offeringButton;
-
     // key to pass meal's information through intent
     public final static String MEAL_DATA_ARG_KEY = "MEAL_DATA_ARG_KEY";
 
@@ -38,7 +36,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         setContentView(R.layout.activity_meal_info_screen);
 
         // buttons for onClick methods
-        offeringButton = (Button) findViewById(R.id.offering_btn);
+        Button offeringButton = (Button) findViewById(R.id.offering_btn);
         Button removeButton = (Button) findViewById(R.id.remove_btn);
 
         // get meal data
@@ -141,12 +139,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     // Go back to previous screen
     public void clickBack(View view) {
         finish();
-    }
-
-    // Go to edit meal screen
-    public void clickEdit(View view) {
-        Intent intent = new Intent(this, EditMealScreen.class);
-        startActivity(intent);
     }
 
     // updates the screen with the information according to the meal that was
