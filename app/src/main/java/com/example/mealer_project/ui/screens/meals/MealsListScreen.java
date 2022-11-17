@@ -25,12 +25,15 @@ public class MealsListScreen extends UIScreen {
     public final static String MEALS_DATA_ARG_KEY = "MEALS_DATA_ARG_KEY";
     // meals adapter
     private MealsAdapter mealsAdapter;
-
     // Defining an enum to describe type of meals data this view can display
     public enum MEALS_TYPE {
+      MEALS,
       OFFERED_MEALS,
       CUSTOM
     };
+    // store type of meals being displayed
+    private MEALS_TYPE meals_type;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +65,24 @@ public class MealsListScreen extends UIScreen {
 
             // load offered meals for a logged in Chef
             if (mealType.equals(MEALS_TYPE.OFFERED_MEALS.toString())) {
+                meals_type = MEALS_TYPE.OFFERED_MEALS;
                 loadLoggedInChefsOfferedMeals();
             }
 
             // load custom meals provided in the intent
             else if (mealType.equals(MEALS_TYPE.CUSTOM.toString())) {
+                meals_type = MEALS_TYPE.CUSTOM;
                 retrieveCustomMealsData();
             }
 
             // load all meals of logged in chef
             else {
+                meals_type = MEALS_TYPE.MEALS;
                 loadLoggedInChefsMeals();
             }
         } else {
             // if nothing provided in intent, display all meals by default if chef is logged in
+            meals_type = MEALS_TYPE.MEALS;
             loadLoggedInChefsMeals();
         }
     }
@@ -119,6 +126,7 @@ public class MealsListScreen extends UIScreen {
     }
 
     private void populateMealsList() {
+        this.meals = new ArrayList<>();
         // get the meals list
         ListView mealsList = findViewById(R.id.mlMealsList);
         // get the adapter
@@ -133,9 +141,14 @@ public class MealsListScreen extends UIScreen {
 
     public void notifyDataChanged() {
         // reload meals data
-        loadLoggedInChefsMeals();
-        this.meals = this.mealsData;
-        Log.e("MealsUp", "Meals data updated");
-        this.mealsAdapter.notifyDataSetChanged();
+        if (meals_type == MEALS_TYPE.OFFERED_MEALS) {
+            loadLoggedInChefsOfferedMeals();
+        } else if (meals_type == MEALS_TYPE.CUSTOM) {
+            retrieveCustomMealsData();
+        } else {
+            loadLoggedInChefsMeals();
+        }
+        // re-populate meals list
+        populateMealsList();
     }
 }

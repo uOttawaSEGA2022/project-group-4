@@ -113,8 +113,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-
-
             }
         });
     }
@@ -137,7 +135,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
     private void removeButtonClickHandler() {
         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL, mealData.getMealID(), this);
-        showNextScreen();
     }
 
 
@@ -167,16 +164,20 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
     @Override
     public void showNextScreen() {
-        finish();
+
     }
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-        Log.e("MealsUp", "db succ");
         // if any DB operation is initiated on a meal, and it's a success, we update meals list to show current changes
         App.getAppInstance().getMealsListScreen().notifyDataChanged();
         // display success message
         displaySuccessToast((String) payload);
+
+        // if operation was to delete the meal, close the meal info screen
+        if (dbOperation == MealHandler.dbOperations.REMOVE_MEAL) {
+            finish();
+        }
     }
 
     @Override

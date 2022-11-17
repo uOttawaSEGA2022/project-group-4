@@ -1,0 +1,142 @@
+Index: app/src/main/java/com/example/mealer_project/ui/screens/meals/MealsListScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.ui.screens.meals;\n\nimport android.os.Bundle;\nimport android.util.Log;\nimport android.view.View;\nimport android.widget.ListView;\n\nimport com.example.mealer_project.R;\nimport com.example.mealer_project.app.App;\nimport com.example.mealer_project.data.models.Chef;\nimport com.example.mealer_project.data.models.meals.Meal;\nimport com.example.mealer_project.ui.core.UIScreen;\n\nimport java.util.ArrayList;\nimport java.util.List;\n\npublic class MealsListScreen extends UIScreen {\n\n    // list to store meals data\n    private List<Meal> mealsData;\n    private List<Meal> meals;\n    // key to specify type of meals data being displayed\n    public final static String MEALS_TYPE_ARG_KEY = \"MEALS_TYPE_ARG_KEY\";\n    // key to provide custom list of meals through intent\n    public final static String MEALS_DATA_ARG_KEY = \"MEALS_DATA_ARG_KEY\";\n    // meals adapter\n    private MealsAdapter mealsAdapter;\n\n    // Defining an enum to describe type of meals data this view can display\n    public enum MEALS_TYPE {\n      OFFERED_MEALS,\n      CUSTOM\n    };\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_meals_list_screen);\n\n        // check the meals data to be loaded\n        loadMealsData();\n\n        // initialize view data holder\n        meals = new ArrayList<>();\n\n        // populate meals listView\n        populateMealsList();\n\n        App.getAppInstance().setMealsListScreen(this);\n    }\n\n    // Go back to previous screen\n    public void clickBack(View view) {\n        finish();\n    }\n\n    private void loadMealsData() {\n        // check if have intent data and there is a property specified for meal type\n        if (getIntent() != null && getIntent().getStringExtra(MEALS_TYPE_ARG_KEY) != null) {\n\n            String mealType = getIntent().getStringExtra(MEALS_TYPE_ARG_KEY);\n\n            // load offered meals for a logged in Chef\n            if (mealType.equals(MEALS_TYPE.OFFERED_MEALS.toString())) {\n                loadLoggedInChefsOfferedMeals();\n            }\n\n            // load custom meals provided in the intent\n            else if (mealType.equals(MEALS_TYPE.CUSTOM.toString())) {\n                retrieveCustomMealsData();\n            }\n\n            // load all meals of logged in chef\n            else {\n                loadLoggedInChefsMeals();\n            }\n        } else {\n            // if nothing provided in intent, display all meals by default if chef is logged in\n            loadLoggedInChefsMeals();\n        }\n    }\n\n    private void retrieveCustomMealsData() {\n        // get list of meals from the intent\n        try {\n            // check if we have meals\n            if (getIntent().getSerializableExtra(MEALS_DATA_ARG_KEY) != null) {\n                // retrieve list of meals (if throws exception, means data is invalid and we handle it)\n                this.mealsData = (List<Meal>) getIntent().getSerializableExtra(MEALS_DATA_ARG_KEY);\n            } else {\n                loadLoggedInChefsMeals();\n            }\n        } catch (Exception e) {\n            Log.e(\"MealsListScreen\", \"An exception occurred: \" + e.getMessage());\n            displayErrorToast(\"Unable to load meals\");\n        }\n    }\n\n    private void loadLoggedInChefsMeals() {\n        // if no list of meals was provided, just display all meals of the Chef if a chef is logged in\n        if (App.getUser() instanceof Chef) {\n            // set meals data to be the list of meals of the Chef\n            this.mealsData = ((Chef) App.getUser()).MEALS.getListOfMeals();\n        } else {\n            Log.e(\"MealsListScreen\", \"No meals provided in intent, and no chef logged in\");\n            displayErrorToast(\"No meals available to be displayed\");\n        }\n    }\n\n    private void loadLoggedInChefsOfferedMeals() {\n        // check if the current logged in user is a Chef\n        if (App.getUser() instanceof Chef) {\n            // set meals data to be the list of meals of the Chef\n            this.mealsData = ((Chef) App.getUser()).MEALS.getListOfOfferedMeals();\n        } else {\n            Log.e(\"MealsListScreen\", \"Can't show offered meal. Current logged in user is not a Chef\");\n            displayErrorToast(\"No offered meals available to be displayed\");\n        }\n    }\n\n    private void populateMealsList() {\n        // get the meals list\n        ListView mealsList = findViewById(R.id.mlMealsList);\n        // get the adapter\n        mealsAdapter = new MealsAdapter(this, R.layout.activity_meals_list_item, this.meals);\n        // Attach the adapter to the meals listView\n        mealsList.setAdapter(mealsAdapter);\n        // add data to the adapter\n        for (Meal meal: this.mealsData) {\n            mealsAdapter.add(meal);\n        }\n    }\n\n    public void notifyDataChanged() {\n        // reload meals data\n        loadLoggedInChefsMeals();\n        this.meals = this.mealsData;\n        Log.e(\"MealsUp\", \"Meals data updated\");\n        this.mealsAdapter.notifyDataSetChanged();\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/meals/MealsListScreen.java b/app/src/main/java/com/example/mealer_project/ui/screens/meals/MealsListScreen.java
+--- a/app/src/main/java/com/example/mealer_project/ui/screens/meals/MealsListScreen.java	(revision 17d6fc1ed717787312b6073725f46c322f648a93)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/meals/MealsListScreen.java	(date 1668713052397)
+@@ -25,12 +25,15 @@
+     public final static String MEALS_DATA_ARG_KEY = "MEALS_DATA_ARG_KEY";
+     // meals adapter
+     private MealsAdapter mealsAdapter;
+-
+     // Defining an enum to describe type of meals data this view can display
+     public enum MEALS_TYPE {
++      MEALS,
+       OFFERED_MEALS,
+       CUSTOM
+     };
++    // store type of meals being displayed
++    private MEALS_TYPE meals_type;
++
+ 
+     @Override
+     protected void onCreate(Bundle savedInstanceState) {
+@@ -62,20 +65,24 @@
+ 
+             // load offered meals for a logged in Chef
+             if (mealType.equals(MEALS_TYPE.OFFERED_MEALS.toString())) {
++                meals_type = MEALS_TYPE.OFFERED_MEALS;
+                 loadLoggedInChefsOfferedMeals();
+             }
+ 
+             // load custom meals provided in the intent
+             else if (mealType.equals(MEALS_TYPE.CUSTOM.toString())) {
++                meals_type = MEALS_TYPE.CUSTOM;
+                 retrieveCustomMealsData();
+             }
+ 
+             // load all meals of logged in chef
+             else {
++                meals_type = MEALS_TYPE.MEALS;
+                 loadLoggedInChefsMeals();
+             }
+         } else {
+             // if nothing provided in intent, display all meals by default if chef is logged in
++            meals_type = MEALS_TYPE.MEALS;
+             loadLoggedInChefsMeals();
+         }
+     }
+@@ -119,6 +126,7 @@
+     }
+ 
+     private void populateMealsList() {
++        this.meals = new ArrayList<>();
+         // get the meals list
+         ListView mealsList = findViewById(R.id.mlMealsList);
+         // get the adapter
+@@ -133,9 +141,14 @@
+ 
+     public void notifyDataChanged() {
+         // reload meals data
+-        loadLoggedInChefsMeals();
+-        this.meals = this.mealsData;
+-        Log.e("MealsUp", "Meals data updated");
+-        this.mealsAdapter.notifyDataSetChanged();
++        if (meals_type == MEALS_TYPE.OFFERED_MEALS) {
++            loadLoggedInChefsOfferedMeals();
++        } else if (meals_type == MEALS_TYPE.CUSTOM) {
++            retrieveCustomMealsData();
++        } else {
++            loadLoggedInChefsMeals();
++        }
++        // re-populate meals list
++        populateMealsList();
+     }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.data.models.meals;\n\nimport androidx.annotation.NonNull;\n\nimport com.example.mealer_project.data.models.meals.Meal;\nimport com.example.mealer_project.utils.Preconditions;\nimport com.example.mealer_project.utils.Response;\nimport com.example.mealer_project.utils.Result;\n\nimport java.util.ArrayList;\nimport java.util.HashMap;\nimport java.util.List;\nimport java.util.Map;\n\npublic class Meals {\n\n    // Store Meals in a Map<MealID, Meal> key-value pairs\n    private Map<String, Meal> meals;\n\n    /**\n     * Default constructor initializes a HashMap for storing Meals\n     */\n    public Meals() {\n        this.meals = new HashMap<>(); //<MealID, Meal> key-value pair\n    }\n\n    /**\n     * Retrieve a meal from all meals of the Chef by meal ID\n     * @param mealID representing the ID of the meal\n     * @return a Result object containing the meal is successful in getting the associated meal, else error message\n     */\n    public Result<Meal, String> getMeal(@NonNull String mealID) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealID)) {\n            // check if meal exists\n            if (this.meals.get(mealID) != null) {\n                return new Result<>(this.meals.get(mealID), null);\n            } else {\n                return new Result<>(null, \"Could not find any meal for the provided meal ID\");\n            }\n        } else {\n            return new Result<>(null, \"Invalid meal ID provided\");\n        }\n    }\n\n    public void setMeals(@NonNull Map<String, Meal> mealsData) {\n        this.meals = mealsData;\n    }\n\n    /**\n     * Add a new meal to the chef's list of meals (menu)\n     * @param newMeal Meal to be added\n     */\n    public Response addMeal(@NonNull Meal newMeal) {\n        // guard-clause\n        // meal must have a valid id which will be used as a key\n        if (Preconditions.isNotEmptyString(newMeal.getMealID())) {\n            // check if meal already exists\n            if (this.meals.get(newMeal.getMealID()) != null) {\n                return new Response(false, \"Meal with same ID already exists! Use updateMeal to update an existing meal\");\n            }\n            // add the new meal\n            this.meals.put(newMeal.getMealID(), newMeal);\n            // return success\n            return new Response(true);\n        } else {\n            return new Response(false, \"Meal does not have a valid ID\");\n        }\n    }\n\n    /**\n     * Add a meal to the chef's offered meal\n     * @param mealId ID of the meal that needs to be added to the menu\n     * @return Response object indicating success, or failure (with an error message)\n     */\n    public Response addMealToOfferedList(@NonNull String mealId) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealId)) {\n            // check if meal exists and has a valid object\n            if (this.meals.get(mealId) != null) {\n                // add meal to the menu\n                this.meals.get(mealId).setOffered(true);\n                // return success\n                return new Response(true);\n            } else {\n                return new Response(false, \"Could not find the any meal for the provided ID\");\n            }\n        } else {\n            return new Response(false, \"Meal does not have a valid ID\");\n        }\n    }\n\n    /**\n     * Remove a meal from the list of all meals added by a Chef\n     * @param mealId ID of the meal to be removed\n     */\n    public Response removeMeal(@NonNull String mealId) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealId)) {\n            // check if meal exists\n            if (this.meals.get(mealId) != null) {\n                // remove the meal\n                this.meals.remove(mealId);\n                // return operation success\n                return new Response(true);\n            } else {\n                return new Response(false, \"Could not find any meal for the provided meal ID\");\n            }\n        } else {\n            return new Response(false, \"Invalid meal ID provided\");\n        }\n    }\n\n    /**\n     * Remove a meal from Chef's offered meals\n     * @param mealId ID of the meal to be removed\n     */\n    public Response removeMealFromOfferedList(@NonNull String mealId) {\n        // guard-clause\n        if (Preconditions.isNotEmptyString(mealId)) {\n            // check if meal exists\n            if (this.meals.get(mealId) != null) {\n                // remove meal from menu\n                this.meals.get(mealId).setOffered(false);\n                // return operation success\n                return new Response(true);\n            } else {\n                return new Response(false, \"Could not find any meal for the provided meal ID\");\n            }\n        } else {\n            return new Response(false, \"Invalid meal ID provided\");\n        }\n    };\n\n    /**\n     * Update an existing meal\n     * @param meal meal instance, must have a valid meal ID\n     * @return Response indicating operation success or failure\n     */\n    public Response updateMeal(@NonNull Meal meal) {\n        // guard-clause\n        // meal must have a valid id which will be used as a key\n        if (Preconditions.isNotEmptyString(meal.getMealID())) {\n            // check if meal doesn't exists\n            if (!this.meals.containsKey(meal.getMealID())) {\n                return new Response(false, \"Could not find a meal for the given meal ID\");\n            }\n            // update the meal\n            this.meals.put(meal.getMealID(), meal);\n            // return success\n            return new Response(true);\n        } else {\n            return new Response(false, \"Meal does not have a valid ID\");\n        }\n    }\n\n    /**\n     * Method to retrieve a map object containing meals which are currently being offered by Chef\n     * @return a Map containing Meal ID's as keys and Meal objects as values\n     */\n    public Map<String, Meal> getOfferedMeals() {\n        // map to store the result\n        HashMap<String, Meal> offeredMeals = new HashMap<>();\n        // filter and add offered meals to above map\n        for (Meal meal : this.meals.values()) {\n            if (meal.isOffered()) {\n                offeredMeals.put(meal.getMealID(), meal);\n            }\n        }\n        // return the result\n        return offeredMeals;\n    }\n\n    /**\n     * Method to retrieve a map object containing all meals added by the Chef\n     * @return a Map containing Meal ID's as keys and Meal objects as values\n     */\n    public Map<String, Meal> getMenu() {\n        return this.meals;\n    };\n\n    /**\n     * Method to retrieve a list containing all meals added by the Chef\n     * @return a List containing Meal objects\n     */\n    public List<Meal> getListOfMeals() {\n        return new ArrayList<>(this.meals.values());\n    };\n\n    /**\n     * Method to retrieve a list containing meals currently offered by the Chef\n     * @return a List containing Meal objects\n     */\n    public List<Meal> getListOfOfferedMeals() {\n        return new ArrayList<>(getOfferedMeals().values());\n    };\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java b/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java
+--- a/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java	(revision 17d6fc1ed717787312b6073725f46c322f648a93)
++++ b/app/src/main/java/com/example/mealer_project/data/models/meals/Meals.java	(date 1668713092176)
+@@ -1,5 +1,7 @@
+ package com.example.mealer_project.data.models.meals;
+ 
++import android.util.Log;
++
+ import androidx.annotation.NonNull;
+ 
+ import com.example.mealer_project.data.models.meals.Meal;
+Index: app/src/main/java/com/example/mealer_project/ui/screens/MealInfoScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.ui.screens;\n\nimport static com.example.mealer_project.ui.screens.meals.MealsListScreen.MEALS_DATA_ARG_KEY;\n\nimport android.app.AlertDialog;\nimport android.content.DialogInterface;\nimport android.content.Intent;\nimport android.os.Bundle;\nimport android.util.Log;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.TextView;\n\nimport com.example.mealer_project.R;\nimport com.example.mealer_project.app.App;\nimport com.example.mealer_project.data.handlers.MealHandler;\nimport com.example.mealer_project.data.models.meals.Meal;\nimport com.example.mealer_project.ui.core.StatefulView;\nimport com.example.mealer_project.ui.core.UIScreen;\nimport com.example.mealer_project.ui.screens.meals.MealsAdapter;\nimport com.example.mealer_project.ui.screens.meals.MealsListScreen;\n\nimport java.util.ArrayList;\n\npublic class MealInfoScreen extends UIScreen implements StatefulView {\n\n    // create a new object of type meal that contains the respective meal's information/data\n    Meal mealData;\n\n    Button offeringButton;\n\n    // key to pass meal's information through intent\n    public final static String MEAL_DATA_ARG_KEY = \"MEAL_DATA_ARG_KEY\";\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_meal_info_screen);\n\n        // buttons for onClick methods\n        offeringButton = (Button) findViewById(R.id.offering_btn);\n        Button removeButton = (Button) findViewById(R.id.remove_btn);\n\n        // get meal data\n        try {\n            mealData = (Meal) getIntent().getSerializableExtra(MealsAdapter.MEALS_DATA_ARG_KEY);\n            updateUI();\n        } catch (Exception e) {\n            Log.e(\"MealInfoScreen\", \"unable to create meal object :(\");\n            displayErrorToast(\"Unable to retrieve the meal info!\");\n        }\n\n        // alert dialog\n        AlertDialog.Builder builder = new AlertDialog.Builder(this);\n        // confirm their click to change offering\n        builder.setCancelable(true);\n        builder.setTitle(\"Please confirm your selection\");\n        // change text\n        if (mealData.isOffered()) { // currently being offered\n            builder.setMessage(\"You will be unoffering this meal now!\");\n        } else { // currently is not offered\n            builder.setMessage(\"You will be offering this meal now!\");\n        }\n\n        // on click method for changing the offering value of the meal\n        offeringButton.setOnClickListener(new Button.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n\n                builder.setPositiveButton(\"Confirm\",\n                        new DialogInterface.OnClickListener() {\n                            @Override\n                            public void onClick(DialogInterface dialog, int which) {\n                                offeredButtonClickHandler();\n                            }\n                        });\n                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {\n                    @Override\n                    public void onClick(DialogInterface dialog, int which) {\n                    }\n                });\n\n                AlertDialog dialog = builder.create();\n                dialog.show();\n            }\n        });\n\n        // on click method for removing a meal (only if it is not currently offered)\n        removeButton.setOnClickListener(new Button.OnClickListener() {\n\n            @Override\n            public void onClick(View v) {\n\n                if (mealData.isOffered()) { // currently being offered\n                    displayErrorToast(\"CANNOT REMOVE AN OFFERED MEAL\");\n                } else { // currently is not offered\n                    // change text\n                    builder.setMessage(\"Are you sure you want to remove this meal? \\nThis cannot be changed\");\n\n                    builder.setPositiveButton(\"Confirm\",\n                            new DialogInterface.OnClickListener() {\n                                @Override\n                                public void onClick(DialogInterface dialog, int which) {\n                                    removeButtonClickHandler();\n                                }\n                            });\n                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {\n                        @Override\n                        public void onClick(DialogInterface dialog, int which) {\n                        }\n                    });\n\n                    AlertDialog dialog = builder.create();\n                    dialog.show();\n                }\n\n\n            }\n        });\n    }\n\n    /**\n     * Confirms the action of the user to unoffer/offer the meal from the Action Dialog Pop-up\n     */\n    private void offeredButtonClickHandler() {\n        if (mealData.isOffered()) { // currently offered\n            Log.e(\"Meal ID\", \"\" + mealData.getMealID());\n            App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealData.getMealID(), this);\n            mealData.setOffered(false);\n            updateUI();\n        } else { // currently not offered\n            App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealData.getMealID(), this); // is now offering\n            mealData.setOffered(true);\n            updateUI();\n        }\n    }\n\n    private void removeButtonClickHandler() {\n        App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL, mealData.getMealID(), this);\n        finish();\n    }\n\n\n    // Go back to previous screen\n    public void clickBack(View view) {\n        finish();\n    }\n\n    // Go to edit meal screen\n    public void clickEdit(View view) {\n        Intent intent = new Intent(this, EditMealScreen.class);\n        startActivity(intent);\n    }\n\n    // updates the screen with the information according to the meal that was\n    // clicked on the previous screen\n    @Override\n    public void updateUI() {\n        try {\n            updateMealInfoScreen(mealData.getName(), mealData.getPrice(), mealData.getMealType(), mealData.getCuisineType(),\n                    mealData.getIngredients(), mealData.getAllergens(), mealData.getDescription(), mealData.isOffered());\n        } catch (Exception e) {\n            Log.e(\"MealInfoScreen\", \"unable to create meal object :(\");\n            displayErrorToast(\"Unable to retrieve the meal info!\");\n        }\n    }\n\n    @Override\n    public void showNextScreen() {\n\n    }\n\n    @Override\n    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {\n        Log.e(\"MealsUp\", \"db succ\");\n        // if any DB operation is initiated on a meal, and it's a success, we update meals list to show current changes\n        App.getAppInstance().getMealsListScreen().notifyDataChanged();\n        // display success message\n        displaySuccessToast((String) payload);\n    }\n\n    @Override\n    public void dbOperationFailureHandler(Object dbOperation, Object payload) {\n        // display error message\n        displayErrorToast((String) payload);\n    }\n\n    /**\n     * Updates the text on the meal info screen to its respective information\n     * @param mealTitle\n     * @param price\n     * @param mealType\n     * @param cuisineType\n     * @param ingredients\n     * @param allergens\n     * @param description\n     */\n    public void updateMealInfoScreen(String mealTitle, double price, String mealType, String cuisineType,\n                                     String ingredients, ArrayList<String> allergens, String description, boolean offered) {\n        // sets the text for the meal name\n        TextView mealNameText = (TextView) findViewById(R.id.title_of_meal);\n        mealNameText.setText(mealTitle);\n\n        // sets the text for price\n        TextView priceText = (TextView) findViewById(R.id.price_of_meal);\n        priceText.setText(\"$ \" + String.valueOf(price));\n\n        // sets the text for the meal type\n        TextView mealTypeText = (TextView) findViewById(R.id.msg_type);\n        mealTypeText.setText(mealType);\n\n        // sets the text for cuisine type\n        TextView cuisineText = (TextView) findViewById(R.id.msg_cuisine);\n        cuisineText.setText(cuisineType);\n\n        // sets the text for the ingredients\n        TextView ingredientsText = (TextView) findViewById(R.id.msg_ingredients);\n        ingredientsText.setText(ingredients);\n\n        // sets the text for allergens\n        TextView allergensText = (TextView) findViewById(R.id.msg_allergens);\n        String allergensString = String.join(\", \", allergens); // convert arraylist to string\n\n        if (allergensString.length() == 0) {\n            allergensText.setText(\"N/A\");\n        } else {\n            allergensText.setText(allergensString);\n        }\n\n        // sets the text for description\n        TextView descriptionText = (TextView) findViewById(R.id.msg_description);\n        descriptionText.setText(description);\n\n        // set the text for offering button\n        Button offeringButton = (Button)findViewById(R.id.offering_btn);\n\n        if (offered) { // meal is currently being offered\n            offeringButton.setText(\"Unoffer Meal\");\n        } else { // meal is currently not being offered\n            offeringButton.setText(\"Offer Meal\");\n        }\n\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/MealInfoScreen.java b/app/src/main/java/com/example/mealer_project/ui/screens/MealInfoScreen.java
+--- a/app/src/main/java/com/example/mealer_project/ui/screens/MealInfoScreen.java	(revision 17d6fc1ed717787312b6073725f46c322f648a93)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/MealInfoScreen.java	(date 1668713099661)
+@@ -113,8 +113,6 @@
+                     AlertDialog dialog = builder.create();
+                     dialog.show();
+                 }
+-
+-
+             }
+         });
+     }
+@@ -137,7 +135,6 @@
+ 
+     private void removeButtonClickHandler() {
+         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL, mealData.getMealID(), this);
+-        finish();
+     }
+ 
+ 
+@@ -172,11 +169,15 @@
+ 
+     @Override
+     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+-        Log.e("MealsUp", "db succ");
+         // if any DB operation is initiated on a meal, and it's a success, we update meals list to show current changes
+         App.getAppInstance().getMealsListScreen().notifyDataChanged();
+         // display success message
+         displaySuccessToast((String) payload);
++
++        // if operation was to delete the meal, close the meal info screen
++        if (dbOperation == MealHandler.dbOperations.REMOVE_MEAL) {
++            finish();
++        }
+     }
+ 
+     @Override
