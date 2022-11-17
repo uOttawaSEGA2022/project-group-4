@@ -62,6 +62,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
             builder.setMessage("You will be offering this meal now!");
         }
 
+        // on click method for changing the offering value of the meal
         offeringButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,19 +84,60 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                 dialog.show();
             }
         });
+
+        // on click method for removing a meal (only if it is not currently offered)
+        removeButton.setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if (mealData.isOffered()) { // currently being offered
+                    displayErrorToast("CANNOT REMOVE AN OFFERED MEAL");
+                } else { // currently is not offered
+                    // change text
+                    builder.setMessage("Are you sure you want to remove this meal? \nThis cannot be changed");
+
+                    builder.setPositiveButton("Confirm",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    removeButtonClickHandler();
+                                }
+                            });
+                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+
+
+            }
+        });
     }
 
+    /**
+     * Confirms the action of the user to unoffer/offer the meal from the Action Dialog Pop-up
+     */
     private void offeredButtonClickHandler() {
         if (mealData.isOffered()) { // currently offered
             Log.e("Meal ID", "" + mealData.getMealID());
             App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealData.getMealID(), this);
             mealData.setOffered(false);
-            offeringButton.setText("Offer meal");
+            updateUI();
         } else { // currently not offered
             App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealData.getMealID(), this); // is now offering
             mealData.setOffered(true);
-            offeringButton.setText("Unoffer meal");
+            updateUI();
         }
+    }
+
+    private void removeButtonClickHandler() {
+        App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL, mealData.getMealID(), this);
+        finish();
     }
 
 
