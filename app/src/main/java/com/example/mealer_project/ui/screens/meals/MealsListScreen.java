@@ -1,8 +1,5 @@
 package com.example.mealer_project.ui.screens.meals;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,7 +10,6 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.ui.screens.ChefScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +23,8 @@ public class MealsListScreen extends UIScreen {
     public final static String MEALS_TYPE_ARG_KEY = "MEALS_TYPE_ARG_KEY";
     // key to provide custom list of meals through intent
     public final static String MEALS_DATA_ARG_KEY = "MEALS_DATA_ARG_KEY";
+    // meals adapter
+    private MealsAdapter mealsAdapter;
 
     // Defining an enum to describe type of meals data this view can display
     public enum MEALS_TYPE {
@@ -47,6 +45,8 @@ public class MealsListScreen extends UIScreen {
 
         // populate meals listView
         populateMealsList();
+
+        App.getAppInstance().setMealsListScreen(this);
     }
 
     // Go back to previous screen
@@ -122,12 +122,20 @@ public class MealsListScreen extends UIScreen {
         // get the meals list
         ListView mealsList = findViewById(R.id.mlMealsList);
         // get the adapter
-        MealsAdapter mealsAdapter = new MealsAdapter(this, R.layout.activity_meals_list_item, this.meals);
+        mealsAdapter = new MealsAdapter(this, R.layout.activity_meals_list_item, this.meals);
         // Attach the adapter to the meals listView
         mealsList.setAdapter(mealsAdapter);
         // add data to the adapter
         for (Meal meal: this.mealsData) {
             mealsAdapter.add(meal);
         }
+    }
+
+    public void notifyDataChanged() {
+        // reload meals data
+        loadLoggedInChefsMeals();
+        this.meals = this.mealsData;
+        Log.e("MealsUp", "Meals data updated");
+        this.mealsAdapter.notifyDataSetChanged();
     }
 }

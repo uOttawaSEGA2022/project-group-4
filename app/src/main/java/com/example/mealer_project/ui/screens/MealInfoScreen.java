@@ -27,6 +27,8 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     // create a new object of type meal that contains the respective meal's information/data
     Meal mealData;
 
+    Button offeringButton;
+
     // key to pass meal's information through intent
     public final static String MEAL_DATA_ARG_KEY = "MEAL_DATA_ARG_KEY";
 
@@ -36,7 +38,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         setContentView(R.layout.activity_meal_info_screen);
 
         // buttons for onClick methods
-        Button offeringButton = (Button) findViewById(R.id.offering_btn);
+        offeringButton = (Button) findViewById(R.id.offering_btn);
         Button removeButton = (Button) findViewById(R.id.remove_btn);
 
         // get meal data
@@ -61,7 +63,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         }
 
         offeringButton.setOnClickListener(new Button.OnClickListener() {
-
             @Override
             public void onClick(View v) {
 
@@ -69,16 +70,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
-                                if (mealData.isOffered()) { // currently offered
-                                    Log.e("Meal ID", "" + mealData.getMealID());
-                                    App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealData.getMealID(), MealInfoScreen.this);
-                                    offeringButton.setText("Offer meal");
-                                } else { // currently not offered
-                                    App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealData.getMealID(), MealInfoScreen.this); // is now offering
-                                    offeringButton.setText("Unoffer meal");
-                                }
-
+                                offeredButtonClickHandler();
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -91,6 +83,17 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                 dialog.show();
             }
         });
+    }
+
+    private void offeredButtonClickHandler() {
+        if (mealData.isOffered()) { // currently offered
+            Log.e("Meal ID", "" + mealData.getMealID());
+            App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealData.getMealID(), this);
+            offeringButton.setText("Offer meal");
+        } else { // currently not offered
+            App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealData.getMealID(), this); // is now offering
+            offeringButton.setText("Unoffer meal");
+        }
     }
 
 
@@ -125,7 +128,9 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-
+        Log.e("MealsUp", "db succ");
+        // if any DB operation is initiated on a meal, and it's a success, we update meals list to show current changes
+        App.getAppInstance().getMealsListScreen().notifyDataChanged();
     }
 
     @Override

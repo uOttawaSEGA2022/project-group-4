@@ -81,13 +81,13 @@ public class MealActions {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-                                            //App.MEAL_HANDLER.successAddingMeal(meal);
+                                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            //App.MEAL_HANDLER.errorAddingMeal("Failed to add meal to list of meals in database: " + e.getMessage());
+                                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to list of meals in database: " + e.getMessage());
                                         }
                                     });
                         }
@@ -144,13 +144,13 @@ public class MealActions {
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                //App.MEAL_HANDLER.successRemovingMeal(mealId);
+                                App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
                             }
                         })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                //App.MEAL_HANDLER.errorRemovingMeal("Failed to remove meal to searchable list in database: " + e.getMessage());
+                                App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal to searchable list in database: " + e.getMessage());
                             }
                         });
             } else {
@@ -233,7 +233,7 @@ public class MealActions {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, mealId);
+                            App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL_FROM_OFFERED_LIST, mealId);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

@@ -7,6 +7,7 @@ import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.sources.FirebaseRepository;
+import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -15,6 +16,7 @@ public class AppInstance {
     private DataHandlers appDataHandlers;
     private User user;
     private AdminInbox adminInbox;
+    private MealsListScreen mealsListScreen;
 
     public AppInstance() {
         this.initializeApp();
@@ -75,5 +77,13 @@ public class AppInstance {
             Log.e("getAdminInbox", "Either user is null or user role is not admin");
             throw new IllegalAccessException("User does not have access to admin inbox");
         }
+    }
+
+    public MealsListScreen getMealsListScreen() {
+        return mealsListScreen;
+    }
+
+    public void setMealsListScreen(MealsListScreen mealsListScreen) {
+        this.mealsListScreen = mealsListScreen;
     }
 }
