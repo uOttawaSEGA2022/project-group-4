@@ -522,6 +522,7 @@ public class MealActions {
 
         MealEntityModel newMeal = new MealEntityModel();
 
+        newMeal.setMealID(document.getId());
         newMeal.setName(String.valueOf(document.getData().get("name")));
         newMeal.setChefID(String.valueOf(document.getData().get("chefId")));
         newMeal.setCuisineType(String.valueOf(document.getData().get("cuisineType")));
