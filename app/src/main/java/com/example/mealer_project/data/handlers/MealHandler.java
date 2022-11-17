@@ -169,6 +169,8 @@ public class MealHandler {
                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
                             // update meal locally
                             ((Chef) App.getUser()).MEALS.addMealToOfferedList((String) payload);
+                            // let UI know about success
+                            uiScreen.dbOperationSuccessHandler(operationType, "Meal set as offered!");
                         } else {
                             handleActionFailure(operationType, "unable to update meal locally as offered, invalid payload");
                         }

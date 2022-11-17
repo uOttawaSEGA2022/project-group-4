@@ -89,9 +89,11 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         if (mealData.isOffered()) { // currently offered
             Log.e("Meal ID", "" + mealData.getMealID());
             App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL_FROM_OFFERED_LIST, mealData.getMealID(), this);
+            mealData.setOffered(false);
             offeringButton.setText("Offer meal");
         } else { // currently not offered
             App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEAL_TO_OFFERED_LIST, mealData.getMealID(), this); // is now offering
+            mealData.setOffered(true);
             offeringButton.setText("Unoffer meal");
         }
     }
@@ -131,11 +133,14 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         Log.e("MealsUp", "db succ");
         // if any DB operation is initiated on a meal, and it's a success, we update meals list to show current changes
         App.getAppInstance().getMealsListScreen().notifyDataChanged();
+        // display success message
+        displaySuccessToast((String) payload);
     }
 
     @Override
     public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-
+        // display error message
+        displayErrorToast((String) payload);
     }
 
     /**
