@@ -18,7 +18,6 @@ import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.meals.MealsAdapter;
-import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 
 import java.util.ArrayList;
 
@@ -72,6 +71,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 offeredButtonClickHandler();
+                                showRemoveButton();
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -115,6 +115,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                 }
             }
         });
+        showRemoveButton();
     }
 
     /**
@@ -147,6 +148,16 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     public void clickEdit(View view) {
         Intent intent = new Intent(this, EditMealScreen.class);
         startActivity(intent);
+    }
+
+    //toggles remove button's visibility on if the meal is offered or not
+    public void showRemoveButton(){
+        View button = findViewById(R.id.remove_btn);
+        if (mealData.isOffered()) {
+            button.setVisibility(View.GONE);
+        }else{
+            button.setVisibility(View.VISIBLE);
+        }
     }
 
     // updates the screen with the information according to the meal that was
