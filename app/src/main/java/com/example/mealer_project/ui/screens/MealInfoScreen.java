@@ -137,7 +137,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
     private void removeButtonClickHandler() {
         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL, mealData.getMealID(), this);
-        finish();
+        showNextScreen();
     }
 
 
@@ -167,7 +167,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
     @Override
     public void showNextScreen() {
-
+        finish();
     }
 
     @Override

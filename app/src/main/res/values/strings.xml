@@ -33,7 +33,7 @@
     <string name="complaint_information">Complaint Here</string>
     <string name="ban_permanent">Ban Indefinitely</string>
     <string name="chef_permanent_ban_message">Your account has been permanently suspended.</string>
-    <string name="chef_temp_ban_message">Your account has been temporarily suspended until </string>
+    <string name="chef_temp_ban_message">Your account has been temporarily suspended until</string>
     <string name="what_meal_would_you_like_to_add">WHAT MEAL WOULD YOU LIKE TO ADD?</string>
     <string name="meal_type">Meal type:</string>
     <string-array name="menu_types_array">

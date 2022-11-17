@@ -92,7 +92,7 @@ public class WelcomeScreen extends UIScreen {
                 SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.US);
 
                 // setting the text
-                editText.setText(String.format("%s%s.", getString(R.string.chef_temp_ban_message), formatter.format(suspensionDate)));
+                editText.setText(String.format("%s%s.", getString(R.string.chef_temp_ban_message) + " ", formatter.format(suspensionDate)));
                 editText.setVisibility(View.VISIBLE); //visible
 
             }

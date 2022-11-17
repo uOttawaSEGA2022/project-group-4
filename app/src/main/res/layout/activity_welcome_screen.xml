@@ -88,6 +88,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
                 android:text="suspension msg"
                 android:textColor="@color/black"
                 android:textSize="20sp"
