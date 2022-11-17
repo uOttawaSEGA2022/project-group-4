@@ -290,7 +290,12 @@ public class MealActions {
                             Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                             if (document.getData() != null){
-                                App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, makeMealFromFirebase(document));
+                                // get the meal object created using data retrieved from firebase
+                                Meal meal = makeMealFromFirebase(document);
+                                // set the meal id
+                                meal.setMealID(document.getId());
+                                // pass the data to be updated locally
+                                App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, meal);
                             }
 
                         } else {
@@ -329,7 +334,12 @@ public class MealActions {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
                         if (document.getData() != null){
-                           App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, makeMealFromFirebase(document));
+                            // get the meal object created using data retrieved from firebase
+                            Meal meal = makeMealFromFirebase(document);
+                            // set the meal id
+                            meal.setMealID(document.getId());
+                            // pass the data to be updated locally
+                            App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, meal);
                         }
 
                     } else {
@@ -364,6 +374,8 @@ public class MealActions {
                         Log.d(TAG, document.getId() + " => " + document.getData());
 
                         Meal meal = makeMealFromFirebase(document);
+                        // set the meal id
+                        meal.setMealID(document.getId());
                         meals.put(document.getId(), meal);
                     }
                     App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
@@ -394,6 +406,8 @@ public class MealActions {
                         Log.d(TAG, document.getId() + " => " + document.getData());
 
                         Meal meal = makeMealFromFirebase(document);
+                        // set the meal id
+                        meal.setMealID(document.getId());
                         meals.put(document.getId(), meal);
                     }
                     App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
@@ -420,11 +434,13 @@ public class MealActions {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d(TAG, document.getId() + " => " + document.getData());
-
+                        // get the meal object created using data retrieved from firebase
                         Meal meal = makeMealFromFirebase(document);
+                        // set the meal id
+                        meal.setMealID(document.getId());
+                        // storing meals in meals map
                         meals.put(document.getId(), meal);
                     }
-
                     // add meals to Chef
                     ((Chef) App.getUser()).MEALS.setMeals(meals);
                     // let login screen show Chef screen
