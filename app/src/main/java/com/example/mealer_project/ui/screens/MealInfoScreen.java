@@ -55,17 +55,19 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         // confirm their click to change offering
         builder.setCancelable(true);
         builder.setTitle("Please confirm your selection");
-        // change text
-        if (mealData.isOffered()) { // currently being offered
-            builder.setMessage("You will be unoffering this meal now!");
-        } else { // currently is not offered
-            builder.setMessage("You will be offering this meal now!");
-        }
 
         // on click method for changing the offering value of the meal
         offeringButton.setOnClickListener(new Button.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+                // change text
+                if (mealData.isOffered()) { // currently being offered
+                    builder.setMessage("You will be unoffering this meal now!");
+                } else { // currently is not offered
+                    builder.setMessage("You will be offering this meal now!");
+                }
 
                 builder.setPositiveButton("Confirm",
                         new DialogInterface.OnClickListener() {
@@ -96,7 +98,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
                     displayErrorToast("CANNOT REMOVE AN OFFERED MEAL");
                 } else { // currently is not offered
                     // change text
-                    builder.setMessage("Are you sure you want to remove this meal? \nThis cannot be changed");
+                    builder.setMessage("Are you sure you want to remove this meal? \nThis cannot be changed.");
 
                     builder.setPositiveButton("Confirm",
                             new DialogInterface.OnClickListener() {
