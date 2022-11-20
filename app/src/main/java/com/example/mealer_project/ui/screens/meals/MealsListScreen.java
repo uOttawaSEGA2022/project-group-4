@@ -1,8 +1,11 @@
 package com.example.mealer_project.ui.screens.meals;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.mealer_project.R;
@@ -33,6 +36,8 @@ public class MealsListScreen extends UIScreen {
     };
     // store type of meals being displayed
     private MEALS_TYPE meals_type;
+    // back button
+    ImageButton backButton;
 
 
     @Override
@@ -50,6 +55,17 @@ public class MealsListScreen extends UIScreen {
         populateMealsList();
 
         App.getAppInstance().setMealsListScreen(this);
+
+        // buttons for onClick methods
+        backButton = (ImageButton) findViewById(R.id.back_btn2);
+
+        // on click method for back button
+        backButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     // Go back to previous screen

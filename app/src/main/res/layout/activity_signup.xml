@@ -11,13 +11,25 @@
     <RelativeLayout
         android:id="@+id/signupPage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.screens.SignupScreen">
+
+        <ImageButton
+            android:id="@+id/button_back2"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/back"
+            android:scaleType="fitXY"
+            android:src="@drawable/backbutton" />
 
         <LinearLayout
             android:id="@+id/signupHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:orientation="horizontal"
             android:padding="30dp">
 

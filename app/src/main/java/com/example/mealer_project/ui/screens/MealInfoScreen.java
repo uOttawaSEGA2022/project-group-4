@@ -1,14 +1,12 @@
 package com.example.mealer_project.ui.screens;
 
-import static com.example.mealer_project.ui.screens.meals.MealsListScreen.MEALS_DATA_ARG_KEY;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -18,7 +16,6 @@ import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.meals.MealsAdapter;
-import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 
 import java.util.ArrayList;
 
@@ -27,7 +24,9 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     // create a new object of type meal that contains the respective meal's information/data
     Meal mealData;
 
+    ImageButton backButton;
     Button offeringButton;
+    Button removeButton;
 
     // key to pass meal's information through intent
     public final static String MEAL_DATA_ARG_KEY = "MEAL_DATA_ARG_KEY";
@@ -38,10 +37,11 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         setContentView(R.layout.activity_meal_info_screen);
 
         // buttons for onClick methods
+        backButton = (ImageButton) findViewById(R.id.back_btn);
         offeringButton = (Button) findViewById(R.id.offering_btn);
-        Button removeButton = (Button) findViewById(R.id.remove_btn);
+        removeButton = (Button) findViewById(R.id.remove_btn);
 
-        // get meal data
+        // gets meal data from previous screen
         try {
             mealData = (Meal) getIntent().getSerializableExtra(MealsAdapter.MEALS_DATA_ARG_KEY);
             updateUI();
@@ -49,6 +49,14 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
             Log.e("MealInfoScreen", "unable to create meal object :(");
             displayErrorToast("Unable to retrieve the meal info!");
         }
+
+        // on click method for back button
+        backButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -141,12 +149,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL, mealData.getMealID(), this);
     }
 
-
-    // Go back to previous screen
-    public void clickBack(View view) {
-        finish();
-    }
-
     //toggles remove button's visibility on if the meal is offered or not
     public void showRemoveButton(){
         View button = findViewById(R.id.remove_btn);
@@ -215,7 +217,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         priceText.setText("$ " + String.valueOf(price));
 
         // sets the text for the meal type
-        TextView mealTypeText = (TextView) findViewById(R.id.msg_type);
+        TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);
         mealTypeText.setText(mealType);
 
         // sets the text for cuisine type

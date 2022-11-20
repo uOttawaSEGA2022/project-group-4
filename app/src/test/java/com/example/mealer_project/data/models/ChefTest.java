@@ -5,11 +5,11 @@ import org.junit.Test;
 
 public class ChefTest {
 
-    // description, chefRating, email, numberofMealsSold, role
+    // description, chefRating, email, numberOfMealsSold, role
 
     //Testing the chef's description from primary class chef
     @Test
-    public void getChefDiscription() {
+    public void getChefDescription() {
         Chef chef = new Chef("Gordon", "Ramsey", "gordon123@gmail.com", "Password@123", Address.getSampleAddress(), UserRoles.CHEF, "I am a good chef", "myVoidChqeue", 233, 5);
         String expected = "I am a good chef";
         String actual = chef.getDescription();

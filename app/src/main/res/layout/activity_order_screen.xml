@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.screens.OrderScreen">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/button_back"
+                android:layout_width="48dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/back"
+                android:scaleType="fitXY"
+                android:src="@drawable/backbutton" />
+
+            <TextView
+                android:id="@+id/order_meal_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo_bhai"
+                android:gravity="center"
+                android:paddingTop="40dp"
+                android:text="Meal Name Here"
+                android:textColor="@color/green_primary"
+                android:textSize="34sp" />
+
+            <TextView
+                android:id="@+id/order_price_of_meal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/baloo_bhai"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/price"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/order_meal_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/input_box_shadow"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/order_type_of_meal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_sans"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="30dp"
+                        android:text="@string/type_of_meal"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/order_msg_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/order_type_of_meal"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_horizontal"
+                        android:text="@string/unable_to_get_info"
+                        android:textColor="#8A000000"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/order_cuisine_of_meal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_sans"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="30dp"
+                        android:text="@string/type_of_cuisine"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/order_msg_cuisine"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/order_cuisine_of_meal"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_horizontal"
+                        android:text="unable to get info"
+                        android:textColor="#8A000000"
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/order_ingredients_of_meal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_sans"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="30dp"
+                        android:text="@string/ingredients"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/order_msg_ingredients"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/order_ingredients_of_meal"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_horizontal"
+                        android:text="unable to get info"
+                        android:textColor="#8A000000"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/order_allergens_of_meal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_sans"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="30dp"
+                        android:text="@string/allergen"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/order_msg_allergens"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/order_allergens_of_meal"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_horizontal"
+                        android:text="unable to get info"
+                        android:textColor="#8A000000"
+                        android:textSize="16sp"
+                        tools:ignore="TextContrastCheck" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:id="@+id/order_description_of_meal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_sans"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="30dp"
+                        android:text="@string/description_title"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:ignore="TextContrastCheck" />
+
+                    <TextView
+                        android:id="@+id/order_msg_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/order_description_of_meal"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_horizontal"
+                        android:text="@string/unable_to_get_info"
+                        android:textColor="#8A000000"
+                        android:textSize="16sp"
+                        tools:ignore="TextContrastCheck" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/special_instructions_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/input_box_shadow"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/order_special_instructions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito_sans"
+                    android:paddingStart="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingEnd="30dp"
+                    android:text="Special Instructions:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/users_special_instructions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:fontFamily="@font/nunito_sans"
+                    android:gravity="start|top"
+                    android:hint="@string/special_instructions"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="30dp"
+                    android:textColorHint="#8A000000"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/quantity_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@drawable/input_box_shadow"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/minus_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="2"
+                    android:minWidth="48dp"
+                    android:text="-"
+                    android:textColor="@color/green_darker"
+                    android:textColorLink="#FFFFFF"
+                    android:textSize="20sp"
+                    android:background="@color/clear"/>
+
+                <TextView
+                    android:id="@+id/order_quantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:ems="2"
+                    android:gravity="center"
+                    android:minWidth="48dp"
+                    android:text="#"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/add_button"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="2"
+                    android:minWidth="48dp"
+                    android:text="+"
+                    android:textColor="@color/green_darker"
+                    android:textSize="20sp"
+                    android:background="@color/clear"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:padding="20dp">
+
+                <Button
+                    android:id="@+id/add_or_remove_from_cart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/add_or_remove_from_cart"
+                    tools:ignore="TextContrastCheck" />
+
+                <Button
+                    android:id="@+id/checkout_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/baloo_bhai"
+                    android:text="@string/checkout"
+                    tools:ignore="TextContrastCheck" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
