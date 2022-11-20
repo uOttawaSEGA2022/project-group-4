@@ -43,6 +43,7 @@ public class Chef extends User {
         this.setChefRating(chefRating);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
+        this.ORDERS = new Orders();
         this.isSuspended = false;
         this.suspensionDate = null;
     }
@@ -56,6 +57,7 @@ public class Chef extends User {
         this.setChefRating(0);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
+        this.ORDERS = new Orders();
         this.isSuspended = false;
         this.suspensionDate = null;
     }

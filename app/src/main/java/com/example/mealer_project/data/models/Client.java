@@ -2,13 +2,23 @@ package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * This class instantiates an instance of Client for Mealer App
  * Child Class of User
  */
 public class Client extends User {
+
+    /**
+     * this map stores the mealIDs of all the meals in the client's cart, as well as the quantity of
+     * each meal
+     */
+    HashMap<String, Integer> cart;
+
     private CreditCard clientCreditCard;
     /**
      * Create a Client object
@@ -25,6 +35,8 @@ public class Client extends User {
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
         this.setClientCreditCard(clientCreditCard);
+
+        this.cart = new HashMap<String, Integer>(); //empty cart
     }
 
     /**
@@ -37,9 +49,9 @@ public class Client extends User {
         // instantiate Client's data members
         super(clientData, clientAddress);
         this.setClientCreditCard(clientCreditCard);
+
+        this.cart = new HashMap<String, Integer>(); //empty cart
     }
-
-
 
     @Override
     public void setUserId(String userId) {
@@ -87,10 +99,42 @@ public class Client extends User {
     }
 
     /**
-     * Method for a client to be able to buy an item
+     * this method adds a specific meal, given the mealID & quantity, to the client's cart
+     *
+     * it is called in the <code>OrderScreen</code> class
+     *
+     * @param mealID the mealID of the meal
+     * @param quantity the quantity of this specific meal to add to the cart
      */
-    public void buyItem() {
+    public void addToCart(String mealID, int quantity) {
         // logic to initiate a request to buy an item
+
+        // Process: adding to map
+        this.cart.put(mealID, quantity);
+
+    }
+
+    /**
+     * this method removes a specific meal, given the mealID, from the client's cart
+     *
+     * it is called in the <code>OrderScreen</code> class
+     *
+     * @param mealID the ID of the meal to be removed from cart
+     */
+    public void removeFromCart(String mealID) {
+
+        // Process: removing from map
+        this.cart.remove(mealID);
+
+    }
+
+    /**
+     * this method completely clears the cart
+     */
+    public void clearCart() {
+
+        this.cart.clear(); //cart cleared
+
     }
 
     /**

@@ -1,13 +1,22 @@
 package com.example.mealer_project.ui.screens;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.MealHandler;
+import com.example.mealer_project.data.handlers.OrderHandler;
+import com.example.mealer_project.data.models.Client;
+import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.inbox.Complaint;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 
@@ -15,18 +24,21 @@ import java.util.ArrayList;
 
 public class OrderScreen extends UIScreen implements StatefulView {
 
+    Meal mealData;
+
     // button instantiations
-    ImageButton backButton;
-    Button minusButton;
-    Button plusButton;
-    Button addOrRemoveButton;
-    Button checkoutButton;
+    private ImageButton backButton;
+    private Button minusButton;
+    private Button plusButton;
+    private Button addOrRemoveButton;
+    private Button checkoutButton;
 
     // counter for quantity
-    int totalQuantityCounter;
+    int totalQuantityCounter = 0;
 
     // flag to keep track for whether the meal should be added or removed from cart
-    boolean addToCart = false; // false until added to cart
+    private boolean addToCart = false; // false until added to cart
+    // this variable is weird bc where are we gonna retrieve this data from? the cart map in the Client class??
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +50,29 @@ public class OrderScreen extends UIScreen implements StatefulView {
         minusButton = (Button) findViewById(R.id.minus_button);
         plusButton = (Button) findViewById(R.id.add_button);
         addOrRemoveButton = (Button) findViewById(R.id.add_or_remove_from_cart);
-        checkoutButton = (Button) findViewById(R.id.checkout_button);
+        //checkoutButton = (Button) findViewById(R.id.checkout_button);
+
+        // Process: attaching listeners to buttons
+        attachOnClickListeners();
+
+        // Process: getting the meal data
+        try {
+            //mealData = (Meal) getIntent().getSerializableExtra(SearchScreen.SEARCH_OBJ_INTENT_KEY);
+        }
+        catch (Exception e) { //error-handling
+
+            // Output
+            Log.e("OrderScreen", "unable to get meal info");
+            displayErrorToast("Unable to display meal!");
+
+        }
+
+    }
+
+    /**
+     * this helper method sets all the on click methods for the buttons of the XML screen
+     */
+    private void attachOnClickListeners() {
 
         // on click method for back button
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -70,22 +104,54 @@ public class OrderScreen extends UIScreen implements StatefulView {
         addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (addToCart == false) { // clicked add to cart
-                    addToCart = true;
-                } else { // clicked remove from cart
-                    addToCart = false;
+
+                    addToCart = true; //updating flag
+
+                    // Variable Declaration
+                    Client client = (Client) App.getUser();
+
+                    // Process: adding to the client's cart map
+                    client.addToCart(mealData.getMealID(), totalQuantityCounter);
+
+                    finish(); //finish the activity
+
                 }
+                else { // clicked remove from cart
+
+                    addToCart = false; //updating flag
+
+                    // Variable Declaration
+                    Client client = (Client) App.getUser();
+
+                    // Process: removing from client's cart map
+                    client.removeFromCart(mealData.getMealID());
+
+                }
+
                 updateUI();
+
             }
         });
 
         // on click method for checkout button
-        checkoutButton.setOnClickListener(new View.OnClickListener() {
+        /*checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // Variable Declaration
+                Client client = (Client) App.getUser();
+
+                // Process: calling order handler method to add entire cart to order & telling firebase to store order
+                App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.ADD_ORDER, client.getCart());
+
+                // Process: going to CheckoutScreen
                 showNextScreen();
+
             }
-        });
+        });*/
+
     }
 
     /**
@@ -96,8 +162,12 @@ public class OrderScreen extends UIScreen implements StatefulView {
      */
     @Override
     public void updateUI() {
-        // get the information from the previous screen to fill out the meal's information
-        // call the method updateOrderScreen
+
+        // Process: calling helper method to update the screen, based on obtained meal data
+        updateOrderScreen(mealData.getName(), mealData.getPrice(), mealData.getMealType(),
+                mealData.getCuisineType(), mealData.getIngredients(), mealData.getAllergens(),
+                mealData.getDescription(), addToCart, totalQuantityCounter);
+
     }
 
     /**
@@ -107,6 +177,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
      */
     @Override
     public void showNextScreen() {
+        // this should go to the checkout screen
         /*
         Intent intent = new Intent(getApplicationContext(), Checkout.class);
         startActivity(intent);
@@ -115,7 +186,13 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-
+        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
+            // adding new meal completed
+            displaySuccessToast((String) payload);
+            // finish the activity and return
+            this.setResult(Activity.RESULT_OK);
+            this.finish(); //returning to chef's main screen
+        }
     }
 
     @Override
@@ -135,7 +212,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
      * @param flag
      * @param quantity
      */
-    public void updateOrderScreen (String mealTitle, double price, String mealType, String cuisineType,
+    private void updateOrderScreen (String mealTitle, double price, String mealType, String cuisineType,
                                     String ingredients, ArrayList<String> allergens, String description,
                                     boolean flag, int quantity) {
         // sets the text for the meal name
