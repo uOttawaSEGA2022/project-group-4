@@ -64,6 +64,14 @@ public class Order {
     }
 
     /**
+     * Returns the order with all the list of meals
+     * @return list of meals
+     */
+    public HashMap<String, Integer> getListOfMeals(){
+        return this.listOfMeals;
+    }
+
+    /**
      * Returns pending status
      * @return pending
      */
@@ -109,6 +117,14 @@ public class Order {
      */
     public void setDate(Date date){
         this.date = date;
+    }
+
+    /**
+     * Set the list of meals for the order
+     * @param listOfMeals
+     */
+    public void setListOfMeals(HashMap<String, Integer> listOfMeals){
+        this.listOfMeals = listOfMeals;
     }
 
     /**
