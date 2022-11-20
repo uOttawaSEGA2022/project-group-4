@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/btnContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="56dp"
+        tools:layout_conversion_absoluteWidth="411dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:background="#4B69F0AE"
+            android:clipToPadding="true"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:contentInsetStart="16dp"
+            app:contentInsetStartWithNavigation="72dp" />
+
+        <ImageButton
+            android:id="@+id/back_btn3"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/back"
+            android:onClick="clickBack"
+            android:scaleType="fitXY"
+            android:src="@drawable/backbutton"
+            tools:ignore="DuplicateClickableBoundsCheck" />
+
+        <ImageButton
+            android:id="@+id/searchBtn"
+            android:layout_width="59dp"
+            android:layout_height="61dp"
+            android:layout_marginStart="292dp"
+            android:layout_marginTop="-2dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:contentDescription="@android:string/search_go"
+            android:onClick="clickBack"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_search_24"
+            tools:ignore="DuplicateClickableBoundsCheck" />
+
+        <ImageButton
+            android:id="@+id/cartBtn"
+            android:layout_width="55dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="355dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/back"
+            android:onClick="clickBack"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_baseline_shopping_cart_24"
+            tools:ignore="DuplicateClickableBoundsCheck" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/searchMeals"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|center_vertical"
+        android:minHeight="70dp"
+        android:text="Search Meals"
+        android:textSize="34sp" />
+
+    <ListView
+        android:id="@+id/mlMealsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5dp" />
+
+    <LinearLayout
+        android:id="@+id/mlButtonContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"></LinearLayout>
+
+</LinearLayout>

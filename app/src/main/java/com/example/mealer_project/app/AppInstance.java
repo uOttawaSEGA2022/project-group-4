@@ -86,4 +86,5 @@ public class AppInstance {
     public void setMealsListScreen(MealsListScreen mealsListScreen) {
         this.mealsListScreen = mealsListScreen;
     }
+
 }
