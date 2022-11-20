@@ -186,17 +186,38 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
-            // adding new meal completed
+
+        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) { // adding new order completed
+
+            // Output
             displaySuccessToast((String) payload);
-            // finish the activity and return
+
+
+            // Process: finish the activity and return
             this.setResult(Activity.RESULT_OK);
-            this.finish(); //returning to chef's main screen
+
+            this.finish(); //returning to search screen
+
         }
+        //else if -> add logic for other methods if needed
+
     }
 
     @Override
     public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+
+        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
+
+            // Output: failed to add new order
+            displayErrorToast("Failed to add order!");
+
+        }
+        else {
+
+            // Output
+            displayErrorToast((String) payload);
+
+        }
 
     }
 
