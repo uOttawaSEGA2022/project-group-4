@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
+import com.example.mealer_project.data.entity_models.OrderEntityModel;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.meals.Meal;
@@ -17,7 +18,7 @@ public class OrderHandler {
     public enum dbOperations {
         ADD_ORDER,
         REMOVE_ORDER,
-        GET_ORDER,
+        GET_ORDER_BY_ID,
         UPDATE_ORDER_INFO
     };
 
@@ -60,8 +61,8 @@ public class OrderHandler {
                         }
                         break;
 
-                    case GET_ORDER:
-                        App.getPrimaryDatabase().ORDERS.getOrders();
+                    case GET_ORDER_BY_ID:
+                        App.getPrimaryDatabase().ORDERS.getOrderById((String) payload);
                         break;
 
 //                    case UPDATE_ORDER_INFO:
@@ -128,12 +129,12 @@ public class OrderHandler {
                         }
                         break;
 
-                    case GET_ORDER:
+                    case GET_ORDER_BY_ID:
                         // update the Chef's meals locally
                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
-                            Orders<String, Order> orders = (Map<String, Order>) payload;
-                            ((Chef) App.getUser()).MEALS.setMeals(orders);
-                            uiScreen.dbOperationSuccessHandler(operationType, orders);
+                            //Orders<String, Order> orders = (Map<String, Order>) payload;
+                            //((Chef) App.getUser()).MEALS.setMeals(orders);
+                            //uiScreen.dbOperationSuccessHandler(operationType, orders);
                         } else {
                             handleActionFailure(operationType, "Invalid payload for getOrder");
                         }
@@ -178,7 +179,7 @@ public class OrderHandler {
                     userMessage = "Failed to update meal info!";
                     break;
 
-                case GET_ORDER:
+                case GET_ORDER_BY_ID:
                     tag = "errorGetOrder";
                     userMessage = "Failed to get order!";
                     break;

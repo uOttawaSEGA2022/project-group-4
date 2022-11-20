@@ -7,13 +7,14 @@ public class DataHandlers {
     private final UserHandler userHandler;
     private final InboxHandler inboxHandler;
     private final MealHandler mealHandler;
-//    public OrderDataHandler OrderHandler;
+    public OrderHandler orderHandler;
 
     // instantiate repository and handlers
     public DataHandlers(FirebaseRepository firebaseRepository) {
         this.userHandler = new UserHandler();
         this.inboxHandler = new InboxHandler();
         this.mealHandler = new MealHandler();
+        this.orderHandler = new OrderHandler();
     }
 
     public UserHandler getUserHandler() {
@@ -23,4 +24,6 @@ public class DataHandlers {
     public InboxHandler getInboxHandler() { return inboxHandler; }
 
     public MealHandler getMealHandler() {  return mealHandler; }
+
+    public OrderHandler getOrderHandler() { return orderHandler()}
 }

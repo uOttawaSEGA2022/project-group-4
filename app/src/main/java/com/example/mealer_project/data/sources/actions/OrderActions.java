@@ -1,13 +1,14 @@
 package com.example.mealer_project.data.sources.actions;
 
-import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.ADD_MEAL;
 import static com.example.mealer_project.data.sources.FirebaseCollections.ORDER_COLLECTION;
+import static com.example.mealer_project.data.handlers.OrderHandler.dbOperations.*;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,14 +61,14 @@ public class OrderActions {
                         public void onSuccess(DocumentReference documentReference) {
 
                             order.setOrderID(documentReference.getId());
-                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
+                            App.ORDER_HANDLER.handleActionSuccess(ADD_ORDER, order);
 
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database: " + e.getMessage());
+                            App.ORDER_HANDLER.handleActionFailure(ADD_ORDER, "Failed to add order to database: " + e.getMessage());
                         }
                     });
         }
@@ -138,5 +139,7 @@ public class OrderActions {
     }
 
 
-    public void
+    public void getOrderById(String orderId){
+
+    }
 }
