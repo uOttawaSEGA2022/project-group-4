@@ -3,6 +3,7 @@ package com.example.mealer_project.app;
 import com.example.mealer_project.data.handlers.DataHandlers;
 import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.handlers.MealHandler;
+import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
@@ -13,6 +14,7 @@ public class App {
     static final public UserHandler USER_HANDLER = app.getAppDataHandler().getUserHandler();
     static final public InboxHandler INBOX_HANDLER = app.getAppDataHandler().getInboxHandler();
     static final public MealHandler MEAL_HANDLER = app.getAppDataHandler().getMealHandler();
+    static final public OrderHandler ORDER_HANDLER = app.getAppDataHandler().getOrderHandler();
 
     public static AppInstance getAppInstance() {
         return app;
