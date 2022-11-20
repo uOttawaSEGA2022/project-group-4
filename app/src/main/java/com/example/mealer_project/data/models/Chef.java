@@ -19,6 +19,7 @@ public class Chef extends User {
     // storing Chef's meals in an instance of Meals class which provides methods to work with a collection of meals
     // variable is public for accessibility, but also final
     public final Meals MEALS;
+    public final Orders ORDERS;
 
     /**
      * Create a single instance of chef
@@ -42,6 +43,7 @@ public class Chef extends User {
         this.setChefRating(chefRating);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
+        this.ORDERS = new Orders();
         this.isSuspended = false;
         this.suspensionDate = null;
     }
@@ -55,6 +57,7 @@ public class Chef extends User {
         this.setChefRating(0);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
+        this.ORDERS = new Orders();
         this.isSuspended = false;
         this.suspensionDate = null;
     }

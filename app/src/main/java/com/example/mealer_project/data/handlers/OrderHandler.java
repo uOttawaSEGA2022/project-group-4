@@ -118,21 +118,21 @@ public class OrderHandler {
                         }
                         break;
 
-                    case UPDATE_ORDER_INFO:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Order) {
-                            // update meal locally
-                            ((Chef) App.getUser()).ORDERS.updateOrder((Order) payload);
-                            uiScreen.dbOperationSuccessHandler(operationType, "updated order info!");
-                        } else {
-                            handleActionFailure( operationType, "Invalid order instance provided");
-                        }
-                        break;
+//                    case UPDATE_ORDER_INFO:
+//                        if (Preconditions.isNotNull(payload) && payload instanceof Order) {
+//                            // update meal locally
+//                            ((Chef) App.getUser()).ORDERS.updateOrder((Order) payload);
+//                            uiScreen.dbOperationSuccessHandler(operationType, "updated order info!");
+//                        } else {
+//                            handleActionFailure( operationType, "Invalid order instance provided");
+//                        }
+//                        break;
 
                     case GET_ORDER:
                         // update the Chef's meals locally
                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
-                            Orders<String, Order> orders = (Map<String, Order>) payload;
-                            ((Chef) App.getUser()).MEALS.setMeals(orders);
+                            Map<String, Order> orders = (Map<String, Order>) payload;
+                            ((Chef) App.getUser()).ORDERS.setOrders(orders);
                             uiScreen.dbOperationSuccessHandler(operationType, orders);
                         } else {
                             handleActionFailure(operationType, "Invalid payload for getOrder");
