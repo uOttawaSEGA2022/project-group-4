@@ -1,12 +1,11 @@
-package com.example.mealer_project.data.models;
-
-import com.example.mealer_project.data.entity_models.OrderEntityModel;
+package com.example.mealer_project.data.entity_models;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class Order {
+public class OrderEntityModel {
+
     private HashMap<String, Integer> listOfMeals;
     private String chefID;
     private String clientID;
@@ -16,31 +15,24 @@ public class Order {
     private boolean completed;
 
 
+    public OrderEntityModel(){
+    }
+
     /**
-     * constructor method
+     *
      * @param chefID ID of the chef who makes the meals
      * @param clientID ID of the client who placed the order
-     * @param orderID ID of the order
      * @param date Date and time for when the order was placed
      * @param listOfMeals list of meals in the order of size 1 to many
      */
-    public Order(String chefID, String clientID, String orderID, Date date, List<String> listOfMeals){
+    public OrderEntityModel(String chefID, String clientID, Date date, List<String> listOfMeals){
         this.setClientID(clientID);
         this.setChefID(chefID);
-        this.setOrderID(orderID);
         this.setDate(date);
         this.setPending(true);
         this.isCompleted(false);
     }
 
-    public Order(OrderEntityModel orderEntityModel){
-        this.setClientID(orderEntityModel.getClientID());
-        this.setChefID(orderEntityModel.getChefID());
-        this.setOrderID(orderEntityModel.getOrderID());
-        this.setDate(date);
-        this.setPending(orderEntityModel.getPendingStatus());
-        this.isCompleted(orderEntityModel.getIsCompleted());
-    }
 
     /**
      * Returns the chef ID
@@ -153,4 +145,5 @@ public class Order {
     public void isCompleted(boolean completed){
         this.completed = completed;
     }
+
 }

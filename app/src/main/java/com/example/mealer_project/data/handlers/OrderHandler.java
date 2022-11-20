@@ -4,8 +4,13 @@ import android.util.Log;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
+import com.example.mealer_project.data.entity_models.OrderEntityModel;
 import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.Orders;
+import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.Preconditions;
@@ -17,8 +22,8 @@ public class OrderHandler {
     public enum dbOperations {
         ADD_ORDER,
         REMOVE_ORDER,
-        GET_ORDER,
-        UPDATE_ORDER_INFO
+        GET_ORDER_BY_ID,
+        UPDATE_ORDER
     };
 
     private StatefulView uiScreen;
@@ -41,7 +46,7 @@ public class OrderHandler {
                 switch (operationType) {
 
                     case ADD_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof MealEntityModel) {
+                        if (Preconditions.isNotNull(payload) && payload instanceof OrderEntityModel) {
                             // below code might cause exception if validation fails or instance can't be created
                             Order newOrder = new Order((OrderEntityModel) payload);
                             // if order creation was success, add the meal to database
@@ -60,17 +65,17 @@ public class OrderHandler {
                         }
                         break;
 
-                    case GET_ORDER:
-                        App.getPrimaryDatabase().ORDERS.getOrders();
+                    case GET_ORDER_BY_ID:
+                        App.getPrimaryDatabase().ORDERS.getOrderById((String) payload);
                         break;
 
-//                    case UPDATE_ORDER_INFO:
-//                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
-//                            App.getPrimaryDatabase().ORDERS.updateMealInfo((Meal) payload);
-//                        } else {
-//                            handleActionFailure( operationType, "Invalid Order instance provided");
-//                        }
-//                        break;
+                    case UPDATE_ORDER:
+                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
+                            App.getPrimaryDatabase().ORDERS.updateOrder((Order) payload);
+                        } else {
+                            handleActionFailure( operationType, "Invalid Order instance provided");
+                        }
+                        break;
 
                     default:
                         Log.e("OrderHandler dispatch", "Action not implemented yet");
@@ -98,9 +103,9 @@ public class OrderHandler {
                 switch (operationType) {
 
                     case ADD_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Order) {
+                        if (Preconditions.isNotNull(payload) && payload instanceof Order && App.getUser().getRole() == UserRoles.CLIENT) {
                             // add meal locally
-                            ((Chef) App.getUser()).ORDERS.addOrder((Order) payload);
+                            ((Client) App.getUser()).ORDERS.addOrder((Order) payload);
                             // let UI know about success
                             uiScreen.dbOperationSuccessHandler(operationType, "Order added successfully!");
                         } else {
@@ -109,7 +114,7 @@ public class OrderHandler {
                         break;
 
                     case REMOVE_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
+                        if (Preconditions.isNotNull(payload) && payload instanceof String && App.getUser().getRole() == UserRoles.CHEF) {
                             ((Chef) App.getUser()).ORDERS.removeOrder((String) payload);
                             // let UI know about success
                             uiScreen.dbOperationSuccessHandler(operationType, "Order removed successfully!");
@@ -118,8 +123,8 @@ public class OrderHandler {
                         }
                         break;
 
-                    case UPDATE_ORDER_INFO:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Order) {
+                    case UPDATE_ORDER:
+                        if (Preconditions.isNotNull(payload) && payload instanceof Order  && App.getUser().getRole() == UserRoles.CHEF) {
                             // update meal locally
                             ((Chef) App.getUser()).ORDERS.updateOrder((Order) payload);
                             uiScreen.dbOperationSuccessHandler(operationType, "updated order info!");
@@ -128,11 +133,11 @@ public class OrderHandler {
                         }
                         break;
 
-                    case GET_ORDER:
+                    case GET_ORDER_BY_ID:
                         // update the Chef's meals locally
                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
-                            Orders<String, Order> orders = (Map<String, Order>) payload;
-                            ((Chef) App.getUser()).MEALS.setMeals(orders);
+                            Map<String, Order> orders = (Map<String, Order>) payload;
+                            ((Chef) App.getUser()).ORDERS.setOrders(orders);
                             uiScreen.dbOperationSuccessHandler(operationType, orders);
                         } else {
                             handleActionFailure(operationType, "Invalid payload for getOrder");
@@ -173,12 +178,12 @@ public class OrderHandler {
                     userMessage = "Failed to remove order!";
                     break;
 
-                case UPDATE_ORDER_INFO:
-                    tag = "updateMealInfo";
-                    userMessage = "Failed to update meal info!";
+                case UPDATE_ORDER:
+                    tag = "updateOrder";
+                    userMessage = "Failed to update order info!";
                     break;
 
-                case GET_ORDER:
+                case GET_ORDER_BY_ID:
                     tag = "errorGetOrder";
                     userMessage = "Failed to get order!";
                     break;
