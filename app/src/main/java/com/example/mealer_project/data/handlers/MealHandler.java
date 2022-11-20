@@ -25,8 +25,6 @@ public class MealHandler {
         REMOVE_MEAL_FROM_OFFERED_LIST,
         UPDATE_MEAL_INFO,
         UPDATE_OFFERED_MEALS,
-        ADD_TO_SEARCHABLE_LIST,
-        REMOVE_FROM_SEARCHABLE_LIST,
         GET_MENU,
         GET_MEAL_BY_ID,
         ERROR
@@ -88,14 +86,6 @@ public class MealHandler {
                         }
                         break;
 
-                    case UPDATE_MEAL_INFO:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
-                            App.getPrimaryDatabase().MEALS.updateMealInfo((Meal) payload);
-                        } else {
-                            handleActionFailure( operationType, "Invalid Meal instance provided");
-                        }
-                        break;
-
                     case UPDATE_OFFERED_MEALS:
                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
                             updateOfferedMeals((Map<String, Boolean>) payload);
@@ -115,12 +105,6 @@ public class MealHandler {
                                 String[] ids = (String[]) payload;
                                 App.getPrimaryDatabase().MEALS.getMealById(ids[0], ids[1]);
                             }
-
-                            // if we only have meal id
-                            else if (payload instanceof String) {
-                                App.getPrimaryDatabase().MEALS.getMealById((String) payload);
-                            }
-
                             else {
                                 handleActionFailure( operationType, "Invalid arguments provided for getting meal by id");
                             }
