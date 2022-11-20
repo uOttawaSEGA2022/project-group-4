@@ -18,6 +18,7 @@ public class Client extends User {
      * each meal
      */
     HashMap<String, Integer> cart;
+    public final Orders ORDERS;
 
     private CreditCard clientCreditCard;
     /**
@@ -37,6 +38,7 @@ public class Client extends User {
         this.setClientCreditCard(clientCreditCard);
 
         this.cart = new HashMap<String, Integer>(); //empty cart
+        this.ORDERS = new Orders();
     }
 
     /**
@@ -51,6 +53,7 @@ public class Client extends User {
         this.setClientCreditCard(clientCreditCard);
 
         this.cart = new HashMap<String, Integer>(); //empty cart
+        this.ORDERS = new Orders();
     }
 
     @Override

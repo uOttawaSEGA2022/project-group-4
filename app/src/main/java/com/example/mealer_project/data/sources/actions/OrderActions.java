@@ -141,4 +141,8 @@ public class OrderActions {
     public void getOrderById(String orderId){
 
     }
+
+    public void updateOrder(Order order){
+
+    }
 }

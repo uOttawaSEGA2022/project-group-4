@@ -68,4 +68,8 @@ public class Orders {
             return new Response(false, "Invalid order ID provided");
         }
     }
+
+    // update pending status and completed status from chef
+    public void updateOrder(Order order) {
+    }
 }
