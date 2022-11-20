@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.handlers.MealHandler;
+import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
@@ -41,67 +42,96 @@ public class MealActions {
         this.database = database;
     }
 
+
+    private void addChefMeal(String chefMealsId, Meal meal) {
+
+        Map<String, Object> databaseMeal = new HashMap<>();
+        databaseMeal.put("name", meal.getName());
+        databaseMeal.put("chefID", meal.getChefID());
+        databaseMeal.put("cuisineType", meal.getCuisineType());
+        databaseMeal.put("mealType", meal.getMealType());
+        databaseMeal.put("ingredients", meal.getIngredients());
+        databaseMeal.put("allergens", meal.getAllergens());
+        databaseMeal.put("description", meal.getDescription());
+        databaseMeal.put("isOffered", meal.isOffered());
+        databaseMeal.put("price", meal.getPrice());
+
+        database.collection(MEALS_COLLECTION)
+                .document(chefMealsId)
+                .collection(CHEF_MEALS_COLLECTION)
+                .add(databaseMeal)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        // update meal id
+                        meal.setMealID(documentReference.getId());
+                        Log.e("MEAL ID", documentReference.getId());
+                        App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database: " + e.getMessage());
+                    }
+                });
+    }
+
     /**
      * Add meal to list of meals in Firebase
      * @param meal The meal to be added
      */
-    public void addMeal(Meal meal){
+    public void addMeal(Meal meal) {
 
         if (Preconditions.isNotNull(meal)) {
+            // confirm a Chef is logged in and get the chef
+            Chef chef;
+            try {
+                chef = (Chef) App.getUser();
 
-            Map<String, Object> databaseMeal = new HashMap<>();
-
-            databaseMeal.put("name", meal.getName());
-            databaseMeal.put("chefID", meal.getChefID());
-            databaseMeal.put("cuisineType", meal.getCuisineType());
-            databaseMeal.put("mealType", meal.getMealType());
-            databaseMeal.put("ingredients", meal.getIngredients());
-            databaseMeal.put("allergens", meal.getAllergens());
-            databaseMeal.put("description", meal.getDescription());
-            databaseMeal.put("isOffered", meal.isOffered());
-            databaseMeal.put("price", meal.getPrice());
-
-
-            // Add meal to chef's list in firebase
-            database.collection(CHEF_COLLECTION)
-                    .document(App.getUserId())
-                    .collection("meals")
-                    .add(databaseMeal)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            // update meal id
-                            meal.setMealID(documentReference.getId());
-                            Log.e("MEAL ID", documentReference.getId());
-                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
-                            // Add meal to meals collection in Firebase
-                            database.collection(MEAL_COLLECTION)
-                                    .document(meal.getMealID())
-                                    .set(databaseMeal)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL, meal);
+                // Add meal to chef's list in firebase
+                database.collection(MEALS_COLLECTION)   // top-level meals collection
+                        .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, chef.getUserId()) // get meals document of the chef
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    // if chef currently doesn't have a meal
+                                    if (task.getResult() == null || task.getResult().isEmpty()) {
+                                        Log.e("addMeal", "Chef not in meals collection, adding to it");
+                                        // add the chef first
+                                        Map<String, Object> mealsCollectionData = new HashMap<>();
+                                        mealsCollectionData.put("chef", chef.getUserId());
+                                        database.collection(MEALS_COLLECTION)
+                                                .add(mealsCollectionData)
+                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                @Override
+                                                public void onSuccess(DocumentReference documentReference) {
+                                                        addChefMeal(documentReference.getId(), meal);
+                                                    }
+                                                })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database: " + e.getMessage());
+                                                        }
+                                                    });
+                                    } else {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            addChefMeal(document.getId(), meal);
                                         }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to list of meals in database: " + e.getMessage());
-                                        }
-                                    });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database: " + e.getMessage());
-                        }
-                    });
+                                    }
+                                } else {
+                                    App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database");
+                                    Log.d(TAG, "Error getting chef's meals: ", task.getException());
+                                }
+                            }
+                        });
 
-        } else {
-            // if Preconditions fail
-            Log.e("addMeal", "Invalid object value for meal");
+            } catch (Exception e) {
+                App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database: " + e.getMessage());
+            }
         }
     }
 
@@ -118,50 +148,47 @@ public class MealActions {
 
                 chef = (Chef) App.getUser();
 
-                // Remove meal from chef's list in firebase
-                database.collection(CHEF_COLLECTION)
-                        .document(chef.getUserId())
-                        .collection("meals")
-                        .document(mealId)
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                database.collection(MEALS_COLLECTION)   // top-level meals collection
+                        .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, chef.getUserId()) // get meals document of the chef
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
-                                App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal in chef's list in Firebase: " + e.getMessage());
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                        // Remove meal from chef's list in firebase
+                                        database.collection(MEALS_COLLECTION)
+                                                .document(document.getId())
+                                                .collection(CHEF_MEALS_COLLECTION)
+                                                .document(mealId)
+                                                .delete()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal in chef's list in Firebase: " + e.getMessage());
+                                                    }
+                                                });
+                                    }
+                                } else {
+                                    App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Unable to get chef's meals: " + task.getException());
+                                }
                             }
                         });
 
-                // Remove meal from meals collection in Firebase
-                database.collection(MEAL_COLLECTION)
-                        .document(mealId)
-                        .delete()
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal to searchable list in database: " + e.getMessage());
-                            }
-                        });
             } else {
                 // if Preconditions fail
-                Log.e("removeMealFromSearch", "Invalid object value for meal");
+                App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Invalid object value for meal");
             }
         } catch (Exception e) {
-            Log.e("removeMeal", "Current logged in user is not a chef. Wrong removeMeal overloaded method called?: " + e.getMessage());
-            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Unable to process request at this moment");
+            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Unable to get Chef instance: " + e.getMessage());
         }
-
     }
 
     /**
@@ -171,47 +198,49 @@ public class MealActions {
     public void addMealToOfferedList(String mealId){
 
         if (Preconditions.isNotNull(mealId)) {
+            try {
+                // ensure a chef is logged in & get the chef instance
+                Chef chef = (Chef) App.getUser();
+                // Set isOffered to true in chef's meals in firebase
+                database.collection(MEALS_COLLECTION)   // top-level meals collection
+                        .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, chef.getUserId()) // get meals document of the chef
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
 
-            // Set isOffered to true in chef's meals in firebase
-            database.collection(CHEF_COLLECTION)
-                    .document(App.getUserId())
-                    .collection("meals")
-                    .document(mealId)
-                    .update("isOffered", true)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL_TO_OFFERED_LIST, mealId);
-                            //addMealToSearchableList(mealToMapConversion(getMealFromMealId(mealId, chefId)));
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL_TO_OFFERED_LIST, "Failed to add meal to offered list in chef in database: " + e.getMessage());
-                        }
-                    });
+                                        database.collection(MEALS_COLLECTION)
+                                                .document(document.getId())
+                                                .collection(CHEF_MEALS_COLLECTION)
+                                                .document(mealId)
+                                                .update("isOffered", true)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        App.MEAL_HANDLER.handleActionSuccess(ADD_MEAL_TO_OFFERED_LIST, mealId);
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        App.MEAL_HANDLER.handleActionFailure(ADD_MEAL_TO_OFFERED_LIST, "Failed to add meal to offered list in chef in database: " + e.getMessage());
+                                                    }
+                                                });
+                                    }
+                                } else {
+                                    App.MEAL_HANDLER.handleActionFailure(ADD_MEAL_TO_OFFERED_LIST, "Failed to retrieve chef's meals");
+                                }
+                            }
+                        });
 
-            // Set isOffered to true in list of meals in firebase
-            database.collection(MEAL_COLLECTION)
-                    .document(mealId)
-                    .update("isOffered", true)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            //App.MEAL_HANDLER.successAddingMealToOfferedList(mealId);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            //App.MEAL_HANDLER.errorAddingMealToOfferedList("Failed to add meal to offered list in chef in database: " + e.getMessage());
-                        }
-                    });
-
+            } catch (Exception e) {
+                App.MEAL_HANDLER.handleActionFailure(ADD_MEAL_TO_OFFERED_LIST, "Failed to add meal to offered list in chef in database: " + e.getMessage());
+            }
         } else {
             // if Preconditions fail
-            Log.e("addMealToOfferedList", "Invalid object value for mealId");
+            App.MEAL_HANDLER.handleActionFailure(ADD_MEAL_TO_OFFERED_LIST, "Invalid object value for mealId");
         }
     }
 
@@ -223,93 +252,49 @@ public class MealActions {
     public void removeMealFromOfferedList(String mealId){
 
         if (Preconditions.isNotNull(mealId)) {
+            try {
+                // ensure a chef is logged in & get the chef instance
+                Chef chef = (Chef) App.getUser();
+                // Set isOffered to true in chef's meals in firebase
+                database.collection(MEALS_COLLECTION)   // top-level meals collection
+                        .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, chef.getUserId()) // get meals document of the chef
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
 
-            // Set isOffered to false in specific chef's list of meals
-            database.collection(CHEF_COLLECTION)
-                    .document(App.getUserId())
-                    .collection("meals")
-                    .document(mealId)
-                    .update("isOffered", false)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL_FROM_OFFERED_LIST, mealId);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, "Failed to add meal to offered list in chef in database: " + e.getMessage());
-                        }
-                    });
+                                        database.collection(MEALS_COLLECTION)
+                                                .document(document.getId())
+                                                .collection(CHEF_MEALS_COLLECTION)
+                                                .document(mealId)
+                                                .update("isOffered", false)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL_FROM_OFFERED_LIST, mealId);
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, "Failed to remove meal from offered list in database: " + e.getMessage());
+                                                    }
+                                                });
+                                    }
+                                } else {
+                                    App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, "Error getting chef's meals");
+                                }
+                            }
+                        });
 
-            // Set isOffered to false in list of meals in firebase
-            database.collection(MEAL_COLLECTION)
-                    .document(mealId)
-                    .update("isOffered", false)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            App.MEAL_HANDLER.handleActionSuccess(REMOVE_FROM_SEARCHABLE_LIST, mealId);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.MEAL_HANDLER.handleActionFailure(REMOVE_FROM_SEARCHABLE_LIST, e.getMessage());
-                        }
-                    });
+            } catch (Exception e) {
+                App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, "Unable to retrieve a Chef: " + e.getMessage());
+            }
         } else {
             // if Preconditions fail
-            Log.e("removeMealFromSearch", "Invalid object value for meal");
-        }
-    }
-
-    /**
-     * Get meal from Firebase for the current logged in chef
-     * @param mealId The mealId of meal
-     */
-    public void getMealById (String mealId) {
-
-        Chef chef;
-
-        try {
-            chef = (Chef) App.getUser();
-
-            DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chef.getUserId()).collection(MEAL_COLLECTION).document(mealId);
-
-            mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                            if (document.getData() != null){
-                                // get the meal object created using data retrieved from firebase
-                                Meal meal = makeMealFromFirebase(document);
-                                // set the meal id
-                                meal.setMealID(document.getId());
-                                // pass the data to be updated locally
-                                App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, meal);
-                            }
-
-                        } else {
-                            Log.d(TAG, "No such document");
-                            App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID,"Could not find a meal with provided ID");
-                        }
-                    } else {
-                        Log.d(TAG, "get failed with ", task.getException());
-                        App.MEAL_HANDLER.handleActionFailure( GET_MEAL_BY_ID, "Failed to retrieve meal");
-                    }
-                }
-            });
-
-        } catch (Exception e) {
-            Log.e("getMealById", "Current logged in user is not a chef. Wrong getMealById overloaded method called?: " + e.getMessage());
-            App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Unable to process request at this moment");
+            App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL_FROM_OFFERED_LIST, "Invalid object value for mealID");
         }
     }
 
@@ -319,200 +304,156 @@ public class MealActions {
      */
     public void getMealById (String mealId, String chefId) {
 
-        Meal meal;
-        DocumentReference mealReference = database.collection(CHEF_COLLECTION).document(chefId).collection(MEAL_COLLECTION).document(mealId);
+        database.collection(MEALS_COLLECTION)   // top-level meals collection
+                .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, chefId) // get meals document of the chef
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
 
-        mealReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-
-                        if (document.getData() != null){
-                            // get the meal object created using data retrieved from firebase
-                            Meal meal = makeMealFromFirebase(document);
-                            // set the meal id
-                            meal.setMealID(document.getId());
-                            // pass the data to be updated locally
-                            App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, meal);
+                                database.collection(MEALS_COLLECTION)
+                                        .document(document.getId())
+                                        .collection(CHEF_MEALS_COLLECTION)
+                                        .document(mealId)
+                                        .get()
+                                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                   @Override
+                                                                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                       if (task.isSuccessful()) {
+                                                                           DocumentSnapshot document = task.getResult();
+                                                                           if (document.exists() && document.getData() != null) {
+                                                                               try  {
+                                                                                   Meal meal = makeMealFromFirebase(document);
+                                                                                   // set the meal id
+                                                                                   meal.setMealID(document.getId());
+                                                                                   App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, meal);
+                                                                               } catch (Exception e) {
+                                                                                   App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error making a meal from data retrieved");
+                                                                               }
+                                                                           } else {
+                                                                               App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting the meal for given id");
+                                                                           }
+                                                                       } else {
+                                                                           App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting chef's meals");
+                                                                       }
+                                                                   }
+                                                               });
+                            }
+                        } else {
+                            App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting chef's meals");
                         }
-
-                    } else {
-                        Log.d(TAG, "No such document");
-                        App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID,"Could not find a meal with provided ID");
                     }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                    App.MEAL_HANDLER.handleActionFailure( GET_MEAL_BY_ID, "Failed to retrieve meal");
-                }
-            }
-        });
+                });
     }
 
     /**
      * Set meals list to specific chef locally using App instance user
      */
     public void getMeals(){
+        try {
+            Chef chef = (Chef) App.getUser();
+            database.collection(MEALS_COLLECTION)   // top-level meals collection
+                    .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, chef.getUserId()) // get meals document of the chef
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
 
-        Chef chef = (Chef) App.getUser();
-
-        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chef.getUserId()).collection(CHEF_MEALS_COLLECTION);
-
-        mealsReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    Map<String, Meal> meals = new HashMap<String, Meal>();
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-
-                        Meal meal = makeMealFromFirebase(document);
-                        // set the meal id
-                        meal.setMealID(document.getId());
-                        meals.put(document.getId(), meal);
-                    }
-                    App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                    App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
-                }
-            }
-        });
-    }
-
-    /**
-     * Set meals list to specific chef locally using chefID
-     * @param chefId Id of chef to get meals from
-     */
-    public void getMeals(String chefId){
-
-        CollectionReference mealsReference = database.collection(CHEF_COLLECTION).document(chefId).collection(CHEF_MEALS_COLLECTION);
-
-        mealsReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    Map<String, Meal> meals = new HashMap<String, Meal>();
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-
-                        Meal meal = makeMealFromFirebase(document);
-                        // set the meal id
-                        meal.setMealID(document.getId());
-                        meals.put(document.getId(), meal);
-                    }
-                    App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                    App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
-                }
-            }
-        });
-    }
-
-    /**
-     * Set meals list to specific chef locally using chefID
-     * @param chefDocument firebase document reference object representing the Chef
-     */
-    public void loadChefMeals(DocumentReference chefDocument, LoginScreen loginScreen){
-
-        chefDocument.collection(CHEF_MEALS_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-
-                    Map<String, Meal> meals = new HashMap<String, Meal>();
-
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
-                        // get the meal object created using data retrieved from firebase
-                        Meal meal = makeMealFromFirebase(document);
-                        // set the meal id
-                        meal.setMealID(document.getId());
-                        // storing meals in meals map
-                        meals.put(document.getId(), meal);
-                    }
-                    // add meals to Chef
-                    ((Chef) App.getUser()).MEALS.setMeals(meals);
-                    // let login screen show Chef screen
-                    loginScreen.showNextScreen();
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                    App.MEAL_HANDLER.handleActionFailure( GET_MENU, "Failed to retrieve meals from firebase");
-                }
-            }
-        });
-    }
-
-    /**
-     * Update meal info in Firebase in chef object and searchable meals list if it is offered
-     * Removes list from offered list and searchable list if isOffered boolean is updated to false
-     * @param meal new Meal object with info to update
-     */
-    public void updateMealInfo(Meal meal){
-
-        if (Preconditions.isNotNull(meal)) {
-
-                database.collection(CHEF_COLLECTION)
-                        .document(App.getUserId())
-                        .collection("meals")
-                        .document(meal.getMealID())
-                        .update("name",meal.getName(),
-                                "cuisineType", meal.getCuisineType(),
-                                "mealType", meal.getMealType(),
-                                "ingredients", meal.getIngredients(),
-                                "allergens", meal.getAllergens(),
-                                "description", meal.getDescription(),
-                                "isOffered", meal.isOffered(),
-                                "price", meal.getPrice())
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                App.MEAL_HANDLER.handleActionSuccess(UPDATE_MEAL_INFO, meal);
+                                    database.collection(MEALS_COLLECTION)
+                                            .document(document.getId())
+                                            .collection(CHEF_MEALS_COLLECTION)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Map<String, Meal> meals = new HashMap<String, Meal>();
+                                                        Meal meal;
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            meal = makeMealFromFirebase(document);
+                                                            // set the meal id
+                                                            meal.setMealID(document.getId());
+                                                            meals.put(document.getId(), meal);
+                                                        }
+                                                        App.MEAL_HANDLER.handleActionSuccess(GET_MENU, meals);
+                                                    } else {
+                                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                                        App.MEAL_HANDLER.handleActionFailure(GET_MENU, "Failed to retrieve meals from firebase");
+                                                    }
+                                                }
+                                            });
+                                }
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                App.MEAL_HANDLER.handleActionFailure( UPDATE_MEAL_INFO, "Failed to update meal to list in chef in database: " + e.getMessage());
-                            }
-                        });
-
-                database.collection(MEAL_COLLECTION)
-                        .document(meal.getMealID())
-                        .update("name",meal.getName(),
-                                "cuisineType", meal.getCuisineType(),
-                                "mealType", meal.getMealType(),
-                                "ingredients", meal.getIngredients(),
-                                "allergens", meal.getAllergens(),
-                                "description", meal.getDescription(),
-                                "isOffered", meal.isOffered(),
-                                "price", meal.getPrice())
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                App.MEAL_HANDLER.handleActionSuccess(UPDATE_MEAL_INFO, meal);
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                App.MEAL_HANDLER.handleActionFailure( UPDATE_MEAL_INFO,"Failed to update meal to searchable list in database: " + e.getMessage());
-                            }
-                        });
-        } else {
-            // if Preconditions fail
-            Log.e("updateMealInfo", "Invalid object value for meal");
+                        }
+                    });
+        } catch (Exception e) {
+            App.MEAL_HANDLER.handleActionFailure(GET_MENU, "Failed to get menu: " + e.getMessage());
         }
     }
 
+    /**
+     * Set meals list to specific chef locally using chefID
+     */
+    public void loadChefMeals(LoginScreen loginScreen){
+        try {
+            Chef chef = (Chef) App.getUser();
+            database.collection(MEALS_COLLECTION)   // top-level meals collection
+                    .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, chef.getUserId()) // get meals document of the chef
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                // check if chef has any meals currently
+                                if (task.getResult() == null || task.getResult().isEmpty()) {
+                                    Log.e("loadMeals", "Chef has no meals currently");
+                                    loginScreen.showNextScreen();
+                                } else {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Log.e("loadMeals", "creating meals");
+                                        database.collection(MEALS_COLLECTION)
+                                                .document(document.getId())
+                                                .collection(CHEF_MEALS_COLLECTION)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            Map<String, Meal> meals = new HashMap<String, Meal>();
+                                                            Meal meal;
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                meal = makeMealFromFirebase(document);
+                                                                // set the meal id
+                                                                meal.setMealID(document.getId());
+                                                                meals.put(document.getId(), meal);
+                                                            }
+                                                            // add meals to Chef
+                                                            ((Chef) App.getUser()).MEALS.setMeals(meals);
+                                                            // let login screen show Chef screen
+                                                            loginScreen.showNextScreen();
+                                                        } else {
+                                                            Log.d("loadMeals", "Error getting documents: ", task.getException());
+                                                            loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN, "Failed to retrieve meals from firebase");
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                }
+                            } else {
+                                loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN, "Failed to load meals");
+                                Log.e("loadMeals", "failed to load meals: " + task.getException());
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN, "Failed to get Chef's meals");
+            Log.e("loadMeals", "failed to load meals: " + e.getMessage());
+        }
+    }
 
     private Meal makeMealFromFirebase(DocumentSnapshot document) {
 
@@ -554,9 +495,4 @@ public class MealActions {
 
         return mealMap;
     }
-
-
-
-
-
 }

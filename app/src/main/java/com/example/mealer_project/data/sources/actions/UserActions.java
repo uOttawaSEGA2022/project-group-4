@@ -123,7 +123,8 @@ public class UserActions {
                                 Response r = makeChefFromFirebase(document);
                                 if (loginScreen != null && r.isSuccess()) {
                                     // load Chef's meals
-                                    App.getPrimaryDatabase().MEALS.loadChefMeals(userReference, loginScreen);
+                                    // app's user should have been set to the Chef by this point (App.getUser() = logged in chef)
+                                    App.getPrimaryDatabase().MEALS.loadChefMeals(loginScreen);
                                 } else if (loginScreen != null){
                                     Log.e("Login failed for chef", r.getErrorMessage());
                                     loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed, " + r.getErrorMessage());
