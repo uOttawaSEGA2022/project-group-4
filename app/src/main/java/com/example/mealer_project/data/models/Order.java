@@ -15,7 +15,7 @@ public class Order {
 
 
     /**
-     *
+     * constructor method
      * @param chefID ID of the chef who makes the meals
      * @param clientID ID of the client who placed the order
      * @param orderID ID of the order
