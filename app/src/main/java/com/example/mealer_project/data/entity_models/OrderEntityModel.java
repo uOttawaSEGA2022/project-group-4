@@ -17,6 +17,7 @@ public class OrderEntityModel {
 
     public OrderEntityModel(){
     }
+
     /**
      *
      * @param chefID ID of the chef who makes the meals
@@ -31,7 +32,6 @@ public class OrderEntityModel {
         this.setPending(true);
         this.isCompleted(false);
     }
-
 
 
     /**

@@ -7,7 +7,7 @@ public class DataHandlers {
     private final UserHandler userHandler;
     private final InboxHandler inboxHandler;
     private final MealHandler mealHandler;
-    public OrderHandler orderHandler;
+    private final OrderHandler orderHandler;
 
     // instantiate repository and handlers
     public DataHandlers(FirebaseRepository firebaseRepository) {
@@ -25,5 +25,5 @@ public class DataHandlers {
 
     public MealHandler getMealHandler() {  return mealHandler; }
 
-    public OrderHandler getOrderHandler() { return orderHandler()}
+    public OrderHandler getOrderHandler() { return orderHandler; }
 }

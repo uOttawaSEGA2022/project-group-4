@@ -54,8 +54,7 @@ public class OrderActions {
             database.collection(ORDER_COLLECTION)
                     .document(order.getChefID())
                     .collection("orders")
-                    .document()
-                    .set(databaseOrder)
+                    .add(databaseOrder)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
