@@ -1,14 +1,23 @@
 package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.models.orders.OrderItem;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class instantiates an instance of Client for Mealer App
  * Child Class of User
  */
 public class Client extends User {
+
+    /**
+     * Stores order items in cart
+     */
+    Map<OrderItem, Boolean> cart;
+    public final Orders ORDERS;
+
     private CreditCard clientCreditCard;
     /**
      * Create a Client object
@@ -25,6 +34,8 @@ public class Client extends User {
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
         this.setClientCreditCard(clientCreditCard);
+        this.ORDERS = new Orders();
+        this.cart = new HashMap<>(); //empty cart
     }
 
     /**
@@ -37,9 +48,10 @@ public class Client extends User {
         // instantiate Client's data members
         super(clientData, clientAddress);
         this.setClientCreditCard(clientCreditCard);
+
+        this.cart = new HashMap<>(); //empty cart
+        this.ORDERS = new Orders();
     }
-
-
 
     @Override
     public void setUserId(String userId) {
@@ -87,10 +99,24 @@ public class Client extends User {
     }
 
     /**
-     * Method for a client to be able to buy an item
+     * Update order items in cart
+     * @param orderItem instance of OrderItem
      */
-    public void buyItem() {
-        // logic to initiate a request to buy an item
+    public void updateOrderItem(OrderItem orderItem) {
+        if (orderItem.getQuantity() == 0) {
+            this.cart.remove(orderItem);
+        } else {
+            this.cart.put(orderItem, true);
+        }
+    }
+
+    /**
+     * this method completely clears the cart
+     */
+    public void clearCart() {
+
+        this.cart.clear(); //cart cleared
+
     }
 
     /**

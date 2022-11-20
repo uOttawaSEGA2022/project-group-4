@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.activity.result.ActivityResult;
@@ -103,12 +104,21 @@ public class SignupScreen extends UIScreen implements StatefulView {
                 startVoidChequeActivity.launch(new Intent(getApplicationContext(), VoidChequeScreen.class));
             }
         });
+
+        ImageButton backButton = (ImageButton) findViewById(R.id.button_back2);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     ActivityResultLauncher<Intent> startVoidChequeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == Activity.RESULT_OK) {
+            //Log.e("VoidChequeActivity", String.valueOf(result.getResultCode()));
+            if (result.getResultCode() == Activity.RESULT_OK) { // operation succeed (value = -1)
                 Intent intent = result.getData();
                 if (intent != null) {
                     updateVoidChequeImage(intent);

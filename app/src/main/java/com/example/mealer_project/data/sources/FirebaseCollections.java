@@ -6,6 +6,8 @@ public abstract class FirebaseCollections {
     public final static String CLIENT_COLLECTION = "Clients";
     public final static String CHEF_COLLECTION = "Chefs";
     public final static String ADMIN_COLLECTION = "Admin";
-    public final static String MEAL_COLLECTION = "Meals";
+    public final static String MEALS_COLLECTION = "Meals";
+    public final static String MEALS_COLLECTION_CHEF_KEY = "chef";
+    public final static String ORDER_COLLECTION = "Orders";
     public final static String CHEF_MEALS_COLLECTION = "meals";
 }
