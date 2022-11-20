@@ -19,6 +19,7 @@ public class Chef extends User {
     // storing Chef's meals in an instance of Meals class which provides methods to work with a collection of meals
     // variable is public for accessibility, but also final
     public final Meals MEALS;
+    public final Orders ORDERS;
 
     /**
      * Create a single instance of chef

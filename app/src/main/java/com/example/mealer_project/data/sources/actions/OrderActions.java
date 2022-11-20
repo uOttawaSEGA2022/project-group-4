@@ -111,13 +111,13 @@ public class OrderActions {
                                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                             @Override
                                                                             public void onSuccess(Void aVoid) {
-                                                                                //App.MEAL_HANDLER.handleActionSuccess(REMOVE_MEAL, mealId);
+                                                                                App.ORDER_HANDLER.handleActionSuccess(REMOVE_ORDER, orderId);
                                                                             }
                                                                         })
                                                                         .addOnFailureListener(new OnFailureListener() {
                                                                             @Override
                                                                             public void onFailure(@NonNull Exception e) {
-                                                                                //App.MEAL_HANDLER.handleActionFailure(REMOVE_MEAL, "Failed to remove meal in chef's list in Firebase: " + e.getMessage());
+                                                                                App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "Failed to remove order from Firebase: " + e.getMessage());
                                                                             }
                                                                         });
                                                             }

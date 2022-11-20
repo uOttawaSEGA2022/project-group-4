@@ -7,6 +7,8 @@ import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.entity_models.OrderEntityModel;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.Preconditions;
@@ -42,7 +44,7 @@ public class OrderHandler {
                 switch (operationType) {
 
                     case ADD_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof MealEntityModel) {
+                        if (Preconditions.isNotNull(payload) && payload instanceof OrderEntityModel) {
                             // below code might cause exception if validation fails or instance can't be created
                             Order newOrder = new Order((OrderEntityModel) payload);
                             // if order creation was success, add the meal to database
@@ -99,9 +101,9 @@ public class OrderHandler {
                 switch (operationType) {
 
                     case ADD_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Order) {
+                        if (Preconditions.isNotNull(payload) && payload instanceof Order && App.getUser().getRole() != UserRoles.ADMIN) {
                             // add meal locally
-                            ((Chef) App.getUser()).ORDERS.addOrder((Order) payload);
+                            ((User) App.getUser()).ORDERS.addOrder((Order) payload);
                             // let UI know about success
                             uiScreen.dbOperationSuccessHandler(operationType, "Order added successfully!");
                         } else {
