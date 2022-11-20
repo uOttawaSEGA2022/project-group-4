@@ -1,5 +1,6 @@
 package com.example.mealer_project.data.sources.actions;
 
+import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.ORDER_COLLECTION;
 import static com.example.mealer_project.data.handlers.OrderHandler.dbOperations.*;
 
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -52,15 +54,44 @@ public class OrderActions {
             databaseOrder.put("date", order.getOrderDate());
 
             database.collection(ORDER_COLLECTION)
-                    .document(order.getChefID())
-                    .collection("orders")
                     .add(databaseOrder)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
 
                             order.setOrderID(documentReference.getId());
-                            App.ORDER_HANDLER.handleActionSuccess(ADD_ORDER, order);
+
+                            database.collection(CHEF_COLLECTION)
+                                            .document(order.getChefID())
+                                            .update("orders", FieldValue.arrayUnion(order.getOrderID()))
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {@Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d("Success", "DocumentSnapshot successfully updated!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w("Error", "Error updating document", e);
+                                                }
+                                            });
+
+                            database.collection(CHEF_COLLECTION)
+                                    .document(order.getClientID())
+                                    .update("orders", FieldValue.arrayUnion(order.getOrderID()))
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {@Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("Success", "DocumentSnapshot successfully updated!");
+                                    }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.w("Error", "Error updating document", e);
+                                        }
+                                    });
+
+                                    App.ORDER_HANDLER.handleActionSuccess(ADD_ORDER, order);
 
                         }
                     })

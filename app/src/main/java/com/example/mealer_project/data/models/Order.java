@@ -8,25 +8,26 @@ import java.util.List;
 
 public class Order {
     private HashMap<String, Integer> listOfMeals;
-    private String chefID;
+    private Chef chef;
     private String clientID;
     private String orderID;
     private Date date;
     private boolean pending;
+    private boolean rejected;
     private boolean completed;
 
 
     /**
      * constructor method
-     * @param chefID ID of the chef who makes the meals
+     * @param chef chef who makes the meals
      * @param clientID ID of the client who placed the order
      * @param orderID ID of the order
      * @param date Date and time for when the order was placed
      * @param listOfMeals list of meals in the order of size 1 to many
      */
-    public Order(String chefID, String clientID, String orderID, Date date, List<String> listOfMeals){
+    public Order(Chef chef, String clientID, String orderID, Date date, List<String> listOfMeals){
         this.setClientID(clientID);
-        this.setChefID(chefID);
+        this.setChef(chef);
         this.setOrderID(orderID);
         this.setDate(date);
         this.setPending(true);
@@ -35,7 +36,7 @@ public class Order {
 
     public Order(OrderEntityModel orderEntityModel){
         this.setClientID(orderEntityModel.getClientID());
-        this.setChefID(orderEntityModel.getChefID());
+        this.setChef(orderEntityModel.getChef());
         this.setOrderID(orderEntityModel.getOrderID());
         this.setDate(date);
         this.setPending(orderEntityModel.getPendingStatus());
@@ -46,8 +47,8 @@ public class Order {
      * Returns the chef ID
      * @return chef ID
      */
-    public String getChefID(){
-        return this.chefID;
+    public Chef getChef(){
+        return this.chef;
     }
 
     /**
@@ -100,10 +101,10 @@ public class Order {
 
     /**
      * Sets the value of the chef ID
-     * @param chefID
+     * @param chef
      */
-    public void setChefID(String chefID){
-        this.chefID = chefID;
+    public void setChef(Chef chef){
+        this.chef = chef;
     }
 
     /**

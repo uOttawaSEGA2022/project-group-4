@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.entity_models;
 
+import com.example.mealer_project.data.models.Chef;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 public class OrderEntityModel {
 
     private HashMap<String, Integer> listOfMeals;
-    private String chefID;
+    private Chef chef;
     private String clientID;
     private String orderID;
     private Date date;
@@ -20,14 +22,14 @@ public class OrderEntityModel {
 
     /**
      *
-     * @param chefID ID of the chef who makes the meals
+     * @param chef chef who makes the meals
      * @param clientID ID of the client who placed the order
      * @param date Date and time for when the order was placed
      * @param listOfMeals list of meals in the order of size 1 to many
      */
-    public OrderEntityModel(String chefID, String clientID, Date date, List<String> listOfMeals){
+    public OrderEntityModel(Chef chef, String clientID, Date date, List<String> listOfMeals){
         this.setClientID(clientID);
-        this.setChefID(chefID);
+        this.setChef(chef);
         this.setDate(date);
         this.setPending(true);
         this.isCompleted(false);
@@ -38,8 +40,8 @@ public class OrderEntityModel {
      * Returns the chef ID
      * @return chef ID
      */
-    public String getChefID(){
-        return this.chefID;
+    public Chef getChef(){
+        return this.chef;
     }
 
     /**
@@ -92,10 +94,10 @@ public class OrderEntityModel {
 
     /**
      * Sets the value of the chef ID
-     * @param chefID
+     * @param chef
      */
-    public void setChefID(String chefID){
-        this.chefID = chefID;
+    public void setChef(Chef chef){
+        this.chef = chef;
     }
 
     /**
