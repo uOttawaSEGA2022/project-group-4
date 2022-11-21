@@ -1,8 +1,12 @@
 package com.example.mealer_project.data.sources.actions;
 
 import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.ADD_MEAL;
+import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.GET_MEAL_BY_ID;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_COLLECTION;
+import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_MEALS_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CLIENT_COLLECTION;
+import static com.example.mealer_project.data.sources.FirebaseCollections.MEALS_COLLECTION;
+import static com.example.mealer_project.data.sources.FirebaseCollections.MEALS_COLLECTION_CHEF_KEY;
 import static com.example.mealer_project.data.sources.FirebaseCollections.ORDER_COLLECTION;
 import static com.example.mealer_project.data.handlers.OrderHandler.dbOperations.*;
 
@@ -13,6 +17,7 @@ import androidx.annotation.NonNull;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.models.orders.SearchMealItem;
 import com.example.mealer_project.utils.Preconditions;
@@ -190,6 +195,28 @@ public class OrderActions {
 
 
     public void getOrderById(String orderId){
+
+        if (Preconditions.isNotNull(orderId)) {
+
+            // retrieve order object from firebase
+            DocumentReference docRef = database.collection(ORDER_COLLECTION).document(orderId);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                            Order
+                        } else {
+                            Log.d("RemoveOrder", "No such document");
+                        }
+                    } else {
+                        Log.d("RemoveOrder", "get failed with ", task.getException());
+                    }
+                }
+            });
+        }
 
     }
 
