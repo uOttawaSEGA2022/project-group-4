@@ -46,7 +46,7 @@ public class OrderActions {
 
             Map<String, Object> databaseOrder = new HashMap<>();
 
-            databaseOrder.put("chefId", order.getChefID());
+            databaseOrder.put("chefId", order.getChef().getUserId());
             databaseOrder.put("clientId", order.getClientID());
             databaseOrder.put("listOfMeals", order.getListOfMeals());
             databaseOrder.put("pending", order.getPendingStatus());
@@ -62,7 +62,7 @@ public class OrderActions {
                             order.setOrderID(documentReference.getId());
 
                             database.collection(CHEF_COLLECTION)
-                                            .document(order.getChefID())
+                                            .document(order.getChef().getUserId())
                                             .update("orders", FieldValue.arrayUnion(order.getOrderID()))
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {@Override
                                                 public void onSuccess(Void aVoid) {
