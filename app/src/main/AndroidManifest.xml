@@ -117,7 +117,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.screens.CheckoutScreen"
+            android:name=".ui.screens.checkout.CheckoutScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

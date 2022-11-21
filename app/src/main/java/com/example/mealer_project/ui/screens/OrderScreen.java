@@ -20,6 +20,8 @@ import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class OrderScreen extends UIScreen implements StatefulView {
@@ -50,7 +52,6 @@ public class OrderScreen extends UIScreen implements StatefulView {
         minusButton = (Button) findViewById(R.id.minus_button);
         plusButton = (Button) findViewById(R.id.add_button);
         addOrRemoveButton = (Button) findViewById(R.id.add_or_remove_from_cart);
-        //checkoutButton = (Button) findViewById(R.id.checkout_button);
 
         // Process: attaching listeners to buttons
         attachOnClickListeners();
@@ -101,7 +102,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
         });
 
         // on click method for adding or removing the meal from the cart
-        addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
+        /*addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -133,7 +134,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
                 updateUI();
 
             }
-        });
+        });*/
 
         // on click method for checkout button
         /*checkoutButton.setOnClickListener(new View.OnClickListener() {
@@ -243,6 +244,10 @@ public class OrderScreen extends UIScreen implements StatefulView {
         // sets the text for price
         TextView priceText = (TextView) findViewById(R.id.order_price_of_meal);
         priceText.setText("$ " + String.valueOf(price));
+
+        // sets the text for the chef's name
+        TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
+        chefNameText.setText("PLEASE CHANGE ME TO THE CHEF'S NAME!");
 
         // sets the text for the meal type
         TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);
