@@ -207,7 +207,7 @@ public class OrderActions {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
 
-                            Order
+
                         } else {
                             Log.d("RemoveOrder", "No such document");
                         }
