@@ -197,7 +197,25 @@ public class OrderScreen extends UIScreen implements StatefulView {
             displayErrorToast("Failed to add order!");
 
         }
-        else {
+        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {
+
+            // Output: failed to add new order
+            displayErrorToast("Failed to remove order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
+
+            // Output: failed to add new order
+            displayErrorToast("Failed to update order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {
+
+            // Output: failed to add new order
+            displayErrorToast("Failed to get order!");
+
+        }
+        else { //other error
 
             // Output
             displayErrorToast((String) payload);
