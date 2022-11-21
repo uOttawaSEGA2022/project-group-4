@@ -17,6 +17,7 @@ import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 public class OrderScreen extends UIScreen implements StatefulView {
 
+    OrderItem orderItem;
     Meal mealData;
 
     // button instantiations
@@ -58,7 +60,9 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
         // Process: getting the meal data
         try {
-            //mealData = (Meal) getIntent().getSerializableExtra(SearchScreen.SEARCH_OBJ_INTENT_KEY);
+            // we get the data from the order item in the search screen
+            //orderItem = (OrderItem) getIntent().getSerializableExtra(SearchScreen.SEARCH_OBJ_INTENT_KEY);
+            //mealData = orderItem.getSearchMealItem().getMeal();
         }
         catch (Exception e) { //error-handling
 
@@ -102,7 +106,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
         });
 
         // on click method for adding or removing the meal from the cart
-        /*addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
+        addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -110,48 +114,28 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
                     addToCart = true; //updating flag
 
-                    // Variable Declaration
-                    Client client = (Client) App.getUser();
-
-                    // Process: adding to the client's cart map
-                    client.addToCart(mealData.getMealID(), totalQuantityCounter);
-
-                    finish(); //finish the activity
-
                 }
                 else { // clicked remove from cart
 
                     addToCart = false; //updating flag
 
-                    // Variable Declaration
-                    Client client = (Client) App.getUser();
-
-                    // Process: removing from client's cart map
-                    client.removeFromCart(mealData.getMealID());
-
                 }
 
-                updateUI();
-
-            }
-        });*/
-
-        // on click method for checkout button
-        /*checkoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
                 // Variable Declaration
-                Client client = (Client) App.getUser();
+                Client client = (Client) App.getUser(); //this needs to be put in a try-catch block
+                // just in case the user isn't a client (should never happen, but handle that error anyway)
 
-                // Process: calling order handler method to add entire cart to order & telling firebase to store order
-                App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.ADD_ORDER, client.getCart());
+                // Process: adding to the client's cart map
+                client.updateOrderItem(orderItem);
 
-                // Process: going to CheckoutScreen
-                showNextScreen();
+                //finish(); //finish the activity
+
+                updateUI(); //-> is it possible to make it so that when it's in the cart, the quantity
+                // buttons are greyed out so that the client can't change the quantities anymore unless they
+                // remove it from the cart first?
 
             }
-        });*/
+        });
 
     }
 
@@ -247,7 +231,8 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
         // sets the text for the chef's name
         TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
-        chefNameText.setText("PLEASE CHANGE ME TO THE CHEF'S NAME!");
+        chefNameText.setText(orderItem.getSearchMealItem().getChef().getFirstName() + " " +
+                orderItem.getSearchMealItem().getChef().getLastName());
 
         // sets the text for the meal type
         TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);
