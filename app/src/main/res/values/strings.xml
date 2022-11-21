@@ -87,4 +87,10 @@
     <string name="special_instructions">Any special instructions for the chef?</string>
     <string name="checkout">Checkout</string>
     <string name="add_or_remove_from_cart">Add/Remove From Cart</string>
+    <string name="order">Order</string>
+    <string name="minus">-</string>
+    <string name="number">#</string>
+    <string name="plus">+</string>
+    <string name="spinner_description">spinner description</string>
+    <string name="meal_name_here">Meal Name Here</string>
 </resources>

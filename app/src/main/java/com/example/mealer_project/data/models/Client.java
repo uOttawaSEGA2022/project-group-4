@@ -1,11 +1,10 @@
 package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.models.orders.OrderItem;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 /**
  * This class instantiates an instance of Client for Mealer App
@@ -14,10 +13,9 @@ import java.util.List;
 public class Client extends User {
 
     /**
-     * this map stores the mealIDs of all the meals in the client's cart, as well as the quantity of
-     * each meal
+     * Stores order items in cart
      */
-    HashMap<String, Integer> cart;
+    Map<OrderItem, Boolean> cart;
     public final Orders ORDERS;
 
     private CreditCard clientCreditCard;
@@ -36,9 +34,8 @@ public class Client extends User {
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
         this.setClientCreditCard(clientCreditCard);
-
-        this.cart = new HashMap<String, Integer>(); //empty cart
         this.ORDERS = new Orders();
+        this.cart = new HashMap<>(); //empty cart
     }
 
     /**
@@ -52,7 +49,7 @@ public class Client extends User {
         super(clientData, clientAddress);
         this.setClientCreditCard(clientCreditCard);
 
-        this.cart = new HashMap<String, Integer>(); //empty cart
+        this.cart = new HashMap<>(); //empty cart
         this.ORDERS = new Orders();
     }
 
@@ -102,33 +99,15 @@ public class Client extends User {
     }
 
     /**
-     * this method adds a specific meal, given the mealID & quantity, to the client's cart
-     *
-     * it is called in the <code>OrderScreen</code> class
-     *
-     * @param mealID the mealID of the meal
-     * @param quantity the quantity of this specific meal to add to the cart
+     * Update order items in cart
+     * @param orderItem instance of OrderItem
      */
-    public void addToCart(String mealID, int quantity) {
-        // logic to initiate a request to buy an item
-
-        // Process: adding to map
-        this.cart.put(mealID, quantity);
-
-    }
-
-    /**
-     * this method removes a specific meal, given the mealID, from the client's cart
-     *
-     * it is called in the <code>OrderScreen</code> class
-     *
-     * @param mealID the ID of the meal to be removed from cart
-     */
-    public void removeFromCart(String mealID) {
-
-        // Process: removing from map
-        this.cart.remove(mealID);
-
+    public void updateOrderItem(OrderItem orderItem) {
+        if (orderItem.getQuantity() == 0) {
+            this.cart.remove(orderItem);
+        } else {
+            this.cart.put(orderItem, true);
+        }
     }
 
     /**

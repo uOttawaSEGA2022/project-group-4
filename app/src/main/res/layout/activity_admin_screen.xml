@@ -8,7 +8,7 @@
     android:id="@+id/linearLayout2">
 
     <RelativeLayout
-        android:id="@+id/heading_layout"
+        android:id="@+id/btnContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout_conversion_absoluteHeight="56dp"

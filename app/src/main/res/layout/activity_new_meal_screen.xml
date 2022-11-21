@@ -54,9 +54,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:contentDescription="@string/meal_type"
-                    android:theme="@style/SpinnerTheme"
-                    android:minHeight="50dp" />
+                    android:contentDescription="@string/spinner_description"
+                    android:minHeight="50dp"
+                    android:theme="@style/SpinnerTheme" />
 
             </LinearLayout>
 
@@ -361,7 +361,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/back_button"
+                    android:id="@+id/order_button"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -375,7 +375,7 @@
                     android:textSize="20sp" />
 
                 <Button
-                    android:id="@+id/add_meal_button"
+                    android:id="@+id/cancel_button"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

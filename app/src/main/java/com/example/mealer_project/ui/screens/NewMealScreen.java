@@ -3,7 +3,6 @@ package com.example.mealer_project.ui.screens;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -58,8 +57,8 @@ public class NewMealScreen extends UIScreen implements StatefulView {
     private void attachOnClickListeners() {
 
         // Variable Declaration
-        Button addMealButton = (Button) findViewById(R.id.add_meal_button);
-        Button backButton = (Button) findViewById(R.id.back_button);
+        Button addMealButton = (Button) findViewById(R.id.cancel_button);
+        Button backButton = (Button) findViewById(R.id.order_button);
 
         // Process: setting the new onClick method for addMeal
         addMealButton.setOnClickListener(new Button.OnClickListener() {
