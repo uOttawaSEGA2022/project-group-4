@@ -3,7 +3,9 @@ package com.example.mealer_project.data.models;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.orders.OrderItem;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +18,7 @@ public class Client extends User {
      * Stores order items in cart
      */
     Map<OrderItem, Boolean> cart;
-    public final Orders ORDERS;
+    public final List<String> ORDER_IDS;
 
     private CreditCard clientCreditCard;
     /**
@@ -34,7 +36,7 @@ public class Client extends User {
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
         this.setClientCreditCard(clientCreditCard);
-        this.ORDERS = new Orders();
+        this.ORDER_IDS = new ArrayList<String>();
         this.cart = new HashMap<>(); //empty cart
     }
 
@@ -50,7 +52,7 @@ public class Client extends User {
         this.setClientCreditCard(clientCreditCard);
 
         this.cart = new HashMap<>(); //empty cart
-        this.ORDERS = new Orders();
+        this.ORDER_IDS = new ArrayList<String>();
     }
 
     @Override

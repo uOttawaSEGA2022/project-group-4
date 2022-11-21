@@ -54,7 +54,7 @@ public class Order {
         this.setChef(orderEntityModel.getChef());
         this.setOrderID(orderEntityModel.getOrderID());
         this.setDate(new Date());
-        this.setIsPending(orderEntityModel.getPendingStatus());
+        this.setIsPending(orderEntityModel.getIsPending());
         this.setIsCompleted(orderEntityModel.getIsCompleted());
 
     }
