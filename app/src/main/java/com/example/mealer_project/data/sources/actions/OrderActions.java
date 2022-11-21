@@ -1,5 +1,6 @@
 package com.example.mealer_project.data.sources.actions;
 
+import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.ADD_MEAL;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CLIENT_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.ORDER_COLLECTION;
@@ -105,25 +106,7 @@ public class OrderActions {
                                         }
                                     });
 
-                            database.collection(ORDER_COLLECTION)
-                                    .document(order.getClientID())
-                                    .update("orders", FieldValue.arrayUnion(order.getOrderID()))
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {@Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.d("ClientOrdersSuccess", "DocumentSnapshot successfully updated!");
-                                    }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("ClientOrdersError", "Error updating document", e);
-                                        }
-                                    });
-
-
-
                             App.ORDER_HANDLER.handleActionSuccess(ADD_ORDER, order);
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -146,57 +129,22 @@ public class OrderActions {
         if (Preconditions.isNotNull(orderId)) {
 
             database.collection(ORDER_COLLECTION)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    .document(orderId)
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document1 : task.getResult()) {
+                        public void onSuccess(Void aVoid) {
 
-                                    database.collection(ORDER_COLLECTION)
-                                            .document(document1.getId())
-                                            .collection("orders")
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot document2 : task.getResult()) {
-
-                                                            if(document2.getId() == orderId){
-
-                                                                database.collection(ORDER_COLLECTION)
-                                                                        .document(document1.getId())
-                                                                        .collection("orders")
-                                                                        .document(document2.getId())
-                                                                        .delete()
-                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                            @Override
-                                                                            public void onSuccess(Void aVoid) {
-                                                                                App.ORDER_HANDLER.handleActionSuccess(REMOVE_ORDER, orderId);
-                                                                            }
-                                                                        })
-                                                                        .addOnFailureListener(new OnFailureListener() {
-                                                                            @Override
-                                                                            public void onFailure(@NonNull Exception e) {
-                                                                                App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "Failed to remove order from Firebase: " + e.getMessage());
-                                                                            }
-                                                                        });
-                                                            }
-                                                        }
-                                                    } else {
-                                                        Log.d("removeOrder", "Error getting orderId documents: ", task.getException());
-                                                    }
-                                                }
-                                            });
-
-                                }
-                            } else {
-                                Log.d("removeOrder", "Error getting chefId documents: ", task.getException());
-                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
                         }
                     });
         }
+
     }
 
 
