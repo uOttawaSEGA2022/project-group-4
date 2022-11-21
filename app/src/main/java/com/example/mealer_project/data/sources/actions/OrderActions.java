@@ -13,12 +13,15 @@ import androidx.annotation.NonNull;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.orders.OrderItem;
+import com.example.mealer_project.data.models.orders.SearchMealItem;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -46,6 +49,7 @@ public class OrderActions {
 
         if (Preconditions.isNotNull(order)) {
 
+            // create order hashmap to be added to firebase Orders Collection
             Map<String, Object> databaseOrder = new HashMap<>();
 
             databaseOrder.put("chefId", order.getChef().getUserId());
@@ -53,29 +57,29 @@ public class OrderActions {
 
             Map<String, Integer> mealIds = new HashMap<>();
 
-            for (Map.Entry<String, Object> entry : order.getOrderItems().entrySet()) {
-                String key = entry.getKey();
-                Object value = entry.getValue();
+            for (OrderItem key: order.getOrderItems().keySet()) {
 
-                mealIds.put(key.getMeal().getMealID(), value);
-                // ...
+                mealIds.put(key.getSearchMealItem().getMeal().getMealID(), key.getQuantity());
             }
 
             databaseOrder.put("mealIds", mealIds);
-            databaseOrder.put("meals", order.getorderItems());
-            databaseOrder.put("isPending", order.isPending());
-            databaseOrder.put("isRejected", order.isRejected());
-            databaseOrder.put("isCompleted", order.isCompleted());
+            databaseOrder.put("meals", order.getOrderItems());
+            databaseOrder.put("isPending", order.getIsPending());
+            databaseOrder.put("isRejected", order.getIsRejected());
+            databaseOrder.put("isCompleted", order.getIsCompleted());
             databaseOrder.put("date", order.getOrderDate());
 
+            // Add order to Orders Collection
             database.collection(ORDER_COLLECTION)
                     .add(databaseOrder)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
 
+                            // if successful, update orderId
                             order.setOrderID(documentReference.getId());
 
+                            // if successful, add orderId to specific chef's list of orders
                             database.collection(CHEF_COLLECTION)
                                             .document(order.getChef().getUserId())
                                             .update("orders", FieldValue.arrayUnion(order.getOrderID()))
@@ -91,6 +95,7 @@ public class OrderActions {
                                                 }
                                             });
 
+                            // if successful, add orderId to specific client's list of orders
                             database.collection(CLIENT_COLLECTION)
                                     .document(order.getClientID())
                                     .update("orders", FieldValue.arrayUnion(order.getOrderID()))
@@ -128,21 +133,57 @@ public class OrderActions {
 
         if (Preconditions.isNotNull(orderId)) {
 
-            database.collection(ORDER_COLLECTION)
-                    .document(orderId)
-                    .delete()
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
+            // retrieve order object from firebase
+            DocumentReference docRef = database.collection(ORDER_COLLECTION).document(orderId);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
 
+                            // if the order exists, get clientId and chefId
+                            String clientId = (String) document.get("clientId");
+                            String chefId = (String) document.get("chefId");
+
+                            // delete orderId from specific chef's list of orders
+                            database.collection(CHEF_COLLECTION)
+                                            .document(chefId)
+                                            .update("orders", FieldValue.arrayRemove(orderId));
+
+                            // delete orderId from specific client's list of orders
+                            database.collection(CLIENT_COLLECTION)
+                                    .document(clientId)
+                                    .update("orders", FieldValue.arrayRemove(orderId));
+
+                            //finally, delete order from Orders Collection
+                            docRef
+                            .delete()
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+
+                                            App.ORDER_HANDLER.handleActionSuccess(REMOVE_ORDER, orderId);
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "Failed to remove order from database: " + e.getMessage());
+                                        }
+                                    });
+
+
+                        } else {
+                            Log.d("RemoveOrder", "No such document");
                         }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting document", e);
-                        }
-                    });
+                    } else {
+                        Log.d("RemoveOrder", "get failed with ", task.getException());
+                    }
+                }
+            });
         }
 
     }
