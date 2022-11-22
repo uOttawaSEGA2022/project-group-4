@@ -247,7 +247,7 @@ public class OrderHandler {
                 // create a new Order
                 Order order = new Order();
                 // set info of client making order
-                order.setClientInfo(App.getClient());
+                order.setClient(App.getClient());
                 // set today's date
                 order.setDate(Utilities.getTodaysDate());
                 // flag to set chef info
@@ -256,7 +256,9 @@ public class OrderHandler {
                 for (OrderItem orderItem : cart.keySet()) {
                     // if chef info not added, add it
                     if (!isChefInfoAdded) {
+                        // set chef info
                         order.setChefInfo(orderItem.getSearchMealItem().getChef());
+                        isChefInfoAdded = true;
                     }
                     // add meal's id to order
                     // we don't need to add meal instance itself, since we're not storing this info remotely, only ids

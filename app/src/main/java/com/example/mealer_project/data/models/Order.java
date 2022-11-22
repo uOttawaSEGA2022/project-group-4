@@ -17,6 +17,7 @@ public class Order {
     private String orderID;
     private ChefInfo chefInfo;
     private ClientInfo clientInfo;
+    // need to add a way to store mealId + quantity + and optionally a meal instance
     private Map<String, Meal> meals;
     private Date date; //order date
     private boolean isPending;
@@ -55,30 +56,9 @@ public class Order {
         this.setIsCompleted(false);
     }
 
-    /**
-     * Constructor to create an instance of an Order without order ID (ex: when creating new order locally)
-     * @param chefInfo info of chef who makes the meals
-     * @param clientInfo info of the client who placed the order
-     * @param meals List of meals part of the order
-     * @param date Date and time for when the order was placed
-     */
-    public Order(ChefInfo chefInfo, Client clientInfo, Map<String, Meal> meals, Date date){
-        this.setChefInfo(chefInfo);
-        this.setClientInfo(clientInfo);
-        this.setMeal(meals);
-        this.setDate(date);
-        this.setIsPending(true);
-        this.setIsRejected(false);
-        this.setIsCompleted(false);
-    }
-
     //----------------------------------------------------------------------------------------------------------
 
     // Chef Info
-
-    public void setChefInfo(Chef chef){
-        this.chefInfo = new ChefInfo(chef);
-    }
 
     public void setChefInfo(ChefInfo chefInfo){
         this.chefInfo = chefInfo;
@@ -90,7 +70,7 @@ public class Order {
 
     // Client Info
 
-    public void setClientInfo(Client client) {
+    public void setClient(Client client) {
         this.clientInfo = new ClientInfo(client);
     }
 

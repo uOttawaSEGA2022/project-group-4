@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.screens.TestOrdersActivity">
+
+    <Button
+        android:id="@+id/toOrderScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Screen"
+        app:layout_constraintBottom_toTopOf="@+id/toSubmitOrder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/toSubmitOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit Order"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/updateCartCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Cart Count"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toSubmitOrder" />
+
+    <LinearLayout
+        android:id="@+id/cartContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/updateCartCount"
+        tools:layout_editor_absoluteX="0dp">
+
+        <TextView
+            android:id="@+id/cartCountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal|center_vertical"
+            android:minHeight="50dp"
+            android:text="Cart Count: "
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/cartCountTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

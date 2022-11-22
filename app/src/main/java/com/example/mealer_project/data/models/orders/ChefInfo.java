@@ -3,7 +3,9 @@ package com.example.mealer_project.data.models.orders;
 import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.Chef;
 
-public class ChefInfo {
+import java.io.Serializable;
+
+public class ChefInfo implements Serializable {
     String chefId;
     String chefName;
     int chefRating;

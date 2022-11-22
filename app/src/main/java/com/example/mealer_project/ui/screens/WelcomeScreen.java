@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -50,6 +51,25 @@ public class WelcomeScreen extends UIScreen {
             setWelcomeMessage("Welcome " + currentUser.getRole() + ", " + currentUser.getFirstName() + " " + currentUser.getLastName() + "!");
         }
 
+        // uncomment when testing orders
+        testOrder();
+
+    }
+
+    private void testOrder() {
+        // if current user is client
+        if (App.getClient() != null) {
+            Button testOrderBtn = (Button) findViewById(R.id.testOrderBtn);
+            testOrderBtn.setVisibility(View.VISIBLE);
+
+            // test order
+            testOrderBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), TestOrdersActivity.class));
+                }
+            });
+        }
     }
 
     private void setWelcomeMessage(String message) {

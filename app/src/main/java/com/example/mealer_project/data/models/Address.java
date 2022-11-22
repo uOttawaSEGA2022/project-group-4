@@ -2,7 +2,9 @@ package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
     private String streetAddress;
     private String city;
     private String postalCode;

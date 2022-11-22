@@ -3,7 +3,9 @@ package com.example.mealer_project.data.models.orders;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;
 
-public class SearchMealItem {
+import java.io.Serializable;
+
+public class SearchMealItem implements Serializable {
     private Meal meal;
     private ChefInfo chef;
 

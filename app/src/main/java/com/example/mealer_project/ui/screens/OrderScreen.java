@@ -40,11 +40,12 @@ public class OrderScreen extends UIScreen implements StatefulView {
     private Button plusButton;
     private Button addOrRemoveButton;
     private Button checkoutButton;
+    private EditText quantityText;
 
     // counter for quantity
     int totalQuantityCounter = 0;
     // flag to track if item needs to be added to the cart
-    boolean addToCart = false;
+    boolean addToCart = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
         minusButton = (Button) findViewById(R.id.minus_button);
         plusButton = (Button) findViewById(R.id.add_button);
         addOrRemoveButton = (Button) findViewById(R.id.add_or_remove_from_cart);
+        quantityText = (EditText) findViewById(R.id.order_quantity);
 
         // Process: attaching listeners to buttons
         attachOnClickListeners();
@@ -66,8 +68,10 @@ public class OrderScreen extends UIScreen implements StatefulView {
         if (response.isSuccess()) {
             // display the meal and chef data
             displayMealAndChefData();
-            // display quantity and the set appropriate button text
+            // display quantity
             updateOrderQuantity();
+            // set appropriate text for the button
+            setAddOrRemoveButtonText();
         } else {
             // display error message if unable to load meals data
             displayErrorToast(response.getErrorMessage());
@@ -109,6 +113,12 @@ public class OrderScreen extends UIScreen implements StatefulView {
         addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // if current quantity zero, we don't need to do anything
+                if (totalQuantityCounter == 0) {
+                    displayErrorToast("Please select quantity!");
+                    return;
+                }
+
                 // ensure a valid client available at this point
                 if (Preconditions.isNotNull(App.getClient())) {
                     // if adding item to the cart
@@ -153,6 +163,8 @@ public class OrderScreen extends UIScreen implements StatefulView {
                         if (orderItem != null) {
                             // update the meal's order quantity
                             this.totalQuantityCounter = orderItem.getQuantity();
+                            // set add to cart as false, so we only allow remove from cart
+                            this.addToCart = false;
                             // display the order quantity
                             updateUI();
                         }
@@ -200,20 +212,6 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-
-        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) { // adding new order completed
-
-            // Output
-            displaySuccessToast((String) payload);
-
-
-            // Process: finish the activity and return
-            this.setResult(Activity.RESULT_OK);
-
-            this.finish(); //returning to search screen
-
-        }
-        //else if -> add logic for other methods if needed
 
     }
 
@@ -298,24 +296,20 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
     private void updateOrderQuantity() {
         // sets the text (counter) for the quantity total
-        TextView quantityText = (EditText) findViewById(R.id.order_quantity);
-        quantityText.setText(this.totalQuantityCounter);
+        quantityText.setText(String.valueOf(this.totalQuantityCounter), TextView.BufferType.EDITABLE);
+    }
 
-
+    private void setAddOrRemoveButtonText() {
         // sets the text for the add/remove from cart button
-        // Message depends on state of totalQuantityCounter
-        // If quantity is 0, then we show add to cart, else we show remove from cart
-        Button addOrRemovingButton = (Button)findViewById(R.id.add_or_remove_from_cart);
 
-        if (this.totalQuantityCounter == 0) { // meal has not been added to cart
-            this.addToCart = true;
-            addOrRemovingButton.setText("Add to Cart");
+        // meal has not been added to cart
+        if (addToCart) {
+            addOrRemoveButton.setText("Add to Cart");
         }
 
         else {
             // meal has already been added to cart, so only action allowed is to remove from cart
-            addToCart = false;
-            addOrRemovingButton.setText("Remove from Cart");
+            addOrRemoveButton.setText("Remove from Cart");
             // disable quantity box
             quantityText.setFocusable(false);
             quantityText.setEnabled(false);
@@ -323,7 +317,5 @@ public class OrderScreen extends UIScreen implements StatefulView {
             quantityText.setKeyListener(null);
             quantityText.setBackgroundColor(Color.TRANSPARENT);
         }
-
-
     }
 }
