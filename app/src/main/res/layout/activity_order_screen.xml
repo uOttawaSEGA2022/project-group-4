@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:minHeight="50dp"
     tools:context=".ui.screens.OrderScreen">
 
     <ScrollView
@@ -304,17 +305,16 @@
                     android:textSize="20sp"
                     tools:ignore="TextContrastCheck" />
 
-                <TextView
+                <EditText
                     android:id="@+id/order_quantity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:ems="2"
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="center"
                     android:minWidth="48dp"
-                    android:text="@string/number"
+                    android:minHeight="50dp"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

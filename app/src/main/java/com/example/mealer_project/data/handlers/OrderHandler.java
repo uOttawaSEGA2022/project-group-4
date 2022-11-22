@@ -12,10 +12,15 @@ import com.example.mealer_project.data.models.Orders;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.utils.Utilities;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class OrderHandler {
 
@@ -47,17 +52,7 @@ public class OrderHandler {
                 switch (operationType) {
 
                     case ADD_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof OrderEntityModel) {
-                            // Variable Declaration
-                            Order newOrder = new Order((OrderEntityModel) payload);
-                            //^^Order class must contain validation for this to work
-
-                            // Process: adding order to Firebase
-                            App.getPrimaryDatabase().ORDERS.addOrder(newOrder);
-                        }
-                        else {
-                            handleActionFailure(operationType, "Invalid OrderEntityModel Object provided");
-                        }
+                        addNewOrder();
                         break;
 
                     case REMOVE_ORDER:
@@ -119,10 +114,20 @@ public class OrderHandler {
 
                             // Process: checking for chef or client
                             if (App.getUser().getRole() == UserRoles.CLIENT) { //client
+                                // add order to client's list of orders
+                                if (App.getClient() != null) {
+                                    App.getClient().addOrder((Order) payload);
+                                }
+
                                 // LOCALLY: adding order id to array in client
-                                ((Client) App.getUser()).ORDER_IDS.add(((Order) payload).getOrderID());
+                                // ((Client) App.getUser()).ORDER_IDS.add(((Order) payload).getOrderID());
                             }
                             else { //chef
+                                // add order to chef's list of orders
+                                if (App.getChef() != null) {
+                                    App.getChef().addOrder((Order) payload);
+                                }
+
                                 // LOCALLY: adding order id to array in chef
                                 ((Chef) App.getUser()).ORDER_IDS.add(((Order) payload).getOrderID());
                             }
@@ -229,6 +234,39 @@ public class OrderHandler {
         }
         else { //UI Screen doesn't exist
             Log.e("handleActionFailure", "No UI Screen initialized");
+        }
+    }
+
+    private void addNewOrder() {
+        // ensure valid client
+        if (App.getClient() != null) {
+            // get the clients cart
+            Map<OrderItem, Boolean> cart = App.getClient().getCart();
+            // ensure cart isn't empty or uninitialized
+            if (Preconditions.isNotNull(cart) && !cart.isEmpty()) {
+                // create a new Order
+                Order order = new Order();
+                // set info of client making order
+                order.setClientInfo(App.getClient());
+                // set today's date
+                order.setDate(Utilities.getTodaysDate());
+                // flag to set chef info
+                boolean isChefInfoAdded = false;
+                // iterate through cart and add all meals
+                for (OrderItem orderItem : cart.keySet()) {
+                    // if chef info not added, add it
+                    if (!isChefInfoAdded) {
+                        order.setChefInfo(orderItem.getSearchMealItem().getChef());
+                    }
+                    // add meal's id to order
+                    // we don't need to add meal instance itself, since we're not storing this info remotely, only ids
+                    order.addMeal(orderItem.getSearchMealItem().getMeal().getMealID(), null);
+                }
+                // once order has all mealIds in it, we add the order remotely
+                App.getPrimaryDatabase().ORDERS.addOrder(order);
+            } else {
+                handleActionFailure(dbOperations.ADD_ORDER, "Cart is empty or uninitialized!");
+            }
         }
     }
 

@@ -1,7 +1,9 @@
 package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.OrderItem;
+import com.example.mealer_project.utils.Preconditions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +21,7 @@ public class Client extends User {
      */
     Map<OrderItem, Boolean> cart;
     public final List<String> ORDER_IDS;
+    private List<Order> orders;
 
     private CreditCard clientCreditCard;
     /**
@@ -38,6 +41,7 @@ public class Client extends User {
         this.setClientCreditCard(clientCreditCard);
         this.ORDER_IDS = new ArrayList<String>();
         this.cart = new HashMap<>(); //empty cart
+        this.orders = new ArrayList<>();
     }
 
     /**
@@ -53,6 +57,8 @@ public class Client extends User {
 
         this.cart = new HashMap<>(); //empty cart
         this.ORDER_IDS = new ArrayList<String>();
+        this.orders = new ArrayList<>();
+
     }
 
     @Override
@@ -128,9 +134,44 @@ public class Client extends User {
     }
 
     /**
+     * method to get order item information of a meal present in client's cart
+     * @return if meal present returns an instance of that Meal, else null
+     */
+    public OrderItem getOrderItem(String mealId) {
+        // cart should not be null or empty
+        if (Preconditions.isNotNull(this.cart) && !this.cart.isEmpty()) {
+            for (OrderItem orderItem : this.cart.keySet()) {
+                // if current order item has the meal we're looking for
+                if (orderItem.getSearchMealItem().getMeal().getMealID().equals(mealId)) {
+                    // return the order item
+                    return orderItem;
+                }
+            }
+        }
+        // if cart is empty or no order item found for the meal
+        return null;
+    }
+
+    /**
      * Method for a client to be able to rate a meal
      */
     public void rateMeal() {
         // logic for a client to rate a meal
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public void addOrder(Order order) {
+        this.orders.add(order);
+    }
+
+    public void removeOrder(Order order) {
+        this.orders.remove(order);
     }
 }

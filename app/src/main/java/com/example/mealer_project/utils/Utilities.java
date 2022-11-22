@@ -27,6 +27,10 @@ public class Utilities {
         return DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(dateValue);
     }
 
+    static public Date getTodaysDate() {
+        return DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).getCalendar().getTime();
+    }
+
     static public String getMapPropertyNames(Map mapObj) {
         // print in logcat all properties
         StringBuilder v = new StringBuilder();

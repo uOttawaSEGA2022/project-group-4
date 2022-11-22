@@ -5,6 +5,8 @@ import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.handlers.UserHandler;
+import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.orders.OrderItem;
@@ -61,5 +63,37 @@ public class App {
      */
     public static void setAdminInbox(AdminInbox adminInbox) throws NullPointerException {
         app.setAdminInbox(adminInbox);
+    }
+
+    /**
+     * Helper method to get an instance of a logged in Client
+     * @return instance of client, if authentication or user validation fails, returns null
+     */
+    public static Client getClient() {
+        // if user is logged in and is a Client
+        if (app.isUserAuthenticated() && app.getUser() instanceof Client) {
+            try {
+                return (Client) app.getUser();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Helper method to get an instance of a logged in Chef
+     * @return instance of chef, if authentication or user validation fails, returns null
+     */
+    public static Chef getChef() {
+        // if user is logged in and is a Client
+        if (app.isUserAuthenticated() && app.getUser() instanceof Chef) {
+            try {
+                return (Chef) app.getUser();
+            } catch (Exception e) {
+                return null;
+            }
+        }
+        return null;
     }
 }

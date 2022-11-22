@@ -1,34 +1,38 @@
 package com.example.mealer_project.ui.screens;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.handlers.OrderHandler;
+import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
-import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.OrderItem;
+import com.example.mealer_project.data.models.orders.SearchMealItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
+import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.utils.Response;
 
 public class OrderScreen extends UIScreen implements StatefulView {
 
-    OrderItem orderItem;
+    // store meals and chef data
+    SearchMealItem sMItem;
     Meal mealData;
+    ChefInfo chefData;
+
+    public static final String SEARCH_MEAL_ITEM_ARG_KEY = "SEARCH_MEAL_ITEM_ARG_KEY";
 
     // button instantiations
     private ImageButton backButton;
@@ -39,10 +43,8 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
     // counter for quantity
     int totalQuantityCounter = 0;
-
-    // flag to keep track for whether the meal should be added or removed from cart
-    private boolean addToCart = false; // false until added to cart
-    // this variable is weird bc where are we gonna retrieve this data from? the cart map in the Client class??
+    // flag to track if item needs to be added to the cart
+    boolean addToCart = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +60,18 @@ public class OrderScreen extends UIScreen implements StatefulView {
         // Process: attaching listeners to buttons
         attachOnClickListeners();
 
-        // Process: getting the meal data
-        try {
-            // we get the data from the order item in the search screen
-            //orderItem = (OrderItem) getIntent().getSerializableExtra(SearchScreen.SEARCH_OBJ_INTENT_KEY);
-            //mealData = orderItem.getSearchMealItem().getMeal();
+        // Get the meal and chef data through intent
+        Response response = loadMealAndChefData();
+        // if loading the data was successful
+        if (response.isSuccess()) {
+            // display the meal and chef data
+            displayMealAndChefData();
+            // display quantity and the set appropriate button text
+            updateOrderQuantity();
+        } else {
+            // display error message if unable to load meals data
+            displayErrorToast(response.getErrorMessage());
         }
-        catch (Exception e) { //error-handling
-
-            // Output
-            Log.e("OrderScreen", "unable to get meal info");
-            displayErrorToast("Unable to display meal!");
-
-        }
-
     }
 
     /**
@@ -109,49 +109,78 @@ public class OrderScreen extends UIScreen implements StatefulView {
         addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (addToCart == false) { // clicked add to cart
-
-                    addToCart = true; //updating flag
-
+                // ensure a valid client available at this point
+                if (Preconditions.isNotNull(App.getClient())) {
+                    // if adding item to the cart
+                    if (addToCart) {
+                        // add order item to client's cart
+                        App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                        displaySuccessToast("item added to cart!");
+                    }
+                    // removing item from cart
+                    else {
+                        App.getClient().updateOrderItem(new OrderItem(sMItem, 0));
+                        displaySuccessToast("item removed from cart!");
+                    }
+                } else {
+                    displayErrorToast("Unable to update cart!");
                 }
-                else { // clicked remove from cart
-
-                    addToCart = false; //updating flag
-
-                }
-
-                // Variable Declaration
-                Client client = (Client) App.getUser(); //this needs to be put in a try-catch block
-                // just in case the user isn't a client (should never happen, but handle that error anyway)
-
-                // Process: adding to the client's cart map
-                client.updateOrderItem(orderItem);
-
-                //finish(); //finish the activity
-
-                updateUI(); //-> is it possible to make it so that when it's in the cart, the quantity
-                // buttons are greyed out so that the client can't change the quantities anymore unless they
-                // remove it from the cart first?
-
+                // finish the activity and return back
+                setResult(Activity.RESULT_OK);
+                finish();
             }
         });
 
     }
 
+    private Response loadMealAndChefData() {
+        try {
+            // we get the data from the SearchMealItem passed from the search screen
+            // ensure we have intent
+            if (getIntent() != null) {
+                // ensure we have the data we're looking for in the intent
+                if (getIntent().getSerializableExtra(SEARCH_MEAL_ITEM_ARG_KEY) != null) {
+                    // get the search meal item
+                    this.sMItem = (SearchMealItem) getIntent().getSerializableExtra(SEARCH_MEAL_ITEM_ARG_KEY);
+                    // get the meal and chef data
+                    this.mealData = this.sMItem.getMeal();
+                    this.chefData = this.sMItem.getChef();
+
+                    // check if meal is present in cart already, so we can display present quantity
+                    if (App.getClient() != null) {
+                        // get the order item for the meal (if present)
+                        OrderItem orderItem = App.getClient().getOrderItem(mealData.getMealID());
+                        if (orderItem != null) {
+                            // update the meal's order quantity
+                            this.totalQuantityCounter = orderItem.getQuantity();
+                            // display the order quantity
+                            updateUI();
+                        }
+                    }
+                    // return response so UI can be updated
+                    return new Response(true);
+                }
+            }
+        }
+        catch (Exception e) { //error-handling
+            // Output
+            Log.e("OrderScreen", "unable to get meal info");
+            displayErrorToast("Unable to display meal!");
+        }
+
+        // if we don't have valid data in intent
+        return new Response(false, "No valid data available to display");
+    }
+
     /**
      * Updates the screen with the required information
-     *
-     * NOTE: Use addToCart variable as the parameter for the flag and pass in totalQuantityCounter as the
-     * parameter for quantity in updateOrderScreen method!
      */
     @Override
     public void updateUI() {
 
-        // Process: calling helper method to update the screen, based on obtained meal data
-        updateOrderScreen(mealData.getName(), mealData.getPrice(), mealData.getMealType(),
-                mealData.getCuisineType(), mealData.getIngredients(), mealData.getAllergens(),
-                mealData.getDescription(), addToCart, totalQuantityCounter);
+        // update the quantity displayed
+        // as a side effect: if quantity is zero, Add to Cart button is shown, else, Remove from Cart
+        updateOrderQuantity();
 
     }
 
@@ -225,48 +254,36 @@ public class OrderScreen extends UIScreen implements StatefulView {
     }
 
     /**
-     * Updates the text on the screen to its respective information
-     * @param mealTitle
-     * @param price
-     * @param mealType
-     * @param cuisineType
-     * @param ingredients
-     * @param allergens
-     * @param description
-     * @param flag
-     * @param quantity
+     * Displays meal and chef data
      */
-    private void updateOrderScreen (String mealTitle, double price, String mealType, String cuisineType,
-                                    String ingredients, ArrayList<String> allergens, String description,
-                                    boolean flag, int quantity) {
+    private void displayMealAndChefData () {
         // sets the text for the meal name
         TextView mealNameText = (TextView) findViewById(R.id.order_meal_name);
-        mealNameText.setText(mealTitle);
+        mealNameText.setText(this.mealData.getName());
 
         // sets the text for price
         TextView priceText = (TextView) findViewById(R.id.order_price_of_meal);
-        priceText.setText("$ " + String.valueOf(price));
+        priceText.setText("$ ".concat(String.valueOf(this.mealData.getPrice())));
 
         // sets the text for the chef's name
         TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
-        chefNameText.setText(orderItem.getSearchMealItem().getChef().getFirstName() + " " +
-                orderItem.getSearchMealItem().getChef().getLastName());
+        chefNameText.setText(String.valueOf(this.chefData.getChefName()));
 
         // sets the text for the meal type
         TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);
-        mealTypeText.setText(mealType);
+        mealTypeText.setText(this.mealData.getMealType());
 
         // sets the text for cuisine type
         TextView cuisineText = (TextView) findViewById(R.id.order_msg_cuisine);
-        cuisineText.setText(cuisineType);
+        cuisineText.setText(this.mealData.getCuisineType());
 
         // sets the text for the ingredients
         TextView ingredientsText = (TextView) findViewById(R.id.order_msg_ingredients);
-        ingredientsText.setText(ingredients);
+        ingredientsText.setText(this.mealData.getIngredients());
 
         // sets the text for allergens
         TextView allergensText = (TextView) findViewById(R.id.order_msg_allergens);
-        String allergensString = String.join(", ", allergens); // convert arraylist to string
+        String allergensString = String.join(", ", this.mealData.getAllergens()); // convert arraylist to string
 
         if (allergensString.length() == 0) {
             allergensText.setText("N/A");
@@ -276,22 +293,37 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
         // sets the text for description
         TextView descriptionText = (TextView) findViewById(R.id.order_msg_description);
-        descriptionText.setText(description);
+        descriptionText.setText(this.mealData.getDescription());
+    }
 
-        /* sets the text for the add/remove from cart button
-        Message depends on state of flag - true if they have not added the
-        meal to the cart yet, false if otherwise */
+    private void updateOrderQuantity() {
+        // sets the text (counter) for the quantity total
+        TextView quantityText = (EditText) findViewById(R.id.order_quantity);
+        quantityText.setText(this.totalQuantityCounter);
+
+
+        // sets the text for the add/remove from cart button
+        // Message depends on state of totalQuantityCounter
+        // If quantity is 0, then we show add to cart, else we show remove from cart
         Button addOrRemovingButton = (Button)findViewById(R.id.add_or_remove_from_cart);
 
-        if (flag == false) { // meal has not been added to cart
+        if (this.totalQuantityCounter == 0) { // meal has not been added to cart
+            this.addToCart = true;
             addOrRemovingButton.setText("Add to Cart");
-        } else { // meal has already been added to cart (flag = true)
-            addOrRemovingButton.setText("Remove from Cart");
         }
 
-        // sets the text (counter) for the quantity total
-        TextView quantityText = (TextView) findViewById(R.id.order_quantity);
-        quantityText.setText(quantity);
+        else {
+            // meal has already been added to cart, so only action allowed is to remove from cart
+            addToCart = false;
+            addOrRemovingButton.setText("Remove from Cart");
+            // disable quantity box
+            quantityText.setFocusable(false);
+            quantityText.setEnabled(false);
+            quantityText.setCursorVisible(false);
+            quantityText.setKeyListener(null);
+            quantityText.setBackgroundColor(Color.TRANSPARENT);
+        }
+
 
     }
 }

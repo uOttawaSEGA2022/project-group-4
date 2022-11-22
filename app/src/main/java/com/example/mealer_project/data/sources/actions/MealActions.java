@@ -455,7 +455,7 @@ public class MealActions {
         }
     }
 
-    private Meal makeMealFromFirebase(DocumentSnapshot document) {
+    protected Meal makeMealFromFirebase(DocumentSnapshot document) {
 
         if (document.getData() == null) {
             throw new NullPointerException("makeClientFromFirebase: invalid document object");

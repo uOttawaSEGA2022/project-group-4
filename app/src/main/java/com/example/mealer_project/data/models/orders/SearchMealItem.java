@@ -5,11 +5,16 @@ import com.example.mealer_project.data.models.meals.Meal;
 
 public class SearchMealItem {
     private Meal meal;
-    private Chef chef;
+    private ChefInfo chef;
+
+    public SearchMealItem(Meal meal, ChefInfo chef) {
+        this.setMeal(meal);
+        this.setChef(chef);
+    }
 
     public SearchMealItem(Meal meal, Chef chef) {
-        this.meal = meal;
-        this.chef = chef;
+        this.setMeal(meal);
+        this.setChef(chef);
     }
 
     public Meal getMeal() {
@@ -20,11 +25,15 @@ public class SearchMealItem {
         this.meal = meal;
     }
 
-    public Chef getChef() {
+    public ChefInfo getChef() {
         return chef;
     }
 
     public void setChef(Chef chef) {
+        this.chef = new ChefInfo(chef);
+    }
+
+    public void setChef(ChefInfo chef) {
         this.chef = chef;
     }
 }
