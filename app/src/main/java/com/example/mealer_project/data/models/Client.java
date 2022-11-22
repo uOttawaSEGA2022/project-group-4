@@ -62,7 +62,6 @@ public class Client extends User {
         if (clientCreditCard != null) {
             clientCreditCard.setClientId(userId);
         }
-
     }
 
     /**
@@ -116,9 +115,16 @@ public class Client extends User {
      * this method completely clears the cart
      */
     public void clearCart() {
-
         this.cart.clear(); //cart cleared
 
+    }
+
+    public Map<OrderItem, Boolean> getCart() {
+        return cart;
+    }
+
+    public void setCart(Map<OrderItem, Boolean> cart) {
+        this.cart = cart;
     }
 
     /**

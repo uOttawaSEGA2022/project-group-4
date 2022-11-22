@@ -7,7 +7,10 @@ import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
+import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
+
+import java.util.Map;
 
 public class App {
     static AppInstance app = new AppInstance();
@@ -15,13 +18,10 @@ public class App {
     static final public InboxHandler INBOX_HANDLER = app.getAppDataHandler().getInboxHandler();
     static final public MealHandler MEAL_HANDLER = app.getAppDataHandler().getMealHandler();
     static final public OrderHandler ORDER_HANDLER = app.getAppDataHandler().getOrderHandler();
+    static final public Map<OrderItem, Boolean> CART = app.getClientCart();
 
     public static AppInstance getAppInstance() {
         return app;
-    }
-
-    public static DataHandlers getAppDataHandler() {
-        return app.getAppDataHandler();
     }
 
     public static FirebaseRepository getPrimaryDatabase() {
@@ -33,10 +33,6 @@ public class App {
 
     public static UserHandler getUserHandler() {
         return app.getAppDataHandler().getUserHandler();
-    }
-
-    public static MealHandler getMealHandler() {
-        return app.getAppDataHandler().getMealHandler();
     }
 
     public static InboxHandler getInboxHandler() {
