@@ -1,15 +1,11 @@
 package com.example.mealer_project.data.models;
 
-import com.example.mealer_project.data.entity_models.OrderEntityModel;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
-import com.example.mealer_project.data.models.orders.OrderItem;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Order {
@@ -17,6 +13,7 @@ public class Order {
     private String orderID;
     private ChefInfo chefInfo;
     private ClientInfo clientInfo;
+    private Map<Meal,Integer> mealsQuantity;
     // need to add a way to store mealId + quantity + and optionally a meal instance
     private Map<String, Meal> meals;
     private Date date; //order date
@@ -30,6 +27,7 @@ public class Order {
      * Constructor to initialize an empty order
      */
     public Order() {
+        this.mealsQuantity = new HashMap<>();
         this.meals = new HashMap<>();
         this.setIsPending(true);
         this.setIsRejected(false);
@@ -44,12 +42,13 @@ public class Order {
      * @param meals List of meals part of the order
      * @param date Date and time for when the order was placed
      */
-    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<String, Meal> meals, Date date){
+    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<String, Meal> meals, Map<Meal, Integer> mealsQuantity, Date date){
         // Initialization
         this.setOrderID(orderID);
         this.setChefInfo(chefInfo);
         this.setClientInfo(clientInfo);
         this.setMeal(meals);
+        this.setMealsQuantity(mealsQuantity);
         this.setDate(date);
         this.setIsPending(true);
         this.setIsRejected(false);
@@ -96,6 +95,22 @@ public class Order {
 
     public Map<String, Meal> getMeals() {
         return meals;
+    }
+
+    //----------------------------------------------------------------------------------------------------------
+    /**
+     * Sets the value of the mealQuantity map
+     */
+    public void setMealsQuantity(Map<Meal, Integer> mealsQuantity) {
+        this.mealsQuantity = mealsQuantity;
+    }
+
+    public void addMealQuantity(Meal meal, Integer quantity) {
+        this.mealsQuantity.put(meal, quantity);
+    }
+
+    public Map<Meal, Integer> getMealsQuantity() {
+        return mealsQuantity;
     }
 
     /**

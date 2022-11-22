@@ -1,6 +1,5 @@
 package com.example.mealer_project.data.sources.actions;
 
-import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.GET_MEAL_BY_ID;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_MEALS_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_ORDERS_COLLECTION;
@@ -16,13 +15,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
-import com.example.mealer_project.data.models.orders.OrderItem;
-import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,7 +30,6 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firestore.v1.WriteResult;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -59,10 +54,29 @@ public class OrderActions {
 
         if (Preconditions.isNotNull(order)) {
 
+            Map<String, Object> databaseOrder = new HashMap<>();
+
+            databaseOrder.put("clientInfo", order.getClientInfo());
+            databaseOrder.put("chefInfo", order.getChefInfo());
+            databaseOrder.put("date", order.getOrderDate());
+            databaseOrder.put("isPending", order.getIsPending());
+            databaseOrder.put("isRejected", order.getIsRejected());
+            databaseOrder.put("isCompleted", order.getIsCompleted());
+
+            Map <String, Integer> mealsQuantity = new HashMap<>();
+
+            for (Map.Entry<Meal, Integer> entry : order.getMealsQuantity().entrySet()) {
+                Meal key = entry.getKey();
+                Integer value = entry.getValue();
+                mealsQuantity.put(key.getMealID(), value);
+            }
+
+            databaseOrder.put("mealsQuantity", mealsQuantity);
+
             // Add order to Orders Collection
             database
                     .collection(ORDER_COLLECTION)
-                    .add(order)
+                    .add(databaseOrder)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
@@ -212,8 +226,40 @@ public class OrderActions {
                                         order.setDate(new Date());
                                     }
 
-                                    // make call to the recursive function to get all meals added to this order instance
-                                    getOrderMeals(order);
+                                    Map<String, Integer> mealsQuantity = (Map<String, Integer>) document.getData().get("mealsQuantity");
+                                    for (Map.Entry<String, Integer> entry : mealsQuantity.entrySet()) {
+                                        String key = entry.getKey();
+                                        Integer value = entry.getValue();
+
+                                        database.collection(MEALS_COLLECTION)
+                                                .document(order.getChefInfo().getChefId())
+                                                .collection(CHEF_MEALS_COLLECTION)
+                                                .document(key)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            if (document.exists() && document.getData() != null) {
+                                                                try  {
+                                                                    Meal meal = App.getPrimaryDatabase().MEALS.makeMealFromFirebase(document);
+                                                                    // add the meal to order
+                                                                    order.addMealQuantity(meal, value);
+
+                                                                } catch (Exception e) {
+                                                                    App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error making a meal from data retrieved");
+                                                                }
+                                                            } else {
+                                                                App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error getting the meal for given id");
+                                                            }
+                                                        } else {
+                                                            App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error getting chef's meals");
+                                                        }
+                                                    }
+                                                });
+
+                                    }
                                 } else {
                                     Log.d("RemoveOrder", "No such document");
                                 }
@@ -227,6 +273,9 @@ public class OrderActions {
     }
 
     public void getOrderMeals(Order order) {
+
+
+
         // get id of any invalid meal present in the order instance
         String mealId = order.getIdOfInvalidMeal();
 
