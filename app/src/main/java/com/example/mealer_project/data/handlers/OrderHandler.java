@@ -12,10 +12,16 @@ import com.example.mealer_project.data.models.Orders;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.data.models.orders.MealInfo;
+import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.utils.Utilities;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class OrderHandler {
 
@@ -23,7 +29,8 @@ public class OrderHandler {
         ADD_ORDER,
         REMOVE_ORDER,
         GET_ORDER_BY_ID,
-        UPDATE_ORDER
+        UPDATE_ORDER,
+        ERROR
     };
 
     private StatefulView uiScreen;
@@ -46,48 +53,49 @@ public class OrderHandler {
                 switch (operationType) {
 
                     case ADD_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof OrderEntityModel) {
-                            // below code might cause exception if validation fails or instance can't be created
-                            Order newOrder = new Order((OrderEntityModel) payload);
-                            // if order creation was success, add the meal to database
-                            App.getPrimaryDatabase().ORDERS.addOrder(newOrder);
-                        } else {
-                            handleActionFailure( operationType, "Invalid Order Object provided");
-                        }
+                        addNewOrder();
                         break;
 
                     case REMOVE_ORDER:
-                        // remove order on remote database first
                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
+                            // Process: removing order from Firebase
                             App.getPrimaryDatabase().ORDERS.removeOrder((String) payload);
-                        } else {
+                        }
+                        else {
                             handleActionFailure( operationType, "Invalid Order ID provided");
                         }
                         break;
 
                     case GET_ORDER_BY_ID:
-                        App.getPrimaryDatabase().ORDERS.getOrderById((String) payload);
+                        if (Preconditions.isNotNull(payload) && payload instanceof String)
+                            // Process: getting Order from Firebase, given the orderID
+                            App.getPrimaryDatabase().ORDERS.getOrderById((String) payload);
                         break;
 
                     case UPDATE_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Meal) {
+                        if (Preconditions.isNotNull(payload) && payload instanceof Order) {
+                            // Process: updating order in Firebase
                             App.getPrimaryDatabase().ORDERS.updateOrder((Order) payload);
-                        } else {
-                            handleActionFailure( operationType, "Invalid Order instance provided");
+                        }
+                        else {
+                            handleActionFailure( operationType, "Invalid Order object provided");
                         }
                         break;
 
                     default:
                         Log.e("OrderHandler dispatch", "Action not implemented yet");
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) { //op. failed
                 Log.e("OrderHandler Dispatch", "Exception: " + e.getMessage());
-                uiScreen.dbOperationFailureHandler(MealHandler.dbOperations.ERROR, "Dispatch failed: " + e.getMessage());
+                uiScreen.dbOperationFailureHandler(OrderHandler.dbOperations.ERROR, "Dispatch failed: " + e.getMessage());
             }
 
-        } else {
+        }
+        else { //UI Screen doesn't exist
             Log.e("OrderHandler Dispatch", "Invalid instance provided for uiScreen");
         }
+
     }
 
     /**
@@ -103,53 +111,80 @@ public class OrderHandler {
                 switch (operationType) {
 
                     case ADD_ORDER:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Order && App.getUser().getRole() == UserRoles.CLIENT) {
-                            // add meal locally
-                            ((Client) App.getUser()).ORDERS.addOrder((Order) payload);
+                        if (Preconditions.isNotNull(payload) && payload instanceof Order && App.getUser().getRole() != UserRoles.ADMIN) {
+
+                            // Process: checking for chef or client
+                            if (App.getUser().getRole() == UserRoles.CLIENT) { //client
+                                // add order to client's list of orders
+                                if (App.getClient() != null) {
+                                    App.getClient().addOrder((Order) payload);
+                                }
+
+                                // LOCALLY: adding order id to array in client
+                                // ((Client) App.getUser()).ORDER_IDS.add(((Order) payload).getOrderID());
+                            }
+                            else { //chef
+                                // add order to chef's list of orders
+                                if (App.getChef() != null) {
+                                    App.getChef().addOrder((Order) payload);
+                                }
+
+                                // LOCALLY: adding order id to array in chef
+                                ((Chef) App.getUser()).ORDER_IDS.add(((Order) payload).getOrderID());
+                            }
+
                             // let UI know about success
                             uiScreen.dbOperationSuccessHandler(operationType, "Order added successfully!");
-                        } else {
-                            handleActionFailure(operationType, "Invalid order object provided");
+
+                        }
+                        else { //the ADMIN is trying to add an order, or the Order is invalid
+                            handleActionFailure(operationType, "Invalid order object provided, or ADMIN attempting to add order");
                         }
                         break;
 
                     case REMOVE_ORDER:
                         if (Preconditions.isNotNull(payload) && payload instanceof String && App.getUser().getRole() == UserRoles.CHEF) {
-                            ((Chef) App.getUser()).ORDERS.removeOrder((String) payload);
+                            // LOCALLY: removing order id from array in chef
+                            ((Chef) App.getUser()).ORDER_IDS.remove((String) payload);
+
                             // let UI know about success
                             uiScreen.dbOperationSuccessHandler(operationType, "Order removed successfully!");
-                        } else {
-                            handleActionFailure(operationType, "Invalid order ID");
+                        }
+                        else { //someone other than a CHEF is removing the order, OR the orderID is invalid
+                            handleActionFailure(operationType, "Invalid order ID, or CLIENT/ADMIN attempting to remove order");
                         }
                         break;
 
-                    case UPDATE_ORDER:
+                    /*case UPDATE_ORDER:
                         if (Preconditions.isNotNull(payload) && payload instanceof Order  && App.getUser().getRole() == UserRoles.CHEF) {
-                            // update meal locally
-                            ((Chef) App.getUser()).ORDERS.updateOrder((Order) payload);
-                            uiScreen.dbOperationSuccessHandler(operationType, "updated order info!");
+                            // LOCALLY: nothing should change
+
+                            // let UI know about success
+                            uiScreen.dbOperationSuccessHandler(operationType, "Updated order info successfully!");
                         } else {
                             handleActionFailure( operationType, "Invalid order instance provided");
                         }
-                        break;
+                        break;*/
 
-                    case GET_ORDER_BY_ID:
-                        // update the Chef's meals locally
+                    /*case GET_ORDER_BY_ID:
                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
-                            Map<String, Order> orders = (Map<String, Order>) payload;
-                            ((Chef) App.getUser()).ORDERS.setOrders(orders);
-                            uiScreen.dbOperationSuccessHandler(operationType, orders);
+                            //do smth here
+
+                            uiScreen.dbOperationSuccessHandler(operationType, "");
                         } else {
                             handleActionFailure(operationType, "Invalid payload for getOrder");
                         }
-                        break;
+                        break;*/
+
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) { //error-handling
                 Log.e("handleActionSuccess", "Success handler exception: " + e.getMessage());
-                uiScreen.dbOperationFailureHandler(MealHandler.dbOperations.ERROR, "Failed to process request");
+                uiScreen.dbOperationFailureHandler(OrderHandler.dbOperations.ERROR, "Failed to process request");
             }
 
-        } else {
+        }
+        else { //UI Screen doesn't exist
             Log.e("handleActionSuccess", "No UI Screen initialized");
         }
     }
@@ -190,14 +225,51 @@ public class OrderHandler {
 
                 default:
                     Log.e("handleActionSuccess", "Action not implemented yet");
+
             }
 
             // send error
             Log.e(tag, message);
             uiScreen.dbOperationFailureHandler(operationType, userMessage);
 
-        } else {
+        }
+        else { //UI Screen doesn't exist
             Log.e("handleActionFailure", "No UI Screen initialized");
+        }
+    }
+
+    private void addNewOrder() {
+        // ensure valid client
+        if (App.getClient() != null) {
+            // get the clients cart
+            Map<OrderItem, Boolean> cart = App.getClient().getCart();
+            // ensure cart isn't empty or uninitialized
+            if (Preconditions.isNotNull(cart) && !cart.isEmpty()) {
+                // create a new Order
+                Order order = new Order();
+                // set info of client making order
+                order.setClient(App.getClient());
+                // set today's date
+                order.setDate(Utilities.getTodaysDate());
+                // flag to set chef info
+                boolean isChefInfoAdded = false;
+                // iterate through cart and add all meals
+                for (OrderItem orderItem : cart.keySet()) {
+                    // if chef info not added, add it
+                    if (!isChefInfoAdded) {
+                        // set chef info
+                        order.setChefInfo(orderItem.getSearchMealItem().getChef());
+                        isChefInfoAdded = true;
+                    }
+
+                    // Add mealInfo and quantity to hashmap in order
+                    order.addMealQuantity(orderItem.getSearchMealItem().getMeal(),orderItem.getQuantity());
+                }
+                // once order has all mealIds in it, we add the order remotely
+                App.getPrimaryDatabase().ORDERS.addOrder(order);
+            } else {
+                handleActionFailure(dbOperations.ADD_ORDER, "Cart is empty or uninitialized!");
+            }
         }
     }
 

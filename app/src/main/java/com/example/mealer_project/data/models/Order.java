@@ -1,61 +1,125 @@
 package com.example.mealer_project.data.models;
 
-import com.example.mealer_project.data.entity_models.OrderEntityModel;
+import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.data.models.orders.ChefInfo;
+import com.example.mealer_project.data.models.orders.ClientInfo;
+import com.example.mealer_project.data.models.orders.MealInfo;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class Order {
-    private HashMap<String, Integer> listOfMeals;
-    private String chefID;
-    private String clientID;
-    private String orderID;
-    private Date date;
-    private boolean pending;
-    private boolean completed;
 
+    private String orderID;
+    private ChefInfo chefInfo;
+    private ClientInfo clientInfo;
+    private Map<String,MealInfo> meals;
+    private Date date; //order date
+    private boolean isPending;
+    private boolean isRejected;
+    private boolean isCompleted;
+
+    // Constructor Methods--------------------------------------------------------------------------------------
+
+    /**
+     * Constructor to initialize an empty order
+     */
+    public Order() {
+        this.meals = new HashMap<>();
+        this.setIsPending(true);
+        this.setIsRejected(false);
+        this.setIsCompleted(false);
+    }
 
     /**
      * constructor method
-     * @param chefID ID of the chef who makes the meals
-     * @param clientID ID of the client who placed the order
      * @param orderID ID of the order
+     * @param chefInfo info of chef who makes the meals
+     * @param clientInfo info of the client who placed the order
+     * @param meals mealInfo and corresponding quantity of each meal in order
      * @param date Date and time for when the order was placed
-     * @param listOfMeals list of meals in the order of size 1 to many
      */
-    public Order(String chefID, String clientID, String orderID, Date date, List<String> listOfMeals){
-        this.setClientID(clientID);
-        this.setChefID(chefID);
+    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<String,MealInfo> meals, Date date){
+        // Initialization
         this.setOrderID(orderID);
+        this.setChefInfo(chefInfo);
+        this.setClientInfo(clientInfo);
+        this.setMeals(meals);
         this.setDate(date);
-        this.setPending(true);
-        this.isCompleted(false);
+        this.setIsPending(true);
+        this.setIsRejected(false);
+        this.setIsCompleted(false);
     }
 
-    public Order(OrderEntityModel orderEntityModel){
-        this.setClientID(orderEntityModel.getClientID());
-        this.setChefID(orderEntityModel.getChefID());
-        this.setOrderID(orderEntityModel.getOrderID());
-        this.setDate(date);
-        this.setPending(orderEntityModel.getPendingStatus());
-        this.isCompleted(orderEntityModel.getIsCompleted());
+    //----------------------------------------------------------------------------------------------------------
+
+    // Chef Info
+
+    public void setChefInfo(ChefInfo chefInfo){
+        this.chefInfo = chefInfo;
     }
 
+    public ChefInfo getChefInfo(){
+        return this.chefInfo;
+    }
+
+    // Client Info
+
+    public void setClient(Client client) {
+        this.clientInfo = new ClientInfo(client);
+    }
+
+    public void setClientInfo(ClientInfo clientInfo) {
+        this.clientInfo = clientInfo;
+    }
+
+    public ClientInfo getClientInfo() {
+        return clientInfo;
+    }
+
+
+    //----------------------------------------------------------------------------------------------------------
     /**
-     * Returns the chef ID
-     * @return chef ID
+     * Sets the value of the mealQuantity map
+     * @param meals map of mealInfo and corresponding quantity
      */
-    public String getChefID(){
-        return this.chefID;
+    public void setMeals(Map<String,MealInfo> meals) {
+        this.meals = meals;
     }
 
+    public void addMealQuantity(Meal meal, Integer quantity) {
+
+        MealInfo mealInfo = new MealInfo(meal);
+        mealInfo.setQuantity(quantity);
+
+        this.meals.put(meal.getMealID(),mealInfo);
+    }
+
+    public Map<String,MealInfo> getMeals() {
+        return meals;
+    }
+
+
+
+    //----------------------------------------------------------------------------------------------------------
+
+    public boolean isRejected() {
+        return isRejected;
+    }
+
+    public void setIsRejected(boolean rejected) {
+        isRejected = rejected;
+    }
+
+
+    //----------------------------------------------------------------------------------------------------------
     /**
-     * Returns the ID of the client
-     * @return client ID
+     * Sets the value of the order ID
+     * @param orderID
      */
-    public String getClientID(){
-        return this.clientID;
+    public void setOrderID(String orderID){
+        this.orderID = orderID;
     }
 
     /**
@@ -66,62 +130,7 @@ public class Order {
         return this.orderID;
     }
 
-    /**
-     * Return the date and time that the order was placed
-     * @return date of order placed
-     */
-    public Date getOrderDate(){
-        return this.date;
-    }
-
-    /**
-     * Returns the order with all the list of meals
-     * @return list of meals
-     */
-    public HashMap<String, Integer> getListOfMeals(){
-        return this.listOfMeals;
-    }
-
-    /**
-     * Returns pending status
-     * @return pending
-     */
-    public boolean getPendingStatus(){
-        return this.pending;
-    }
-
-    /**
-     * Return completion status
-     * @return completed status
-     */
-    public boolean getIsCompleted(){
-        return this.completed;
-    }
-
-    /**
-     * Sets the value of the chef ID
-     * @param chefID
-     */
-    public void setChefID(String chefID){
-        this.chefID = chefID;
-    }
-
-    /**
-     * Sets the value of the client ID
-     * @param clientID
-     */
-    public void setClientID(String clientID){
-        this.clientID = clientID;
-    }
-
-    /**
-     * Sets the value of the order ID
-     * @param orderID
-     */
-    public void setOrderID(String orderID){
-        this.orderID = orderID;
-    }
-
+    //----------------------------------------------------------------------------------------------------------
     /**
      * Set the date that the order was placed
      * @param date
@@ -131,26 +140,62 @@ public class Order {
     }
 
     /**
-     * Set the list of meals for the order
-     * @param listOfMeals
+     * Return the date and time that the order was placed
+     * @return date of order placed
      */
-    public void setListOfMeals(HashMap<String, Integer> listOfMeals){
-        this.listOfMeals = listOfMeals;
+    public Date getOrderDate(){
+        return this.date;
     }
 
+    //----------------------------------------------------------------------------------------------------------
     /**
      * Set the status of pending
-     * @param status
+     * @param isPending
      */
-    public void setPending(boolean status){
-        this.pending = status;
+    public void setIsPending(boolean isPending){
+        this.isPending = isPending;
     }
 
     /**
-     * Set the status of completed
-     * @param completed
+     * Returns pending status
+     * @return isPending
      */
-    public void isCompleted(boolean completed){
-        this.completed = completed;
+    public boolean getIsPending(){
+        return this.isPending;
     }
+
+    //----------------------------------------------------------------------------------------------------------
+    /**
+     * Set the status of rejection
+     * @param isRejected
+     */
+    public void isRejected(boolean isRejected){
+        this.isRejected = isRejected;
+    }
+
+    /**
+     * Return rejection status
+     * @return isRejected
+     */
+    public boolean getIsRejected(){
+        return this.isRejected;
+    }
+
+    //----------------------------------------------------------------------------------------------------------
+    /**
+     * Set the status of completed
+     * @param isCompleted
+     */
+    public void setIsCompleted(boolean isCompleted){
+        this.isCompleted = isCompleted;
+    }
+
+    /**
+     * Return completion status
+     * @return isCompleted
+     */
+    public boolean getIsCompleted(){
+        return this.isCompleted;
+    }
+
 }

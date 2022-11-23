@@ -95,6 +95,15 @@
                 android:textSize="20sp"
                 android:visibility="invisible" />
 
+            <Button
+                android:id="@+id/testOrderBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="627dp"
+                android:text="Test Order"
+                android:visibility="gone" />
+
         </RelativeLayout>
 
     </LinearLayout>

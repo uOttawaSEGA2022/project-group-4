@@ -3,13 +3,18 @@ package com.example.mealer_project.app;
 import android.util.Log;
 
 import com.example.mealer_project.data.handlers.DataHandlers;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
+import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class AppInstance {
     private FirebaseRepository primaryDatabase;
@@ -26,7 +31,6 @@ public class AppInstance {
         // set firebase to be the primary database
         primaryDatabase = new FirebaseRepository(FirebaseAuth.getInstance());
         appDataHandlers = new DataHandlers(primaryDatabase);
-
     }
 
     public boolean isUserAuthenticated() {
@@ -87,4 +91,17 @@ public class AppInstance {
         this.mealsListScreen = mealsListScreen;
     }
 
+    /**
+     * Method to get logged in client's cart
+     * @return Map containing order items if user is validated successfully, else an empty map
+     */
+    public Map<OrderItem, Boolean> getClientCart() {
+        // if logged in user is a client
+        if (isUserAuthenticated() && user instanceof Client) {
+            return ((Client) user).getCart();
+        } else {
+            // return empty hashmap
+            return new HashMap<>();
+        }
+    }
 }

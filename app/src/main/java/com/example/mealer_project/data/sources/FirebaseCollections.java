@@ -9,5 +9,7 @@ public abstract class FirebaseCollections {
     public final static String MEALS_COLLECTION = "Meals";
     public final static String MEALS_COLLECTION_CHEF_KEY = "chef";
     public final static String ORDER_COLLECTION = "Orders";
+    public final static String CHEF_ORDERS_COLLECTION = "orders";
+    public final static String CLIENT_ORDERS_COLLECTION = "orders";
     public final static String CHEF_MEALS_COLLECTION = "meals";
 }

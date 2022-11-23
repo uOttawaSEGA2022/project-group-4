@@ -319,27 +319,27 @@ public class MealActions {
                                         .document(mealId)
                                         .get()
                                         .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                                   @Override
-                                                                   public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                                       if (task.isSuccessful()) {
-                                                                           DocumentSnapshot document = task.getResult();
-                                                                           if (document.exists() && document.getData() != null) {
-                                                                               try  {
-                                                                                   Meal meal = makeMealFromFirebase(document);
-                                                                                   // set the meal id
-                                                                                   meal.setMealID(document.getId());
-                                                                                   App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, meal);
-                                                                               } catch (Exception e) {
-                                                                                   App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error making a meal from data retrieved");
-                                                                               }
-                                                                           } else {
-                                                                               App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting the meal for given id");
-                                                                           }
-                                                                       } else {
-                                                                           App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting chef's meals");
-                                                                       }
-                                                                   }
-                                                               });
+                                               @Override
+                                               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                   if (task.isSuccessful()) {
+                                                       DocumentSnapshot document = task.getResult();
+                                                       if (document.exists() && document.getData() != null) {
+                                                           try  {
+                                                               Meal meal = makeMealFromFirebase(document);
+                                                               // set the meal id
+                                                               meal.setMealID(document.getId());
+                                                               App.MEAL_HANDLER.handleActionSuccess(GET_MEAL_BY_ID, meal);
+                                                           } catch (Exception e) {
+                                                               App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error making a meal from data retrieved");
+                                                           }
+                                                       } else {
+                                                           App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting the meal for given id");
+                                                       }
+                                                   } else {
+                                                       App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting chef's meals");
+                                                   }
+                                               }
+                                           });
                             }
                         } else {
                             App.MEAL_HANDLER.handleActionFailure(GET_MEAL_BY_ID, "Error getting chef's meals");
@@ -455,7 +455,7 @@ public class MealActions {
         }
     }
 
-    private Meal makeMealFromFirebase(DocumentSnapshot document) {
+    protected Meal makeMealFromFirebase(DocumentSnapshot document) {
 
         if (document.getData() == null) {
             throw new NullPointerException("makeClientFromFirebase: invalid document object");
