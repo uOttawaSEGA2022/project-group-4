@@ -2,7 +2,7 @@ package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.orders.OrderItem;
-import com.example.mealer_project.ui.core.search.SearchMeals;
+import com.example.mealer_project.ui.screens.search.SearchMeals;
 import com.example.mealer_project.utils.Preconditions;
 
 import java.util.ArrayList;

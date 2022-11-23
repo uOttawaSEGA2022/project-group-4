@@ -93,4 +93,5 @@
     <string name="plus">+</string>
     <string name="spinner_description">spinner description</string>
     <string name="meal_name_here">Meal Name Here</string>
+    <string name="search_meals_btn_label">Search Meals</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.core.search;
+package com.example.mealer_project.ui.screens.search;
 
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;

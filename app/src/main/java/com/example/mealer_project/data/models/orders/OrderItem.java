@@ -1,6 +1,6 @@
 package com.example.mealer_project.data.models.orders;
 
-import com.example.mealer_project.ui.core.search.SearchMealItem;
+import com.example.mealer_project.ui.screens.search.SearchMealItem;
 
 public class OrderItem {
     private SearchMealItem searchMealItem;

@@ -17,14 +17,11 @@ import androidx.annotation.Nullable;
 import com.example.mealer_project.R;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
-import com.example.mealer_project.ui.core.search.SearchMealItem;
 import com.example.mealer_project.ui.screens.OrderScreen;
 
 import java.util.List;
 
 public class SearchMealItemsAdapter extends ArrayAdapter<SearchMealItem> {
-
-    public static final String SEARCH_MEAL_ITEMS_ARG_KEY = "SEARCH_MEAL_ITEMS_ARG_KEY";
 
     /**
      * Constructor

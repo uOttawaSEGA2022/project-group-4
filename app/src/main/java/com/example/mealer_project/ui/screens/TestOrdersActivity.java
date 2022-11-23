@@ -14,7 +14,7 @@ import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
-import com.example.mealer_project.ui.core.search.SearchMealItem;
+import com.example.mealer_project.ui.screens.search.SearchMealItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 
