@@ -80,7 +80,7 @@
     <string name="meals_label">Meals</string>
     <string name="orders_label">Orders</string>
     <string name="view_pending_orders_label">Pending Orders</string>
-    <string name="view_all_orders_label">All Orders</string>
+    <string name="view_completed_orders_label">Completed Orders</string>
     <string name="type_of_meal">Type of Meal:</string>
     <string name="type_of_cuisine">Cuisine Type:</string>
     <string name="unable_to_get_info">unable to get info</string>
