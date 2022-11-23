@@ -44,7 +44,7 @@
         <item>Dinner</item>
         <item>Appetizer</item>
         <item>Entrée</item>
-        <item>Desert</item>
+        <item>Dessert</item>
         <item>Soup</item>
         <item>Bakery</item>
         <item>Beverages</item>
@@ -96,4 +96,6 @@
     <string name="made_by">Made by Chef:</string>
     <string name="special_instructions">Special Instructions:</string>
     <string name="orders_in_progress">Orders In Progress</string>
+    <string name="completed">Completed</string>
+    <string name="date">Date</string>
 </resources>
