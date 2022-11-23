@@ -43,7 +43,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
         // gets meal data from previous screen
         try {
-            mealData = (Meal) getIntent().getSerializableExtra(MealsAdapter.MEALS_DATA_ARG_KEY);
+            mealData = (Meal) getIntent().getSerializableExtra(MEAL_DATA_ARG_KEY);
             updateUI();
         } catch (Exception e) {
             Log.e("MealInfoScreen", "unable to create meal object :(");

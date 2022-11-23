@@ -77,9 +77,11 @@ public class WelcomeScreen extends UIScreen {
     }
 
     public void clickLogout(View view) {
+        // handle user logout
+        App.getAppInstance().logoutUser();
+        // take user back to intro screen
         Intent intent = new Intent(this, IntroScreen.class);
         startActivity(intent);
-        //finish(); // change later to proper code
     }
 
     /**

@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
-import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.Address;
@@ -18,7 +17,6 @@ import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.CreditCard;
 import com.example.mealer_project.data.models.UserRoles;
-import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
@@ -30,11 +28,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Map;
 
 public class UserActions {
 
@@ -124,7 +119,9 @@ public class UserActions {
                                 if (loginScreen != null && r.isSuccess()) {
                                     // load Chef's meals
                                     // app's user should have been set to the Chef by this point (App.getUser() = logged in chef)
+                                    App.getPrimaryDatabase().ORDERS.loadChefOrders(userId);
                                     App.getPrimaryDatabase().MEALS.loadChefMeals(loginScreen);
+
                                 } else if (loginScreen != null){
                                     Log.e("Login failed for chef", r.getErrorMessage());
                                     loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed, " + r.getErrorMessage());
@@ -157,6 +154,7 @@ public class UserActions {
                         if (document.getData() != null){
                             Response r = makeClientFromFirebase(document);
                             if (loginScreen != null && r.isSuccess()) {
+                                App.getPrimaryDatabase().ORDERS.loadClientOrders(userId);
                                 loginScreen.showNextScreen();
                             } else if (loginScreen != null){
                                 Log.e("Login failed for client", r.getErrorMessage());
@@ -240,7 +238,7 @@ public class UserActions {
         }
     }
 
-    private Response makeChefFromFirebase(DocumentSnapshot document){
+    protected Response makeChefFromFirebase(DocumentSnapshot document){
 
         try {
 
