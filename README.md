@@ -121,7 +121,7 @@ Dispatch Action Response Handling:
 SEG2105 Group 4:
 
 - Justin Wang (Team Lead) 🤖
-- Anjali Mohammed 💁‍♀️
+- Anjali Mohammed 💜
 - Amy Huang 🤸‍♀️
 - Kristen Duong 🤡
 - Rahul Atre 👀
