@@ -1,12 +1,9 @@
 package com.example.mealer_project.data.sources.actions;
 
 import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_COLLECTION;
-import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_MEALS_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CHEF_ORDERS_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CLIENT_COLLECTION;
 import static com.example.mealer_project.data.sources.FirebaseCollections.CLIENT_ORDERS_COLLECTION;
-import static com.example.mealer_project.data.sources.FirebaseCollections.MEALS_COLLECTION;
-import static com.example.mealer_project.data.sources.FirebaseCollections.MEALS_COLLECTION_CHEF_KEY;
 import static com.example.mealer_project.data.sources.FirebaseCollections.ORDER_COLLECTION;
 import static com.example.mealer_project.data.handlers.OrderHandler.dbOperations.*;
 
@@ -16,7 +13,6 @@ import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Order;
-import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
 import com.example.mealer_project.data.models.orders.MealInfo;
@@ -29,8 +25,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Date;
 import java.util.HashMap;
