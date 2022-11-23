@@ -1,6 +1,5 @@
 package com.example.mealer_project.app;
 
-import com.example.mealer_project.data.handlers.DataHandlers;
 import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.handlers.OrderHandler;
