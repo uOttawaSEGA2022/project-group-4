@@ -12,12 +12,13 @@ import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.ui.core.ListDataObserver;
 import com.example.mealer_project.ui.core.UIScreen;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealsListScreen extends UIScreen {
+public class MealsListScreen extends UIScreen implements ListDataObserver {
 
     // list to store meals data
     private List<Meal> mealsData;
@@ -155,6 +156,7 @@ public class MealsListScreen extends UIScreen {
         }
     }
 
+    @Override
     public void notifyDataChanged() {
         // reload meals data
         if (meals_type == MEALS_TYPE.OFFERED_MEALS) {

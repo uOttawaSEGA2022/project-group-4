@@ -8,9 +8,11 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.MealEntityModel;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.ui.core.search.SearchMealItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.Preconditions;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class MealHandler {
@@ -27,6 +29,8 @@ public class MealHandler {
         UPDATE_OFFERED_MEALS,
         GET_MENU,
         GET_MEAL_BY_ID,
+        ADD_MEAL_TO_SEARCH_LIST,
+        ADD_MEALS_TO_SEARCH_LIST,
         ERROR
     };
 
@@ -112,6 +116,10 @@ public class MealHandler {
                             handleActionFailure( operationType, "No arugments provided for getMealById");
                         }
                         break;
+
+                    case ADD_MEALS_TO_SEARCH_LIST:
+                        // initiate the operation to get all meals
+                        App.getPrimaryDatabase().MEALS.getAllMeals();
 
                     default:
                         Log.e("MealHandler dispatch", "Action not implemented yet");
@@ -214,6 +222,16 @@ public class MealHandler {
                         }
                         break;
 
+                    case ADD_MEALS_TO_SEARCH_LIST:
+                        // expects an instance of SearchMealItem - which contains Meal and ChefInfo
+                        if (Preconditions.isNotNull(payload) && payload instanceof ArrayList) {
+                            // verify we have valid client instance
+                            if (App.getClient() != null) {
+                                App.getClient().getSearchMeals().addItems((ArrayList<SearchMealItem>) payload);
+                            }
+                        }
+                        break;
+
                     default:
                         Log.e("handleActionSuccess", "Action not implemented yet");
 
@@ -282,8 +300,12 @@ public class MealHandler {
                     userMessage = "Failed to get meal by id!";
                     break;
 
+                case ADD_MEALS_TO_SEARCH_LIST:
+                    tag = "errorGettingSearchList";
+                    userMessage = "Unable to retrieve meals for search";
+
                 default:
-                    Log.e("handleActionSuccess", "Action not implemented yet");
+                    Log.e("handleActionFailure", "Action not implemented yet");
             }
 
             // send error

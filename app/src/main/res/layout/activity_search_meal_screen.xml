@@ -83,7 +83,7 @@
         android:textSize="34sp" />
 
     <ListView
-        android:id="@+id/mlMealsList"
+        android:id="@+id/smMealsList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
@@ -92,7 +92,7 @@
         android:dividerHeight="5dp" />
 
     <LinearLayout
-        android:id="@+id/mlButtonContainer"
+        android:id="@+id/smButtonContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

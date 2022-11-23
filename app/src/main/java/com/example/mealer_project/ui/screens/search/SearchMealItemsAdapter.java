@@ -1,10 +1,9 @@
-package com.example.mealer_project.ui.screens.meals;
+package com.example.mealer_project.ui.screens.search;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,15 @@ import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.data.models.meals.Meal;
-import com.example.mealer_project.ui.screens.MealInfoScreen;
+import com.example.mealer_project.data.models.orders.ChefInfo;
+import com.example.mealer_project.ui.core.search.SearchMealItem;
+import com.example.mealer_project.ui.screens.OrderScreen;
 
 import java.util.List;
 
-public class MealsAdapter extends ArrayAdapter<Meal> {
+public class SearchMealItemsAdapter extends ArrayAdapter<SearchMealItem> {
 
-    public static final String MEALS_DATA_ARG_KEY = "MEAL_DATA_ARG_KEY";
+    public static final String SEARCH_MEAL_ITEMS_ARG_KEY = "SEARCH_MEAL_ITEMS_ARG_KEY";
 
     /**
      * Constructor
@@ -33,7 +34,7 @@ public class MealsAdapter extends ArrayAdapter<Meal> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public MealsAdapter(@NonNull Context context, int resource, @NonNull List<Meal> objects) {
+    public SearchMealItemsAdapter(@NonNull Context context, int resource, @NonNull List<SearchMealItem> objects) {
         super(context, resource, objects);
     }
 
@@ -41,20 +42,25 @@ public class MealsAdapter extends ArrayAdapter<Meal> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         // Get the data item for this position
-        Meal meal = getItem(position);
+        SearchMealItem sMItem = getItem(position);
+        // retrieve the meal
+        Meal meal = sMItem.getMeal();
+        // retrieve ChefInfo
+        ChefInfo chefInfo = sMItem.getChef();
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             // using activity_meals_list_item view
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_meals_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_search_meal_item, parent, false);
         }
         // Populate the meal data
         ((TextView) convertView.findViewById(R.id.smMealId)).setText(meal.getMealID());
-        ((TextView) convertView.findViewById(R.id.mlMealName)).setText(meal.getName());
-        ((TextView) convertView.findViewById(R.id.mlMealDescription)).setText(meal.getDescription());
-        ((TextView) convertView.findViewById(R.id.mlOffered)).setText(meal.isOffered() ? "Yes" : "No");
-        ((TextView) convertView.findViewById(R.id.mlCuisineType)).setText(meal.getCuisineType());
+        ((TextView) convertView.findViewById(R.id.smMealName)).setText(meal.getName());
+        ((TextView) convertView.findViewById(R.id.smMealDescription)).setText(meal.getDescription());
+        ((TextView) convertView.findViewById(R.id.smChef)).setText(chefInfo.getChefName());
+        // TODO: implement chef rating
+        // ((TextView) convertView.findViewById(R.id.smChefRating)).setText();
         // attach on click listener to the meal item
-        LinearLayout mealItemContainer = convertView.findViewById(R.id.mlItemContainer);
+        LinearLayout mealItemContainer = convertView.findViewById(R.id.smItemContainer);
         // Cache row position inside the button using `setTag`
         mealItemContainer.setTag(position);
         // attach the click event handler
@@ -63,15 +69,13 @@ public class MealsAdapter extends ArrayAdapter<Meal> {
             public void onClick(View view) {
                 int position = (Integer) view.getTag();
                 // Use the cached row position number inside LinearLayout's tag
-                Meal mealData = getItem(position);
+                SearchMealItem sMItemData = getItem(position);
 
-                Bundle extras = new Bundle();
-                extras.putSerializable(MealInfoScreen.MEAL_DATA_ARG_KEY, mealData);
-                Intent mealInfoIntent = new Intent(getContext(), MealInfoScreen.class);
-                mealInfoIntent.putExtras(extras);
+                Intent orderScreenIntent = new Intent(getContext(), OrderScreen.class);
+                orderScreenIntent.putExtra(OrderScreen.SEARCH_MEAL_ITEM_ARG_KEY, sMItemData);
 
-                // show meal info screen, passing it the meal's data
-                startActivity(getContext(), mealInfoIntent, null);
+                // show order screen, passing it the search meal item data which contains meal and chef info
+                startActivity(getContext(), orderScreenIntent, null);
             }
         });
         return convertView;

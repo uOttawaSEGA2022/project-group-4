@@ -240,7 +240,7 @@ public class UserActions {
         }
     }
 
-    private Response makeChefFromFirebase(DocumentSnapshot document){
+    protected Response makeChefFromFirebase(DocumentSnapshot document){
 
         try {
 

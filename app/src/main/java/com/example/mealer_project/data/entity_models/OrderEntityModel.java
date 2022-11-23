@@ -1,12 +1,10 @@
 package com.example.mealer_project.data.entity_models;
 
 import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.OrderItem;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class OrderEntityModel {
 
