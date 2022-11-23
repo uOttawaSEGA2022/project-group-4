@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
@@ -383,8 +384,18 @@ public class OrderActions {
         newOrder.setIsCompleted((Boolean)document.getData().get("isCompleted"));
         newOrder.setIsPending((Boolean)document.getData().get("isPending"));
         newOrder.setIsRejected((Boolean)document.getData().get("isRejected"));
-        newOrder.setChefInfo((ChefInfo) document.getData().get("chefInfo"));
-        newOrder.setClientInfo((ClientInfo) document.getData().get("clientInfo"));
+
+        Map<String,Object> chefData = (Map<String, Object>) document.getData().get("chefInfo");
+        Map<String,Object> clientData = (Map<String, Object>) document.getData().get("clientInfo");
+
+        ChefInfo chefInfo = new ChefInfo((String) chefData.get("chefId"), (String) chefData.get("chefName"),
+                (Integer) chefData.get("chefRating"), (Address) chefData.get("chefAddress"));
+
+        ClientInfo clientInfo = new ClientInfo((String) clientData.get("clientId"), (String) clientData.get("clientName"),
+                (String) clientData.get("clientEmail"));
+
+        newOrder.setChefInfo(chefInfo);
+        newOrder.setClientInfo(clientInfo);
         newOrder.setDate((Date) (document.getData().get("date")));
         newOrder.setMeals((Map<String,MealInfo>)(document.getData().get("meals")));
 
