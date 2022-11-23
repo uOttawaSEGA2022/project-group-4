@@ -3,25 +3,14 @@ package com.example.mealer_project.data.handlers;
 import android.util.Log;
 
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.entity_models.MealEntityModel;
-import com.example.mealer_project.data.entity_models.OrderEntityModel;
 import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
-import com.example.mealer_project.data.models.Orders;
-import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
-import com.example.mealer_project.data.models.meals.Meal;
-import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Utilities;
-
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class OrderHandler {
 
@@ -31,7 +20,7 @@ public class OrderHandler {
         GET_ORDER_BY_ID,
         UPDATE_ORDER,
         ERROR
-    };
+    }
 
     private StatefulView uiScreen;
 
@@ -117,7 +106,7 @@ public class OrderHandler {
                             if (App.getUser().getRole() == UserRoles.CLIENT) { //client
                                 // add order to client's list of orders
                                 if (App.getClient() != null) {
-                                    App.getClient().addOrder((Order) payload);
+                                    App.getClient().ORDERS.addOrder((Order) payload);
                                 }
 
                                 // LOCALLY: adding order id to array in client
@@ -126,11 +115,11 @@ public class OrderHandler {
                             else { //chef
                                 // add order to chef's list of orders
                                 if (App.getChef() != null) {
-                                    App.getChef().addOrder((Order) payload);
+                                    App.getChef().ORDERS.addOrder((Order) payload);
                                 }
 
                                 // LOCALLY: adding order id to array in chef
-                                ((Chef) App.getUser()).ORDER_IDS.add(((Order) payload).getOrderID());
+                                ((Chef) App.getUser()).ORDERS.addOrder((Order) payload);
                             }
 
                             // let UI know about success
@@ -145,7 +134,7 @@ public class OrderHandler {
                     case REMOVE_ORDER:
                         if (Preconditions.isNotNull(payload) && payload instanceof String && App.getUser().getRole() == UserRoles.CHEF) {
                             // LOCALLY: removing order id from array in chef
-                            ((Chef) App.getUser()).ORDER_IDS.remove((String) payload);
+                            ((Chef) App.getUser()).ORDERS.removeOrder((String) payload);
 
                             // let UI know about success
                             uiScreen.dbOperationSuccessHandler(operationType, "Order removed successfully!");
@@ -168,7 +157,7 @@ public class OrderHandler {
 
                     /*case GET_ORDER_BY_ID:
                         if (Preconditions.isNotNull(payload) && payload instanceof Map) {
-                            //do smth here
+                            //do something here
 
                             uiScreen.dbOperationSuccessHandler(operationType, "");
                         } else {

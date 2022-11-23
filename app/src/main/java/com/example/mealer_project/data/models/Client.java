@@ -1,13 +1,10 @@
 package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
-import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.utils.Preconditions;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,8 +17,7 @@ public class Client extends User {
      * Stores order items in cart
      */
     Map<OrderItem, Boolean> cart;
-    public final List<String> ORDER_IDS;
-    private List<Order> orders;
+    public final Orders ORDERS;
 
     private CreditCard clientCreditCard;
     /**
@@ -39,9 +35,8 @@ public class Client extends User {
         super(firstName, lastName, email, password, address, role);
         // userId should have been created for the client by this point
         this.setClientCreditCard(clientCreditCard);
-        this.ORDER_IDS = new ArrayList<String>();
         this.cart = new HashMap<>(); //empty cart
-        this.orders = new ArrayList<>();
+        this.ORDERS = new Orders();
     }
 
     /**
@@ -56,8 +51,7 @@ public class Client extends User {
         this.setClientCreditCard(clientCreditCard);
 
         this.cart = new HashMap<>(); //empty cart
-        this.ORDER_IDS = new ArrayList<String>();
-        this.orders = new ArrayList<>();
+        this.ORDERS = new Orders();
 
     }
 
@@ -157,21 +151,5 @@ public class Client extends User {
      */
     public void rateMeal() {
         // logic for a client to rate a meal
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public void addOrder(Order order) {
-        this.orders.add(order);
-    }
-
-    public void removeOrder(Order order) {
-        this.orders.remove(order);
     }
 }

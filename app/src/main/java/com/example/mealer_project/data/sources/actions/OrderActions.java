@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -209,7 +210,6 @@ public class OrderActions {
                                     try {
                                         order.setDate((Date) document.getData().get("date"));
                                     } catch (Exception e) {
-                                        // TODO: handle date parsing failure
                                         order.setDate(new Date());
                                     }
 
@@ -229,7 +229,166 @@ public class OrderActions {
 
     public void updateOrder(Order order){
 
+        if (Preconditions.isNotNull(order)) {
 
+            database.collection(ORDER_COLLECTION)
+                    .document(order.getOrderID())
+                    .update("isPending", order.getIsPending(),
+                                "isRejected", order.getIsRejected(),
+                                "isCompleted", order.getIsCompleted())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            App.ORDER_HANDLER.handleActionSuccess(UPDATE_ORDER,order);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            App.ORDER_HANDLER.handleActionFailure(UPDATE_ORDER,"Error updating order in firebase");
+                        }
+                    });
+        }
     }
 
+
+    public void loadChefOrders(String chefId){
+
+        if (Preconditions.isNotNull(chefId)) {
+
+            // retrieve chef object from firebase
+            database.collection(CHEF_COLLECTION)
+                    .document(chefId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+
+                                    // retrieve list of orderIds from chef
+                                    ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
+
+
+                                    // iterate through list
+                                    for (String orderId : orderIds) {
+
+                                        // go to orders_collection and retrieve order using the given orderId in the list
+                                        database.collection(ORDER_COLLECTION)
+                                                .document(orderId)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            if (document.exists()) {
+
+                                                                //make order object from firebase
+                                                                Order order = makeOrderFromFirebase(document);
+
+                                                                //update orders of the logged in chef
+
+                                                                App.getChef().ORDERS.addOrder(order);
+
+                                                            } else {
+                                                                Log.d("loadChefOrders", "Order not found given orderId stored in chef orders");
+                                                            }
+                                                        } else {
+                                                            Log.d("loadChefOrders", "get failed with ", task.getException());
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                } else {
+                                    Log.d("loadChefOrders", "Chef not found");
+                                }
+                            } else {
+                                Log.d("loadChefOrders", "get failed with ", task.getException());
+                            }
+                        }
+                    });
+        }
+    }
+
+    public void loadClientOrders(String clientId){
+
+        if (Preconditions.isNotNull(clientId)) {
+
+            // retrieve client object from firebase
+            database.collection(CLIENT_COLLECTION)
+                    .document(clientId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+
+                                    // retrieve list of orderIds from client
+                                    ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
+
+
+                                    // iterate through list
+                                    for (String orderId : orderIds) {
+
+                                        // go to orders_collection and retrieve order using the given orderId in the list
+                                        database.collection(ORDER_COLLECTION)
+                                                .document(orderId)
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            DocumentSnapshot document = task.getResult();
+                                                            if (document.exists()) {
+
+                                                                //make order object from firebase
+                                                                Order order = makeOrderFromFirebase(document);
+
+                                                                //update orders of the logged in client
+                                                                App.getClient().ORDERS.addOrder(order);
+
+                                                            } else {
+                                                                Log.d("loadClientOrders", "Order not found given orderId stored in chef orders");
+                                                            }
+                                                        } else {
+                                                            Log.d("loadClientOrders", "get failed with ", task.getException());
+                                                        }
+                                                    }
+                                                });
+                                    }
+                                } else {
+                                    Log.d("loadClientOrders", "Chef not found");
+                                }
+                            } else {
+                                Log.d("loadClientOrders", "get failed with ", task.getException());
+                            }
+                        }
+                    });
+        }
+    }
+
+    protected Order makeOrderFromFirebase(DocumentSnapshot document){
+
+        if (document.getData() == null) {
+            throw new NullPointerException("makeOrderFromFirebase: invalid document object");
+        }
+
+        Order newOrder = new Order();
+
+        newOrder.setOrderID(document.getId());
+        newOrder.setIsCompleted((Boolean)document.getData().get("isCompleted"));
+        newOrder.setIsPending((Boolean)document.getData().get("isPending"));
+        newOrder.setIsRejected((Boolean)document.getData().get("isRejected"));
+        newOrder.setChefInfo((ChefInfo) document.getData().get("chefInfo"));
+        newOrder.setClientInfo((ClientInfo) document.getData().get("clientInfo"));
+        newOrder.setDate((Date) (document.getData().get("date")));
+        newOrder.setMeals((Map<String,MealInfo>)(document.getData().get("meals")));
+
+
+        return newOrder;
+    }
 }

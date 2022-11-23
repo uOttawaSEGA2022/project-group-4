@@ -61,6 +61,7 @@ public class AuthActions {
                                 databaseUser.put("creditCardExpiryMonth", newUser.getClientCreditCard().getExpiryMonth());
                                 databaseUser.put("creditCardExpiryYear", newUser.getClientCreditCard().getExpiryYear());
                                 databaseUser.put("creditCardCvc", newUser.getClientCreditCard().getCvc());
+                                databaseUser.put("orders", null);
 
 
                                 database.collection("Clients").document(newUser.getUserId())
@@ -119,7 +120,7 @@ public class AuthActions {
                                 databaseUser.put("postalCode", newUser.getAddress().getPostalCode());
                                 databaseUser.put("voidCheque", newUser.getVoidCheque());
                                 databaseUser.put("description", newUser.getDescription());
-                                databaseUser.put("meals", null);
+                                databaseUser.put("orders", null);
 
                                 database.collection("Chefs").document(newUser.getUserId())
                                         .set(databaseUser)
