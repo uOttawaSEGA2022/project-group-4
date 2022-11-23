@@ -263,7 +263,7 @@ public class OrderHandler {
                     }
 
                     // Add mealInfo and quantity to hashmap in order
-                    order.addMealQuantity(orderItem.getSearchMealItem().getMeal(), orderItem.getQuantity());
+                    order.addMealQuantity(orderItem.getSearchMealItem().getMeal(),orderItem.getQuantity());
                 }
                 // once order has all mealIds in it, we add the order remotely
                 App.getPrimaryDatabase().ORDERS.addOrder(order);

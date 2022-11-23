@@ -57,7 +57,7 @@ public class OrderActions {
             databaseOrder.put("isPending", order.getIsPending());
             databaseOrder.put("isRejected", order.getIsRejected());
             databaseOrder.put("isCompleted", order.getIsCompleted());
-            databaseOrder.put("mealsQuantity", order.getMealsQuantity());
+            databaseOrder.put("meals", order.getMeals());
 
             // Add order to Orders Collection
             database
@@ -201,7 +201,7 @@ public class OrderActions {
                                     order.setOrderID(document.getId());
                                     order.setClientInfo((ClientInfo) document.getData().get("clientInfo"));
                                     order.setChefInfo((ChefInfo) document.getData().get("chefInfo"));
-                                    order.setMealsQuantity((Map<MealInfo, Integer>) document.getData().get("mealsQuantity"));
+                                    order.setMeals((Map<String, MealInfo>) document.getData().get("meals"));
                                     order.setIsRejected((Boolean) document.getData().get("isRejected"));
                                     order.setIsPending((Boolean) document.getData().get("isPending"));
                                     order.setIsCompleted((Boolean) document.getData().get("isCompleted"));

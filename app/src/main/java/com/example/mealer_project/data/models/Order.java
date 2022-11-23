@@ -14,7 +14,7 @@ public class Order {
     private String orderID;
     private ChefInfo chefInfo;
     private ClientInfo clientInfo;
-    private Map<MealInfo,Integer> mealsQuantity;
+    private Map<String,MealInfo> meals;
     private Date date; //order date
     private boolean isPending;
     private boolean isRejected;
@@ -26,7 +26,7 @@ public class Order {
      * Constructor to initialize an empty order
      */
     public Order() {
-        this.mealsQuantity = new HashMap<>();
+        this.meals = new HashMap<>();
         this.setIsPending(true);
         this.setIsRejected(false);
         this.setIsCompleted(false);
@@ -37,15 +37,15 @@ public class Order {
      * @param orderID ID of the order
      * @param chefInfo info of chef who makes the meals
      * @param clientInfo info of the client who placed the order
-     * @param mealsQuantity mealInfo and corresponding quantity of each meal in order
+     * @param meals mealInfo and corresponding quantity of each meal in order
      * @param date Date and time for when the order was placed
      */
-    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<MealInfo, Integer> mealsQuantity, Date date){
+    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<String,MealInfo> meals, Date date){
         // Initialization
         this.setOrderID(orderID);
         this.setChefInfo(chefInfo);
         this.setClientInfo(clientInfo);
-        this.setMealsQuantity(mealsQuantity);
+        this.setMeals(meals);
         this.setDate(date);
         this.setIsPending(true);
         this.setIsRejected(false);
@@ -82,19 +82,22 @@ public class Order {
     //----------------------------------------------------------------------------------------------------------
     /**
      * Sets the value of the mealQuantity map
-     * @param mealsQuantity map of mealInfo and corresponding quantity
+     * @param meals map of mealInfo and corresponding quantity
      */
-    public void setMealsQuantity(Map<MealInfo, Integer> mealsQuantity) {
-        this.mealsQuantity = mealsQuantity;
+    public void setMeals(Map<String,MealInfo> meals) {
+        this.meals = meals;
     }
 
     public void addMealQuantity(Meal meal, Integer quantity) {
 
-        this.mealsQuantity.put(new MealInfo(meal), quantity);
+        MealInfo mealInfo = new MealInfo(meal);
+        mealInfo.setQuantity(quantity);
+
+        this.meals.put(meal.getMealID(),mealInfo);
     }
 
-    public Map<MealInfo, Integer> getMealsQuantity() {
-        return mealsQuantity;
+    public Map<String,MealInfo> getMeals() {
+        return meals;
     }
 
 
