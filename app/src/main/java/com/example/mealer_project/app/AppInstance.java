@@ -104,4 +104,14 @@ public class AppInstance {
             return new HashMap<>();
         }
     }
+
+    /**
+     * Handle user logout
+     */
+    public void logoutUser() {
+        // remove user
+        this.setUser(null);
+        // sign user out
+        FirebaseAuth.getInstance().signOut();
+    }
 }
