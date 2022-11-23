@@ -13,7 +13,7 @@
     tools:context=".ui.screens.meals.MealsListItem">
 
     <TextView
-        android:id="@+id/mlMealId"
+        android:id="@+id/smMealId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />

@@ -2,23 +2,19 @@ package com.example.mealer_project.ui.screens;
 
 import static com.example.mealer_project.data.handlers.OrderHandler.dbOperations.*;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
-import com.example.mealer_project.data.models.orders.SearchMealItem;
+import com.example.mealer_project.ui.screens.search.SearchMealItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 

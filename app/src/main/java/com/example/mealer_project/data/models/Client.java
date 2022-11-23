@@ -2,6 +2,7 @@ package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.orders.OrderItem;
+import com.example.mealer_project.ui.screens.search.SearchMeals;
 import com.example.mealer_project.utils.Preconditions;
 
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class Client extends User {
     public final Orders ORDERS;
 
     private CreditCard clientCreditCard;
+
+    private SearchMeals searchMeals;
     /**
      * Create a Client object
      * @param firstName First name of the client
@@ -37,6 +40,8 @@ public class Client extends User {
         this.setClientCreditCard(clientCreditCard);
         this.cart = new HashMap<>(); //empty cart
         this.ORDERS = new Orders();
+        // instantiate a SearchMeals instance to store searchable meals
+        this.searchMeals = new SearchMeals();
     }
 
     /**
@@ -52,7 +57,8 @@ public class Client extends User {
 
         this.cart = new HashMap<>(); //empty cart
         this.ORDERS = new Orders();
-
+        // instantiate a SearchMeals instance to store searchable meals
+        this.searchMeals = new SearchMeals();
     }
 
     @Override
@@ -151,5 +157,9 @@ public class Client extends User {
      */
     public void rateMeal() {
         // logic for a client to rate a meal
+    }
+
+    public SearchMeals getSearchMeals() {
+        return searchMeals;
     }
 }

@@ -16,7 +16,7 @@ import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.OrderItem;
-import com.example.mealer_project.data.models.orders.SearchMealItem;
+import com.example.mealer_project.ui.screens.search.SearchMealItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Preconditions;
