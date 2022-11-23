@@ -66,7 +66,7 @@
                     android:layout_margin="5dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/nunito_sans"
-                    android:text="Made by Chef:"
+                    android:text="@string/made_by"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -144,7 +144,7 @@
                         android:layout_below="@id/order_cuisine_of_meal"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
-                        android:text="unable to get info"
+                        android:text="@string/unable_to_get_info"
                         android:textColor="#8A000000"
                         android:textSize="16sp" />
 
@@ -174,7 +174,7 @@
                         android:layout_below="@id/order_ingredients_of_meal"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
-                        android:text="unable to get info"
+                        android:text="@string/unable_to_get_info"
                         android:textColor="#8A000000"
                         android:textSize="16sp" />
                 </RelativeLayout>
@@ -203,7 +203,7 @@
                         android:layout_below="@id/order_allergens_of_meal"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
-                        android:text="unable to get info"
+                        android:text="@string/unable_to_get_info"
                         android:textColor="#8A000000"
                         android:textSize="16sp"
                         tools:ignore="TextContrastCheck" />
@@ -272,7 +272,7 @@
                     android:ems="10"
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="start|top"
-                    android:hint="@string/special_instructions"
+                    android:hint="@string/any_special_instructions"
                     android:inputType="textMultiLine"
                     android:lines="3"
                     android:paddingStart="20dp"
@@ -312,9 +312,10 @@
                     android:ems="2"
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="center"
+                    android:hint="@string/number"
+                    android:inputType="number"
                     android:minWidth="48dp"
                     android:minHeight="50dp"
-                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 

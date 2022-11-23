@@ -10,8 +10,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+
+import java.util.List;
 
 /**
  * This screen will use the ListView to populate the screen with all items in the cart using
@@ -21,10 +24,20 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
 
     // buttons
     private ImageButton backButton;
-    private Button minusButton;
-    private Button plusButton;
     private Button cancelButton;
     private Button orderButton;
+
+    // list to store the items in the cart
+    private List<OrderItem> orderItemList;
+
+    // key to specify the item being displayed
+    public final static String CHECKOUT_TYPE_ARG_KEY = "CHECKOUT_TYPE_ARG_KEY";
+
+    //
+    public final static String CHECKOUT_DATA_ARG_KEY = "CHECKOUT_DATA_ARG_KEY";
+
+    // items adapter
+    private CheckoutAdapter checkoutAdapter;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,10 +46,10 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_screen);
 
+        loadCartData();
+
         // buttons for onClick
         backButton = (ImageButton) findViewById(R.id.button_back3);
-        minusButton = (Button) findViewById(R.id.decrease_quantity);
-        plusButton = (Button) findViewById(R.id.increase_quantity);
         cancelButton = (Button) findViewById(R.id.cancel_button);
         orderButton = (Button) findViewById(R.id.order_button);
 
@@ -45,11 +58,19 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
 
     }
 
+    private void loadCartData() {
+        // check if have intent data and
+        if (getIntent() != null && getIntent().getSerializableExtra(CHECKOUT_TYPE_ARG_KEY) != null) {
+
+        }
+    }
+
     private void attachOnClickListeners(){
 
         // create alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
+        builder.setTitle("Are you sure you wish to continue?");
 
         /* onClick logic for checkout button
         you add all the cart order items to the order and call order handler */
@@ -62,26 +83,6 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
             } // go to previous screen
         });
 
-        // on click method for minus button
-        minusButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // update quantity on screen and update price of item
-
-            }
-        });
-
-        // on click method for plus button
-        plusButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                // update quantity on screen and update price of item
-
-            }
-        });
-
         // on click method for order button
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +91,11 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
             }
         });
 
-        // on click method for order button
+        // on click method for order button (with Alert Dialog)
         cancelButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                builder.setTitle("Are you sure you wish to continue?");
                 builder.setMessage("You will be clearing your cart and returning to the main page.");
 
                 builder.setPositiveButton("Confirm",
