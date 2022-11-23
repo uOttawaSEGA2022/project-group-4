@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.entity_models.AddressEntityModel;
 import com.example.mealer_project.data.models.Address;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.ChefInfo;
@@ -22,14 +23,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class OrderActions {
@@ -55,6 +63,10 @@ public class OrderActions {
 
             databaseOrder.put("clientInfo", order.getClientInfo());
             databaseOrder.put("chefInfo", order.getChefInfo());
+
+            //SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+            //String strDate = dateFormat.format(order.getOrderDate());
+
             databaseOrder.put("date", order.getOrderDate());
             databaseOrder.put("isPending", order.getIsPending());
             databaseOrder.put("isRejected", order.getIsRejected());
@@ -198,21 +210,8 @@ public class OrderActions {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
 
-                                    // create a new Order
-                                    Order order = new Order();
-                                    order.setOrderID(document.getId());
-                                    order.setClientInfo((ClientInfo) document.getData().get("clientInfo"));
-                                    order.setChefInfo((ChefInfo) document.getData().get("chefInfo"));
-                                    order.setMeals((Map<String, MealInfo>) document.getData().get("meals"));
-                                    order.setIsRejected((Boolean) document.getData().get("isRejected"));
-                                    order.setIsPending((Boolean) document.getData().get("isPending"));
-                                    order.setIsCompleted((Boolean) document.getData().get("isCompleted"));
-                                    // have to handle date parsing
-                                    try {
-                                        order.setDate((Date) document.getData().get("date"));
-                                    } catch (Exception e) {
-                                        order.setDate(new Date());
-                                    }
+                                    Order order = makeOrderFromFirebase(document);
+
 
                                     App.ORDER_HANDLER.handleActionSuccess(GET_ORDER_BY_ID, order);
 
@@ -387,18 +386,32 @@ public class OrderActions {
 
         Map<String,Object> chefData = (Map<String, Object>) document.getData().get("chefInfo");
         Map<String,Object> clientData = (Map<String, Object>) document.getData().get("clientInfo");
+        Map<String, String> chefAddressData = (Map<String, String>) chefData.get("chefAddress");
+
+        AddressEntityModel addressEntityModel = new AddressEntityModel();
+        addressEntityModel.setStreetAddress(chefAddressData.get("streetAddress"));
+        addressEntityModel.setCity(chefAddressData.get("city"));
+        addressEntityModel.setCountry(chefAddressData.get("country"));
+        addressEntityModel.setPostalCode(chefAddressData.get("postalCode"));
+        Address chefAddress = new Address(addressEntityModel);
 
         ChefInfo chefInfo = new ChefInfo((String) chefData.get("chefId"), (String) chefData.get("chefName"),
-                (Integer) chefData.get("chefRating"), (Address) chefData.get("chefAddress"));
+                ((Number)chefData.get("chefRating")).intValue(), chefAddress);
 
         ClientInfo clientInfo = new ClientInfo((String) clientData.get("clientId"), (String) clientData.get("clientName"),
                 (String) clientData.get("clientEmail"));
 
         newOrder.setChefInfo(chefInfo);
         newOrder.setClientInfo(clientInfo);
-        newOrder.setDate((Date) (document.getData().get("date")));
-        newOrder.setMeals((Map<String,MealInfo>)(document.getData().get("meals")));
 
+        try {
+            newOrder.setDate(((Timestamp) document.getData().get("date")).toDate());
+        } catch (Exception e) {
+            newOrder.setDate(new Date());
+            Log.e("DATE", "makeOrderFromFirebase: Error parsing date");
+        }
+
+        newOrder.setMeals((Map<String,MealInfo>)(document.getData().get("meals")));
 
         return newOrder;
     }
