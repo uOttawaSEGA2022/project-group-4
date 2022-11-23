@@ -95,4 +95,5 @@
     <string name="meal_name_here">Meal Name Here</string>
     <string name="made_by">Made by Chef:</string>
     <string name="special_instructions">Special Instructions:</string>
+    <string name="orders_in_progress">Orders In Progress</string>
 </resources>
