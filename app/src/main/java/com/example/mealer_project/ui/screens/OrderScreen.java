@@ -83,8 +83,8 @@ public class OrderScreen extends UIScreen implements StatefulView {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-            } // go to previous screen
+                finish(); // go to previous screen
+            }
         });
 
         // on click method for minus button
