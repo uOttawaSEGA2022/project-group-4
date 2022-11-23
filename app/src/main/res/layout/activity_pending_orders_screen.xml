@@ -26,7 +26,7 @@
                 android:src="@drawable/backbutton" />
 
             <TextView
-                android:id="@+id/checkout_title3"
+                android:id="@+id/pending_orders_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/baloo_bhai"
@@ -36,13 +36,28 @@
                 android:textColor="@color/green_primary"
                 android:textSize="34sp" />
 
-            <ListView
-                android:id="@+id/pendingListView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                android:divider="@android:color/transparent"
-                android:dividerHeight="5dp" />
+                android:orientation="horizontal">
+
+                <ListView
+                    android:id="@+id/pendingListView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="5dp">
+
+                </ListView>
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Button" />
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
