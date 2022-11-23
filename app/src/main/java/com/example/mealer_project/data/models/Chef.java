@@ -2,12 +2,7 @@ package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
 import com.example.mealer_project.data.models.meals.Meals;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * This class instantiates an instance of Chef for Mealer App
@@ -23,8 +18,7 @@ public class Chef extends User {
     // storing Chef's meals in an instance of Meals class which provides methods to work with a collection of meals
     // variable is public for accessibility, but also final
     public final Meals MEALS;
-    public final List<String> ORDER_IDS;
-    private Map<String, Order> orders;
+    public final Orders ORDERS;
 
     /**
      * Create a single instance of chef
@@ -48,10 +42,9 @@ public class Chef extends User {
         this.setChefRating(chefRating);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
-        this.ORDER_IDS = new ArrayList<String>();
         this.isSuspended = false;
         this.suspensionDate = null;
-        this.orders = new HashMap<>();
+        this.ORDERS = new Orders();
     }
 
     public Chef(UserEntityModel userData, Address address, String description, String voidCheque) throws IllegalArgumentException {
@@ -63,10 +56,9 @@ public class Chef extends User {
         this.setChefRating(0);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
-        this.ORDER_IDS = new ArrayList<String>();
         this.isSuspended = false;
         this.suspensionDate = null;
-        this.orders = new HashMap<>();
+        this.ORDERS = new Orders();
     }
 
     /**
@@ -178,19 +170,4 @@ public class Chef extends User {
         isSuspended = suspended;
     }
 
-    public Map<String, Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Map<String, Order> orders) {
-        this.orders = orders;
-    }
-
-    public void addOrder(Order order) {
-        this.orders.put(order.getOrderID(), order);
-    }
-
-    public void removeOrder(Order order) {
-        this.orders.remove(order.getOrderID());
-    }
 }

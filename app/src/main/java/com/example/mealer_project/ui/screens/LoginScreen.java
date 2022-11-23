@@ -81,12 +81,14 @@ public class LoginScreen extends UIScreen implements StatefulView {
         if (currentUser.getRole() == UserRoles.ADMIN){
             Intent intent = new Intent(getApplicationContext(), AdminScreen.class);
             startActivity(intent);
-        }else if (currentUser.getRole() == UserRoles.CHEF){
+        } else if (currentUser.getRole() == UserRoles.CHEF){
             Intent intent = new Intent(getApplicationContext(), ChefScreen.class);
             startActivity(intent);
-        }else{
-            Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
+        } else if (currentUser.getRole() == UserRoles.CLIENT){
+            Intent intent = new Intent(getApplicationContext(), ClientScreen.class);
             startActivity(intent);
+        } else {
+            displayErrorToast("Unable to log in. Invalid user role!");
         }
     }
 

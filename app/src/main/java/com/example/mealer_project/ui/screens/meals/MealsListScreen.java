@@ -17,7 +17,7 @@ import com.example.mealer_project.ui.core.UIScreen;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MealsListScreen extends UIScreen {
+public class MealsListScreen extends UIScreen{
 
     // list to store meals data
     private List<Meal> mealsData;
@@ -26,8 +26,7 @@ public class MealsListScreen extends UIScreen {
     public final static String MEALS_TYPE_ARG_KEY = "MEALS_TYPE_ARG_KEY";
     // key to provide custom list of meals through intent
     public final static String MEALS_DATA_ARG_KEY = "MEALS_DATA_ARG_KEY";
-    // meals adapter
-    private MealsAdapter mealsAdapter;
+
     // Defining an enum to describe type of meals data this view can display
     public enum MEALS_TYPE {
       MEALS,
@@ -146,7 +145,8 @@ public class MealsListScreen extends UIScreen {
         // get the meals list
         ListView mealsList = findViewById(R.id.mlMealsList);
         // get the adapter
-        mealsAdapter = new MealsAdapter(this, R.layout.activity_meals_list_item, this.meals);
+        // meals adapter
+        MealsAdapter mealsAdapter = new MealsAdapter(this, R.layout.activity_meals_list_item, this.meals);
         // Attach the adapter to the meals listView
         mealsList.setAdapter(mealsAdapter);
         // add data to the adapter
