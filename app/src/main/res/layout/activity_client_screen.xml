@@ -157,7 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="25dp"
-                    android:text="@string/view_all_orders_label"
+                    android:text="@string/view_completed_orders_label"
                     android:visibility="visible"
                     tools:ignore="TextContrastCheck" />
 
