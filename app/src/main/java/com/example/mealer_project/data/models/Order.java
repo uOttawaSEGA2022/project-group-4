@@ -3,6 +3,7 @@ package com.example.mealer_project.data.models;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
+import com.example.mealer_project.data.models.orders.MealInfo;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -13,9 +14,7 @@ public class Order {
     private String orderID;
     private ChefInfo chefInfo;
     private ClientInfo clientInfo;
-    private Map<Meal,Integer> mealsQuantity;
-    // need to add a way to store mealId + quantity + and optionally a meal instance
-    private Map<String, Meal> meals;
+    private Map<MealInfo,Integer> mealsQuantity;
     private Date date; //order date
     private boolean isPending;
     private boolean isRejected;
@@ -28,7 +27,6 @@ public class Order {
      */
     public Order() {
         this.mealsQuantity = new HashMap<>();
-        this.meals = new HashMap<>();
         this.setIsPending(true);
         this.setIsRejected(false);
         this.setIsCompleted(false);
@@ -39,15 +37,14 @@ public class Order {
      * @param orderID ID of the order
      * @param chefInfo info of chef who makes the meals
      * @param clientInfo info of the client who placed the order
-     * @param meals List of meals part of the order
+     * @param mealsQuantity mealInfo and corresponding quantity of each meal in order
      * @param date Date and time for when the order was placed
      */
-    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<String, Meal> meals, Map<Meal, Integer> mealsQuantity, Date date){
+    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<MealInfo, Integer> mealsQuantity, Date date){
         // Initialization
         this.setOrderID(orderID);
         this.setChefInfo(chefInfo);
         this.setClientInfo(clientInfo);
-        this.setMeal(meals);
         this.setMealsQuantity(mealsQuantity);
         this.setDate(date);
         this.setIsPending(true);
@@ -81,50 +78,23 @@ public class Order {
         return clientInfo;
     }
 
-    //----------------------------------------------------------------------------------------------------------
-    /**
-     * Sets the value of the meal
-     */
-    public void setMeal(Map<String, Meal> meals) {
-        this.meals = meals;
-    }
-
-    public void addMeal(String mealId, Meal meal) {
-        this.meals.put(mealId, meal);
-    }
-
-    public Map<String, Meal> getMeals() {
-        return meals;
-    }
 
     //----------------------------------------------------------------------------------------------------------
     /**
      * Sets the value of the mealQuantity map
+     * @param mealsQuantity map of mealInfo and corresponding quantity
      */
-    public void setMealsQuantity(Map<Meal, Integer> mealsQuantity) {
+    public void setMealsQuantity(Map<MealInfo, Integer> mealsQuantity) {
         this.mealsQuantity = mealsQuantity;
     }
 
     public void addMealQuantity(Meal meal, Integer quantity) {
-        this.mealsQuantity.put(meal, quantity);
+
+        this.mealsQuantity.put(new MealInfo(meal), quantity);
     }
 
-    public Map<Meal, Integer> getMealsQuantity() {
+    public Map<MealInfo, Integer> getMealsQuantity() {
         return mealsQuantity;
-    }
-
-    /**
-     * Returns the id of an invalid meal within the Order's meals map
-     * Invalid meal is where for a given mealId key, the value is null
-     * @return non-null, non-empty string if an invalid meal found, else null
-     */
-    public String getIdOfInvalidMeal() {
-        for (String mealId: this.meals.keySet()) {
-            if (this.meals.get(mealId) == null) {
-                return mealId;
-            }
-        }
-        return null;
     }
 
 

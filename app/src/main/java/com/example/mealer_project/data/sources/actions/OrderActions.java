@@ -19,6 +19,7 @@ import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
+import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -62,16 +63,7 @@ public class OrderActions {
             databaseOrder.put("isPending", order.getIsPending());
             databaseOrder.put("isRejected", order.getIsRejected());
             databaseOrder.put("isCompleted", order.getIsCompleted());
-
-            Map <String, Integer> mealsQuantity = new HashMap<>();
-
-            for (Map.Entry<Meal, Integer> entry : order.getMealsQuantity().entrySet()) {
-                Meal key = entry.getKey();
-                Integer value = entry.getValue();
-                mealsQuantity.put(key.getMealID(), value);
-            }
-
-            databaseOrder.put("mealsQuantity", mealsQuantity);
+            databaseOrder.put("mealsQuantity", order.getMealsQuantity());
 
             // Add order to Orders Collection
             database
@@ -215,6 +207,7 @@ public class OrderActions {
                                     order.setOrderID(document.getId());
                                     order.setClientInfo((ClientInfo) document.getData().get("clientInfo"));
                                     order.setChefInfo((ChefInfo) document.getData().get("chefInfo"));
+                                    order.setMealsQuantity((Map<MealInfo, Integer>) document.getData().get("mealsQuantity"));
                                     order.setIsRejected((Boolean) document.getData().get("isRejected"));
                                     order.setIsPending((Boolean) document.getData().get("isPending"));
                                     order.setIsCompleted((Boolean) document.getData().get("isCompleted"));
@@ -226,40 +219,8 @@ public class OrderActions {
                                         order.setDate(new Date());
                                     }
 
-                                    Map<String, Integer> mealsQuantity = (Map<String, Integer>) document.getData().get("mealsQuantity");
-                                    for (Map.Entry<String, Integer> entry : mealsQuantity.entrySet()) {
-                                        String key = entry.getKey();
-                                        Integer value = entry.getValue();
+                                    App.ORDER_HANDLER.handleActionSuccess(GET_ORDER_BY_ID, order);
 
-                                        database.collection(MEALS_COLLECTION)
-                                                .document(order.getChefInfo().getChefId())
-                                                .collection(CHEF_MEALS_COLLECTION)
-                                                .document(key)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            DocumentSnapshot document = task.getResult();
-                                                            if (document.exists() && document.getData() != null) {
-                                                                try  {
-                                                                    Meal meal = App.getPrimaryDatabase().MEALS.makeMealFromFirebase(document);
-                                                                    // add the meal to order
-                                                                    order.addMealQuantity(meal, value);
-
-                                                                } catch (Exception e) {
-                                                                    App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error making a meal from data retrieved");
-                                                                }
-                                                            } else {
-                                                                App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error getting the meal for given id");
-                                                            }
-                                                        } else {
-                                                            App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error getting chef's meals");
-                                                        }
-                                                    }
-                                                });
-
-                                    }
                                 } else {
                                     Log.d("RemoveOrder", "No such document");
                                 }
@@ -270,68 +231,6 @@ public class OrderActions {
                     });
         }
 
-    }
-
-    public void getOrderMeals(Order order) {
-
-
-
-        // get id of any invalid meal present in the order instance
-        String mealId = order.getIdOfInvalidMeal();
-
-        // meal id is only null when we have all meals in the order object
-        if (mealId == null) {
-            // return the order instance to handler now
-            App.ORDER_HANDLER.handleActionSuccess(GET_ORDER_BY_ID, order);
-        }
-        // we still have to get data for a meal
-        else {
-            database.collection(MEALS_COLLECTION)   // top-level meals collection
-                    .whereEqualTo(MEALS_COLLECTION_CHEF_KEY, order.getChefInfo().getChefId()) // get meals document of the chef
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                    database.collection(MEALS_COLLECTION)
-                                            .document(document.getId())
-                                            .collection(CHEF_MEALS_COLLECTION)
-                                            .document(mealId)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        DocumentSnapshot document = task.getResult();
-                                                        if (document.exists() && document.getData() != null) {
-                                                            try  {
-                                                                Meal meal = App.getPrimaryDatabase().MEALS.makeMealFromFirebase(document);
-                                                                // set the meal id
-                                                                meal.setMealID(document.getId());
-                                                                // add the meal to order
-                                                                order.addMeal(meal.getMealID(), meal);
-                                                                // make a recursive call to getOrderMeals to check if more meals need to be loaded
-                                                                getOrderMeals(order);
-                                                            } catch (Exception e) {
-                                                                App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error making a meal from data retrieved");
-                                                            }
-                                                        } else {
-                                                            App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error getting the meal for given id");
-                                                        }
-                                                    } else {
-                                                        App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error getting chef's meals");
-                                                    }
-                                                }
-                                            });
-                                }
-                            } else {
-                                App.ORDER_HANDLER.handleActionFailure(GET_ORDER_BY_ID, "Error getting chef's meals");
-                            }
-                        }
-                    });
-        }
     }
 
     public void updateOrder(Order order){
