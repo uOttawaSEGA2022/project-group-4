@@ -3,15 +3,25 @@ package com.example.mealer_project.data.handlers;
 import android.util.Log;
 
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.entity_models.MealEntityModel;
+import com.example.mealer_project.data.entity_models.OrderEntityModel;
 import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.Orders;
+import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
+import com.example.mealer_project.data.models.meals.Meal;
+import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Utilities;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class OrderHandler {
 
@@ -251,9 +261,9 @@ public class OrderHandler {
                         order.setChefInfo(orderItem.getSearchMealItem().getChef());
                         isChefInfoAdded = true;
                     }
-                    // add meal's id to order
-                    // we don't need to add meal instance itself, since we're not storing this info remotely, only ids
-                    order.addMeal(orderItem.getSearchMealItem().getMeal().getMealID(), null);
+
+                    // Add mealInfo and quantity to hashmap in order
+                    order.addMealQuantity(orderItem.getSearchMealItem().getMeal(),orderItem.getQuantity());
                 }
                 // once order has all mealIds in it, we add the order remotely
                 App.getPrimaryDatabase().ORDERS.addOrder(order);

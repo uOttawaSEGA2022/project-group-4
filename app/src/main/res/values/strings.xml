@@ -80,11 +80,11 @@
     <string name="meals_label">Meals</string>
     <string name="orders_label">Orders</string>
     <string name="view_pending_orders_label">Pending Orders</string>
-    <string name="view_all_orders_label">All Orders</string>
+    <string name="view_completed_orders_label">Completed Orders</string>
     <string name="type_of_meal">Type of Meal:</string>
     <string name="type_of_cuisine">Cuisine Type:</string>
     <string name="unable_to_get_info">unable to get info</string>
-    <string name="special_instructions">Any special instructions for the chef?</string>
+    <string name="any_special_instructions">Any special instructions for the chef?</string>
     <string name="checkout">Checkout</string>
     <string name="add_or_remove_from_cart">Add/Remove From Cart</string>
     <string name="order">Order</string>
@@ -94,4 +94,6 @@
     <string name="spinner_description">spinner description</string>
     <string name="meal_name_here">Meal Name Here</string>
     <string name="search_meals_btn_label">Search Meals</string>
+    <string name="made_by">Made by Chef:</string>
+    <string name="special_instructions">Special Instructions:</string>
 </resources>
