@@ -1,8 +1,8 @@
 package com.example.mealer_project.data.models;
 
 import com.example.mealer_project.data.entity_models.UserEntityModel;
-import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.OrderItem;
+import com.example.mealer_project.ui.core.search.SearchMeals;
 import com.example.mealer_project.utils.Preconditions;
 
 import java.util.ArrayList;
@@ -24,6 +24,8 @@ public class Client extends User {
     private List<Order> orders;
 
     private CreditCard clientCreditCard;
+
+    private SearchMeals searchMeals;
     /**
      * Create a Client object
      * @param firstName First name of the client
@@ -42,6 +44,8 @@ public class Client extends User {
         this.ORDER_IDS = new ArrayList<String>();
         this.cart = new HashMap<>(); //empty cart
         this.orders = new ArrayList<>();
+        // instantiate a SearchMeals instance to store searchable meals
+        this.searchMeals = new SearchMeals();
     }
 
     /**
@@ -58,7 +62,8 @@ public class Client extends User {
         this.cart = new HashMap<>(); //empty cart
         this.ORDER_IDS = new ArrayList<String>();
         this.orders = new ArrayList<>();
-
+        // instantiate a SearchMeals instance to store searchable meals
+        this.searchMeals = new SearchMeals();
     }
 
     @Override
@@ -173,5 +178,9 @@ public class Client extends User {
 
     public void removeOrder(Order order) {
         this.orders.remove(order);
+    }
+
+    public SearchMeals getSearchMeals() {
+        return searchMeals;
     }
 }
