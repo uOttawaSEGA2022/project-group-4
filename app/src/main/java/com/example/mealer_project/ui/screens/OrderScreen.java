@@ -13,9 +13,6 @@ import android.widget.TextView;
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.OrderHandler;
-import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Client;
-import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.OrderItem;
@@ -39,7 +36,6 @@ public class OrderScreen extends UIScreen implements StatefulView {
     private Button minusButton;
     private Button plusButton;
     private Button addOrRemoveButton;
-    private Button checkoutButton;
     private EditText quantityText;
 
     // counter for quantity
