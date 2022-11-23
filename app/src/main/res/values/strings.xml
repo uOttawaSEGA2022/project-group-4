@@ -95,9 +95,10 @@
     <string name="meal_name_here">Meal Name Here</string>
     <string name="made_by">Made by Chef:</string>
     <string name="special_instructions">Special Instructions:</string>
-    <string name="meal_name_quantity">Meal Name (quantity #)</string>
+    <string name="meal_name_text">Meal Name</string>
     <string name="date">Date</string>
     <string name="client_name_label">Client Name</string>
     <string name="reject_button">Reject</string>
     <string name="accept_button">Accept</string>
+    <string name="quantity">Quantity #</string>
 </resources>
