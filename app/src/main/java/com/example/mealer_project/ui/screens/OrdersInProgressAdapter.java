@@ -5,13 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Orders;
 import com.example.mealer_project.data.models.orders.OrderItem;
 
 import java.util.List;
@@ -36,8 +37,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<OrderItem> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         // get chef's orders in progress
-        Chef chef = App.getChef();
-        chef.ORDER
+        Orders order = App.getChef().ORDERS;
 
 
         // check if an existing view is being reused, otherwise, inflate
@@ -46,6 +46,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<OrderItem> {
         }
 
         // populate data
+        ((TextView) convertView.findViewById(R.id.clientText)).setText("");
 
         return convertView;
     }

@@ -99,4 +99,5 @@
     <string name="orders_in_progress">Orders In Progress</string>
     <string name="completed">Completed</string>
     <string name="date">Date</string>
+    <string name="view_all_orders_label">View All Orders</string>
 </resources>
