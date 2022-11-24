@@ -53,11 +53,13 @@ public class ChefScreen extends UIScreen implements StatefulView {
         // Initialization
         orderList = new ArrayList<Order>();
 
+        updateUI();
+
         // Process: loading the in progress orders
-        loadOrdersInProgress();
+        //loadOrdersInProgress();
 
         // Process: populate the Orders ListView
-        populateOrdersInProgress();
+        //populateOrdersInProgress();
 
     }
 
@@ -75,6 +77,12 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
         // Process: attach adapter to ListView
         ordersInProgressList.setAdapter(ordersInProgressAdapter);
+
+        // Process: if theres no meals, display no meals in progress text
+        if (orderList.size() == 0) {
+            TextView noMealsInProgress = findViewById(R.id.noOrdersInProgress);
+            noMealsInProgress.setVisibility(View.VISIBLE);
+        }
 
         // Process: loop through the map of data for the orders in progress
         for (Order order: this.orderList) {
@@ -156,8 +164,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
             }
         });
 
-
-
         viewPendingOrder.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -181,7 +187,8 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
     @Override
     public void updateUI() {
-
+        loadOrdersInProgress();
+        populateOrdersInProgress();
     }
 
     @Override

@@ -100,11 +100,13 @@
 
         <Button
             android:id="@+id/doneButton"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
             android:layout_margin="10dp"
             android:text="@string/completed"
+            android:textColor="@color/green_primary"
             tools:ignore="TextContrastCheck" />
     </LinearLayout>
 

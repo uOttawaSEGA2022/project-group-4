@@ -37,7 +37,7 @@
             <ListView
                 android:id="@+id/items_in_cart"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="500dp"
                 android:layout_margin="10dp"
                 android:divider="@android:color/transparent"
                 android:dividerHeight="5dp" />

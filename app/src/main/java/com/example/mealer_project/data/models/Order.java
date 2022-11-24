@@ -4,6 +4,7 @@ import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
 import com.example.mealer_project.data.models.orders.MealInfo;
+import com.example.mealer_project.utils.Utilities;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class Order {
      * Constructor to initialize an empty order
      */
     public Order() {
+        this.date = Utilities.getTodaysDate();
         this.meals = new HashMap<>();
         this.setIsPending(true);
         this.setIsRejected(false);
