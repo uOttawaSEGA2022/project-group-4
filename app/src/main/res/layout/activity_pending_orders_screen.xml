@@ -5,61 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/back"
+            android:scaleType="fitXY"
+            android:src="@drawable/backbutton" />
+
+        <TextView
+            android:id="@+id/pending_orders_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/baloo_bhai"
+            android:gravity="center"
+            android:paddingTop="40dp"
+            android:text="@string/view_pending_orders_label"
+            android:textColor="@color/green_primary"
+            android:textSize="34sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/backButton"
-                android:layout_width="48dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#00FFFFFF"
-                android:contentDescription="@string/back"
-                android:scaleType="fitXY"
-                android:src="@drawable/backbutton" />
-
-            <TextView
-                android:id="@+id/pending_orders_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/baloo_bhai"
-                android:gravity="center"
-                android:paddingTop="40dp"
-                android:text="@string/view_pending_orders_label"
-                android:textColor="@color/green_primary"
-                android:textSize="34sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ListView
+                android:id="@+id/pendingListView"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_margin="10dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="5dp">
 
-                <ListView
-                    android:id="@+id/pendingListView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:divider="@android:color/transparent"
-                    android:dividerHeight="5dp">
-
-                </ListView>
-
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Button" />
-            </LinearLayout>
+            </ListView>
 
         </LinearLayout>
-    </ScrollView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

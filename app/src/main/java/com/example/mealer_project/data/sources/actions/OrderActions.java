@@ -411,7 +411,19 @@ public class OrderActions {
             Log.e("DATE", "makeOrderFromFirebase: Error parsing date");
         }
 
-        newOrder.setMeals((Map<String,MealInfo>)(document.getData().get("meals")));
+        Map<String,Object> mealsData = (Map<String, Object>) document.getData().get("meals");
+        Map<String,MealInfo> meals = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : mealsData.entrySet()) {
+            String key = entry.getKey();
+            Map<String,Object> value = (Map<String,Object>) entry.getValue();
+
+            MealInfo mealInfo = new MealInfo((String) value.get("name"), ((Number)value.get("price")).doubleValue(), ((Number)value.get("quantity")).intValue());
+
+            meals.put(key, mealInfo);
+        }
+
+        newOrder.setMeals(meals);
 
         return newOrder;
     }

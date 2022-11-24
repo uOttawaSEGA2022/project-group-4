@@ -22,7 +22,7 @@ public class PendingOrdersScreen extends UIScreen {
     /**
      * the map that contains the current CHEF's Orders
      */
-    private Map<String, Order> ordersData;
+    private List<Order> ordersData;
 
     /**
      * the list that will hold the orders
@@ -47,7 +47,7 @@ public class PendingOrdersScreen extends UIScreen {
         setContentView(R.layout.activity_pending_orders_screen);
 
         // Initialization
-        ordersData = new HashMap<String, Order>();
+        ordersData = new ArrayList<Order>();
         backButton = findViewById(R.id.backButton);
 
         // Process: loading the Orders data
@@ -69,7 +69,7 @@ public class PendingOrdersScreen extends UIScreen {
         // Process: checking if current user is a CHEF
         if (App.getUser() instanceof Chef) { //is CHEF
             // Initialization: setting ordersData to the map of orderIDs & Orders
-            this.ordersData = ((Chef) App.getUser()).getOrders();
+            this.ordersData = ((Chef) App.getUser()).ORDERS.getPendingOrders();
         }
         else { //not a chef -> error-handling
             Log.e("PendingOrdersScreen", "Can't show pending offered; Current logged-in user is not a CHEF");
@@ -96,7 +96,7 @@ public class PendingOrdersScreen extends UIScreen {
         pendingOrdersList.setAdapter(pendingOrdersAdapter);
 
         // Process: looping through the map of data
-        for (Order order: this.ordersData.values()) {
+        for (Order order: this.ordersData) {
             pendingOrdersAdapter.add(order); //adding the orderData to the list
         }
 

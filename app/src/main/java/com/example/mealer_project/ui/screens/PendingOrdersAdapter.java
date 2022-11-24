@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +47,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         for (MealInfo mI : order.getMeals().values()) {
 
             mealNames += mI.getName() + "\n";
-            quantities += "$" + mI.getQuantity() + "\n";
+            quantities += mI.getQuantity() + "\n";
 
         }
 
@@ -55,6 +56,20 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         ((TextView) convertView.findViewById(R.id.mealNameText)).setText(mealNames);
         ((TextView) convertView.findViewById(R.id.quantityText)).setText(quantities);
         ((TextView) convertView.findViewById(R.id.dateText)).setText(order.getOrderDate().toString());
+        ((Button) convertView.findViewById(R.id.rejectButton)).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //do something
+
+            }
+        });
+        ((Button) convertView.findViewById(R.id.acceptButton)).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //do something
+
+            }
+        });
 
         return convertView;
     }

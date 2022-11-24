@@ -41,7 +41,7 @@ public class MealInfo implements Serializable {
 
     public void setPrice(double price) { this.price = price; }
 
-    public double getQuantity() { return quantity; }
+    public int getQuantity() { return quantity; }
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
 
