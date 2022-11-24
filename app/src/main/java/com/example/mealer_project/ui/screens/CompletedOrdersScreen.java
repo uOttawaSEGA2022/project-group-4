@@ -36,6 +36,11 @@ public class CompletedOrdersScreen extends UIScreen {
     private CompletedOrdersAdapter completedOrdersAdapter;
 
     /**
+     * the array adapter for the list view of the pending orders
+     */
+    private PendingOrdersAdapter pendingOrdersAdapter;
+
+    /**
      * the back button icon
      */
     ImageButton backButton;
@@ -95,15 +100,34 @@ public class CompletedOrdersScreen extends UIScreen {
         this.orders = new ArrayList<Order>();
         ListView completedOrdersList = findViewById(R.id.completedListView);
 
-        // Initialization: setting the adapter
-        completedOrdersAdapter = new CompletedOrdersAdapter(this, R.layout.activity_completed_orders_list_item, this.orders);
+        // Process: checking for chef or client
+        if (App.getUser() instanceof Client) { //client
 
-        // Process: attaching the adapter to the ListView
-        completedOrdersList.setAdapter(completedOrdersAdapter);
+            // Initialization: setting the adapter
+            pendingOrdersAdapter = new PendingOrdersAdapter(this, R.layout.activity_completed_orders_client_list_item, this.orders);
 
-        // Process: looping through the map of data
-        for (Order order: this.ordersData) {
-            completedOrdersAdapter.add(order); //adding the orderData to the list
+            // Process: attaching the adapter to the ListView
+            completedOrdersList.setAdapter(pendingOrdersAdapter);
+
+            // Process: looping through the map of data
+            for (Order order: this.ordersData) {
+                pendingOrdersAdapter.add(order); //adding the orderData to the list
+            }
+
+        }
+        else if (App.getUser() instanceof Chef) { //chef
+
+            // Initialization: setting the adapter
+            completedOrdersAdapter = new CompletedOrdersAdapter(this, R.layout.activity_completed_orders_list_item, this.orders);
+
+            // Process: attaching the adapter to the ListView
+            completedOrdersList.setAdapter(completedOrdersAdapter);
+
+            // Process: looping through the map of data
+            for (Order order: this.ordersData) {
+                completedOrdersAdapter.add(order); //adding the orderData to the list
+            }
+
         }
 
     }
