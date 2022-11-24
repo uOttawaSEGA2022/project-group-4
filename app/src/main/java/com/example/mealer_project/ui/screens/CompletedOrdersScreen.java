@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PendingOrdersScreen extends UIScreen {
+public class CompletedOrdersScreen extends UIScreen {
 
     // Variable Declaration
     /**
@@ -30,9 +30,9 @@ public class PendingOrdersScreen extends UIScreen {
     private List<Order> orders;
 
     /**
-     * the array adapter for the list view of the pending orders
+     * the array adapter for the list view of the completed orders
      */
-    private PendingOrdersAdapter pendingOrdersAdapter;
+    private CompletedOrdersAdapter completedOrdersAdapter;
 
     /**
      * the back button icon
@@ -44,17 +44,17 @@ public class PendingOrdersScreen extends UIScreen {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending_orders_screen);
+        setContentView(R.layout.activity_completed_orders_screen);
 
         // Initialization
         ordersData = new ArrayList<Order>();
         backButton = findViewById(R.id.backButton);
 
         // Process: loading the Orders data
-        loadPendingOrdersData();
+        loadCompletedOrdersData();
 
         // Process: populating the Orders ListView
-        populatePendingOrdersList();
+        populateCompletedOrdersList();
 
         // Process: setting onClick method for back button
         backButton.setOnClickListener(v -> finish());
@@ -64,18 +64,18 @@ public class PendingOrdersScreen extends UIScreen {
     /**
      * this helper method retrieves the current CHEF's Orders
      */
-    private void loadPendingOrdersData() {
+    private void loadCompletedOrdersData() {
 
         // Process: checking if current user is a CHEF
         if (App.getUser() instanceof Chef) { //is CHEF
-            // Initialization: setting ordersData to the list
-            this.ordersData = ((Chef) App.getUser()).ORDERS.getPendingOrders();
+            // Initialization: setting ordersData to the list of completed orders
+            this.ordersData = ((Chef) App.getUser()).ORDERS.getCompletedOrders();
         }
         else { //not a chef -> error-handling
-            Log.e("PendingOrdersScreen", "Can't show pending orders; Current logged-in user is not a CHEF");
+            Log.e("CompletedOrdersScreen", "Can't show completed orders; Current logged-in user is not a CHEF");
 
             // Output
-            displayErrorToast("No pending orders available to be displayed!");
+            displayErrorToast("No completed orders available to be displayed!");
         }
 
     }
@@ -83,21 +83,21 @@ public class PendingOrdersScreen extends UIScreen {
     /**
      * this helper method populates the Orders list
      */
-    private void populatePendingOrdersList() {
+    private void populateCompletedOrdersList() {
 
         // Variable Declaration
         this.orders = new ArrayList<Order>();
-        ListView pendingOrdersList = findViewById(R.id.pendingListView);
+        ListView completedOrdersList = findViewById(R.id.completedListView);
 
         // Initialization: setting the adapter
-        pendingOrdersAdapter = new PendingOrdersAdapter(this, R.layout.activity_pending_orders_list_item, this.orders);
+        completedOrdersAdapter = new CompletedOrdersAdapter(this, R.layout.activity_completed_orders_list_item, this.orders);
 
         // Process: attaching the adapter to the ListView
-        pendingOrdersList.setAdapter(pendingOrdersAdapter);
+        completedOrdersList.setAdapter(completedOrdersAdapter);
 
         // Process: looping through the map of data
         for (Order order: this.ordersData) {
-            pendingOrdersAdapter.add(order); //adding the orderData to the list
+            completedOrdersAdapter.add(order); //adding the orderData to the list
         }
 
     }
