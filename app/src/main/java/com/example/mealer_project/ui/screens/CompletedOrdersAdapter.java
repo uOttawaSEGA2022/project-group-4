@@ -12,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
 
@@ -51,11 +54,17 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
 
         }
 
+        // Process: checking if chef or client is logged in
+        if (App.getUser() instanceof Client) { //is CLIENT
+            ((TextView) convertView.findViewById(R.id.clientNameText2)).setText("Chef: " + order.getChefInfo().getChefName());
+        }
+        else if (App.getUser() instanceof Chef) { //is CHEF
+            ((TextView) convertView.findViewById(R.id.clientNameText2)).setText("Client: " + order.getClientInfo().getClientName());
+        }
         // Process: setting the order info to appear on the screen
-        ((TextView) convertView.findViewById(R.id.clientNameText2)).setText(order.getClientInfo().getClientName());
-        ((TextView) convertView.findViewById(R.id.mealNameText2)).setText(mealNames);
-        ((TextView) convertView.findViewById(R.id.quantityText2)).setText(quantities);
-        ((TextView) convertView.findViewById(R.id.dateText2)).setText(order.getOrderDate().toString());
+        ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
+        ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
+        ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + order.getOrderDate().toString());
 
         return convertView;
     }

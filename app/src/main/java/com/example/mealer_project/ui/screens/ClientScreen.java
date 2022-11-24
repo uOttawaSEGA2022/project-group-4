@@ -45,7 +45,7 @@ public class ClientScreen extends UIScreen implements StatefulView {
         pendingOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PendingOrdersScreen.class));
+                startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));
             }
         });
 
