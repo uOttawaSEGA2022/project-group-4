@@ -7,7 +7,9 @@ import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Orders {
@@ -51,6 +53,64 @@ public class Orders {
             return new Result<>(null, "Invalid meal ID provided");
         }
     }
+
+    /**
+     * Method to retrieve a list containing all Orders by the Chef
+     * @return a List containing Order objects
+     */
+    public List<Order> getAllOrders() {
+        return new ArrayList<Order>(this.orders.values());
+    };
+
+    /**
+     * Method to retrieve a list containing all pending Orders by the Chef
+     * @return a List containing Order objects
+     */
+    public List<Order> getPendingOrders() {
+
+        // Variable Declaration
+        ArrayList<Order> pendingList = new ArrayList<Order>();
+
+        // Process: looping through orders
+        for (Order order : this.orders.values()) {
+
+            // Process: checking if pending
+            if (order.getIsPending()) {
+
+                pendingList.add(order); //adding to list
+
+            }
+
+        }
+
+        // Output
+        return pendingList;
+
+    };
+
+    /**
+     * Method to retrieve a list containing all completed Orders by the Chef
+     * @return a List containing Order objects
+     */
+    public List<Order> getCompletedOrders() {
+        // Variable Declaration
+        ArrayList<Order> completedList = new ArrayList<Order>();
+
+        // Process: looping through orders
+        for (Order order : this.orders.values()) {
+
+            // Process: checking if completed
+            if (order.getIsCompleted()) {
+
+                completedList.add(order); //adding to list
+
+            }
+
+        }
+
+        // Output
+        return completedList;
+    };
 
     public Response removeOrder(@NonNull String orderId) {
         // guard-clause
