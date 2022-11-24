@@ -25,7 +25,7 @@ import java.util.List;
  * This class will be used to change the text of each item in the cart based on its information
  * (meal name + price + quantity -> the item's quantity can still be changed in the checkout screen)
  */
-public class CheckoutAdapter extends ArrayAdapter<OrderItem> {
+public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
     // key to get information
     public static final String CHECKOUT_TYPE_ARG_KEY = "CHECKOUT_TYPE_ARG_KEY";
@@ -59,9 +59,9 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem> {
 
         // Populate the data
         ((TextView) convertView.findViewById(R.id.item_meal_title)).setText(item.getSearchMealItem().getMeal().getName());
-        ((TextView) convertView.findViewById(R.id.item_price)).setText((int) item.getSearchMealItem().getMeal().getPrice());
+        ((TextView) convertView.findViewById(R.id.item_price)).setText((String.valueOf(item.getSearchMealItem().getMeal().getPrice())));
         EditText quantity = ((EditText) convertView.findViewById(R.id.item_quantity));
-        quantity.setText(item.getQuantity());
+        quantity.setText(String.valueOf(item.getQuantity()));
 
         // quantity update buttons
         minusButton = (Button) convertView.findViewById(R.id.decrease_quantity);
@@ -89,7 +89,7 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem> {
 
         // send information to the CheckoutScreen
         Bundle extras = new Bundle();
-        extras.putSerializable(CheckoutScreen.CHECKOUT_DATA_ARG_KEY, (Serializable) item);
+        extras.putSerializable(CheckoutScreen.CHECKOUT_DATA_ARG_KEY, item);
 
         return convertView;
     }

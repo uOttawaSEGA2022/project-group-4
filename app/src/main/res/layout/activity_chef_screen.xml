@@ -80,7 +80,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnContainer">
@@ -89,6 +88,7 @@
             android:id="@+id/chefScreenMealsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:gravity="center_horizontal|center_vertical"
             android:minHeight="200dp"
             android:orientation="vertical"
@@ -127,8 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:visibility="visible"
                     android:text="@string/view_offered_meals"
+                    android:visibility="visible"
                     tools:ignore="TextContrastCheck" />
 
             </LinearLayout>
@@ -150,7 +150,6 @@
             android:gravity="center_vertical"
             android:minHeight="200dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/chefScreenMealsContainer">
 
             <TextView
@@ -191,6 +190,52 @@
                     tools:ignore="TextContrastCheck" />
 
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ordersInProgressContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/chefScreenOrdersContainer">
+
+            <TextView
+                android:id="@+id/ordersInProgressLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/abril_fatface"
+                android:gravity="center"
+                android:text="@string/orders_in_progress"
+                android:textSize="24sp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/allOrdersInProgress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/noOrdersInProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center"
+                        android:text="There are currently no orders in progress..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:visibility="invisible" />
+
+                    <ListView
+                        android:id="@+id/ordersInProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
