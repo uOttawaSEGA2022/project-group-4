@@ -130,6 +130,13 @@ public class Orders {
     }
 
     // update pending status and completed status from chef
-    public void updateOrder(Order order) {
+    public void updateOrder(String orderId, boolean isPending, boolean isRejected, boolean isCompleted) {
+
+        if (Preconditions.isNotNullString(order.getOrderID())){
+
+            this.orders.get(order.getOrderID()).setIsPending(isPending);
+            this.orders.get(order.getOrderID()).setIsRejected(isRejected);
+            this.orders.get(order.getOrderID()).setIsCompleted(isCompleted);
+        }
     }
 }

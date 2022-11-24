@@ -19,6 +19,8 @@ public class OrderHandler {
         REMOVE_ORDER,
         GET_ORDER_BY_ID,
         UPDATE_ORDER,
+        LOAD_CHEF_ORDERS,
+        LOAD_CLIENT_ORDERS,
         ERROR
     }
 
@@ -68,6 +70,25 @@ public class OrderHandler {
                         }
                         else {
                             handleActionFailure( operationType, "Invalid Order object provided");
+                        }
+                        break;
+
+                    case LOAD_CHEF_ORDERS:
+                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
+                            // Process: loading chef orders order in Firebase
+                            App.getPrimaryDatabase().ORDERS.loadChefOrders((String) payload);
+                        }
+                        else {
+                            handleActionFailure( operationType, "Invalid String object provided");
+                        }
+                        break;
+                    case LOAD_CLIENT_ORDERS:
+                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
+                            // Process: loading client orders in Firebase
+                            App.getPrimaryDatabase().ORDERS.loadClientOrders((String) payload);
+                        }
+                        else {
+                            handleActionFailure( operationType, "Invalid String object provided");
                         }
                         break;
 
@@ -144,26 +165,47 @@ public class OrderHandler {
                         }
                         break;
 
-                    /*case UPDATE_ORDER:
+                    case UPDATE_ORDER:
                         if (Preconditions.isNotNull(payload) && payload instanceof Order  && App.getUser().getRole() == UserRoles.CHEF) {
-                            // LOCALLY: nothing should change
+                            //Locally updating order
+                            ((Chef) App.getUser()).ORDERS.updateOrder((Order) payload);
 
                             // let UI know about success
                             uiScreen.dbOperationSuccessHandler(operationType, "Updated order info successfully!");
                         } else {
                             handleActionFailure( operationType, "Invalid order instance provided");
                         }
-                        break;*/
+                        break;
 
-                    /*case GET_ORDER_BY_ID:
-                        if (Preconditions.isNotNull(payload) && payload instanceof Map) {
+                    case GET_ORDER_BY_ID:
+                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
                             //do something here
 
-                            uiScreen.dbOperationSuccessHandler(operationType, "");
+                            uiScreen.dbOperationSuccessHandler(operationType, "Getting order by ID was a success!");
                         } else {
                             handleActionFailure(operationType, "Invalid payload for getOrder");
                         }
-                        break;*/
+                        break;
+
+                    case LOAD_CHEF_ORDERS:
+                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
+
+                            uiScreen.dbOperationSuccessHandler(operationType, "Loading chef meals was a success!");
+                        }
+                        else {
+                            handleActionFailure( operationType, "Invalid String object provided");
+                        }
+                        break;
+
+                    case LOAD_CLIENT_ORDERS:
+                        if (Preconditions.isNotNull(payload) && payload instanceof String) {
+
+                            uiScreen.dbOperationSuccessHandler(operationType, "Loading client meals was a success!");
+                        }
+                        else {
+                            handleActionFailure( operationType, "Invalid String object provided");
+                        }
+                        break;
 
                 }
             }
@@ -210,6 +252,16 @@ public class OrderHandler {
                 case GET_ORDER_BY_ID:
                     tag = "errorGetOrder";
                     userMessage = "Failed to get order!";
+                    break;
+
+                case LOAD_CHEF_ORDERS:
+                    tag = "errorLoadingChefOrder";
+                    userMessage = "Failed to loads chef's orders!";
+                    break;
+
+                case LOAD_CLIENT_ORDERS:
+                    tag = "errorLoadingClientOrderOrder";
+                    userMessage = "Failed to load!";
                     break;
 
                 default:
