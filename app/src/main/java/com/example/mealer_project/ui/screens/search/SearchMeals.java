@@ -8,12 +8,16 @@ import java.util.Map;
 
 public class SearchMeals {
 
+    // map to store SearchMealItem with their id's as the key value
     Map<String, SearchMealItem> searchMealItems;
+    // map to store keywords for each search meal item, to facilitate searching
+    Map<String, List<String>> sMItemsKeywords;
     // store a reference to the SearchMealScreen so it could be notified of the updates to the list
     SearchScreen searchScreen;
 
     public SearchMeals() {
         this.searchMealItems = new HashMap<>();
+        this.sMItemsKeywords = new HashMap<>();
     }
 
     public Map<String, SearchMealItem> getSearchMealItems() {
@@ -40,6 +44,10 @@ public class SearchMeals {
             // notify search screen of changes
             this.searchScreen.newSearchItemsAdded(items);
         }
+    }
+
+    private void addItemToKeywordsMap(SearchMealItem item) {
+
     }
 
     public void subscribeToDataChanges(SearchScreen dataObserver) {
