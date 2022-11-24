@@ -89,7 +89,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         viewPendingOrder.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayErrorToast("No pending orders yet!");
+                startActivity(new Intent(getApplicationContext(), PendingOrdersScreen.class)); //show pending orders
             }
         });
 
@@ -108,14 +108,8 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
     }
 
-    /**
-     * this method goes to the add new meal screen
-     */
     @Override
     public void showNextScreen() {
-
-        Intent intent = new Intent(getApplicationContext(), NewMealScreen.class);
-        startActivity(intent);
 
     }
 

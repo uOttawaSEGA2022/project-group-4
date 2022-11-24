@@ -399,7 +399,7 @@ public class MealActions {
                                     loginScreen.showNextScreen();
                                 } else {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Log.e("loadMeals", "creating meals");
+                                        //Log.e("loadMeals", "creating meals");
                                         database.collection(MEALS_COLLECTION)
                                                 .document(document.getId())
                                                 .collection(CHEF_MEALS_COLLECTION)
