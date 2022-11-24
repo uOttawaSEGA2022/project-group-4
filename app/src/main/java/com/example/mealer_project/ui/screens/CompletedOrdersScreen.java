@@ -8,6 +8,7 @@ import android.widget.ListView;
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.ui.core.UIScreen;
 
@@ -67,12 +68,17 @@ public class CompletedOrdersScreen extends UIScreen {
     private void loadCompletedOrdersData() {
 
         // Process: checking if current user is a CHEF
-        if (App.getUser() instanceof Chef) { //is CHEF
+        if (App.getUser() instanceof Chef ) { //is CHEF
             // Initialization: setting ordersData to the list of completed orders
             this.ordersData = ((Chef) App.getUser()).ORDERS.getCompletedOrders();
         }
-        else { //not a chef -> error-handling
-            Log.e("CompletedOrdersScreen", "Can't show completed orders; Current logged-in user is not a CHEF");
+        // Process: checking if current user is a CHEF
+        else if (App.getUser() instanceof Client) { //is CHEF
+            // Initialization: setting ordersData to the list of completed orders
+            this.ordersData = ((Client) App.getUser()).ORDERS.getCompletedOrders();
+        }
+        else { //if not chef//client -> error-handling
+            Log.e("CompletedOrdersScreen", "Can't show completed orders; Current logged-in user is not a CHEF or CLIENT");
 
             // Output
             displayErrorToast("No completed orders available to be displayed!");

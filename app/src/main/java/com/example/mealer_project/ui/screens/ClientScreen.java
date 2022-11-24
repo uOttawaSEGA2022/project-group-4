@@ -12,7 +12,6 @@ import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.search.SearchScreen;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class ClientScreen extends UIScreen implements StatefulView {
 
@@ -49,7 +48,7 @@ public class ClientScreen extends UIScreen implements StatefulView {
             }
         });
 
-        Button completedOrdersBtn = (Button) findViewById(R.id.viewOrdersButton);
+        Button completedOrdersBtn = (Button) findViewById(R.id.viewCompletedOrdersButton);
         completedOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

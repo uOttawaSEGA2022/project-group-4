@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/clientNameText2"
+        android:id="@+id/chefNameText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
