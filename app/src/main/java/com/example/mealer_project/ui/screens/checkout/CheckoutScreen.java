@@ -1,5 +1,7 @@
 package com.example.mealer_project.ui.screens.checkout;
 
+import static com.example.mealer_project.data.handlers.OrderHandler.dbOperations.ADD_ORDER;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,6 +14,7 @@ import android.widget.ListView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
@@ -33,7 +36,6 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
     private Button cancelButton;
     private Button orderButton;
 
-    private CheckoutAdapter ordersAdapter;
     Map<OrderItem, Boolean> orderData;
 
     // list to store the items in the cart
@@ -47,6 +49,8 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
 
     // items adapter
     private CheckoutAdapter checkoutAdapter;
+
+    private OrderHandler orderHandler;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -99,7 +103,11 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         orderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                handleOrderButton();
+                App.getClient().clearCart(); //clears cart
+                orderData = App.getClient().getCart(); //sets orderData to equal the empty cart
+                displaySuccessToast("Order Has Been Placed!");
+                finish(); //finishes action
             }
         });
 
@@ -114,8 +122,10 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // CLEAR CART
-                                // finish(); <- NOTE: not sure if this will work with the alert dialog, so you may have to call the class then finish!
+                                App.getClient().clearCart(); //clears cart
+                                orderData = App.getClient().getCart(); //sets orderData to equal the empty cart
+                                finish(); //finishes action
+                                Log.e("cartClear", "Clear the list: " + orderData.size());
                             }
                         });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -132,20 +142,24 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
     }
 
     private void populateCartWithItems() {
-        // initialize smItems as empty list
+        // initialize orderItemList as empty list
         this.orderItemList = new ArrayList<>();
         // get the list view component
         ListView orderList = findViewById(R.id.items_in_cart);
         // get the adapter
-        this.ordersAdapter = new CheckoutAdapter(this, R.layout.activity_checkout_screen, this.orderItemList);
+        this.checkoutAdapter = new CheckoutAdapter(this, R.layout.activity_checkout_screen, this.orderItemList);
         // attach adapter to list view
-        orderList.setAdapter(this.ordersAdapter);
+        orderList.setAdapter(this.checkoutAdapter);
         // add data to the adapter
         for (OrderItem sMItemId: this.orderData.keySet()) {
             this.orderItemList.add(sMItemId);
         }
         Log.e("cartPopulation", "Populated the list: " + this.orderItemList.size());
 
+    }
+
+    private void handleOrderButton(){
+        App.ORDER_HANDLER.dispatch(ADD_ORDER, null, this);
     }
 
     @Override
