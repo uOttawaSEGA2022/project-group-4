@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,8 @@ import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.orders.MealInfo;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
@@ -59,11 +62,19 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
 
         }
 
+        // Process: checking if chef or client is logged in
+        if (App.getUser() instanceof Client) { //is CLIENT
+            ((TextView) convertView.findViewById(R.id.clientNameText2)).setText("Chef: " + order.getChefInfo().getChefName());
+        }
+        else if (App.getUser() instanceof Chef) { //is CHEF
+            ((TextView) convertView.findViewById(R.id.clientNameText2)).setText("Client: " + order.getClientInfo().getClientName());
+        }
         // Process: setting the order info to appear on the screen
-        ((TextView) convertView.findViewById(R.id.chefNameText2)).setText(order.getClientInfo().getClientName());
-        ((TextView) convertView.findViewById(R.id.mealNameText2)).setText(mealNames);
-        ((TextView) convertView.findViewById(R.id.quantityText2)).setText(quantities);
-        ((TextView) convertView.findViewById(R.id.dateText2)).setText(order.getOrderDate().toString());
+        ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
+        ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
+        ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
         return convertView;
     }

@@ -24,10 +24,6 @@ public class ClientScreen extends UIScreen implements StatefulView {
         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEALS_TO_SEARCH_LIST, null, this);
 
         attachOnClickListeners();
-
-
-
-
     }
 
     private void attachOnClickListeners(){
@@ -44,7 +40,7 @@ public class ClientScreen extends UIScreen implements StatefulView {
         pendingOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PendingOrdersScreen.class));
+                startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));
             }
         });
 
