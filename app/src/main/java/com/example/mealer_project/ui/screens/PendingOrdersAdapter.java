@@ -12,9 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PendingOrdersAdapter extends ArrayAdapter<Order> {
@@ -51,11 +56,19 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
         }
 
+        // Process: checking if chef or client is logged in
+        if (App.getUser() instanceof Client) { //is CLIENT
+            ((TextView) convertView.findViewById(R.id.clientNameText)).setText("Chef: " + order.getChefInfo().getChefName());
+        }
+        else if (App.getUser() instanceof Chef) { //is CHEF
+            ((TextView) convertView.findViewById(R.id.clientNameText)).setText("Client: " + order.getClientInfo().getClientName());
+        }
         // Process: setting the order info to appear on the screen
-        ((TextView) convertView.findViewById(R.id.clientNameText)).setText(order.getClientInfo().getClientName());
-        ((TextView) convertView.findViewById(R.id.mealNameText)).setText(mealNames);
-        ((TextView) convertView.findViewById(R.id.quantityText)).setText(quantities);
-        ((TextView) convertView.findViewById(R.id.dateText)).setText(order.getOrderDate().toString());
+        ((TextView) convertView.findViewById(R.id.mealNameText)).setText("\n" + mealNames);
+        ((TextView) convertView.findViewById(R.id.quantityText)).setText("(#)\n" + quantities);
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
+        ((TextView) convertView.findViewById(R.id.dateText)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
         return convertView;
     }
