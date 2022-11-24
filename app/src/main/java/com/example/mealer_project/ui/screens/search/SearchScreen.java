@@ -1,12 +1,20 @@
 package com.example.mealer_project.ui.screens.search;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.ClientScreen;
+import com.example.mealer_project.ui.screens.IntroScreen;
+import com.example.mealer_project.ui.screens.checkout.CheckoutScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +26,9 @@ public class SearchScreen extends UIScreen {
     Map<String, SearchMealItem> sMItemsData;
     // list used by SearchMealItemsAdapter to populate SearchMealItems on the ListView
     List<SearchMealItem> sMItems;
+    ImageButton backButton;
+    ImageButton searchButton;
+    ImageButton checkoutButton;
 
     // adapter to handle list view
     private SearchMealItemsAdapter sMItemsAdapter;
@@ -26,12 +37,36 @@ public class SearchScreen extends UIScreen {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_meal_screen);
+
+        backButton = findViewById(R.id.back_btn3);
+        searchButton = findViewById(R.id.searchBtn); //add when screen is done
+        checkoutButton = findViewById(R.id.cartBtn);
+        createOnClickListener();
+
         // load the search meal data
         loadSearchMealData();
         // populate the list view
         populateListView();
         // subscribe to SearchMeals for data updates
         subscribeToDataChanges();
+    }
+
+    public void createOnClickListener(){
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ClientScreen.class);
+                startActivity(intent);
+            }
+        });
+
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CheckoutScreen.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
