@@ -1,5 +1,6 @@
 package com.example.mealer_project.ui.screens.search;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -55,8 +56,9 @@ public class SearchScreen extends UIScreen {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ClientScreen.class);
-                startActivity(intent);
+                // close the activity
+                setResult(Activity.RESULT_OK);
+                finish();
             }
         });
 
