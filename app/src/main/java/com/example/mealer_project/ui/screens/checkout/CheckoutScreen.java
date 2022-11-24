@@ -4,17 +4,23 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.search.SearchMealItem;
+import com.example.mealer_project.ui.screens.search.SearchMealItemsAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This screen will use the ListView to populate the screen with all items in the cart using
@@ -26,6 +32,9 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
     private ImageButton backButton;
     private Button cancelButton;
     private Button orderButton;
+
+    private CheckoutAdapter ordersAdapter;
+    Map<OrderItem, Boolean> orderData;
 
     // list to store the items in the cart
     private List<OrderItem> orderItemList;
@@ -48,6 +57,8 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
 
         loadCartData();
 
+        populateCartWithItems();
+
         // buttons for onClick
         backButton = (ImageButton) findViewById(R.id.button_back3);
         cancelButton = (Button) findViewById(R.id.cancel_button);
@@ -59,10 +70,11 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
     }
 
     private void loadCartData() {
-        // check if have intent data and
-        if (getIntent() != null && getIntent().getSerializableExtra(CHECKOUT_TYPE_ARG_KEY) != null) {
-
+        if (App.getClient() != null) {
+            // get search meal items from app's current instance
+            this.orderData = App.getClient().getCart();
         }
+        Log.e("cartLoaded", "Loaded meals: " + this.orderData.size());
     }
 
     private void attachOnClickListeners(){
@@ -120,7 +132,20 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
     }
 
     private void populateCartWithItems() {
-        ListView itemsInCart = findViewById(R.id.items_in_cart);
+        // initialize smItems as empty list
+        this.orderItemList = new ArrayList<>();
+        // get the list view component
+        ListView orderList = findViewById(R.id.items_in_cart);
+        // get the adapter
+        this.ordersAdapter = new CheckoutAdapter(this, R.layout.activity_checkout_screen, this.orderItemList);
+        // attach adapter to list view
+        orderList.setAdapter(this.ordersAdapter);
+        // add data to the adapter
+        for (OrderItem sMItemId: this.orderData.keySet()) {
+            this.orderItemList.add(sMItemId);
+        }
+        Log.e("cartPopulation", "Populated the list: " + this.orderItemList.size());
+
     }
 
     @Override
