@@ -54,7 +54,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-               startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
+                startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
             }
         });
 
