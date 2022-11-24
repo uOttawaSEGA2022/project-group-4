@@ -80,7 +80,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         viewOrder.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayErrorToast("No orders yet!");
+                startActivity(new Intent(getApplicationContext(), CompletedOrdersScreen.class)); //show completed orders
             }
         });
 
