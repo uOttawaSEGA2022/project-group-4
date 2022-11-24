@@ -131,5 +131,14 @@ public class Orders {
 
     // update pending status and completed status from chef
     public void updateOrder(Order order) {
+
+        if (Preconditions.isNotNull(order)){
+
+            Order order1 = this.orders.get(order.getOrderID());
+            order1.setIsCompleted(order.getIsCompleted());
+            order1.setIsRejected(order.getIsRejected());
+            order1.setIsPending(order.getIsPending());
+
+        }
     }
 }
