@@ -18,6 +18,8 @@ import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
@@ -64,7 +66,9 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
         // Process: setting the order info to appear on the screen
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
         ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
-        ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + order.getOrderDate().toString());
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
+        ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
         return convertView;
     }

@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <View
+        android:id="@+id/infoDivider4"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/black" />
+
     <TextView
         android:id="@+id/clientNameText2"
         android:layout_width="match_parent"
@@ -16,6 +22,12 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
+    <View
+        android:id="@+id/infoDivider3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="?android:attr/listDivider" />
+
     <LinearLayout
         android:id="@+id/orderInfoLayout"
         android:layout_width="match_parent"
@@ -24,9 +36,9 @@
 
         <TextView
             android:id="@+id/mealNameText2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:fontFamily="@font/nunito_sans"
             android:gravity="center_vertical"
             android:minHeight="50dp"
@@ -43,9 +55,9 @@
 
         <TextView
             android:id="@+id/quantityText2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:fontFamily="@font/nunito_sans"
             android:gravity="center_horizontal|center_vertical"
             android:minHeight="50dp"
@@ -62,9 +74,9 @@
 
         <TextView
             android:id="@+id/dateText2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:fontFamily="@font/nunito_sans"
             android:gravity="center_horizontal|center_vertical"
             android:minHeight="50dp"
