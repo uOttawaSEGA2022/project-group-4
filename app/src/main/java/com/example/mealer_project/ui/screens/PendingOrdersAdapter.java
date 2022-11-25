@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,8 @@ import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.app.AppInstance;
+import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
@@ -66,6 +69,27 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         }
         else if (App.getUser() instanceof Chef) { //is CHEF
             ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
+
+            // Process: setting onClicks for accept/reject buttons
+            ((Button) convertView.findViewById(R.id.rejectButton)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Process: updating order to not pending and rejected
+                    order.setIsPending(false); //no longer pending
+                    order.setIsRejected(true); //rejected
+                    App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
+                }
+            });
+
+            ((Button) convertView.findViewById(R.id.acceptButton)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Process: updating order to not pending and rejected
+                    order.setIsPending(false); //no longer pending
+                    order.setIsRejected(false); //not rejected
+                    App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
+                }
+            });
         }
         // Process: setting the order info to appear on the screen
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
