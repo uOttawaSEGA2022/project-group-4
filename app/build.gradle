@@ -61,6 +61,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:24.4.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation files('libs\\activation.jar')
+    implementation files('libs\\additionnal.jar')
+    implementation files('libs\\mail.jar')
     testImplementation 'junit:junit:'
     testImplementation 'org.testng:testng:6.9.6'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

@@ -19,6 +19,7 @@ import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
+import com.example.mealer_project.utils.SendMailTask;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -77,6 +78,11 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                     // Process: updating order to not pending and rejected
                     order.setIsPending(false); //no longer pending
                     order.setIsRejected(true); //rejected
+
+                    // Process: sending email to client that order has been rejected
+                    //new SendMailTask().execute("mealerprojectgroup4@gmail.com", "INSERT APP PASSWORD HERE",
+                            //order.getClientInfo().getClientEmail(), "SUBJECT LINE HERE", "EMAIL CONTENTS HERE");
+
                     App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
                 }
             });
@@ -87,6 +93,11 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                     // Process: updating order to not pending and rejected
                     order.setIsPending(false); //no longer pending
                     order.setIsRejected(false); //not rejected
+
+                    // Process: sending email to client that order has been accepted
+                    //new SendMailTask().execute("mealerprojectgroup4@gmail.com", "INSERT APP PASSWORD HERE",
+                            //order.getClientInfo().getClientEmail(), "SUBJECT LINE HERE", "EMAIL CONTENTS HERE");
+
                     App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
                 }
             });
