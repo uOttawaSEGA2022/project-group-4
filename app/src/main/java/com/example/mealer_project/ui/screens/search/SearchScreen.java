@@ -10,13 +10,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.checkout.CheckoutScreen;
+import com.example.mealer_project.utils.PostalCodes.PostalCodeComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +36,14 @@ public class SearchScreen extends UIScreen {
 
     ListView sMList;
     EditText searchBox;
+    TextView noSearchResultMessage;
 
     // adapter to handle list view
     private SearchMealItemsAdapter sMItemsAdapter;
+
+    // instantiate a Postal Code comparator to sort search results by
+    // closeness to Client's postal code
+    PostalCodeComparator postalCodeComparator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,7 @@ public class SearchScreen extends UIScreen {
         // get the list view component
         sMList = findViewById(R.id.smMealsList);
         searchBox = (EditText) findViewById(R.id.searchBox);
+        noSearchResultMessage = (TextView) findViewById(R.id.noSearchResultMessage);
 
         attachOnClickListeners();
 
@@ -58,6 +67,13 @@ public class SearchScreen extends UIScreen {
         populateListView();
         // subscribe to SearchMeals for data updates
         subscribeToDataChanges();
+
+        try {
+            postalCodeComparator = new PostalCodeComparator(App.getClient().getAddress().getPostalCode());
+        } catch (Exception e) {
+            Log.e("searchMeals", "Unable to create instance of postal code comparator: " + e.getMessage());
+            displayErrorToast("Unable to sort results by closeness to client");
+        }
 
         // CAUTION: uncomment below only when keywords needs to be re-generated for all meals in database
         // App.getPrimaryDatabase().MEALS.generateMealKeywords();
@@ -168,6 +184,21 @@ public class SearchScreen extends UIScreen {
         if (App.getClient() != null) {
             // get the list of SearchMealItems matching the query entered in search box
             List<SearchMealItem> searchResult = App.getClient().getSearchMeals().searchMealItems(query);
+
+            // if there are no matching results, display a message indicating so and return
+            if (searchResult.isEmpty()) {
+                setNoSearchResultMessageVisibility(true);
+                return;
+            } else {
+                // hide the no search result message and continue processing
+                setNoSearchResultMessageVisibility(false);
+            }
+
+            // sort the search results by closeness to client (based on postal codes)
+            if (postalCodeComparator != null) {
+                Collections.sort(searchResult, (sR1, sR2) -> postalCodeComparator.comparePostalCodes(sR1.getChef().getChefAddress().getPostalCode(), sR2.getChef().getChefAddress().getPostalCode()));
+                Log.e("searchMeals", "search results sorted");
+            }
             // clear current items in sMItems
             this.sMItems = new ArrayList<>();
             // get the adapter
@@ -176,6 +207,14 @@ public class SearchScreen extends UIScreen {
             sMList.setAdapter(this.sMItemsAdapter);
             // load the result meals
             this.sMItems.addAll(searchResult);
+        }
+    }
+
+    private void setNoSearchResultMessageVisibility(boolean visible) {
+        if (visible) {
+            noSearchResultMessage.setVisibility(View.VISIBLE);
+        } else {
+            noSearchResultMessage.setVisibility(View.GONE);
         }
     }
 }
