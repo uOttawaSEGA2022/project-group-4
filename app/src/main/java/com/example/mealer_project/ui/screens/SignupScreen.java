@@ -115,26 +115,23 @@ public class SignupScreen extends UIScreen implements StatefulView {
         });
     }
 
-    ActivityResultLauncher<Intent> startVoidChequeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            //Log.e("VoidChequeActivity", String.valueOf(result.getResultCode()));
-            if (result.getResultCode() == Activity.RESULT_OK) { // operation succeed (value = -1)
-                Intent intent = result.getData();
-                Log.e("intentCheck", String.valueOf(intent));
-                if (intent != null) {
-                    updateVoidChequeImage(intent);
-                    if (intent.getExtras() != null && intent.getExtras().getString("voidChequeValue") != null) {
-                        chequeString = intent.getStringExtra("voidChequeValue");
-                    } else {
-                        Log.e("VoidChequeActivity", "chequeString null");
+    ActivityResultLauncher<Intent> startVoidChequeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    //Log.e("VoidChequeActivity", String.valueOf(result.getResultCode()));
+                    if (result.getResultCode() == Activity.RESULT_OK) { // operation succeed (value = -1)
+                        Intent intent = result.getData();
+                        Log.e("intentCheck", String.valueOf(intent));
+                        if (intent != null) {
+                            updateVoidChequeImage(intent);
+                            chequeString = intent.getStringExtra("voidChequeValue");
+                        } else {
+                            Log.e("VoidChequeActivity", "intent null");
+                            displayErrorToast("Unable to process void cheque image!");
+                        }
                     }
-                } else {
-                    Log.e("VoidChequeActivity", "intent null");
-                    displayErrorToast("Unable to process void cheque image!");
                 }
-            }
-        }
     });
 
     private void updateVoidChequeImage(Intent intent) {

@@ -100,7 +100,7 @@ public class VoidChequeScreen extends UIScreen {
     }
 
     private void submitVoidChequeImage() {
-        this.setResult(Activity.RESULT_OK);
+        this.setResult(Activity.RESULT_OK, getIntent());
         this.getIntent().putExtra("voidChequeValue", voidChequeValue);
         Log.e("VoidChequeString", voidChequeValue);
         this.finish();
