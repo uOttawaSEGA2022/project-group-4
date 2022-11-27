@@ -101,8 +101,12 @@
     <string name="view_all_orders_label">View All Orders</string>
     <string name="meal_name_text">Meal Name</string>
     <string name="date">Date</string>
+    <string name="chef_name_label">Chef Name</string>
     <string name="client_name_label">Client Name</string>
+    <string name="fileComplaint_button">File Complaint</string>
+    <string name="quantity">Quantity #</string>
+    <string name="ratingBar">clientRateChefRatingBar</string>
     <string name="reject_button">Reject</string>
     <string name="accept_button">Accept</string>
-    <string name="quantity">Quantity #</string>
+    <string name="no_search_result_message">Sorry! no meals found for this search value!</string>
 </resources>

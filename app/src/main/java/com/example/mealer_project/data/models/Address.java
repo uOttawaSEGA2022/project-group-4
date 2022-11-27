@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.models;
 
+import androidx.annotation.NonNull;
+
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
 
 import java.io.Serializable;
@@ -58,5 +60,11 @@ public class Address implements Serializable {
 
     public static Address getSampleAddress() {
         return new Address("23 St", "Barrie", "L4M7B6", "Canada");
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return streetAddress + ", " + city + ", " + country + ", " + postalCode;
     }
 }

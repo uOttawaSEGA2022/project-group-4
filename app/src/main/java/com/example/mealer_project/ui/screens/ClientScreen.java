@@ -12,7 +12,6 @@ import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.search.SearchScreen;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class ClientScreen extends UIScreen implements StatefulView {
 
@@ -24,11 +23,32 @@ public class ClientScreen extends UIScreen implements StatefulView {
         // initiate loading of searchable meals (so we have them before client goes to search screen)
         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEALS_TO_SEARCH_LIST, null, this);
 
+        attachOnClickListeners();
+    }
+
+    private void attachOnClickListeners(){
+
         Button searchMealsBtn = (Button) findViewById(R.id.searchMealButton);
         searchMealsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), SearchScreen.class));
+            }
+        });
+
+        Button pendingOrdersBtn = (Button) findViewById(R.id.viewPendingOrdersButton);
+        pendingOrdersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));
+            }
+        });
+
+        Button completedOrdersBtn = (Button) findViewById(R.id.viewCompletedOrdersButton);
+        completedOrdersBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), CompletedOrdersScreen.class));
             }
         });
     }

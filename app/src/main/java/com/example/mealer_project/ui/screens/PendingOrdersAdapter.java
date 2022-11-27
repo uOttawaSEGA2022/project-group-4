@@ -12,9 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.app.AppInstance;
+import com.example.mealer_project.data.handlers.OrderHandler;
+import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
+import com.example.mealer_project.utils.SendMailTask;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PendingOrdersAdapter extends ArrayAdapter<Order> {
@@ -40,7 +48,12 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
         // Process: checking if existing view is being reused
         if (convertView == null) { //must inflate view
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_pending_orders_list_item, parent, false);
+
+            if (App.getUser() instanceof Client) { //is CLIENT
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_completed_orders_client_list_item, parent, false);
+            } else if (App.getUser() instanceof Chef) { //is CHEF
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_pending_orders_list_item, parent, false);
+            }
         }
 
         // Process: traversing entire meals map
@@ -51,25 +64,50 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
         }
 
+        // Process: checking if chef or client is logged in
+        if (App.getUser() instanceof Client) { //is CLIENT
+            ((TextView) convertView.findViewById(R.id.userNameText)).setText("Chef: " + order.getChefInfo().getChefName());
+        }
+        else if (App.getUser() instanceof Chef) { //is CHEF
+            ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
+
+            // Process: setting onClicks for accept/reject buttons
+            ((Button) convertView.findViewById(R.id.rejectButton)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Process: updating order to not pending and rejected
+                    order.setIsPending(false); //no longer pending
+                    order.setIsRejected(true); //rejected
+
+                    // Process: sending email to client that order has been rejected
+                    //new SendMailTask().execute("mealerprojectgroup4@gmail.com", "INSERT APP PASSWORD HERE",
+                            //order.getClientInfo().getClientEmail(), "SUBJECT LINE HERE", "EMAIL CONTENTS HERE");
+
+                    App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
+                }
+            });
+
+            ((Button) convertView.findViewById(R.id.acceptButton)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Process: updating order to not pending and rejected
+                    order.setIsPending(false); //no longer pending
+                    order.setIsRejected(false); //not rejected
+
+                    // Process: sending email to client that order has been accepted
+                    //new SendMailTask().execute("mealerprojectgroup4@gmail.com", "INSERT APP PASSWORD HERE",
+                            //order.getClientInfo().getClientEmail(), "SUBJECT LINE HERE", "EMAIL CONTENTS HERE");
+
+                    App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
+                }
+            });
+        }
         // Process: setting the order info to appear on the screen
-        ((TextView) convertView.findViewById(R.id.clientNameText)).setText(order.getClientInfo().getClientName());
-        ((TextView) convertView.findViewById(R.id.mealNameText)).setText(mealNames);
-        ((TextView) convertView.findViewById(R.id.quantityText)).setText(quantities);
-        ((TextView) convertView.findViewById(R.id.dateText)).setText(order.getOrderDate().toString());
-        ((Button) convertView.findViewById(R.id.rejectButton)).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //do something
+        ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
+        ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
 
-            }
-        });
-        ((Button) convertView.findViewById(R.id.acceptButton)).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                //do something
-
-            }
-        });
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
+        ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
         return convertView;
     }

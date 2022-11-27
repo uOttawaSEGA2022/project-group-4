@@ -16,7 +16,6 @@ import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +118,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         Button offeredMealsButton = (Button) findViewById(R.id.viewOfferedButton);
         Button addButton = (Button) findViewById(R.id.addMealButton);
         // Order buttons
-        Button viewOrder = (Button) findViewById(R.id.viewOrdersButton);
+        Button viewOrder = (Button) findViewById(R.id.viewCompletedOrdersButton);
         Button viewPendingOrder = (Button) findViewById(R.id.viewPendingOrdersButton);
 
 
