@@ -2,9 +2,12 @@ package com.example.mealer_project.data.models.meals;
 
 
 import com.example.mealer_project.data.entity_models.MealEntityModel;
+import com.example.mealer_project.ui.screens.search.SearchMealItem;
+import com.example.mealer_project.utils.Utilities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is a template/blueprint for each instance of a Meal on a chef's menu
@@ -22,6 +25,9 @@ public class Meal implements Serializable {
     private String description;
     private boolean offered;
     private double price;
+    // store a list of searchable keywords for the meal
+    private List<String> keywords;
+
     /**
      * Create an instance of an existing meal with a mealID from FireBase
      * @param name Name of the meal
@@ -368,5 +374,43 @@ public class Meal implements Serializable {
      */
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    /**
+     * Get list of keywords of the meal
+     * @return list of keywords
+     */
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+    /**
+     * Set a list of searchable keywords for the meal
+     * @param keywords list of keywords
+     */
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
+    public List<String> getSearchMealItemKeywords(String chefName, String chefAddress) {
+        // store data first before keyword generation
+        List<String> rawData = new ArrayList<>();
+
+        // add Chef's info, fields which are allowed as searchable
+
+        // chef name contains space separated firstname and lastname
+        rawData.add(chefName);
+        rawData.add(chefAddress);
+
+        // add Meal's info, fields which are allowed as searchable
+        rawData.add(getName());
+        rawData.add(getMealType());
+        rawData.add(getCuisineType());
+        rawData.add(getIngredients());
+        rawData.add(getAllergens().toString());
+        rawData.add(getDescription());
+
+        // now that we have raw data, extract and return the keywords
+        return Utilities.getKeywords(rawData);
     }
 }
