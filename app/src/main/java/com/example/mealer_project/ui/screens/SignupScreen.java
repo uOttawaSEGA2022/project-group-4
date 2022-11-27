@@ -39,6 +39,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
     boolean clientButtonClicked;
     boolean chefButtonClicked;
     boolean userRegistrationInProgress;
+    String chequeString;
     // define states being observed
     enum observedStates {
         VOID_CHEQUE_IMAGE
@@ -114,20 +115,23 @@ public class SignupScreen extends UIScreen implements StatefulView {
         });
     }
 
-    ActivityResultLauncher<Intent> startVoidChequeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            //Log.e("VoidChequeActivity", String.valueOf(result.getResultCode()));
-            if (result.getResultCode() == Activity.RESULT_OK) { // operation succeed (value = -1)
-                Intent intent = result.getData();
-                if (intent != null) {
-                    updateVoidChequeImage(intent);
-                } else {
-                    Log.e("VoidChequeActivity", "intent null");
-                    displayErrorToast("Unable to process void cheque image!");
+    ActivityResultLauncher<Intent> startVoidChequeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    //Log.e("VoidChequeActivity", String.valueOf(result.getResultCode()));
+                    if (result.getResultCode() == Activity.RESULT_OK) { // operation succeed (value = -1)
+                        Intent intent = result.getData();
+                        Log.e("intentCheck", String.valueOf(intent));
+                        if (intent != null) {
+                            updateVoidChequeImage(intent);
+                            chequeString = intent.getStringExtra("voidChequeValue");
+                        } else {
+                            Log.e("VoidChequeActivity", "intent null");
+                            displayErrorToast("Unable to process void cheque image!");
+                        }
+                    }
                 }
-            }
-        }
     });
 
     private void updateVoidChequeImage(Intent intent) {
@@ -255,7 +259,8 @@ public class SignupScreen extends UIScreen implements StatefulView {
             String chefShortDescription = chefShortDesc.getText().toString();
 
             // TO-DO: to be implemented. Temporarily empty string
-            String voidCheque = "";
+            Log.e("voidchequetest", chequeString);
+            String voidCheque = chequeString; //(String) chequeString.get("String");
 
             // register the new user by passing data to UserHandler of the app instance
             Response userRegistrationResponse = App.getUserHandler().registerChef(this, userEntityModel, chefShortDescription, voidCheque);

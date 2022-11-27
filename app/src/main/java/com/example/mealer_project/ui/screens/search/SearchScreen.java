@@ -2,22 +2,24 @@ package com.example.mealer_project.ui.screens.search;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.ui.screens.ClientScreen;
-import com.example.mealer_project.ui.screens.IntroScreen;
 import com.example.mealer_project.ui.screens.checkout.CheckoutScreen;
+import com.example.mealer_project.utils.PostalCodes.PostalCodeComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +29,21 @@ public class SearchScreen extends UIScreen {
     Map<String, SearchMealItem> sMItemsData;
     // list used by SearchMealItemsAdapter to populate SearchMealItems on the ListView
     List<SearchMealItem> sMItems;
+
     ImageButton backButton;
     ImageButton searchButton;
     ImageButton checkoutButton;
 
+    ListView sMList;
+    EditText searchBox;
+    TextView noSearchResultMessage;
+
     // adapter to handle list view
     private SearchMealItemsAdapter sMItemsAdapter;
+
+    // instantiate a Postal Code comparator to sort search results by
+    // closeness to Client's postal code
+    PostalCodeComparator postalCodeComparator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +53,13 @@ public class SearchScreen extends UIScreen {
         backButton = findViewById(R.id.back_btn3);
         searchButton = findViewById(R.id.searchBtn); //add when screen is done
         checkoutButton = findViewById(R.id.cartBtn);
-        createOnClickListener();
+
+        // get the list view component
+        sMList = findViewById(R.id.smMealsList);
+        searchBox = (EditText) findViewById(R.id.searchBox);
+        noSearchResultMessage = (TextView) findViewById(R.id.noSearchResultMessage);
+
+        attachOnClickListeners();
 
         // load the search meal data
         loadSearchMealData();
@@ -50,9 +67,19 @@ public class SearchScreen extends UIScreen {
         populateListView();
         // subscribe to SearchMeals for data updates
         subscribeToDataChanges();
+
+        try {
+            postalCodeComparator = new PostalCodeComparator(App.getClient().getAddress().getPostalCode());
+        } catch (Exception e) {
+            Log.e("searchMeals", "Unable to create instance of postal code comparator: " + e.getMessage());
+            displayErrorToast("Unable to sort results by closeness to client");
+        }
+
+        // CAUTION: uncomment below only when keywords needs to be re-generated for all meals in database
+        // App.getPrimaryDatabase().MEALS.generateMealKeywords();
     }
 
-    public void createOnClickListener(){
+    public void attachOnClickListeners(){
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,8 +96,28 @@ public class SearchScreen extends UIScreen {
                 startActivity(intent);
             }
         });
-    }
 
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // if nothing in search box
+                if(s.length() != 0) {
+                    // display search results based on the query entered by client
+                    displaySearchResult(s.toString());
+                } else {
+                    // display all meals
+                    populateListView();
+                }
+                Log.e("searchR", "Search box text changed: " + s);
+            }
+        });
+    }
 
     public void newSearchItemAdded(SearchMealItem newItem) {
         // update our local data store
@@ -112,8 +159,6 @@ public class SearchScreen extends UIScreen {
     private void populateListView() {
         // initialize smItems as empty list
         this.sMItems = new ArrayList<>();
-        // get the list view component
-        ListView sMList = findViewById(R.id.smMealsList);
         // get the adapter
         this.sMItemsAdapter = new SearchMealItemsAdapter(this, R.layout.activity_search_meal_item, this.sMItems);
         // attach adapter to list view
@@ -132,6 +177,44 @@ public class SearchScreen extends UIScreen {
         // ensure we have a valid client logged in
         if (App.getClient() != null) {
             App.getClient().getSearchMeals().subscribeToDataChanges(this);
+        }
+    }
+
+    private void displaySearchResult(String query) {
+        if (App.getClient() != null) {
+            // get the list of SearchMealItems matching the query entered in search box
+            List<SearchMealItem> searchResult = App.getClient().getSearchMeals().searchMealItems(query);
+
+            // if there are no matching results, display a message indicating so and return
+            if (searchResult.isEmpty()) {
+                setNoSearchResultMessageVisibility(true);
+                return;
+            } else {
+                // hide the no search result message and continue processing
+                setNoSearchResultMessageVisibility(false);
+            }
+
+            // sort the search results by closeness to client (based on postal codes)
+            if (postalCodeComparator != null) {
+                Collections.sort(searchResult, (sR1, sR2) -> postalCodeComparator.comparePostalCodes(sR1.getChef().getChefAddress().getPostalCode(), sR2.getChef().getChefAddress().getPostalCode()));
+                Log.e("searchMeals", "search results sorted");
+            }
+            // clear current items in sMItems
+            this.sMItems = new ArrayList<>();
+            // get the adapter
+            this.sMItemsAdapter = new SearchMealItemsAdapter(this, R.layout.activity_search_meal_item, this.sMItems);
+            // attach adapter to list view
+            sMList.setAdapter(this.sMItemsAdapter);
+            // load the result meals
+            this.sMItems.addAll(searchResult);
+        }
+    }
+
+    private void setNoSearchResultMessageVisibility(boolean visible) {
+        if (visible) {
+            noSearchResultMessage.setVisibility(View.VISIBLE);
+        } else {
+            noSearchResultMessage.setVisibility(View.GONE);
         }
     }
 }

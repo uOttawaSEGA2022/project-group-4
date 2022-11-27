@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <View
+        android:id="@+id/infoDivider7"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/black" />
+
     <LinearLayout
         android:id="@+id/orderTextLayout"
         android:layout_width="match_parent"
@@ -12,7 +18,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/clientNameText"
+            android:id="@+id/userNameText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nunito_sans"
@@ -35,10 +41,10 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/mealNameText"
-                android:layout_width="match_parent"
+                android:id="@+id/mealNameText2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_vertical"
                 android:minHeight="50dp"
@@ -54,10 +60,10 @@
                 android:background="?android:attr/listDivider" />
 
             <TextView
-                android:id="@+id/quantityText"
-                android:layout_width="match_parent"
+                android:id="@+id/quantityText2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_horizontal|center_vertical"
                 android:minHeight="50dp"
@@ -73,10 +79,10 @@
                 android:background="?android:attr/listDivider" />
 
             <TextView
-                android:id="@+id/dateText"
-                android:layout_width="match_parent"
+                android:id="@+id/dateText2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_horizontal|center_vertical"
                 android:minHeight="50dp"

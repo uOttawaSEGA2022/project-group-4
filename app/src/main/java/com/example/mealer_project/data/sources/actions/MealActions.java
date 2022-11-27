@@ -45,7 +45,7 @@ public class MealActions {
     }
 
 
-    private void addChefMeal(String chefMealsId, Meal meal) {
+    private void addChefMeal(String chefMealsId, Meal meal, String chefName, String chefAddress) {
 
         Map<String, Object> databaseMeal = new HashMap<>();
         databaseMeal.put("name", meal.getName());
@@ -57,6 +57,7 @@ public class MealActions {
         databaseMeal.put("description", meal.getDescription());
         databaseMeal.put("isOffered", meal.isOffered());
         databaseMeal.put("price", meal.getPrice());
+        databaseMeal.put("keywords", meal.getSearchMealItemKeywords(chefName, chefAddress));
 
         database.collection(MEALS_COLLECTION)
                 .document(chefMealsId)
@@ -110,7 +111,7 @@ public class MealActions {
                                                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                                 @Override
                                                 public void onSuccess(DocumentReference documentReference) {
-                                                        addChefMeal(documentReference.getId(), meal);
+                                                        addChefMeal(documentReference.getId(), meal, chef.getFirstName() + " " + chef.getLastName(), chef.getAddress().toString());
                                                     }
                                                 })
                                                     .addOnFailureListener(new OnFailureListener() {
@@ -121,12 +122,12 @@ public class MealActions {
                                                     });
                                     } else {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                            addChefMeal(document.getId(), meal);
+                                            addChefMeal(document.getId(), meal, chef.getFirstName() + " " + chef.getLastName(), chef.getAddress().toString());
                                         }
                                     }
                                 } else {
                                     App.MEAL_HANDLER.handleActionFailure(ADD_MEAL, "Failed to add meal to chef in database");
-                                    Log.d(TAG, "Error getting chef's meals: ", task.getException());
+                                    Log.d("addMeal", "Error getting chef's meals: ", task.getException());
                                 }
                             }
                         });
@@ -547,6 +548,8 @@ public class MealActions {
                                 meal = makeMealFromFirebase(document);
                                 // set the meal id
                                 meal.setMealID(document.getId());
+                                // add keywords to meal instance (only need to do this when we need search meal functionality i.e., for a client)
+                                meal.setKeywords((ArrayList<String>) document.getData().get("keywords"));
                                 // create SearchMealItem adding to it the meal and chefInfo
                                 smItem = new SearchMealItem(meal, chefInfo);
                                 Log.e("searchMeals", "adding meal: " + meal.getName());

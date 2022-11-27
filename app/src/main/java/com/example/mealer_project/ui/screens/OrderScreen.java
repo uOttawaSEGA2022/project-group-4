@@ -209,6 +209,37 @@ public class OrderScreen extends UIScreen implements StatefulView {
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
 
+        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
+
+            // Output: successfully add new order
+            displayErrorToast("Successfully added order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {
+
+            // Output: successfully removed order
+            displayErrorToast("Successfully removed order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
+
+            // Output: successfully updated order
+            displayErrorToast("Successfully updated order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {
+
+            // Output: successfully retrieved order
+            displayErrorToast("Successfully retrieved order!");
+
+        }
+        else { //other op
+
+            // Output
+            displayErrorToast((String) payload);
+
+        }
+
     }
 
     @Override
@@ -222,19 +253,19 @@ public class OrderScreen extends UIScreen implements StatefulView {
         }
         else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {
 
-            // Output: failed to add new order
+            // Output: failed to remove order
             displayErrorToast("Failed to remove order!");
 
         }
         else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
 
-            // Output: failed to add new order
+            // Output: failed to update order
             displayErrorToast("Failed to update order!");
 
         }
         else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {
 
-            // Output: failed to add new order
+            // Output: failed to get order
             displayErrorToast("Failed to get order!");
 
         }

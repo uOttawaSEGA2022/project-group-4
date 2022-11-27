@@ -26,49 +26,63 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:contentInsetStart="16dp"
-            app:contentInsetStartWithNavigation="72dp" />
+            app:contentInsetStartWithNavigation="72dp">
 
-        <ImageButton
-            android:id="@+id/back_btn3"
-            android:layout_width="48dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="4dp"
-            android:layout_weight="1"
-            android:background="#00FFFFFF"
-            android:contentDescription="@string/back"
-            android:onClick="clickBack"
-            android:scaleType="fitXY"
-            android:src="@drawable/backbutton"
-            tools:ignore="DuplicateClickableBoundsCheck" />
+        </androidx.appcompat.widget.Toolbar>
 
-        <ImageButton
-            android:id="@+id/searchBtn"
-            android:layout_width="59dp"
-            android:layout_height="61dp"
-            android:layout_marginStart="292dp"
-            android:layout_marginTop="-2dp"
-            android:layout_weight="1"
-            android:background="#00FFFFFF"
-            android:contentDescription="@android:string/search_go"
-            android:onClick="clickBack"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_baseline_search_24"
-            tools:ignore="DuplicateClickableBoundsCheck" />
 
-        <ImageButton
-            android:id="@+id/cartBtn"
-            android:layout_width="55dp"
-            android:layout_height="59dp"
-            android:layout_marginStart="355dp"
-            android:layout_marginTop="1dp"
-            android:layout_weight="1"
-            android:background="#00FFFFFF"
-            android:contentDescription="@string/back"
-            android:onClick="clickBack"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_baseline_shopping_cart_24"
-            tools:ignore="DuplicateClickableBoundsCheck" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageButton
+                android:id="@+id/back_btn3"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/back"
+                android:minHeight="50dp"
+                android:onClick="clickBack"
+                android:scaleType="fitXY"
+                android:src="@drawable/backbutton"
+                tools:ignore="DuplicateClickableBoundsCheck" />
+
+            <EditText
+                android:id="@+id/searchBox"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:ems="10"
+                android:hint="search"
+                android:inputType="textPersonName"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/searchBtn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="#00FFFFFF"
+                android:contentDescription="@android:string/search_go"
+                android:onClick="clickBack"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_baseline_search_24"
+                tools:ignore="DuplicateClickableBoundsCheck" />
+
+            <ImageButton
+                android:id="@+id/cartBtn"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/back"
+                android:onClick="clickBack"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_baseline_shopping_cart_24"
+                tools:ignore="DuplicateClickableBoundsCheck" />
+        </LinearLayout>
 
     </RelativeLayout>
 
@@ -87,5 +101,13 @@
         android:layout_height="wrap_content"
         android:divider="@android:color/transparent"
         android:dividerHeight="5dp" />
+
+    <TextView
+        android:id="@+id/noSearchResultMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_search_result_message"
+        android:textSize="20sp"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -270,6 +270,10 @@ public class OrderActions {
                                     // retrieve list of orderIds from chef
                                     ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
 
+                                    // if no orders
+                                    if (orderIds == null) {
+                                        return;
+                                    }
 
                                     // iterate through list
                                     for (String orderId : orderIds) {

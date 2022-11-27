@@ -147,16 +147,16 @@
                     android:id="@+id/viewPendingOrdersButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_margin="10dp"
                     android:text="@string/view_pending_orders_label"
                     android:visibility="visible"
                     tools:ignore="TextContrastCheck" />
 
                 <Button
-                    android:id="@+id/viewOrdersButton"
+                    android:id="@+id/viewCompletedOrdersButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="25dp"
+                    android:layout_margin="10dp"
                     android:text="@string/view_completed_orders_label"
                     android:visibility="visible"
                     tools:ignore="TextContrastCheck" />
