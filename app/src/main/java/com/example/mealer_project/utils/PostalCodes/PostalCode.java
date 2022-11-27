@@ -1,6 +1,7 @@
 package com.example.mealer_project.utils.PostalCodes;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -71,7 +72,7 @@ public class PostalCode {
 
     public PostalCode(String postalCode) throws IllegalArgumentException {
         // remove spaces from postal code
-        postalCode = postalCode.replaceAll("\\s+", "");
+        postalCode = postalCode.replaceAll("\\s+", "").toUpperCase(Locale.US);
         // parse and store postal code information
         this.parsePostalCode(postalCode);
     }

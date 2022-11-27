@@ -102,4 +102,12 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="5dp" />
 
+    <TextView
+        android:id="@+id/noSearchResultMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_search_result_message"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
 </LinearLayout>
