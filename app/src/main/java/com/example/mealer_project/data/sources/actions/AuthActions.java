@@ -121,6 +121,7 @@ public class AuthActions {
                                 databaseUser.put("voidCheque", newUser.getVoidCheque());
                                 databaseUser.put("description", newUser.getDescription());
                                 databaseUser.put("orders", null);
+                                databaseUser.put("rating", newUser.getChefRating());
 
                                 database.collection("Chefs").document(newUser.getUserId())
                                         .set(databaseUser)

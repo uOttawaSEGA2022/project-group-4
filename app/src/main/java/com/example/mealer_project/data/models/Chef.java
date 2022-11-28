@@ -11,7 +11,7 @@ import java.util.Date;
 public class Chef extends User {
     private String description;
     private String voidCheque;
-    private int chefRating;
+    private double chefRating;
     private int numOfMealsSold;
     private boolean isSuspended;
     private Date suspensionDate;
@@ -33,7 +33,7 @@ public class Chef extends User {
      * Menu of a chef is stored in a HashMap
      */
     public Chef(String firstName, String lastName, String email, String password, Address address,
-         UserRoles role, String description, String voidCheque, int numberOfMealsSold, int chefRating)  throws IllegalArgumentException {
+         UserRoles role, String description, String voidCheque, int numberOfMealsSold, double chefRating)  throws IllegalArgumentException {
         // instantiate Admins data members
         super(firstName, lastName, email, password, address, role);
         this.setDescription(description);
@@ -100,13 +100,13 @@ public class Chef extends User {
      * Get the average rating of a chef
      * @return Integer representing chef's overall rating
      */
-    public int getChefRating() { return chefRating; }
+    public double getChefRating() { return chefRating; }
 
     /**
      * Set the chef's rating
      * @param chefRating integer representing the chef's rating
      */
-    public void setChefRating(int chefRating) {
+    public void setChefRating(double chefRating) {
         // validate rating
         this.chefRating = chefRating;
     }

@@ -316,7 +316,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
             startActivity(intent);
         }
         else { //client
-            intent = new Intent(getApplicationContext(), WelcomeScreen.class);
+            intent = new Intent(getApplicationContext(), ClientScreen.class);
             startActivity(intent);
         }
     }

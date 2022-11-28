@@ -266,6 +266,7 @@ public class UserActions {
             Address address = new Address(newAddress);
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
+            newChef.setChefRating((Double) document.getData().get("rating"));
 
             newChef.setIsSuspended((Boolean) document.getData().get("isSuspended"));
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ChefInfo implements Serializable {
     String chefId;
     String chefName;
-    int chefRating;
+    double chefRating;
     Address chefAddress;
 
     public ChefInfo(String chefId, String chefName, int chefRating, Address chefAddress) {
@@ -41,11 +41,11 @@ public class ChefInfo implements Serializable {
         this.chefName = chefName;
     }
 
-    public int getChefRating() {
+    public double getChefRating() {
         return chefRating;
     }
 
-    public void setChefRating(int chefRating) {
+    public void setChefRating(double chefRating) {
         this.chefRating = chefRating;
     }
 
