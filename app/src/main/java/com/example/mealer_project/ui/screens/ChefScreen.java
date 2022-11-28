@@ -19,13 +19,14 @@ import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.google.protobuf.StringValue;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChefScreen extends UIScreen implements StatefulView {
     // Variable Declaration
     TextView editText;
-    TextView noMealsInProgress;
 
     /**
      * the map that contains the current CHEF's Orders
@@ -99,7 +100,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
         // Process: if theres no meals, display no meals in progress text
         if (orderData.size() == 0) {
-            noMealsInProgress = findViewById(R.id.noOrdersInProgress);
+            TextView noMealsInProgress = (TextView) findViewById(R.id.noOrdersInProgress);
             noMealsInProgress.setVisibility(View.VISIBLE);
         }
 
@@ -118,9 +119,10 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
         // Process: if theres no meals, display no meals in progress text
         if (orderData.size() == 0) {
-            noMealsInProgress = findViewById(R.id.noOrdersInProgress);
+            TextView noMealsInProgress = (TextView) findViewById(R.id.noOrdersInProgress);
             noMealsInProgress.setVisibility(View.VISIBLE);
         } else {
+            TextView noMealsInProgress = (TextView) findViewById(R.id.noOrdersInProgress);
             noMealsInProgress.setVisibility(View.INVISIBLE);
         }
 
@@ -237,7 +239,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
         } else { // other op
             displayErrorToast((String)payload);
         }
-
         updateAdapter();
     }
 

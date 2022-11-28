@@ -58,15 +58,11 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
         }
 
         // Process: traversing entire meals map
-        for (Order item : orders.getOrdersInProgress()) { // is a list of object Order
+        for (MealInfo mI : order.getMeals().values()) {
 
-            for (MealInfo mI : order.getMeals().values()) {
-
-                mealNames += mI.getName() + "\n";
-                quantities += mI.getQuantity() + "\n";
-                emailContents += mI.getName() + "\t\t" + mI.getQuantity() + "\n";
-
-            }
+            mealNames += mI.getName() + "\n";
+            quantities += mI.getQuantity() + "\n";
+            emailContents += mI.getName() + "\t\t" + mI.getQuantity() + "\n";
 
         }
 
