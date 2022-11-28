@@ -97,7 +97,7 @@
     <string name="made_by">Made by Chef:</string>
     <string name="special_instructions">Special Instructions:</string>
     <string name="orders_in_progress">Orders In Progress</string>
-    <string name="completed">Completed</string>
+    <string name="completed">Complete</string>
     <string name="view_all_orders_label">View All Orders</string>
     <string name="meal_name_text">Meal Name</string>
     <string name="date">Date</string>

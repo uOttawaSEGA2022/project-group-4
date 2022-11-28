@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 
-public class OrdersInProgressAdapter extends ArrayAdapter<Order> implements StatefulView {
+public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
 
     /**
@@ -46,7 +46,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order> implements Stat
         Orders orders = App.getChef().ORDERS;
         Order order = getItem(position);
 
-        //
+        // get order data item for given position
         String mealNames = "";
         String quantities = "";
 
@@ -59,22 +59,14 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order> implements Stat
         // Process: traversing entire meals map
         for (Order item : orders.getOrdersInProgress()) { // is a list of object Order
 
-            for (MealInfo mI : item.getMeals().values()) { // loop through the list to get each order's name and quantity
-                mealNames = mI.getName();
-                quantities = String.valueOf(mI.getQuantity());
+            for (MealInfo mI : order.getMeals().values()) {
+
+                mealNames += mI.getName() + "\n";
+                quantities += mI.getQuantity() + "\n";
+
             }
 
         }
-
-        // populate data
-        ((TextView) convertView.findViewById(R.id.clientText)).setText("Client: " + order.getClientInfo().getClientName());
-        ((TextView) convertView.findViewById(R.id.mealNameText)).setText("Meal: " + mealNames);
-        ((TextView) convertView.findViewById(R.id.quantityOfMealInProgress)).setText("Q: " + quantities);
-
-        // format the date string
-        String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate());
-        ((TextView) convertView.findViewById(R.id.dateForOrder)).setText(stringDate);
-
 
         // on click on completed button
         ((Button) convertView.findViewById(R.id.doneButton)).setOnClickListener(new View.OnClickListener() {
@@ -82,30 +74,21 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order> implements Stat
             @Override
             public void onClick(View v) {
                 order.setIsCompleted(true);
-                App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, OrdersInProgressAdapter.this);
+                App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
             }
         });
+
+        // populate data
+        ((TextView) convertView.findViewById(R.id.clientText)).setText("Client: " + order.getClientInfo().getClientName());
+        ((TextView) convertView.findViewById(R.id.mealNameText)).setText("Meal(s): " + "\n" + mealNames);
+        ((TextView) convertView.findViewById(R.id.quantityOfMealInProgress)).setText("(#)\n" + quantities);
+
+        // format the date string
+        String stringDate = new SimpleDateFormat("yyyy-MM-dd").format(order.getOrderDate());
+        ((TextView) convertView.findViewById(R.id.dateForOrder)).setText(stringDate);
+
 
         return convertView;
     }
 
-    @Override
-    public void updateUI() {
-
-    }
-
-    @Override
-    public void showNextScreen() {
-
-    }
-
-    @Override
-    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-
-    }
-
-    @Override
-    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-
-    }
 }
