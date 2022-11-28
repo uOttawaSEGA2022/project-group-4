@@ -70,7 +70,7 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
         else if (App.getUser() instanceof Chef) { //is CHEF
             ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
 
-            // Process: setting onClicks for accept/reject buttons
+            // Process: setting onClicks for complaint button
             ((Button) convertView.findViewById(R.id.fileComplaintButton)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,6 +78,20 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
 
 
                 }
+            });
+
+            // Process: setting ratingBar listener
+            ((RatingBar) convertView.findViewById(R.id.ratingBar)).setOnRatingBarChangeListener(
+                    new RatingBar.OnRatingBarChangeListener() {
+                        @Override
+                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+
+                            if (!ratingBar.isIndicator()){
+                                App.ORDER_HANDLER.updateChefRating(order.getChefInfo().getChefId(), (double) rating);
+                                ratingBar.setIsIndicator(true);
+                                ratingBar.setFocusable(false);
+                            }
+                        }
             });
 
             Double newRating = Double.valueOf(((RatingBar) convertView.findViewById(R.id.ratingBar)).getRating());
