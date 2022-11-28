@@ -378,6 +378,58 @@ public class OrderActions {
         }
     }
 
+
+    public void updateChefRating(String chefId, Double newRating){
+
+        if (Preconditions.isNotNull(chefId)) {
+
+            // retrieve client object from firebase
+            database.collection(CLIENT_COLLECTION)
+                    .document(chefId)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+
+                                    Double ratingSum = (Double) document.getData().get("ratingSum");
+                                    int numOfRatings = (int) document.getData().get("numOfRatings");
+
+                                    database.collection(CLIENT_COLLECTION)
+                                            .document(chefId)
+                                            .update("ratingSum", ratingSum + newRating,
+                                                    "numOfRatings", numOfRatings++)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    App.ORDER_HANDLER.handleUpdateChefRatingSuccess();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update chef's rating!");
+                                                }
+                                            });
+
+
+
+                                } else {
+                                        Log.d("updateChefRating", "Chef not found");
+                                    }
+                            } else {
+                                Log.d("updateChefRating" , "get failed with ", task.getException());
+                            }
+                        }
+                    });
+
+
+        }
+
+    }
+
     protected Order makeOrderFromFirebase(DocumentSnapshot document){
 
         if (document.getData() == null) {

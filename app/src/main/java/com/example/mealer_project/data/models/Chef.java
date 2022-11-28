@@ -11,7 +11,8 @@ import java.util.Date;
 public class Chef extends User {
     private String description;
     private String voidCheque;
-    private double chefRating;
+    private double chefRatingSum; // sum of ratings
+    private int numOfRatings; // number of ratings
     private int numOfMealsSold;
     private boolean isSuspended;
     private Date suspensionDate;
@@ -33,13 +34,14 @@ public class Chef extends User {
      * Menu of a chef is stored in a HashMap
      */
     public Chef(String firstName, String lastName, String email, String password, Address address,
-         UserRoles role, String description, String voidCheque, int numberOfMealsSold, double chefRating)  throws IllegalArgumentException {
+                UserRoles role, String description, String voidCheque, int numberOfMealsSold, double chefRatingSum, int numOfRatings)  throws IllegalArgumentException {
         // instantiate Admins data members
         super(firstName, lastName, email, password, address, role);
         this.setDescription(description);
         this.setVoidCheque(voidCheque);
         this.setNumOfMealsSold(numberOfMealsSold);
-        this.setChefRating(chefRating);
+        this.setChefRatingSum(chefRatingSum);
+        this.setNumOfRatings(numOfRatings);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
         this.isSuspended = false;
@@ -53,7 +55,8 @@ public class Chef extends User {
         this.setDescription(description);
         this.setVoidCheque(voidCheque);
         this.setNumOfMealsSold(0);
-        this.setChefRating(0);
+        this.setChefRatingSum(0);
+        this.setNumOfRatings(0);
         // instantiate a meals object where Chef's meals will be stored
         this.MEALS = new Meals();
         this.isSuspended = false;
@@ -100,17 +103,44 @@ public class Chef extends User {
      * Get the average rating of a chef
      * @return Integer representing chef's overall rating
      */
-    public double getChefRating() { return chefRating; }
+    public double getChefRatingSum() { return chefRatingSum; }
 
     /**
-     * Set the chef's rating
-     * @param chefRating integer representing the chef's rating
+     * Set the chef's rating sum
+     * @param chefRatingSum integer representing the chef's rating
      */
-    public void setChefRating(double chefRating) {
-        // validate rating
-        this.chefRating = chefRating;
+    public void setChefRatingSum(double chefRatingSum) {
+
+        this.chefRatingSum = chefRatingSum;
     }
 
+    /**
+     * Add to the chef's rating sum
+     * @param chefRating integer representing the chef's rating
+     */
+    public void addToChefRatingSum(double chefRating) {
+
+        this.chefRatingSum += chefRating;
+        this.numOfRatings ++;
+    }
+
+    /**
+     * Get the number of ratings done for a chef
+     * @return Integer representing number of ratings
+     */
+    public double getNumOfRatings() { return numOfRatings; }
+
+    /**
+     * Set the chef's number of ratings
+     * @param numOfRatings integer representing the chef's number of ratings
+     */
+    public void setNumOfRatings(int numOfRatings) {
+        this.numOfRatings = numOfRatings;
+    }
+
+    public double getChefRating(){
+        return chefRatingSum/numOfRatings;
+    }
     /**
      * Get the total number of meals sold by a chef
      * @return Integer representing chef's total sales

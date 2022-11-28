@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
@@ -66,6 +69,20 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
         }
         else if (App.getUser() instanceof Chef) { //is CHEF
             ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
+
+            // Process: setting onClicks for accept/reject buttons
+            ((Button) convertView.findViewById(R.id.fileComplaintButton)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Process: filing a complaint
+
+
+                }
+            });
+
+            Double newRating = Double.valueOf(((RatingBar) convertView.findViewById(R.id.ratingBar)).getRating());
+            App.ORDER_HANDLER.updateChefRating(order.getChefInfo().getChefId(), newRating);
+
         }
         // Process: setting the order info to appear on the screen
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
