@@ -331,41 +331,44 @@ public class OrderActions {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
 
-                                    // retrieve list of orderIds from client
-                                    ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
+                                    if (document.getData().get(CHEF_ORDERS_COLLECTION) != null) {
+
+                                        // retrieve list of orderIds from client
+                                        ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
 
 
-                                    // iterate through list
-                                    for (String orderId : orderIds) {
+                                        // iterate through list
+                                        for (String orderId : orderIds) {
 
-                                        // go to orders_collection and retrieve order using the given orderId in the list
-                                        database.collection(ORDER_COLLECTION)
-                                                .document(orderId)
-                                                .get()
-                                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            DocumentSnapshot document = task.getResult();
-                                                            if (document.exists()) {
+                                            // go to orders_collection and retrieve order using the given orderId in the list
+                                            database.collection(ORDER_COLLECTION)
+                                                    .document(orderId)
+                                                    .get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if (task.isSuccessful()) {
+                                                                DocumentSnapshot document = task.getResult();
+                                                                if (document.exists()) {
 
-                                                                //make order object from firebase
-                                                                Order order = makeOrderFromFirebase(document);
+                                                                    //make order object from firebase
+                                                                    Order order = makeOrderFromFirebase(document);
 
-                                                                //update orders of the logged in client
-                                                                App.getClient().ORDERS.addOrder(order);
+                                                                    //update orders of the logged in client
+                                                                    App.getClient().ORDERS.addOrder(order);
 
+                                                                } else {
+                                                                    Log.d("loadClientOrders", "Order not found given orderId stored in chef orders");
+                                                                }
                                                             } else {
-                                                                Log.d("loadClientOrders", "Order not found given orderId stored in chef orders");
+                                                                Log.d("loadClientOrders", "get failed with ", task.getException());
                                                             }
-                                                        } else {
-                                                            Log.d("loadClientOrders", "get failed with ", task.getException());
                                                         }
-                                                    }
-                                                });
+                                                    });
+                                        }
+                                    } else {
+                                        Log.d("loadClientOrders", "Chef not found");
                                     }
-                                } else {
-                                    Log.d("loadClientOrders", "Chef not found");
                                 }
                             } else {
                                 Log.d("loadClientOrders", "get failed with ", task.getException());

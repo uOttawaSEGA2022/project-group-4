@@ -46,7 +46,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
         // Change text to proper welcome message when opened
         if (App.getAppInstance().isUserAuthenticated()) {
-            setWelcomeMessage("Welcome " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", you're logged in as a CHEF!");
+            setWelcomeMessage("Welcome " + currentUser.getFirstName() + ", you're logged in as a CHEF!");
         }
 
         // Initialization
