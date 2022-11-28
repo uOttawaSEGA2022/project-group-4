@@ -169,6 +169,8 @@ public class PendingOrdersScreen extends UIScreen implements StatefulView {
         // Process: telling adapter that orders have been updated
         pendingOrdersAdapter.notifyDataSetChanged();
 
+        App.getAppInstance().getOrdersInProgressScreen().updateAdapter();
+
     }
 
     @Override
