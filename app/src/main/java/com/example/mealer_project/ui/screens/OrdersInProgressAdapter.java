@@ -19,6 +19,7 @@ import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.Orders;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.utils.SendMailTask;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -49,7 +50,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
         // get order data item for given position
         String mealNames = "";
         String quantities = "";
-
+        String emailContents = "";
 
         // check if an existing view is being reused, otherwise, inflate
         if (convertView == null) {
@@ -63,10 +64,14 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
                 mealNames += mI.getName() + "\n";
                 quantities += mI.getQuantity() + "\n";
+                emailContents += mI.getName() + "\t\t" + mI.getQuantity() + "\n";
 
             }
 
         }
+
+        // Variable Declaration
+        final String EMAIL_CONTENTS = emailContents; //constant meal names & quantities
 
         // on click on completed button
         ((Button) convertView.findViewById(R.id.doneButton)).setOnClickListener(new View.OnClickListener() {
@@ -75,6 +80,19 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
             public void onClick(View v) {
                 order.setIsCompleted(true);
                 App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
+                // Process: sending email to client that order has been rejected
+                new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
+                        order.getClientInfo().getClientEmail(),
+                        "READY-FOR-PICK-UP MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "Hello " + order.getClientInfo().getClientName() + ",\n" +
+                        "The following order is ready for pick-up at " +
+                        order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
+                        order.getChefInfo().getChefAddress().getCity() +
+                        order.getChefInfo().getChefAddress().getPostalCode() + ".\n\n" +
+                        EMAIL_CONTENTS + "\n\n" +
+                        "If you have any questions about pick-up, please contact us at mealerprojectgroup4@gmail.com" +
+                        " with your order number provided in the subject line.\n\n" +
+                        "MEALER Team");
             }
         });
 

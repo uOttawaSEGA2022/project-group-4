@@ -45,6 +45,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         Order order = getItem(position);
         String mealNames = "";
         String quantities = "";
+        String emailContents = "";
 
         // Process: checking if existing view is being reused
         if (convertView == null) { //must inflate view
@@ -61,8 +62,12 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
             mealNames += mI.getName() + "\n";
             quantities += mI.getQuantity() + "\n";
+            emailContents += mI.getName() + "\t\t" + mI.getQuantity() + "\n";
 
         }
+
+        // Variable Declaration
+        final String EMAIL_CONTENTS = emailContents; //constant meal names & quantities
 
         // Process: checking if chef or client is logged in
         if (App.getUser() instanceof Client) { //is CLIENT
@@ -79,11 +84,15 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                     order.setIsPending(false); //no longer pending
                     order.setIsRejected(true); //rejected
 
-                    // Process: sending email to client that order has been rejected
-                    //new SendMailTask().execute("mealerprojectgroup4@gmail.com", "INSERT APP PASSWORD HERE",
-                            //order.getClientInfo().getClientEmail(), "SUBJECT LINE HERE", "EMAIL CONTENTS HERE");
-
                     App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
+
+                    // Process: sending email to client that order has been rejected
+                    new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
+                            order.getClientInfo().getClientEmail(),
+                            "REJECTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                            "Hello " + order.getClientInfo().getClientName() + ",\n" +
+                            "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName() +
+                            ".\n\n" + EMAIL_CONTENTS + "\n\n" + "Thank you for understanding.\n\nMEALER Team");
                 }
             });
 
@@ -94,11 +103,22 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                     order.setIsPending(false); //no longer pending
                     order.setIsRejected(false); //not rejected
 
-                    // Process: sending email to client that order has been accepted
-                    //new SendMailTask().execute("mealerprojectgroup4@gmail.com", "INSERT APP PASSWORD HERE",
-                            //order.getClientInfo().getClientEmail(), "SUBJECT LINE HERE", "EMAIL CONTENTS HERE");
-
                     App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
+
+                    // Process: sending email to client that order has been accepted
+                    new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
+                            order.getClientInfo().getClientEmail(),
+                            "ACCEPTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                            "Hello " + order.getClientInfo().getClientName() + ",\n" +
+                                    "The following order has been accepted by Chef " + order.getChefInfo().getChefName() + ".\n" +
+                                    "You will receive another email notification when your order is ready for pick-up at " +
+                                    order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
+                                    order.getChefInfo().getChefAddress().getCity() +
+                                    order.getChefInfo().getChefAddress().getPostalCode() + ".\n\n" +
+                                    EMAIL_CONTENTS + "\n\n" + "Thank you for placing your order through the MEALER app!\n" +
+                                    "If you have any questions about your order, please email us directly at " +
+                                    "mealerprojectgroup4@gmail.com with your order number provided in the subject line.\n\n" +
+                                    "MEALER Team");
                 }
             });
         }
