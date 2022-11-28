@@ -544,17 +544,25 @@ public class MealActions {
                                 Log.e("searchMeals", "empty result");
                             }
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                // create the meal
-                                meal = makeMealFromFirebase(document);
-                                // set the meal id
-                                meal.setMealID(document.getId());
-                                // add keywords to meal instance (only need to do this when we need search meal functionality i.e., for a client)
-                                meal.setKeywords((ArrayList<String>) document.getData().get("keywords"));
-                                // create SearchMealItem adding to it the meal and chefInfo
-                                smItem = new SearchMealItem(meal, chefInfo);
-                                Log.e("searchMeals", "adding meal: " + meal.getName());
-                                // store current SearchMealItem in our list
-                                smItems.add(smItem);
+                                // check if we have a isOffered property
+                                if (document.getData().get("isOffered") != null) {
+                                    // get the isOffered property's value
+                                    boolean isOffered = (Boolean) document.getData().get("isOffered");
+                                    // if only the meal if offered
+                                    if (isOffered) {
+                                        // create the meal
+                                        meal = makeMealFromFirebase(document);
+                                        // set the meal id
+                                        meal.setMealID(document.getId());
+                                        // add keywords to meal instance (only need to do this when we need search meal functionality i.e., for a client)
+                                        meal.setKeywords((ArrayList<String>) document.getData().get("keywords"));
+                                        // create SearchMealItem adding to it the meal and chefInfo
+                                        smItem = new SearchMealItem(meal, chefInfo);
+                                        Log.e("searchMeals", "adding meal: " + meal.getName());
+                                        // store current SearchMealItem in our list
+                                        smItems.add(smItem);
+                                    }
+                                }
                             }
                             Log.e("searchMeals", "updating meals");
                             // pass list containing SearchMealItems to handler so our App's search meal list can be updated
