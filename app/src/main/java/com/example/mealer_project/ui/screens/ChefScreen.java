@@ -10,47 +10,55 @@ import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
+import com.google.protobuf.StringValue;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChefScreen extends UIScreen implements StatefulView {
-
+    // Variable Declaration
     TextView editText;
 
-    // list containing the current chef's orders in progress
-    private List<Order> orderList;
+    /**
+     * the map that contains the current CHEF's Orders
+     */
+    private List<Order> orderData;
 
-    // list that holds the orders
+    /**
+     * the list that will hold the orders
+     */
     private List<Order> orders;
 
-    // array adapter for the in progress orders
+    /**
+     * the array adapter for the list view of the orders in progress
+     */
     private OrdersInProgressAdapter ordersInProgressAdapter;
 
+    //----------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_screen);
+        App.getAppInstance().setOrdersInProgressScreen(this);
 
+        // HEADER
         editText = (TextView) findViewById(R.id.welcome_message_chef);
-
-        attachOnClickListeners();
-
         User currentUser = App.getAppInstance().getUser();
-
-        // Change text to proper welcome message when opened
-        if (App.getAppInstance().isUserAuthenticated()) {
-            setWelcomeMessage("Welcome " + currentUser.getFirstName() + ", you're logged in as a CHEF!");
+        if (App.getAppInstance().isUserAuthenticated()) { // Change text to proper welcome message when opened
+            setWelcomeMessage("Welcome " + currentUser.getFirstName() + " " + currentUser.getLastName() + ", you're logged in as a CHEF!");
         }
 
         // Initialization
-        orderList = new ArrayList<Order>();
+        attachOnClickListeners();
 
         // Process: loading the in progress orders
         loadOrdersInProgress();
@@ -58,6 +66,21 @@ public class ChefScreen extends UIScreen implements StatefulView {
         // Process: populate the Orders ListView
         populateOrdersInProgress();
 
+    }
+
+    /**
+     * retrieves the current chef's orders in progress
+     */
+    private void loadOrdersInProgress() {
+
+        // Process: Check if current user is a chef
+        if (App.getUser() instanceof Chef) { // is a CHEF
+            // Initialization: setting ordersData to the list
+            this.orderData = ((Chef) App.getUser()).ORDERS.getOrdersInProgress();
+        }
+        else { // not a chef -> error-handling
+            Log.e("ChefScreen", "Current logged-in user is not a CHEF");
+        }
     }
 
     /**
@@ -75,29 +98,50 @@ public class ChefScreen extends UIScreen implements StatefulView {
         // Process: attach adapter to ListView
         ordersInProgressList.setAdapter(ordersInProgressAdapter);
 
+        // Process: if theres no meals, display no meals in progress text
+        if (orderData.size() == 0) {
+            TextView noMealsInProgress = (TextView) findViewById(R.id.noOrdersInProgress);
+            noMealsInProgress.setVisibility(View.VISIBLE);
+        }
+
         // Process: loop through the map of data for the orders in progress
-        for (Order order: this.orderList) {
+        for (Order order: this.orderData) {
             ordersInProgressAdapter.add(order); // adds orderData to the list
         }
     }
 
     /**
-     * retrieves the current chef's orders
+     * this helper method populates the Orders list after a change has been made
      */
-    private void loadOrdersInProgress() {
+    private void repopulatePendingOrdersList() {
 
-        // Process: Check if current user is a chef
-        if (App.getUser() instanceof Chef) { // is a CHEF
-            // Initialization: setting ordersData to the list
-            this.orderList = ((Chef) App.getUser()).ORDERS.getAllOrders();
-        }
-        else { // not a chef -> error-handling
-            Log.e("ChefScreen", "Current logged-in user is not a CHEF");
+        ordersInProgressAdapter.clear(); //removing all previous data
 
-            // Output
-            TextView noOrdersInProgress = findViewById(R.id.noOrdersInProgress);
-            noOrdersInProgress.setVisibility(View.VISIBLE);
+        // Process: if theres no meals, display no meals in progress text
+        if (orderData.size() == 0) {
+            TextView noMealsInProgress = (TextView) findViewById(R.id.noOrdersInProgress);
+            noMealsInProgress.setVisibility(View.VISIBLE);
+        } else {
+            TextView noMealsInProgress = (TextView) findViewById(R.id.noOrdersInProgress);
+            noMealsInProgress.setVisibility(View.INVISIBLE);
         }
+
+        // Process: looping through the map of data
+        for (Order order: this.orderData) {
+            ordersInProgressAdapter.add(order); //adding the orderData to the list
+        }
+
+    }
+
+    public OrdersInProgressAdapter getOrdersInProgressAdapter() {
+        return ordersInProgressAdapter;
+    }
+
+    public void updateAdapter() {
+        loadOrdersInProgress();
+        repopulatePendingOrdersList();
+
+        ordersInProgressAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -155,8 +199,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
             }
         });
 
-
-
         viewPendingOrder.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +222,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
     @Override
     public void updateUI() {
-
     }
 
     @Override
@@ -190,11 +231,24 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
 
+            // Output: successfully completed an order
+            displayErrorToast("Successfully completed order!");
+
+        } else { // other op
+            displayErrorToast((String)payload);
+        }
+        updateAdapter();
     }
 
     @Override
     public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+        if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
 
+            // Output: failed to update order
+            displayErrorToast("Failed to update order!");
+
+        }
     }
 }

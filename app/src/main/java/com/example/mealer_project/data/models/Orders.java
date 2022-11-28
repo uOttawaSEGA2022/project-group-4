@@ -89,6 +89,29 @@ public class Orders {
     };
 
     /**
+     * Method to retrieve a list containing all Orders in progress by the Chef
+     * @return a List containing Order objects
+     */
+    public List<Order> getOrdersInProgress() {
+        // Variable Declaration
+        ArrayList<Order> ordersInProgress = new ArrayList<Order>();
+
+        // Process: looping through orders
+        for (Order order : this.orders.values()) {
+
+            // Process: checking if completed
+            if (order.getIsCompleted() == false && order.getIsRejected() == false && order.getIsPending() == false) {
+
+                ordersInProgress.add(order); //adding to list
+            }
+        }
+
+        // Output
+        return ordersInProgress;
+    };
+
+
+    /**
      * Method to retrieve a list containing all completed Orders by the Chef
      * @return a List containing Order objects
      */

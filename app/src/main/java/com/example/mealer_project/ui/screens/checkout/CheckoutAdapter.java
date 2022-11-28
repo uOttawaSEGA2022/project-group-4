@@ -72,8 +72,7 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
             @Override
             public void onClick(View v) {
-                item.setQuantity(item.getQuantity() - 1); // update the quantity
-                quantity.setText(item.getQuantity()); // change the text to the updated quantity
+
             }
         });
 
@@ -82,8 +81,7 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                item.setQuantity(item.getQuantity() + 1); // update the quantity
-                quantity.setText(item.getQuantity()); // change the text to the updated quantity
+
             }
         });
 

@@ -79,7 +79,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnContainer">
@@ -88,7 +88,7 @@
             android:id="@+id/chefScreenMealsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="75dp"
             android:gravity="center_horizontal|center_vertical"
             android:minHeight="200dp"
             android:orientation="vertical"
@@ -210,7 +210,7 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:id="@+id/allOrdersInProgress"
@@ -222,7 +222,7 @@
                         android:id="@+id/noOrdersInProgress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center"
                         android:text="There are currently no orders in progress..."
@@ -233,7 +233,8 @@
                     <ListView
                         android:id="@+id/ordersInProgress"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
