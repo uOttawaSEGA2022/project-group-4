@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/smItemContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <View
-        android:id="@+id/infoDivider4"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@color/black" />
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:background="@drawable/input_box_shadow"
+    android:orientation="vertical"
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/userNameText"
