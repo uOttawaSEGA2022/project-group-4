@@ -10,6 +10,7 @@
         android:id="@+id/EntireScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/test"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,15 +41,17 @@
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="wrap_content"
-                    android:layout_height="300dp"
+                    android:layout_height="250dp"
                     android:contentDescription="@string/logoDescription"
-                    app:srcCompat="@drawable/logo_fornow" />
+                    app:srcCompat="@drawable/mealer"
+                    tools:ignore="ImageContrastCheck" />
 
                 <TextView
                     android:id="@+id/Title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/croissant_one"
+                    android:fontFamily="@font/copse"
+                    android:paddingBottom="25dp"
                     android:text="@string/title"
                     android:textAlignment="center"
                     android:textColor="#000000"
@@ -58,9 +61,9 @@
 
             <LinearLayout
                 android:id="@+id/Buttons"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
@@ -68,8 +71,9 @@
                     android:id="@+id/signUpBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:onClick="OnSetSignUp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
                     android:text="@string/signUpBtn"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="#47894B"
@@ -78,21 +82,22 @@
 
                 <Button
                     android:id="@+id/invsBtn"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checkable="false"
                     android:clickable="false"
                     android:focusable="false"
-                    android:visibility="invisible"
-                    style="?android:attr/buttonBarButtonStyle"/>
+                    android:visibility="invisible" />
 
                 <Button
                     android:id="@+id/loginBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:onClick="OnSetLogIn"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="30dp"
                     android:text="@string/loginBtn"
                     app:backgroundTint="#47894B"
                     app:cornerRadius="25dp"

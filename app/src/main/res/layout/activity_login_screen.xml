@@ -5,6 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/test"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -18,12 +19,12 @@
         android:layout_margin="20dp"
         android:layout_weight="1"
         android:width="100dp"
+        android:contentDescription="logo for now"
         android:src="@drawable/logo_fornow"
         app:layout_constraintBottom_toTopOf="@+id/loginUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="logo for now" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/loginUsername"
@@ -31,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="168dp"
         android:autofillHints="Email"
+        android:background="@drawable/input_box_shadow_white"
         android:drawableLeft="@drawable/ic_baseline_person_outline_24"
         android:drawablePadding="10dp"
         android:hint="@string/prompt_email"
@@ -49,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:autofillHints="Password"
+        android:background="@drawable/input_box_shadow_white"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="10dp"
         android:hint="@string/prompt_password"
@@ -77,12 +80,12 @@
         android:text="@string/log_in"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#FFFF"
+        app:cornerRadius="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.216"
-        app:cornerRadius="40dp" />
+        app:layout_constraintVertical_bias="0.216" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

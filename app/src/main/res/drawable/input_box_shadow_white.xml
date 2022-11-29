@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Supplementary code for adding gradient background in input form fields
+with custom modifications
+https://stackoverflow.com/a/55293053/19365920
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="20.5dp" />
+    <stroke
+        android:width="0.5dp"
+        android:color="#66000000" />
+    <gradient android:startColor="@android:color/white"
+        android:endColor="@color/green_text_background"
+        android:angle="270"/>
+</shape>
