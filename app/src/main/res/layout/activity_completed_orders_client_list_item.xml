@@ -98,7 +98,6 @@
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:contentDescription="@string/ratingBar"
             android:isIndicator="false"
             android:numStars="5"
@@ -110,10 +109,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
+            android:fontFamily="sans-serif"
             android:text="@string/submit"
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
 
     </LinearLayout>
