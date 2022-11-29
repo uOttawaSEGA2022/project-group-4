@@ -51,7 +51,7 @@
             android:layout_toLeftOf="@id/logout_btn_chef"
             android:layout_toRightOf="@id/mealer_logo"
             android:fontFamily="sans-serif-medium"
-            android:text="Welcome! You are logged in as Admin"
+            android:text="Welcome, you're logged in as ADMIN"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:constraint_referenced_tags="1" />

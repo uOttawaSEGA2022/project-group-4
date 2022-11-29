@@ -21,7 +21,7 @@ public class ChefTest {
     public void getChefRating() {
         Chef chef = new Chef("Gordon", "Ramsey", "gordon123@gmail.com", "Password@123", Address.getSampleAddress(), UserRoles.CHEF, "I am a good chef", "myVoidChqeue", 233, 5);
         int expected = 5;
-        int actual = chef.getChefRating();
+        double actual = chef.getChefRating();
         assertEquals("Chef rating does not match", expected, actual);
     }
 
