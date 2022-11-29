@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:background="@drawable/input_box_shadow"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -95,6 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:fontFamily="@font/nunito_sans"
                 android:gravity="center"
                 android:text="@string/number" />
         </LinearLayout>
@@ -112,8 +113,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|end"
             android:layout_margin="10dp"
+            android:fontFamily="@font/copse"
             android:text="@string/completed"
             android:textColor="@color/green_primary"
+            android:textStyle="bold"
             tools:ignore="TextContrastCheck" />
 
     </LinearLayout>

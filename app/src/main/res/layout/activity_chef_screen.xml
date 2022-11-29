@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/test"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -98,10 +99,12 @@
                 android:id="@+id/chefScreenMealsLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/abril_fatface"
+                android:fontFamily="@font/copse"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/meals_label"
-                android:textSize="24sp" />
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/chefScreenButtonHolder"
@@ -156,10 +159,12 @@
                 android:id="@+id/chefScreenOrdersLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/abril_fatface"
+                android:fontFamily="@font/copse"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="@string/orders_label"
-                android:textSize="24sp" />
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/chefScreenOrdersButtonHolder"
@@ -203,10 +208,12 @@
                 android:id="@+id/ordersInProgressLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/abril_fatface"
+                android:fontFamily="@font/copse"
                 android:gravity="center"
                 android:text="@string/orders_in_progress"
-                android:textSize="24sp" />
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <ScrollView
                 android:layout_width="match_parent"
