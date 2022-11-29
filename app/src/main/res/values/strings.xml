@@ -109,4 +109,5 @@
     <string name="reject_button">Reject</string>
     <string name="accept_button">Accept</string>
     <string name="no_search_result_message">Sorry! no meals found for this search value!</string>
+    <string name="make_complaint">File Complaint</string>
 </resources>

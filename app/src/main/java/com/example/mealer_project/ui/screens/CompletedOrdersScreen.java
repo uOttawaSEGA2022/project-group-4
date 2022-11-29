@@ -77,8 +77,8 @@ public class CompletedOrdersScreen extends UIScreen {
             // Initialization: setting ordersData to the list of completed orders
             this.ordersData = ((Chef) App.getUser()).ORDERS.getCompletedOrders();
         }
-        // Process: checking if current user is a CHEF
-        else if (App.getUser() instanceof Client) { //is CHEF
+        // Process: checking if current user is a CLIENT
+        else if (App.getUser() instanceof Client) { //is CLIENT
             // Initialization: setting ordersData to the list of completed orders
             this.ordersData = ((Client) App.getUser()).ORDERS.getCompletedOrders();
         }

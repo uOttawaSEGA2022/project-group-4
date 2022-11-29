@@ -1,14 +1,20 @@
 package com.example.mealer_project.ui.screens;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+import static androidx.core.content.ContextCompat.startActivity;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
@@ -73,6 +79,18 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
+
+        Button complaintButton = convertView.findViewById(R.id.fileComplaintButton);
+        complaintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("complaintCheck", "it works");
+                Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
+                startActivity(getContext(), goToComplaint, null);
+                //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
+            }
+        });
+
 
         return convertView;
     }
