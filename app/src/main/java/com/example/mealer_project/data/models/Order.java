@@ -6,13 +6,14 @@ import com.example.mealer_project.data.models.orders.ClientInfo;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.utils.Utilities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.grpc.okhttp.internal.Util;
 
-public class Order {
+public class Order implements Serializable {
 
     private String orderID;
     private ChefInfo chefInfo;

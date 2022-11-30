@@ -2,6 +2,7 @@ package com.example.mealer_project.ui.screens;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.MealInfo;
 
 import java.text.DateFormat;
@@ -84,7 +86,11 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
             @Override
             public void onClick(View view) {
                 Log.e("complaintCheck", "it works");
+
+                Bundle orderInfo = new Bundle();
+                orderInfo.putSerializable("test", order);
                 Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
+                goToComplaint.putExtras(orderInfo);
                 startActivity(getContext(), goToComplaint, null);
                 //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
             }
