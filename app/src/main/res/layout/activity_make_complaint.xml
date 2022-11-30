@@ -6,22 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.screens.MakeComplaint">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-87dp">
-
-        <ImageButton
-            android:id="@+id/backButtonComplaint"
-            android:layout_width="48dp"
-            android:layout_height="50dp"
-            android:background="#00FFFFFF"
-            android:contentDescription="@string/back"
-            android:scaleType="fitXY"
-            android:src="@drawable/backbutton" />
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/backButtonComplaint"
+        android:layout_width="48dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="363dp"
+        android:layout_marginBottom="23dp"
+        android:background="#00FFFFFF"
+        android:contentDescription="@string/back"
+        android:scaleType="fitXY"
+        android:src="@drawable/backbutton"
+        app:layout_constraintBottom_toTopOf="@+id/make_complaint_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/make_complaint_title"
@@ -78,17 +76,18 @@
 
     <EditText
         android:id="@+id/complaint_writer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="220dp"
+        android:layout_height="214dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="@string/description_here"
+        android:hint="Complaint Description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.528"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.625" />
+        app:layout_constraintVertical_bias="0.817" />
 
     <TextView
         android:id="@+id/meal_date"
@@ -102,18 +101,6 @@
         app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
         app:layout_constraintVertical_bias="0.312" />
 
-    <TextView
-        android:id="@+id/description_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/write_complaint"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.184"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.521" />
-
     <Button
         android:id="@+id/send_complaint_button"
         android:layout_width="wrap_content"
@@ -121,8 +108,26 @@
         android:text="@string/submit_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.853" />
+        app:layout_constraintVertical_bias="0.988" />
+
+    <EditText
+        android:id="@+id/title_of_complaint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="101dp"
+        android:layout_marginEnd="101dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="Title of Complaint:"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/complaint_writer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mealer_Project">
         <activity
-            android:name=".MakeComplaint"
+            android:name=".ui.screens.MakeComplaint"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
