@@ -77,18 +77,20 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
                 order.setIsCompleted(true);
                 App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
                 // Process: sending email to client that order has been rejected
-                new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
-                        order.getClientInfo().getClientEmail(),
-                        "READY-FOR-PICK-UP MEALER Order: " + order.getOrderID().substring(0, 6),
-                        "Hello " + order.getClientInfo().getClientName() + ",\n" +
+                String str = "Hello " + order.getClientInfo().getClientName() + ","
+                        + System.lineSeparator() +
                         "The following order is ready for pick-up at " +
                         order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
                         order.getChefInfo().getChefAddress().getCity() +
-                        order.getChefInfo().getChefAddress().getPostalCode() + ".\n\n" +
-                        EMAIL_CONTENTS + "\n\n" +
+                        order.getChefInfo().getChefAddress().getPostalCode() + "." + System.lineSeparator() + System.lineSeparator() +
+                        EMAIL_CONTENTS + System.lineSeparator() + System.lineSeparator() +
                         "If you have any questions about pick-up, please contact us at mealerprojectgroup4@gmail.com" +
-                        " with your order number provided in the subject line.\n\n" +
-                        "MEALER Team");
+                        " with your order number provided in the subject line." + System.lineSeparator() + System.lineSeparator() +
+                        "MEALER Team";
+                new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
+                        order.getClientInfo().getClientEmail(),
+                        "READY-FOR-PICK-UP MEALER Order: " + order.getOrderID().substring(0, 6),
+                        str);
             }
         });
 

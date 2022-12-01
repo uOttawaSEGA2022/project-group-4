@@ -31,14 +31,14 @@ public class CompletedOrdersScreen extends UIScreen {
     private List<Order> orders;
 
     /**
-     * the array adapter for the list view of the completed orders
+     * the array adapter for the list view of the Chef completed orders
      */
     private CompletedOrdersAdapter completedOrdersAdapter;
 
     /**
-     * the array adapter for the list view of the pending orders
+     * the array adapter for the list view of the Client completed orders
      */
-    private PendingOrdersAdapter pendingOrdersAdapter;
+    private CompletedOrdersAdapterClient completedOrdersAdapterClient;
 
     /**
      * the back button icon
@@ -104,14 +104,14 @@ public class CompletedOrdersScreen extends UIScreen {
         if (App.getUser() instanceof Client) { //client
 
             // Initialization: setting the adapter
-            pendingOrdersAdapter = new PendingOrdersAdapter(this, R.layout.activity_completed_orders_client_list_item, this.orders);
+            completedOrdersAdapterClient = new CompletedOrdersAdapterClient(this, R.layout.activity_completed_orders_client_list_item, this.orders);
 
             // Process: attaching the adapter to the ListView
-            completedOrdersList.setAdapter(pendingOrdersAdapter);
+            completedOrdersList.setAdapter(completedOrdersAdapterClient);
 
             // Process: looping through the map of data
             for (Order order: this.ordersData) {
-                pendingOrdersAdapter.add(order); //adding the orderData to the list
+                completedOrdersAdapterClient.add(order); //adding the orderData to the list
             }
 
         }

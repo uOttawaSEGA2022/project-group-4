@@ -30,7 +30,7 @@ public class PendingOrdersClientScreen extends UIScreen {
     /**
      * the array adapter for the list view of the pending orders
      */
-    private CompletedOrdersAdapter completedOrdersAdapter; //using completed adapter to display w/o buttons
+    private PendingOrdersAdapterClient pendingOrdersAdapterClient;
 
     /**
      * the back button icon
@@ -88,14 +88,14 @@ public class PendingOrdersClientScreen extends UIScreen {
         ListView pendingOrdersList = findViewById(R.id.pendingClientsListView);
 
         // Initialization: setting the adapter
-        completedOrdersAdapter = new CompletedOrdersAdapter(this, R.layout.activity_completed_orders_list_item, this.orders);
+        pendingOrdersAdapterClient = new PendingOrdersAdapterClient(this, R.layout.activity_completed_orders_list_item, this.orders);
 
         // Process: attaching the adapter to the ListView
-        pendingOrdersList.setAdapter(completedOrdersAdapter);
+        pendingOrdersList.setAdapter(pendingOrdersAdapterClient);
 
         // Process: looping through the map of data
         for (Order order: this.ordersData) {
-            completedOrdersAdapter.add(order); //adding the orderData to the list
+            pendingOrdersAdapterClient.add(order); //adding the orderData to the list
         }
 
     }

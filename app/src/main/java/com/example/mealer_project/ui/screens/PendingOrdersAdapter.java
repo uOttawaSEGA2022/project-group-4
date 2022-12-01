@@ -57,11 +57,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         // Process: checking if existing view is being reused
         if (convertView == null) { //must inflate view
 
-            if (App.getUser() instanceof Client) { //is CLIENT
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_completed_orders_client_list_item, parent, false);
-            } else if (App.getUser() instanceof Chef) { //is CHEF
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_pending_orders_list_item, parent, false);
-            }
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_pending_orders_list_item, parent, false);
         }
 
         // Process: traversing entire meals map
@@ -76,109 +72,60 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         // Variable Declaration
         final String EMAIL_CONTENTS = emailContents; //constant meal names & quantities
 
-        // Process: checking if chef or client is logged in
-        if (App.getUser() instanceof Client) { //is CLIENT
-            ((TextView) convertView.findViewById(R.id.userNameText)).setText("Chef: " + order.getChefInfo().getChefName());
 
-//            // Process: setting onClicks for complaint button
-//            ((Button) convertView.findViewById(R.id.fileComplaintButton)).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Process: filing a complaint
-//
-//
-//                }
-//            });
-//
-//            RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
-//            Button submitButton = (Button) convertView.findViewById(R.id.submitButton);
-//            // perform click event on button
-//            submitButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // get values and then displayed in a toast
-//                    String rating = "Rating :: " + ratingBar.getRating();
-//                    App.ORDER_HANDLER.updateChefRating(order.getChefInfo().getChefId(), Double.valueOf(ratingBar.getRating()));
-//                    Toast.makeText(getContext(), rating, Toast.LENGTH_SHORT).show();
-//                    ratingBar.setIsIndicator(true);
-//                    submitButton.setVisibility(View.GONE);
-//
-//                }
-//            });
+        ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
 
-        }
-        else if (App.getUser() instanceof Chef) { //is CHEF
-            ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
+        // Process: setting onClicks for accept/reject buttons
+        ((Button) convertView.findViewById(R.id.rejectButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Process: updating order to not pending and rejected
+                order.setIsPending(false); //no longer pending
+                order.setIsRejected(true); //rejected
 
-            // Process: setting onClicks for accept/reject buttons
-            ((Button) convertView.findViewById(R.id.rejectButton)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Process: updating order to not pending and rejected
-                    order.setIsPending(false); //no longer pending
-                    order.setIsRejected(true); //rejected
+                App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
 
-                    App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
+                // Process: sending email to client that order has been rejected
+                new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
+                        order.getClientInfo().getClientEmail(),
+                        "REJECTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "Hello " + order.getClientInfo().getClientName() + ",\n" +
+                        "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName() +
+                        ".\n\n" + EMAIL_CONTENTS + "\n\n" + "Thank you for understanding.\n\nMEALER Team");
+            }
+        });
 
-                    // Process: sending email to client that order has been rejected
-                    new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
-                            order.getClientInfo().getClientEmail(),
-                            "REJECTED MEALER Order: " + order.getOrderID().substring(0, 6),
-                            "Hello " + order.getClientInfo().getClientName() + ",\n" +
-                            "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName() +
-                            ".\n\n" + EMAIL_CONTENTS + "\n\n" + "Thank you for understanding.\n\nMEALER Team");
-                }
-            });
+        ((Button) convertView.findViewById(R.id.acceptButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Process: updating order to not pending and rejected
+                order.setIsPending(false); //no longer pending
+                order.setIsRejected(false); //not rejected
 
-            ((Button) convertView.findViewById(R.id.acceptButton)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Process: updating order to not pending and rejected
-                    order.setIsPending(false); //no longer pending
-                    order.setIsRejected(false); //not rejected
+                App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
 
-                    App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order, App.getAppInstance().getPendingOrdersScreen()); //updating in Firebase
-
-                    // Process: sending email to client that order has been accepted
-                    new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
-                            order.getClientInfo().getClientEmail(),
-                            "ACCEPTED MEALER Order: " + order.getOrderID().substring(0, 6),
-                            "Hello " + order.getClientInfo().getClientName() + ",\n" +
-                                    "The following order has been accepted by Chef " + order.getChefInfo().getChefName() + ".\n" +
-                                    "You will receive another email notification when your order is ready for pick-up at " +
-                                    order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
-                                    order.getChefInfo().getChefAddress().getCity() +
-                                    order.getChefInfo().getChefAddress().getPostalCode() + ".\n\n" +
-                                    EMAIL_CONTENTS + "\n\n" + "Thank you for placing your order through the MEALER app!\n" +
-                                    "If you have any questions about your order, please email us directly at " +
-                                    "mealerprojectgroup4@gmail.com with your order number provided in the subject line.\n\n" +
-                                    "MEALER Team");
-                }
-            });
-        }
+                // Process: sending email to client that order has been accepted
+                new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
+                        order.getClientInfo().getClientEmail(),
+                        "ACCEPTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "Hello " + order.getClientInfo().getClientName() + ",\n" +
+                                "The following order has been accepted by Chef " + order.getChefInfo().getChefName() + ".\n" +
+                                "You will receive another email notification when your order is ready for pick-up at " +
+                                order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
+                                order.getChefInfo().getChefAddress().getCity() +
+                                order.getChefInfo().getChefAddress().getPostalCode() + ".\n\n" +
+                                EMAIL_CONTENTS + "\n\n" + "Thank you for placing your order through the MEALER app!\n" +
+                                "If you have any questions about your order, please email us directly at " +
+                                "mealerprojectgroup4@gmail.com with your order number provided in the subject line.\n\n" +
+                                "MEALER Team");
+            }
+        });
         // Process: setting the order info to appear on the screen
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
         ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
-
-        Button complaintButton = convertView.findViewById(R.id.fileComplaintButton);
-        if (complaintButton != null) {
-            complaintButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.e("complaintCheck", "it works");
-
-                    Bundle orderInfo = new Bundle();
-                    orderInfo.putSerializable("test", order);
-                    Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
-                    //goToComplaint.putExtras(orderInfo);
-                    startActivity(getContext(), goToComplaint, null);
-                    //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
-                }
-            });
-        }
 
 
         return convertView;
