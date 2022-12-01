@@ -87,6 +87,8 @@ public class MakeComplaint extends AppCompatActivity {
 
         complaint = new ComplaintEntityModel(null, title, description, clientID, chefID, date);
         App.getInboxHandler().addNewComplaint(complaint);
+        Toast.makeText(getApplicationContext(), "Complaint Sent!", Toast.LENGTH_LONG).show();
+        this.finish();
     }
 
     //sets the values of the order information

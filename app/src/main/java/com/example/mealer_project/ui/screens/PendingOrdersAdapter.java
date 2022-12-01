@@ -128,23 +128,6 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
-//        Button complaintButton = convertView.findViewById(R.id.fileComplaintButton);
-//        if (complaintButton != null){
-//            complaintButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Log.e("complaintCheck", "it works");
-//                    //Order orderData = getItem(position);
-//
-//                    //Log.e("check", String.valueOf(order == null));
-//                    Bundle orderInfo = new Bundle();
-//                    orderInfo.putSerializable("ORDER_DATA_ARG_KEY", order);
-//                    Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
-//                    goToComplaint.putExtras(orderInfo);
-//                    startActivity(getContext(), goToComplaint, null);
-//                }
-//            });
-//        }
 
         return convertView;
     }
