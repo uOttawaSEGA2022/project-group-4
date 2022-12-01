@@ -62,7 +62,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
             mealNames += mI.getName() + "\n";
             quantities += mI.getQuantity() + "\n";
-            emailContents += mI.getName() + "\t\t" + mI.getQuantity() + "\n";
+            emailContents += mI.getName() + "   " + mI.getQuantity() + "<br>";
 
         }
 
@@ -78,15 +78,19 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
                 App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
                 // Process: sending email to client that order has been rejected
                 String str = "Hello " + order.getClientInfo().getClientName() + ","
-                        + System.lineSeparator() +
+                        + "<br><br>" +
                         "The following order is ready for pick-up at " +
                         order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
                         order.getChefInfo().getChefAddress().getCity() +
-                        order.getChefInfo().getChefAddress().getPostalCode() + "." + System.lineSeparator() + System.lineSeparator() +
-                        EMAIL_CONTENTS + System.lineSeparator() + System.lineSeparator() +
+                        order.getChefInfo().getChefAddress().getPostalCode() + "."
+                        + "<br><br>" +
+                        EMAIL_CONTENTS
+                        + "<br>" +
                         "If you have any questions about pick-up, please contact us at mealerprojectgroup4@gmail.com" +
-                        " with your order number provided in the subject line." + System.lineSeparator() + System.lineSeparator() +
+                        " with your order number provided in the subject line."
+                        + "<br><br><br>" +
                         "MEALER Team";
+
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
                         "READY-FOR-PICK-UP MEALER Order: " + order.getOrderID().substring(0, 6),
