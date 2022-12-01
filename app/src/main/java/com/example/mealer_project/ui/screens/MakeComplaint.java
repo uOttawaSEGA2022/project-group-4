@@ -12,6 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
+import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.inbox.Complaint;
 
@@ -22,7 +25,7 @@ import java.util.Date;
 public class MakeComplaint extends AppCompatActivity {
     Order orderData;
 
-    Complaint complaint;
+    ComplaintEntityModel complaint;
     EditText titleText;
     EditText descriptionText;
     TextView clientName;
@@ -74,14 +77,16 @@ public class MakeComplaint extends AppCompatActivity {
 
     //Creates a complaint
     private void sendComplaint(){
-        Date date = null;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String title = titleText.getText().toString();
         String description = descriptionText.getText().toString();
         String chefID = orderData.getChefInfo().getChefId();
         String clientID = orderData.getClientInfo().getClientId();
+        String date = dateFormat.format(orderData.getOrderDate());
 
 
-        //complaint = new Complaint("id", title, description, clientID, chefID, date);
+        complaint = new ComplaintEntityModel(null, title, description, clientID, chefID, date);
+        App.getInboxHandler().addNewComplaint(complaint);
     }
 
     //sets the values of the order information

@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
+import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.screens.AdminScreen;
@@ -149,7 +150,9 @@ public class InboxHandler {
      public void successAddingComplaint(Complaint complaint) {
           // once complaint has been added to database (it will have an id)
           try {
-               App.getAdminInbox().addComplaint(complaint);
+               if (App.getAppInstance().userIsAdmin()){
+                    App.getAdminInbox().addComplaint(complaint);
+               }
                // let ui know adding complaint has completed
                // inboxView.successAddingComplaint();
           } catch (Exception e) {
