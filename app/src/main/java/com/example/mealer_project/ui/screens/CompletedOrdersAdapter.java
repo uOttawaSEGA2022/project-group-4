@@ -1,6 +1,9 @@
 package com.example.mealer_project.ui.screens;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +16,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.MealInfo;
 
 import java.text.DateFormat;
