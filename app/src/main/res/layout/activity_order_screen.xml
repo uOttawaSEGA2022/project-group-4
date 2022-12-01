@@ -51,7 +51,7 @@
                 android:textSize="16sp" />
 
             <LinearLayout
-                android:id="@+id/chef_name_layout"
+                android:id="@+id/chef_available_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -60,7 +60,7 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/made_by_chef"
+                    android:id="@+id/chef_availability_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -83,7 +83,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/order_meal_info_layout"
+                android:id="@+id/chef_meals_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -96,7 +96,7 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/order_type_of_meal"
+                        android:id="@+id/chef_rating_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -108,10 +108,10 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/order_msg_type"
+                        android:id="@+id/chef_rating_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/order_type_of_meal"
+                        android:layout_below="@id/chef_rating_title"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
@@ -126,7 +126,7 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/order_cuisine_of_meal"
+                        android:id="@+id/chef_description_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -138,10 +138,10 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/order_msg_cuisine"
+                        android:id="@+id/chef_description_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/order_cuisine_of_meal"
+                        android:layout_below="@id/chef_description_title"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
@@ -156,7 +156,7 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/order_ingredients_of_meal"
+                        android:id="@+id/chef_cuisine_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -168,10 +168,10 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/order_msg_ingredients"
+                        android:id="@+id/chef_cuisine_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/order_ingredients_of_meal"
+                        android:layout_below="@id/chef_cuisine_title"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
