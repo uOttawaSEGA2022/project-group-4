@@ -17,12 +17,15 @@ import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.inbox.Complaint;
+import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.utils.Utilities;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MakeComplaint extends AppCompatActivity {
+public class MakeComplaint extends UIScreen implements StatefulView {
     Order orderData;
 
     ComplaintEntityModel complaint;
@@ -77,25 +80,52 @@ public class MakeComplaint extends AppCompatActivity {
 
     //Creates a complaint
     private void sendComplaint(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         String title = titleText.getText().toString();
         String description = descriptionText.getText().toString();
         String chefID = orderData.getChefInfo().getChefId();
         String clientID = orderData.getClientInfo().getClientId();
-        String date = dateFormat.format(orderData.getOrderDate());
+        Date date = Utilities.getTodaysDate();
 
 
         complaint = new ComplaintEntityModel(null, title, description, clientID, chefID, date);
-        App.getInboxHandler().addNewComplaint(complaint);
+        App.getInboxHandler().addNewComplaint(complaint, this);
         Toast.makeText(getApplicationContext(), "Complaint Sent!", Toast.LENGTH_LONG).show();
         this.finish();
     }
 
     //sets the values of the order information
-    private void updateUI(){
+    @Override
+    public void updateUI(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
         clientName.setText("Client Name: " + orderData.getClientInfo().getClientName());
         chefName.setText("Chef Name: " + orderData.getChefInfo().getChefName());
         dateOfOrder.setText("Date: " + dateFormat.format(orderData.getOrderDate()));
+    }
+
+    @Override
+    public void showNextScreen() {
+
+    }
+
+    /**
+     * Method to handle success of a DB operation
+     *
+     * @param dbOperation
+     * @param payload
+     */
+    @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        displaySuccessToast((String) payload);
+    }
+
+    /**
+     * Method to handle failure of a DB operation
+     *
+     * @param dbOperation
+     * @param payload
+     */
+    @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+        displayErrorToast((String) payload);
     }
 }

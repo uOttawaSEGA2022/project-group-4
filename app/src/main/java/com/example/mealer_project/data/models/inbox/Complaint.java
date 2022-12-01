@@ -1,6 +1,7 @@
 package com.example.mealer_project.data.models.inbox;
 
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
+import com.example.mealer_project.utils.Utilities;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -142,7 +143,7 @@ public class Complaint implements Comparator<Complaint>, Serializable {
 
     private void setDateSubmitted(String dateSubmitted) throws ParseException {
         // mm-dd--yyyy
-        this.dateSubmitted = DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(dateSubmitted);
+        // this.dateSubmitted = Utilities.getDateFromString(dateSubmitted);
     }
 
     public boolean isResolved() {

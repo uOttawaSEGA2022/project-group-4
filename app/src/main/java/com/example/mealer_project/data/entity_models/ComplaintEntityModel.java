@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.entity_models;
 
+import java.util.Date;
+
 /**
  * Entity Model to hold unvalidated client's complaint data
  */
@@ -9,9 +11,9 @@ public class ComplaintEntityModel {
     private String description;
     private String clientId;
     private String chefId;
-    private String dateSubmitted;
+    private Date dateSubmitted;
 
-    public ComplaintEntityModel(String id, String title, String description, String clientId, String chefId, String dateSubmitted) {
+    public ComplaintEntityModel(String id, String title, String description, String clientId, String chefId, Date dateSubmitted) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -60,11 +62,11 @@ public class ComplaintEntityModel {
         this.chefId = chefId;
     }
 
-    public String getDateSubmitted() {
+    public Date getDateSubmitted() {
         return dateSubmitted;
     }
 
-    public void setDateSubmitted(String dateSubmitted) {
+    public void setDateSubmitted(Date dateSubmitted) {
         this.dateSubmitted = dateSubmitted;
     }
 }

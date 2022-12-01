@@ -7,6 +7,8 @@ import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.inbox.Complaint;
+import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.AdminScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
@@ -19,7 +21,13 @@ import java.util.List;
  * Class to handle operations related to Admin's Inbox
  */
 public class InboxHandler {
+
+     private StatefulView uiScreen;
      private AdminScreen adminScreen;
+
+     private enum dbOperations {
+          ADD_COMPLAINT
+     }
 
      /**
       * Checks if current user has access to admin only resources
@@ -121,13 +129,15 @@ public class InboxHandler {
       * @param complaintEntityModel unvalidated complaint data
       * @return Response indicating error, if current user doesn't have access
       */
-     public Response addNewComplaint(ComplaintEntityModel complaintEntityModel) {
+     public Response addNewComplaint(ComplaintEntityModel complaintEntityModel, StatefulView uiScreen) {
           // check if user has access
-          if (userHasAccess().isError()) {
-               return userHasAccess();
-          }
+//          if (userHasAccess().isError()) {
+//               return userHasAccess();
+//          }
 
           Complaint complaint = null;
+          // set UI Screen so error and success can be notified
+          this.uiScreen = uiScreen;
 
           try {
                // try to create a Complaint object using unvalidated complaint data
@@ -150,11 +160,14 @@ public class InboxHandler {
      public void successAddingComplaint(Complaint complaint) {
           // once complaint has been added to database (it will have an id)
           try {
-               if (App.getAppInstance().userIsAdmin()){
+               if (App.getAppInstance().userIsAdmin()) {
                     App.getAdminInbox().addComplaint(complaint);
+                    // let ui know adding complaint has completed
+                    // inboxView.successAddingComplaint();
+               } else {
+                    // let ui know of success
+                    this.uiScreen.dbOperationSuccessHandler(dbOperations.ADD_COMPLAINT, "complaint added successfully");
                }
-               // let ui know adding complaint has completed
-               // inboxView.successAddingComplaint();
           } catch (Exception e) {
                errorAddingComplaint("complaint added on database, but failed to add to AdminInbox" + e.getMessage());
           }
@@ -168,6 +181,9 @@ public class InboxHandler {
           // display error on inbox view
           // inboxView.handleError("Failed to add complaint to the database");
           Log.d("errorAddingComplaint", message );
+          if (uiScreen != null) {
+               this.uiScreen.dbOperationFailureHandler(dbOperations.ADD_COMPLAINT, message);
+          }
      }
 
      /**
