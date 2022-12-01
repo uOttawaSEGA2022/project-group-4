@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.pending_orders;
 
 import android.os.Bundle;
 import android.util.Log;

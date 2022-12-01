@@ -31,7 +31,7 @@ public class SearchMeals {
     }
 
     public void addItems(List<SearchMealItem> items) {
-        // TODO test
+        // TODO background_pattern.png
         Log.e("searchMeals", "adding new items: " + items.size());
         for (SearchMealItem item: items) {
             // store the item in our map

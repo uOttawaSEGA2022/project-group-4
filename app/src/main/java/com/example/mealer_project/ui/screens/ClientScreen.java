@@ -12,6 +12,8 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersScreen;
+import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersClientScreen;
 import com.example.mealer_project.ui.screens.search.SearchScreen;
 
 public class ClientScreen extends UIScreen implements StatefulView {

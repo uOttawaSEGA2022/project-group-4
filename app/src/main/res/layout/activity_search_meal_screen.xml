@@ -48,7 +48,7 @@
                 android:onClick="clickBack"
                 android:scaleType="fitXY"
                 android:src="@drawable/backbutton"
-                tools:ignore="DuplicateClickableBoundsCheck" />
+                tools:ignore="DuplicateClickableBoundsCheck,DuplicateSpeakableTextCheck" />
 
             <EditText
                 android:id="@+id/searchBox"
@@ -57,20 +57,21 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:ems="10"
-                android:hint="search"
+                android:hint="Search"
                 android:inputType="textPersonName"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                tools:ignore="DuplicateSpeakableTextCheck,TextContrastCheck" />
 
             <ImageButton
                 android:id="@+id/searchBtn"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:background="#00FFFFFF"
+                android:clickable="false"
                 android:contentDescription="@android:string/search_go"
-                android:onClick="clickBack"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_baseline_search_24"
-                tools:ignore="DuplicateClickableBoundsCheck" />
+                tools:ignore="DuplicateClickableBoundsCheck,ImageContrastCheck" />
 
             <ImageButton
                 android:id="@+id/cartBtn"
@@ -81,7 +82,7 @@
                 android:onClick="clickBack"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_baseline_shopping_cart_24"
-                tools:ignore="DuplicateClickableBoundsCheck" />
+                tools:ignore="DuplicateClickableBoundsCheck,ImageContrastCheck" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -106,6 +107,7 @@
         android:id="@+id/noSearchResultMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="@string/no_search_result_message"
         android:textSize="20sp"
         android:visibility="gone" />

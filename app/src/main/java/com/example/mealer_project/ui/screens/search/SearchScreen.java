@@ -31,7 +31,7 @@ public class SearchScreen extends UIScreen {
     List<SearchMealItem> sMItems;
 
     ImageButton backButton;
-    ImageButton searchButton;
+    //ImageButton searchButton;
     ImageButton checkoutButton;
 
     ListView sMList;
@@ -51,7 +51,7 @@ public class SearchScreen extends UIScreen {
         setContentView(R.layout.activity_search_meal_screen);
 
         backButton = findViewById(R.id.back_btn3);
-        searchButton = findViewById(R.id.searchBtn); //add when screen is done
+        //searchButton = findViewById(R.id.searchBtn); //add when screen is done
         checkoutButton = findViewById(R.id.cartBtn);
 
         // get the list view component
@@ -126,7 +126,7 @@ public class SearchScreen extends UIScreen {
         this.sMItems.add(newItem);
         // inform adapter of the change
         sMItemsAdapter.notifyDataSetChanged();
-        // TODO: below line for test, remove later
+        // TODO: below line for background_pattern.png, remove later
         Log.e("searchMeals", "new search item added, sM: " + this.sMItems.size() + " sM D: " + this.sMItemsData.size());
     }
 
@@ -137,7 +137,7 @@ public class SearchScreen extends UIScreen {
         this.sMItems.addAll(newItems);
         // inform adapter of the change
         sMItemsAdapter.notifyDataSetChanged();
-        // TODO: below line for test, remove later
+        // TODO: below line for background_pattern.png, remove later
         Log.e("searchMeals", "new search items added, sM: " + this.sMItems.size() + " sM D: " + this.sMItemsData.size());
     }
 

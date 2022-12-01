@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.completed_orders;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -20,12 +20,9 @@ import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.OrderHandler;
-import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
-import com.example.mealer_project.utils.SendMailTask;
+import com.example.mealer_project.ui.screens.MakeComplaint;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -52,7 +49,6 @@ public class CompletedOrdersAdapterClient extends ArrayAdapter<Order> {
         Order order = getItem(position);
         String mealNames = "";
         String quantities = "";
-        String emailContents = "";
 
         // Process: checking if existing view is being reused
         if (convertView == null) { //must inflate view
@@ -83,7 +79,7 @@ public class CompletedOrdersAdapterClient extends ArrayAdapter<Order> {
                     Log.e("complaintCheck", "it works");
 
                     Bundle orderInfo = new Bundle();
-                    orderInfo.putSerializable("test", order);
+                    orderInfo.putSerializable("background_pattern.png", order);
                     Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
                     //goToComplaint.putExtras(orderInfo);
                     startActivity(getContext(), goToComplaint, null);

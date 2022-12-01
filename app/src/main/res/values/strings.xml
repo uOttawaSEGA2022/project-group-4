@@ -112,5 +112,6 @@
     <string name="write_complaint">Please write your complaint:</string>
     <string name="description_here">Description Here:</string>
     <string name="title_here">Title:</string>
-    <string name="no_search_result_message">Sorry! no meals found!</string>
+    <string name="no_search_result_message">Sorry! No meals found!</string>
+    <string name="nav_bar_button">Nav Bar</string>
 </resources>

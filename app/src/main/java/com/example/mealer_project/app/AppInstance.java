@@ -10,7 +10,7 @@ import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.ui.screens.ChefScreen;
-import com.example.mealer_project.ui.screens.PendingOrdersScreen;
+import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersScreen;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.firebase.auth.FirebaseAuth;

@@ -62,7 +62,7 @@ public class WelcomeScreen extends UIScreen {
             Button testOrderBtn = (Button) findViewById(R.id.testOrderBtn);
             testOrderBtn.setVisibility(View.VISIBLE);
 
-            // test order
+            // background_pattern.png order
             testOrderBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

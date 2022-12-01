@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.completed_orders;
 
 import android.content.Context;
 import android.content.Intent;

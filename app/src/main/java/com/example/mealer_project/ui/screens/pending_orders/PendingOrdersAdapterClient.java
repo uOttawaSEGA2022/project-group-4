@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.pending_orders;
 
 import android.content.Context;
 import android.view.LayoutInflater;

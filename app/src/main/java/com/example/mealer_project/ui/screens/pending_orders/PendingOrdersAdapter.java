@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.pending_orders;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -65,7 +65,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
             mealNames += mI.getName() + "\n";
             quantities += mI.getQuantity() + "\n";
-            emailContents += mI.getName() + "\t\t" + mI.getQuantity() + "\n";
+            emailContents += mI.getName() + "            " + mI.getQuantity();
 
         }
 
@@ -89,9 +89,16 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
                         "REJECTED MEALER Order: " + order.getOrderID().substring(0, 6),
-                        "Hello " + order.getClientInfo().getClientName() + ",\n" +
-                        "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName() +
-                        ".\n\n" + EMAIL_CONTENTS + "\n\n" + "Thank you for understanding.\n\nMEALER Team");
+                        "Hello " + order.getClientInfo().getClientName() +
+                                ",<br>" +
+                                "<br>" +
+                        "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName()
+                                + ".<br>" +
+                                "<br>" + EMAIL_CONTENTS +
+                                "<br>" +
+                                "<br>" +
+                                "<br>"
+                                + "Thank you for understanding.<br><br>MEALER Team");
             }
         });
 
@@ -108,15 +115,28 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
                         "ACCEPTED MEALER Order: " + order.getOrderID().substring(0, 6),
-                        "Hello " + order.getClientInfo().getClientName() + ",\n" +
-                                "The following order has been accepted by Chef " + order.getChefInfo().getChefName() + ".\n" +
+                        "Hello " + order.getClientInfo().getClientName() + ",<br><br>" +
+                                "The following order has been accepted by Chef " + order.getChefInfo().getChefName() +
+                                ".<br>" +
+                                "<br>" +
                                 "You will receive another email notification when your order is ready for pick-up at " +
                                 order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
                                 order.getChefInfo().getChefAddress().getCity() +
-                                order.getChefInfo().getChefAddress().getPostalCode() + ".\n\n" +
-                                EMAIL_CONTENTS + "\n\n" + "Thank you for placing your order through the MEALER app!\n" +
+                                order.getChefInfo().getChefAddress().getPostalCode() +
+                                ".<br" +
+                                "><br>" +
+                                "<br>" +
+                                EMAIL_CONTENTS +
+                                "<br>" +
+                                "<br>" +
+                                "<br>" +
+                                "Thank you for placing your order through the MEALER app!" +
+                                "<br>" +
                                 "If you have any questions about your order, please email us directly at " +
-                                "mealerprojectgroup4@gmail.com with your order number provided in the subject line.\n\n" +
+                                "mealerprojectgroup4@gmail.com with your order number provided in the subject line." +
+                                "<br>" +
+                                "<br>" +
+                                "<br>" +
                                 "MEALER Team");
             }
         });

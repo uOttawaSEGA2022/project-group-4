@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.pending_orders;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,11 +12,10 @@ import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PendingOrdersScreen extends UIScreen implements StatefulView {
 

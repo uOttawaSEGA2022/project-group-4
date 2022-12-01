@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,10 +17,9 @@ import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersScreen;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
-import com.google.protobuf.StringValue;
-
-import org.w3c.dom.Text;
+import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,7 +164,8 @@ public class ChefScreen extends UIScreen implements StatefulView {
         // Order buttons
         Button viewOrder = (Button) findViewById(R.id.viewCompletedOrdersButton);
         Button viewPendingOrder = (Button) findViewById(R.id.viewPendingOrdersButton);
-
+        // View profile button
+        ImageView viewChefProfile = (ImageView) findViewById(R.id.mealer_logo);
 
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -205,7 +206,12 @@ public class ChefScreen extends UIScreen implements StatefulView {
                 startActivity(new Intent(getApplicationContext(), PendingOrdersScreen.class)); //show pending orders
             }
         });
-
+        viewChefProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Place the location of the chef profile screen here!!!
+            }
+        });
     }
 
     /**

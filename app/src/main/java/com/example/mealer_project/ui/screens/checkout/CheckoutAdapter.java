@@ -19,6 +19,7 @@ import com.example.mealer_project.R;
 import com.example.mealer_project.data.models.orders.OrderItem;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -32,6 +33,8 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
     private Button minusButton;
     private Button plusButton;
+
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     /**
      *
@@ -59,7 +62,8 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
         // Populate the data
         ((TextView) convertView.findViewById(R.id.item_meal_title)).setText(item.getSearchMealItem().getMeal().getName());
-        ((TextView) convertView.findViewById(R.id.item_price)).setText((String.valueOf(item.getSearchMealItem().getMeal().getPrice())));
+        double price = item.getSearchMealItem().getMeal().getPrice() * item.getQuantity();
+        ((TextView) convertView.findViewById(R.id.item_price)).setText("$ " + df.format(price));
         EditText quantity = ((EditText) convertView.findViewById(R.id.item_quantity));
         quantity.setText(String.valueOf(item.getQuantity()));
 
