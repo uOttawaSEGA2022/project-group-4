@@ -1,6 +1,11 @@
 package com.example.mealer_project.ui.screens;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +133,21 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
+
+        Button complaintButton = convertView.findViewById(R.id.fileComplaintButton);
+        complaintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e("complaintCheck", "it works");
+
+                Bundle orderInfo = new Bundle();
+                orderInfo.putSerializable("test", order);
+                Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
+                //goToComplaint.putExtras(orderInfo);
+                startActivity(getContext(), goToComplaint, null);
+                //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
+            }
+        });
 
         return convertView;
     }

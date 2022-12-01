@@ -59,13 +59,13 @@ public class MakeComplaint extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> finish());
 
-        try {
-            orderData = (Order) getIntent().getSerializableExtra("Test");
-            setComplaintInformation(orderData.getClientInfo().getClientName(), orderData.getChefInfo().getChefName(), orderData.getOrderDate());
-        } catch (Exception e) {
-            Log.e("MakeComplaint", "unable to create order object :(");
-            Toast.makeText(getApplicationContext(), "Unable to retrieve the meal info!", Toast.LENGTH_LONG).show();
-        }
+//        try {
+//            orderData = (Order) getIntent().getSerializableExtra("Test");
+//            setComplaintInformation(orderData.getClientInfo().getClientName(), orderData.getChefInfo().getChefName(), orderData.getOrderDate());
+//        } catch (Exception e) {
+//            Log.e("MakeComplaint", "unable to create order object :(");
+//            Toast.makeText(getApplicationContext(), "Unable to retrieve the meal info!", Toast.LENGTH_LONG).show();
+//        }
 
 
     }
