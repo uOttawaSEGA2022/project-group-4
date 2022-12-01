@@ -164,19 +164,22 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
         Button complaintButton = convertView.findViewById(R.id.fileComplaintButton);
-        complaintButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e("complaintCheck", "it works");
+        if (complaintButton != null) {
+            complaintButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e("complaintCheck", "it works");
 
-                Bundle orderInfo = new Bundle();
-                orderInfo.putSerializable("test", order);
-                Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
-                //goToComplaint.putExtras(orderInfo);
-                startActivity(getContext(), goToComplaint, null);
-                //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
-            }
-        });
+                    Bundle orderInfo = new Bundle();
+                    orderInfo.putSerializable("test", order);
+                    Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
+                    //goToComplaint.putExtras(orderInfo);
+                    startActivity(getContext(), goToComplaint, null);
+                    //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
+                }
+            });
+        }
+
 
         return convertView;
     }
