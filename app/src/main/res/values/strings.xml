@@ -113,4 +113,6 @@
     <string name="description_here">Description Here:</string>
     <string name="title_here">Title:</string>
     <string name="no_search_result_message">Sorry! no meals found!</string>
+    <string name="total_cost_label">Total Cost:</string>
+    <string name="total_cost_default_amount">0</string>
 </resources>

@@ -254,7 +254,6 @@ public class UserActions {
             newUser.setEmail(String.valueOf(document.getData().get("email")));
             newUser.setUserId(document.getId());
             newUser.setRole(UserRoles.CHEF);
-            Log.e("here", "here 1");
             newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
             newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
             newAddress.setCountry(String.valueOf(document.getData().get("country")));

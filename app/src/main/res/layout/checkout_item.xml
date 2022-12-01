@@ -70,6 +70,7 @@
                 android:textColor="@color/green_darker"
                 android:textColorLink="#FFFFFF"
                 android:textSize="20sp"
+                android:visibility="gone"
                 tools:ignore="TextContrastCheck" />
 
             <EditText
@@ -98,7 +99,8 @@
                 android:minWidth="48dp"
                 android:text="@string/plus"
                 android:textColor="@color/green_darker"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
