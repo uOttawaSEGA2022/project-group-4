@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
@@ -70,9 +73,39 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
         // Process: checking if chef or client is logged in
         if (App.getUser() instanceof Client) { //is CLIENT
             ((TextView) convertView.findViewById(R.id.userNameText)).setText("Chef: " + order.getChefInfo().getChefName());
+
+//            // Process: setting onClicks for complaint button
+//            ((Button) convertView.findViewById(R.id.fileComplaintButton)).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Process: filing a complaint
+//
+//
+//                }
+//            });
+//
+//            RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
+//            Button submitButton = (Button) convertView.findViewById(R.id.submitButton);
+//            // perform click event on button
+//            submitButton.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // get values and then displayed in a toast
+//                    String rating = "Rating :: " + ratingBar.getRating();
+//                    App.ORDER_HANDLER.updateChefRating(order.getChefInfo().getChefId(), Double.valueOf(ratingBar.getRating()));
+//                    Toast.makeText(getContext(), rating, Toast.LENGTH_SHORT).show();
+//                    ratingBar.setIsIndicator(true);
+//                    submitButton.setVisibility(View.GONE);
+//
+//                }
+//            });
+
         }
         else if (App.getUser() instanceof Chef) { //is CHEF
             ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
+
+
+
         }
         // Process: setting the order info to appear on the screen
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);

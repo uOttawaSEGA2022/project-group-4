@@ -212,6 +212,8 @@ public class SearchScreen extends UIScreen {
 
     private void setNoSearchResultMessageVisibility(boolean visible) {
         if (visible) {
+            // clear the list items, and display no result
+            sMItemsAdapter.clear();
             noSearchResultMessage.setVisibility(View.VISIBLE);
         } else {
             noSearchResultMessage.setVisibility(View.GONE);

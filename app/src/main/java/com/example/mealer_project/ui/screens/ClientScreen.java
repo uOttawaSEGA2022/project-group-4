@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
@@ -24,6 +25,9 @@ public class ClientScreen extends UIScreen implements StatefulView {
         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEALS_TO_SEARCH_LIST, null, this);
 
         attachOnClickListeners();
+
+        TextView welcomeMessage = (TextView) findViewById(R.id.welcome_message_client);
+        welcomeMessage.setText("Welcome " + App.getClient().getFirstName() + ", you're logged in as a CLIENT! ");
     }
 
     private void attachOnClickListeners(){

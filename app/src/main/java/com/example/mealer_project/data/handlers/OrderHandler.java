@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.orders.OrderItem;
@@ -21,6 +22,7 @@ public class OrderHandler {
         UPDATE_ORDER,
         LOAD_CHEF_ORDERS,
         LOAD_CLIENT_ORDERS,
+        RATE_CHEF,
         ERROR
     }
 
@@ -277,6 +279,24 @@ public class OrderHandler {
         else { //UI Screen doesn't exist
             Log.e("handleActionFailure", "No UI Screen initialized");
         }
+    }
+
+
+
+    public void updateChefRating(String chefId, Double newRating){
+
+        if (chefId instanceof String && newRating instanceof Double && App.getUser() instanceof Client){
+
+            App.getPrimaryDatabase().ORDERS.updateChefRating(chefId, newRating);
+        }
+    }
+
+    public void handleUpdateChefRatingSuccess(){
+        uiScreen.dbOperationSuccessHandler(dbOperations.RATE_CHEF, "Updating chef rating was a success!");
+    }
+
+    public void handleUpdateChefRatingFailure(String errorMessage){
+        uiScreen.dbOperationSuccessHandler(dbOperations.RATE_CHEF, errorMessage);
     }
 
     private void addNewOrder() {
