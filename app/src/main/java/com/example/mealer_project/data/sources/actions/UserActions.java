@@ -254,7 +254,7 @@ public class UserActions {
             newUser.setEmail(String.valueOf(document.getData().get("email")));
             newUser.setUserId(document.getId());
             newUser.setRole(UserRoles.CHEF);
-
+            Log.e("here", "here 1");
             newAddress.setStreetAddress(String.valueOf(document.getData().get("addressStreet")));
             newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
             newAddress.setCountry(String.valueOf(document.getData().get("country")));
@@ -266,8 +266,12 @@ public class UserActions {
             Address address = new Address(newAddress);
 
             Chef newChef = new Chef(newUser, address, description, voidCheque);
-            newChef.setChefRatingSum(Double.parseDouble(document.getData().get("ratingSum").toString()));
-            newChef.setNumOfRatings(Integer.parseInt(document.getData().get("numOfRatings").toString()));
+            // if chef has ratings, add ratings
+            Object chefRating = document.getData().get("ratingSum");
+            if (chefRating != null) {
+                newChef.setChefRatingSum(Double.parseDouble(String.valueOf(chefRating)));
+                newChef.setNumOfRatings(Integer.parseInt(String.valueOf(document.getData().get("numOfRatings"))));
+            }
 
             newChef.setIsSuspended((Boolean) document.getData().get("isSuspended"));
 
