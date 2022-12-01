@@ -187,7 +187,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
     private double getTotalCost() {
         if (this.orderItemList != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return this.orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice()).sum();
+                return this.orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice() * el.getQuantity()).sum();
             }
         }
         // if no order items
