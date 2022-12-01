@@ -27,12 +27,9 @@ public class ClientScreen extends UIScreen implements StatefulView {
         attachOnClickListeners();
 
         TextView welcomeMessage = (TextView) findViewById(R.id.welcome_message_client);
-
-        Log.e("CLIENT", "Client object:" + App.getClient().toString());
-        Log.e("CLIENT", "Client name:" + App.getClient().getFirstName().toString());
-
-        welcomeMessage.setText("Welcome " + App.getClient().getFirstName() + ", you're logged in as a CLIENT! ");
-
+        if (App.getClient() != null) {
+            welcomeMessage.setText("Welcome " + App.getClient().getFirstName() + ", you're logged in as a CLIENT! ");
+        }
     }
 
     private void attachOnClickListeners(){

@@ -232,6 +232,9 @@ public class UserActions {
 
             App.getAppInstance().setUser(newClient);
 
+
+            Log.e("clientS", "Set user as: " + App.getUser().getRole() + "id: " + App.getUser().getUserId());
+
             return new Response(true);
         } catch (Exception e) {
             return new Response(false, "makeClientFromFirebase: " + e.getMessage());

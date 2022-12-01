@@ -102,6 +102,8 @@ public class InboxActions {
         if (Preconditions.isNotNull(complaint) && Preconditions.isNotNull(inboxHandler)) {
             Map<String, Object> complaintData = complaint.getComplaintDataMap();
 
+            Log.e("complaint", "adding complaint");
+
             database.collection(COMPLAINTS_COLLECTION)
                     .add(complaintData)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -110,6 +112,7 @@ public class InboxActions {
                             // update complaint id
                             complaint.setId(documentReference.getId());
                             inboxHandler.successAddingComplaint(complaint);
+                            Log.e("complaint", "added complaint");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -123,9 +126,8 @@ public class InboxActions {
             // if inbox handler is valid
             if (Preconditions.isNotNull(inboxHandler)) {
                 inboxHandler.errorAddingComplaint("Invalid complaint object provided");
-            } else {
-                Log.e("addComplaint", "Invalid object values for complaint and inboxHandler");
             }
+            Log.e("addComplaint", "Invalid object values for complaint and inboxHandler");
         }
     }
 

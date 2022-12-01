@@ -6,15 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.data.models.orders.OrderItem;
 
+import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -28,6 +33,8 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
     private Button minusButton;
     private Button plusButton;
+
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     /**
      *
@@ -55,8 +62,10 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
         // Populate the data
         ((TextView) convertView.findViewById(R.id.item_meal_title)).setText(item.getSearchMealItem().getMeal().getName());
-        ((TextView) convertView.findViewById(R.id.item_price)).setText((String.valueOf(item.getSearchMealItem().getMeal().getPrice())));
-        ((TextView) convertView.findViewById(R.id.item_quantity)).setText(String.valueOf(item.getQuantity()));
+        double price = item.getSearchMealItem().getMeal().getPrice() * item.getQuantity();
+        ((TextView) convertView.findViewById(R.id.item_price)).setText("$ " + df.format(price));
+        TextView quantity = ((TextView) convertView.findViewById(R.id.item_quantity));
+        quantity.setText(String.valueOf(item.getQuantity()));
 
         // quantity update buttons
         minusButton = (Button) convertView.findViewById(R.id.decrease_quantity);
