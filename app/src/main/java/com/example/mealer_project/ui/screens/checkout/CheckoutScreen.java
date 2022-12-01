@@ -198,7 +198,8 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         // make sure we have a valid client
         if (App.getClient() != null) {
             TextView clientCreditCard = findViewById(R.id.clientCreditCardInfo);
-            String creditCardHashed = "XXXX-XXXX-XXXX-" + App.getClient().getClientCreditCard().getNumber().substring(12,16);
+            String creditCardNumber = App.getClient().getClientCreditCard().getNumber();
+            String creditCardHashed = "XXXX-XXXX-XXXX-" + creditCardNumber.substring(creditCardNumber.length()-4);
             clientCreditCard.setText(creditCardHashed);
         }
     }
