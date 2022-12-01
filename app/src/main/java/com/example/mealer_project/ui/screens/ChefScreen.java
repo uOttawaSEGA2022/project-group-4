@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -164,6 +165,8 @@ public class ChefScreen extends UIScreen implements StatefulView {
         // Order buttons
         Button viewOrder = (Button) findViewById(R.id.viewCompletedOrdersButton);
         Button viewPendingOrder = (Button) findViewById(R.id.viewPendingOrdersButton);
+        // View profile button
+        ImageView viewChefProfile = (ImageView) findViewById(R.id.mealer_logo);
 
 
         menuButton.setOnClickListener(new Button.OnClickListener() {
@@ -203,6 +206,12 @@ public class ChefScreen extends UIScreen implements StatefulView {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), PendingOrdersScreen.class)); //show pending orders
+            }
+        });
+        viewChefProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ChefInfoScreen.class));
             }
         });
 

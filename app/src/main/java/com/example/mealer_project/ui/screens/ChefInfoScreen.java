@@ -23,6 +23,7 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_chef_info_screen);
         // buttons for onClick methods
         backButton = (ImageButton) findViewById(R.id.button_back5);
     }

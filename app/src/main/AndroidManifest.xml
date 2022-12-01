@@ -118,6 +118,13 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".ui.screens.ChefInfoScreen"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ui.screens.ChefScreen"
             android:exported="false">
             <meta-data
