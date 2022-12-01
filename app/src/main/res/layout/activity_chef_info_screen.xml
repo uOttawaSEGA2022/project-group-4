@@ -40,7 +40,7 @@
                 android:textSize="43sp" />
 
             <LinearLayout
-                android:id="@+id/chef_meals_info_layout"
+                android:id="@+id/chef_meal_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -136,7 +136,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/chef_meals_info_layout"
+                android:id="@+id/chef_meal_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
