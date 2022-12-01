@@ -84,11 +84,10 @@ public class CompletedOrdersAdapterClient extends ArrayAdapter<Order> {
                     Log.e("complaintCheck", "it works");
 
                     Bundle orderInfo = new Bundle();
-                    orderInfo.putSerializable("test", order);
+                    orderInfo.putSerializable("ORDER_DATA_ARG_KEY", order);
                     Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
-                    //goToComplaint.putExtras(orderInfo);
+                    goToComplaint.putExtras(orderInfo);
                     startActivity(getContext(), goToComplaint, null);
-                    //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
                 }
             });
         }
