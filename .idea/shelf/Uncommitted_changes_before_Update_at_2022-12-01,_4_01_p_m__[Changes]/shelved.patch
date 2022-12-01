@@ -1,0 +1,363 @@
+Index: app/src/main/java/com/example/mealer_project/ui/screens/ClientScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.ui.screens;\n\nimport android.content.Intent;\nimport android.os.Bundle;\nimport android.util.Log;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.TextView;\n\nimport com.example.mealer_project.R;\nimport com.example.mealer_project.app.App;\nimport com.example.mealer_project.data.handlers.MealHandler;\nimport com.example.mealer_project.ui.core.StatefulView;\nimport com.example.mealer_project.ui.core.UIScreen;\nimport com.example.mealer_project.ui.screens.search.SearchScreen;\n\npublic class ClientScreen extends UIScreen implements StatefulView {\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_client_screen);\n\n        // initiate loading of searchable meals (so we have them before client goes to search screen)\n        App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.ADD_MEALS_TO_SEARCH_LIST, null, this);\n\n        attachOnClickListeners();\n\n        TextView welcomeMessage = (TextView) findViewById(R.id.welcome_message_client);\n        welcomeMessage.setText(\"Welcome \" + App.getClient().getFirstName() + \", you're logged in as a CLIENT! \");\n    }\n\n    private void attachOnClickListeners(){\n\n        Button searchMealsBtn = (Button) findViewById(R.id.searchMealButton);\n        searchMealsBtn.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                startActivity(new Intent(getApplicationContext(), SearchScreen.class));\n            }\n        });\n\n        Button pendingOrdersBtn = (Button) findViewById(R.id.viewPendingOrdersButton);\n        pendingOrdersBtn.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));\n            }\n        });\n\n        Button completedOrdersBtn = (Button) findViewById(R.id.viewCompletedOrdersButton);\n        completedOrdersBtn.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                startActivity(new Intent(getApplicationContext(), CompletedOrdersScreen.class));\n            }\n        });\n    }\n\n    public void clickLogout(View view) {\n        // handle user logout\n        App.getAppInstance().logoutUser();\n        // take user back to intro screen\n        Intent intent = new Intent(this, IntroScreen.class);\n        startActivity(intent);\n    }\n\n    @Override\n    public void updateUI() {}\n\n    @Override\n    public void showNextScreen() {}\n\n    /**\n     * Method to handle success of a DB operation\n     */\n    @Override\n    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {\n        displaySuccessToast((String) payload);\n        Log.e(\"clientScreen\", \"DB op: \" + dbOperation + \" success\");\n    }\n\n    /**\n     * Method to handle failure of a DB operation\n     */\n    @Override\n    public void dbOperationFailureHandler(Object dbOperation, Object payload) {\n        displayErrorToast((String) payload);\n        Log.e(\"clientScreen\", \"DB op: \" + dbOperation + \" failed: \" + payload);\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/ClientScreen.java b/app/src/main/java/com/example/mealer_project/ui/screens/ClientScreen.java
+--- a/app/src/main/java/com/example/mealer_project/ui/screens/ClientScreen.java	(revision e0440fed570ddc55574ffd2fff41bb6387ea38e6)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/ClientScreen.java	(date 1669928329413)
+@@ -27,7 +27,9 @@
+         attachOnClickListeners();
+ 
+         TextView welcomeMessage = (TextView) findViewById(R.id.welcome_message_client);
+-        welcomeMessage.setText("Welcome " + App.getClient().getFirstName() + ", you're logged in as a CLIENT! ");
++        if (App.getClient() != null) {
++            welcomeMessage.setText("Welcome " + App.getClient().getFirstName() + ", you're logged in as a CLIENT! ");
++        }
+     }
+ 
+     private void attachOnClickListeners(){
+Index: app/src/main/java/com/example/mealer_project/ui/screens/ChefInfoScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.ui.screens;\n\nimport android.app.AlertDialog;\nimport android.content.DialogInterface;\nimport android.os.Bundle;\nimport android.util.Log;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.ImageButton;\nimport android.widget.TextView;\n\nimport com.example.mealer_project.R;\nimport com.example.mealer_project.app.App;\nimport com.example.mealer_project.data.models.meals.Meal;\nimport com.example.mealer_project.ui.core.StatefulView;\nimport com.example.mealer_project.ui.core.UIScreen;\n\npublic class ChefInfoScreen extends UIScreen implements StatefulView {\n\n    ImageButton backButton;\n\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        // buttons for onClick methods\n        backButton = (ImageButton) findViewById(R.id.button_back5);\n    }\n\n\n    @Override\n    public void updateUI() {\n\n    }\n\n    @Override\n    public void showNextScreen() {\n\n    }\n\n    @Override\n    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {\n\n    }\n\n    @Override\n    public void dbOperationFailureHandler(Object dbOperation, Object payload) {\n\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/ChefInfoScreen.java b/app/src/main/java/com/example/mealer_project/ui/screens/ChefInfoScreen.java
+--- a/app/src/main/java/com/example/mealer_project/ui/screens/ChefInfoScreen.java	(revision e0440fed570ddc55574ffd2fff41bb6387ea38e6)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/ChefInfoScreen.java	(date 1669928059835)
+@@ -24,7 +24,7 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         // buttons for onClick methods
+-        backButton = (ImageButton) findViewById(R.id.button_back5);
++        backButton = (ImageButton) findViewById(R.id.back_btn);
+     }
+ 
+ 
+Index: app/src/main/java/com/example/mealer_project/ui/screens/OrderScreen.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.ui.screens;\n\nimport android.app.Activity;\nimport android.graphics.Color;\nimport android.os.Bundle;\nimport android.util.Log;\nimport android.view.View;\nimport android.widget.Button;\nimport android.widget.EditText;\nimport android.widget.ImageButton;\nimport android.widget.TextView;\n\nimport com.example.mealer_project.R;\nimport com.example.mealer_project.app.App;\nimport com.example.mealer_project.data.handlers.OrderHandler;\nimport com.example.mealer_project.data.models.meals.Meal;\nimport com.example.mealer_project.data.models.orders.ChefInfo;\nimport com.example.mealer_project.data.models.orders.OrderItem;\nimport com.example.mealer_project.ui.screens.search.SearchMealItem;\nimport com.example.mealer_project.ui.core.StatefulView;\nimport com.example.mealer_project.ui.core.UIScreen;\nimport com.example.mealer_project.utils.Preconditions;\nimport com.example.mealer_project.utils.Response;\n\npublic class OrderScreen extends UIScreen implements StatefulView {\n\n    // store meals and chef data\n    SearchMealItem sMItem;\n    Meal mealData;\n    ChefInfo chefData;\n\n    public static final String SEARCH_MEAL_ITEM_ARG_KEY = \"SEARCH_MEAL_ITEM_ARG_KEY\";\n\n    // button instantiations\n    private ImageButton backButton;\n    private Button minusButton;\n    private Button plusButton;\n    private Button addOrRemoveButton;\n    private EditText quantityText;\n\n    // counter for quantity\n    int totalQuantityCounter = 0;\n    // flag to track if item needs to be added to the cart\n    boolean addToCart = true;\n\n    @Override\n    protected void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_order_screen);\n\n        // buttons for onClick methods\n        backButton = (ImageButton) findViewById(R.id.button_back);\n        minusButton = (Button) findViewById(R.id.minus_button);\n        plusButton = (Button) findViewById(R.id.add_button);\n        addOrRemoveButton = (Button) findViewById(R.id.add_or_remove_from_cart);\n        quantityText = (EditText) findViewById(R.id.order_quantity);\n\n        // Process: attaching listeners to buttons\n        attachOnClickListeners();\n\n        // Get the meal and chef data through intent\n        Response response = loadMealAndChefData();\n        // if loading the data was successful\n        if (response.isSuccess()) {\n            // display the meal and chef data\n            displayMealAndChefData();\n            // display quantity\n            updateOrderQuantity();\n            // set appropriate text for the button\n            setAddOrRemoveButtonText();\n        } else {\n            // display error message if unable to load meals data\n            displayErrorToast(response.getErrorMessage());\n        }\n    }\n\n    /**\n     * this helper method sets all the on click methods for the buttons of the XML screen\n     */\n    private void attachOnClickListeners() {\n\n        // on click method for back button\n        backButton.setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                finish(); // go to previous screen\n            }\n        });\n\n        // on click method for minus button\n        minusButton.setOnClickListener(new Button.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                totalQuantityCounter--;\n                updateUI();\n            }\n        });\n\n        // on click method for plus button\n        plusButton.setOnClickListener(new Button.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                totalQuantityCounter++;\n                updateUI();\n            }\n        });\n\n        // on click method for adding or removing the meal from the cart\n        addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                // if current quantity zero, we don't need to do anything\n                if (totalQuantityCounter == 0) {\n                    displayErrorToast(\"Please select quantity!\");\n                    return;\n                }\n\n                // ensure a valid client available at this point\n                if (Preconditions.isNotNull(App.getClient())) {\n                    // if adding item to the cart\n                    if (addToCart) {\n                        // add order item to client's cart\n                        App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));\n                        displaySuccessToast(\"item added to cart!\");\n                    }\n                    // removing item from cart\n                    else {\n                        App.getClient().updateOrderItem(new OrderItem(sMItem, 0));\n                        displaySuccessToast(\"item removed from cart!\");\n                    }\n                } else {\n                    displayErrorToast(\"Unable to update cart!\");\n                }\n                // finish the activity and return back\n                setResult(Activity.RESULT_OK);\n                finish();\n            }\n        });\n\n    }\n\n    private Response loadMealAndChefData() {\n        try {\n            // we get the data from the SearchMealItem passed from the search screen\n            // ensure we have intent\n            if (getIntent() != null) {\n                // ensure we have the data we're looking for in the intent\n                if (getIntent().getSerializableExtra(SEARCH_MEAL_ITEM_ARG_KEY) != null) {\n                    // get the search meal item\n                    this.sMItem = (SearchMealItem) getIntent().getSerializableExtra(SEARCH_MEAL_ITEM_ARG_KEY);\n                    // get the meal and chef data\n                    this.mealData = this.sMItem.getMeal();\n                    this.chefData = this.sMItem.getChef();\n\n                    // check if meal is present in cart already, so we can display present quantity\n                    if (App.getClient() != null) {\n                        // get the order item for the meal (if present)\n                        OrderItem orderItem = App.getClient().getOrderItem(mealData.getMealID());\n                        if (orderItem != null) {\n                            // update the meal's order quantity\n                            this.totalQuantityCounter = orderItem.getQuantity();\n                            // set add to cart as false, so we only allow remove from cart\n                            this.addToCart = false;\n                            // display the order quantity\n                            updateUI();\n                        }\n                    }\n                    // return response so UI can be updated\n                    return new Response(true);\n                }\n            }\n        }\n        catch (Exception e) { //error-handling\n            // Output\n            Log.e(\"OrderScreen\", \"unable to get meal info\");\n            displayErrorToast(\"Unable to display meal!\");\n        }\n\n        // if we don't have valid data in intent\n        return new Response(false, \"No valid data available to display\");\n    }\n\n    /**\n     * Updates the screen with the required information\n     */\n    @Override\n    public void updateUI() {\n\n        // update the quantity displayed\n        // as a side effect: if quantity is zero, Add to Cart button is shown, else, Remove from Cart\n        updateOrderQuantity();\n\n    }\n\n    /**\n     * Takes the client to the Checkout Screen\n     *\n     * NOTE: Yet to create this screen\n     */\n    @Override\n    public void showNextScreen() {\n        // this should go to the checkout screen\n        /*\n        Intent intent = new Intent(getApplicationContext(), Checkout.class);\n        startActivity(intent);\n        */\n    }\n\n    @Override\n    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {\n\n        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {\n\n            // Output: successfully add new order\n            displayErrorToast(\"Successfully added order!\");\n\n        }\n        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {\n\n            // Output: successfully removed order\n            displayErrorToast(\"Successfully removed order!\");\n\n        }\n        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {\n\n            // Output: successfully updated order\n            displayErrorToast(\"Successfully updated order!\");\n\n        }\n        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {\n\n            // Output: successfully retrieved order\n            displayErrorToast(\"Successfully retrieved order!\");\n\n        }\n        else { //other op\n\n            // Output\n            displayErrorToast((String) payload);\n\n        }\n\n    }\n\n    @Override\n    public void dbOperationFailureHandler(Object dbOperation, Object payload) {\n\n        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {\n\n            // Output: failed to add new order\n            displayErrorToast(\"Failed to add order!\");\n\n        }\n        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {\n\n            // Output: failed to remove order\n            displayErrorToast(\"Failed to remove order!\");\n\n        }\n        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {\n\n            // Output: failed to update order\n            displayErrorToast(\"Failed to update order!\");\n\n        }\n        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {\n\n            // Output: failed to get order\n            displayErrorToast(\"Failed to get order!\");\n\n        }\n        else { //other error\n\n            // Output\n            displayErrorToast((String) payload);\n\n        }\n\n    }\n\n    /**\n     * Displays meal and chef data\n     */\n    private void displayMealAndChefData () {\n        // sets the text for the meal name\n        TextView mealNameText = (TextView) findViewById(R.id.order_meal_name);\n        mealNameText.setText(this.mealData.getName());\n\n        // sets the text for price\n        TextView priceText = (TextView) findViewById(R.id.order_price_of_meal);\n        priceText.setText(\"$ \".concat(String.valueOf(this.mealData.getPrice())));\n\n        // sets the text for the chef's name\n        TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);\n        chefNameText.setText(String.valueOf(this.chefData.getChefName()));\n\n        // sets the text for the meal type\n        TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);\n        mealTypeText.setText(this.mealData.getMealType());\n\n        // sets the text for cuisine type\n        TextView cuisineText = (TextView) findViewById(R.id.order_msg_cuisine);\n        cuisineText.setText(this.mealData.getCuisineType());\n\n        // sets the text for the ingredients\n        TextView ingredientsText = (TextView) findViewById(R.id.order_msg_ingredients);\n        ingredientsText.setText(this.mealData.getIngredients());\n\n        // sets the text for allergens\n        TextView allergensText = (TextView) findViewById(R.id.order_msg_allergens);\n        String allergensString = String.join(\", \", this.mealData.getAllergens()); // convert arraylist to string\n\n        if (allergensString.length() == 0) {\n            allergensText.setText(\"N/A\");\n        } else {\n            allergensText.setText(allergensString);\n        }\n\n        // sets the text for description\n        TextView descriptionText = (TextView) findViewById(R.id.order_msg_description);\n        descriptionText.setText(this.mealData.getDescription());\n    }\n\n    private void updateOrderQuantity() {\n        // sets the text (counter) for the quantity total\n        quantityText.setText(String.valueOf(this.totalQuantityCounter), TextView.BufferType.EDITABLE);\n    }\n\n    private void setAddOrRemoveButtonText() {\n        // sets the text for the add/remove from cart button\n\n        // meal has not been added to cart\n        if (addToCart) {\n            addOrRemoveButton.setText(\"Add to Cart\");\n        }\n\n        else {\n            // meal has already been added to cart, so only action allowed is to remove from cart\n            addOrRemoveButton.setText(\"Remove from Cart\");\n            // disable quantity box\n            quantityText.setFocusable(false);\n            quantityText.setEnabled(false);\n            quantityText.setCursorVisible(false);\n            quantityText.setKeyListener(null);\n            quantityText.setBackgroundColor(Color.TRANSPARENT);\n        }\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/ui/screens/OrderScreen.java b/app/src/main/java/com/example/mealer_project/ui/screens/OrderScreen.java
+--- a/app/src/main/java/com/example/mealer_project/ui/screens/OrderScreen.java	(revision e0440fed570ddc55574ffd2fff41bb6387ea38e6)
++++ b/app/src/main/java/com/example/mealer_project/ui/screens/OrderScreen.java	(date 1669928131457)
+@@ -299,11 +299,13 @@
+         mealTypeText.setText(this.mealData.getMealType());
+ 
+         // sets the text for cuisine type
+-        TextView cuisineText = (TextView) findViewById(R.id.order_msg_cuisine);
++        // TextView cuisineText = (TextView) findViewById(R.id.order_msg_cuisine);
++        TextView cuisineText = (TextView) findViewById(R.id.chef_description_msg);
+         cuisineText.setText(this.mealData.getCuisineType());
+ 
+         // sets the text for the ingredients
+-        TextView ingredientsText = (TextView) findViewById(R.id.order_msg_ingredients);
++        // TextView ingredientsText = (TextView) findViewById(R.id.order_msg_ingredients);
++        TextView ingredientsText = (TextView) findViewById(R.id.chef_cuisine_msg);
+         ingredientsText.setText(this.mealData.getIngredients());
+ 
+         // sets the text for allergens
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+> plugins {\n    id 'com.android.application'\n    id 'com.google.gms.google-services'\n}\n\nandroid {\n    compileSdkVersion 33\n    buildToolsVersion \"30.0.3\"\n\n    defaultConfig {\n        applicationId \"com.example.mealer_project\"\n        minSdkVersion 19\n        targetSdkVersion 33\n        versionCode 1\n        versionName \"1.0\"\n        multiDexEnabled true\n\n\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n        applicationVariants.all{\n            // this method is use to rename your all apk weather\n            // it may be signed or unsigned(debug apk)\n            variant ->\n                variant.outputs.each{\n                    // on below line we are setting a\n                    // name to our apk as GFG.apk\n                    output->\n                        def name = \"group4_debug.apk\"\n                        // on below line we are setting the\n                        // outputFile Name to our apk file.\n                        output.outputFileName = name\n                }\n       }\n    }\n    compileOptions {\n        sourceCompatibility JavaVersion.VERSION_1_8\n        targetCompatibility JavaVersion.VERSION_1_8\n    }\n    buildFeatures {\n        viewBinding true\n    }\n}\n\ndependencies {\n\n    implementation 'androidx.appcompat:appcompat:1.5.1'\n    implementation 'com.google.android.material:material:1.7.0'\n    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'\n    implementation 'com.google.firebase:firebase-database:20.1.0'\n    implementation 'androidx.annotation:annotation:1.5.0'\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'\n    implementation 'com.google.firebase:firebase-auth:21.1.0'\n    implementation 'com.google.firebase:firebase-firestore:24.4.1'\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\n    implementation 'androidx.recyclerview:recyclerview:1.2.1'\n    implementation files('libs\\\\activation.jar')\n    implementation files('libs\\\\additionnal.jar')\n    implementation files('libs\\\\mail.jar')\n    implementation files('libs/activation.jar')\n    implementation files('libs/additionnal.jar')\n    implementation files('libs/mail.jar')\n    implementation 'com.android.support.constraint:constraint-layout:2.0.4'\n    testImplementation 'junit:junit:'\n    testImplementation 'org.testng:testng:6.9.6'\n    androidTestImplementation 'androidx.test.ext:junit:1.1.4'\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'\n    // Import the BoM for the Firebase platform\n    implementation platform('com.google.firebase:firebase-bom:31.0.0')\n    // Add the dependency for the Firebase Authentication library\n    // When using the BoM, you don't specify versions in Firebase library dependencies\n    implementation 'com.google.firebase:firebase-auth'\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision e0440fed570ddc55574ffd2fff41bb6387ea38e6)
++++ b/app/build.gradle	(date 1669927956877)
+@@ -67,7 +67,6 @@
+     implementation files('libs/activation.jar')
+     implementation files('libs/additionnal.jar')
+     implementation files('libs/mail.jar')
+-    implementation 'com.android.support.constraint:constraint-layout:2.0.4'
+     testImplementation 'junit:junit:'
+     testImplementation 'org.testng:testng:6.9.6'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+Index: app/src/main/res/layout/activity_chef_info_screen.xml
+===================================================================
+diff --git a/app/src/main/res/layout/activity_chef_info_screen.xml b/app/src/main/res/layout/activity_chef_info_screen.xml
+deleted file mode 100644
+--- a/app/src/main/res/layout/activity_chef_info_screen.xml	(revision e0440fed570ddc55574ffd2fff41bb6387ea38e6)
++++ /dev/null	(revision e0440fed570ddc55574ffd2fff41bb6387ea38e6)
+@@ -1,271 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/constraintLayoutChef"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent">
+-
+-    <ScrollView
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck">
+-
+-        <LinearLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="wrap_content"
+-            android:orientation="vertical" >
+-
+-            <ImageButton
+-                android:id="@+id/button_back5"
+-                android:layout_width="48dp"
+-                android:layout_height="50dp"
+-                android:layout_marginStart="10dp"
+-                android:layout_marginTop="10dp"
+-                android:background="#00FFFFFF"
+-                android:contentDescription="@string/back"
+-                android:scaleType="fitXY"
+-                android:src="@drawable/backbutton" />
+-
+-            <TextView
+-                android:id="@+id/chef_info_title"
+-                android:layout_width="match_parent"
+-                android:layout_height="wrap_content"
+-                android:fontFamily="@font/croissant_one"
+-                android:gravity="center"
+-                android:paddingTop="40dp"
+-                android:paddingBottom="20dp"
+-                android:text="Chef Info"
+-                android:textColor="@color/green_primary"
+-                android:textSize="43sp" />
+-
+-            <LinearLayout
+-                android:id="@+id/chef_meal_info_layout"
+-                android:layout_width="match_parent"
+-                android:layout_height="match_parent"
+-                android:layout_margin="10dp"
+-                android:background="@drawable/input_box_shadow"
+-                android:orientation="vertical">
+-
+-                <LinearLayout
+-                    android:layout_width="match_parent"
+-                    android:layout_height="match_parent"
+-                    android:padding="20dp">
+-
+-                    <TextView
+-                        android:id="@+id/chef_rating_title"
+-                        android:layout_width="156dp"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:paddingStart="20dp"
+-                        android:paddingEnd="30dp"
+-                        android:text="Chef Name:"
+-                        android:textColor="@color/black"
+-                        android:textSize="16sp"
+-                        android:textStyle="bold" />
+-
+-                    <TextView
+-                        android:id="@+id/chef_rating_msg"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:gravity="center_horizontal"
+-                        android:text="@string/unable_to_get_info"
+-                        android:textColor="#8A000000"
+-                        android:textSize="16sp" />
+-
+-                </LinearLayout>
+-
+-                <LinearLayout
+-                    android:layout_width="match_parent"
+-                    android:layout_height="match_parent"
+-                    android:padding="20dp">
+-
+-                    <TextView
+-                        android:id="@+id/chef_description_title"
+-                        android:layout_width="wrap_content"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:paddingStart="20dp"
+-                        android:paddingEnd="30dp"
+-                        android:text="Email Address: "
+-                        android:textColor="@color/black"
+-                        android:textSize="16sp"
+-                        android:textStyle="bold" />
+-
+-                    <TextView
+-                        android:id="@+id/chef_description_msg"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:gravity="center_horizontal"
+-                        android:text="@string/unable_to_get_info"
+-                        android:textColor="#8A000000"
+-                        android:textSize="16sp" />
+-
+-                </LinearLayout>
+-
+-                <LinearLayout
+-                    android:layout_width="match_parent"
+-                    android:layout_height="match_parent"
+-                    android:padding="20dp">
+-
+-                    <TextView
+-                        android:id="@+id/chef_cuisine_title"
+-                        android:layout_width="162dp"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:paddingStart="20dp"
+-                        android:paddingEnd="30dp"
+-                        android:text="Location:"
+-                        android:textColor="@color/black"
+-                        android:textSize="16sp"
+-                        android:textStyle="bold" />
+-
+-                    <TextView
+-                        android:id="@+id/chef_cuisine_msg"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:gravity="center_horizontal"
+-                        android:text="@string/unable_to_get_info"
+-                        android:textColor="#616161"
+-                        android:textSize="16sp" />
+-                </LinearLayout>
+-
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:id="@+id/chef_meal_info_layout"
+-                android:layout_width="match_parent"
+-                android:layout_height="match_parent"
+-                android:layout_margin="10dp"
+-                android:background="@drawable/input_box_shadow"
+-                android:orientation="vertical">
+-
+-                <LinearLayout
+-                    android:layout_width="match_parent"
+-                    android:layout_height="match_parent"
+-                    android:padding="20dp">
+-
+-                    <TextView
+-                        android:id="@+id/chef_rating_title"
+-                        android:layout_width="160dp"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:paddingStart="20dp"
+-                        android:paddingEnd="30dp"
+-                        android:text="Chef Rating:"
+-                        android:textColor="@color/black"
+-                        android:textSize="16sp"
+-                        android:textStyle="bold" />
+-
+-                    <TextView
+-                        android:id="@+id/chef_rating_msg"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:gravity="center_horizontal"
+-                        android:text="@string/unable_to_get_info"
+-                        android:textColor="#8A000000"
+-                        android:textSize="16sp" />
+-
+-                </LinearLayout>
+-
+-                <LinearLayout
+-                    android:layout_width="match_parent"
+-                    android:layout_height="match_parent"
+-                    android:padding="20dp">
+-
+-                    <TextView
+-                        android:id="@+id/chef_description_title"
+-                        android:layout_width="159dp"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:paddingStart="20dp"
+-                        android:paddingEnd="30dp"
+-                        android:text="Description:"
+-                        android:textColor="@color/black"
+-                        android:textSize="16sp"
+-                        android:textStyle="bold" />
+-
+-                    <TextView
+-                        android:id="@+id/chef_description_msg"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:gravity="center_horizontal"
+-                        android:text="@string/unable_to_get_info"
+-                        android:textColor="#8A000000"
+-                        android:textSize="16sp" />
+-
+-                </LinearLayout>
+-
+-                <LinearLayout
+-                    android:layout_width="match_parent"
+-                    android:layout_height="match_parent"
+-                    android:padding="20dp">
+-
+-                    <TextView
+-                        android:id="@+id/chef_cuisine_title"
+-                        android:layout_width="156dp"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:paddingStart="20dp"
+-                        android:paddingEnd="30dp"
+-                        android:text="Cuisine Type:"
+-                        android:textColor="@color/black"
+-                        android:textSize="16sp"
+-                        android:textStyle="bold" />
+-
+-                    <TextView
+-                        android:id="@+id/chef_cuisine_msg"
+-                        android:layout_width="match_parent"
+-                        android:layout_height="wrap_content"
+-                        android:fontFamily="@font/nunito_sans"
+-                        android:gravity="center_horizontal"
+-                        android:text="@string/unable_to_get_info"
+-                        android:textColor="#616161"
+-                        android:textSize="16sp" />
+-                </LinearLayout>
+-
+-            </LinearLayout>
+-
+-            <LinearLayout
+-                android:id="@+id/chef_available_layout"
+-                android:layout_width="match_parent"
+-                android:layout_height="match_parent"
+-                android:layout_margin="10dp"
+-                android:background="@drawable/input_box_shadow"
+-                android:orientation="horizontal"
+-                android:padding="10dp">
+-
+-                <TextView
+-                    android:id="@+id/chef_availability_title"
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:layout_margin="10dp"
+-                    android:layout_weight="1"
+-                    android:fontFamily="@font/nunito_sans"
+-                    android:paddingLeft="20dp"
+-                    android:text="Availability: "
+-                    android:textColor="@color/black"
+-                    android:textSize="16sp"
+-                    android:textStyle="bold" />
+-
+-                <TextView
+-                    android:id="@+id/chef_availability_msg"
+-                    android:layout_width="wrap_content"
+-                    android:layout_height="wrap_content"
+-                    android:layout_margin="10dp"
+-                    android:layout_weight="1"
+-                    android:fontFamily="@font/nunito_sans"
+-                    android:text="Display Yes/No"
+-                    android:textColor="#616161"
+-                    android:textSize="16sp" />
+-            </LinearLayout>
+-
+-        </LinearLayout>
+-    </ScrollView>
+-
+-</androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
