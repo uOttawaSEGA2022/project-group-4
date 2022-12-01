@@ -72,6 +72,8 @@ public class OrderActions {
             databaseOrder.put("isRejected", order.getIsRejected());
             databaseOrder.put("isCompleted", order.getIsCompleted());
             databaseOrder.put("meals", order.getMeals());
+            databaseOrder.put("isRated", order.isRated());
+            databaseOrder.put("rating", order.getRating());
 
             // Add order to Orders Collection
             database
@@ -379,12 +381,12 @@ public class OrderActions {
     }
 
 
-    public void updateChefRating(String chefId, Double newRating){
+    public void updateChefRating(String orderId, String chefId, Double newRating){
 
         if (Preconditions.isNotNull(chefId)) {
 
             // retrieve client object from firebase
-            database.collection(CLIENT_COLLECTION)
+            database.collection(CHEF_COLLECTION)
                     .document(chefId)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -394,13 +396,14 @@ public class OrderActions {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
 
-                                    Double ratingSum = (Double) document.getData().get("ratingSum");
-                                    int numOfRatings = (int) document.getData().get("numOfRatings");
+                                    Double ratingSum = ((Number) document.getData().get("ratingSum")).doubleValue();
+                                    int numOfRatings = ((Number) document.getData().get("numOfRatings")).intValue();
+                                    numOfRatings = numOfRatings + 1;
 
-                                    database.collection(CLIENT_COLLECTION)
+                                    database.collection(CHEF_COLLECTION)
                                             .document(chefId)
                                             .update("ratingSum", ratingSum + newRating,
-                                                    "numOfRatings", numOfRatings++)
+                                                    "numOfRatings", numOfRatings)
                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
                                                 public void onSuccess(Void aVoid) {
@@ -414,7 +417,22 @@ public class OrderActions {
                                                 }
                                             });
 
-
+                                    database.collection(ORDER_COLLECTION)
+                                            .document(orderId)
+                                            .update("rating", newRating,
+                                                    "isRated", true)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    App.ORDER_HANDLER.handleUpdateChefRatingSuccess();
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update order's rating!");
+                                                }
+                                            });
 
                                 } else {
                                         Log.d("updateChefRating", "Chef not found");
@@ -442,6 +460,8 @@ public class OrderActions {
         newOrder.setIsCompleted((Boolean)document.getData().get("isCompleted"));
         newOrder.setIsPending((Boolean)document.getData().get("isPending"));
         newOrder.setIsRejected((Boolean)document.getData().get("isRejected"));
+        newOrder.setIsRated((Boolean)document.getData().get("isRated"));
+        newOrder.setRating(((Number)document.getData().get("rating")).doubleValue());
 
         Map<String,Object> chefData = (Map<String, Object>) document.getData().get("chefInfo");
         Map<String,Object> clientData = (Map<String, Object>) document.getData().get("clientInfo");

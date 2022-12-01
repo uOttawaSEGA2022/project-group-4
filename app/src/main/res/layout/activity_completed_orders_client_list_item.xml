@@ -111,7 +111,8 @@
             android:layout_marginStart="10dp"
             android:fontFamily="sans-serif"
             android:text="@string/submit"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
 
     </LinearLayout>
