@@ -10,16 +10,17 @@
         android:id="@+id/backButtonComplaint"
         android:layout_width="48dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="363dp"
         android:layout_marginBottom="23dp"
         android:background="#00FFFFFF"
         android:contentDescription="@string/back"
         android:scaleType="fitXY"
         android:src="@drawable/backbutton"
-        app:layout_constraintBottom_toTopOf="@+id/make_complaint_title"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.044"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024" />
 
     <TextView
         android:id="@+id/make_complaint_title"
@@ -38,106 +39,114 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.114" />
 
-    <TextView
-        android:id="@+id/client_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/client_name"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="414dp"
+        android:layout_height="198dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title">
+
+        <TextView
+            android:id="@+id/client_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/text_margin"
+            android:paddingLeft="@dimen/text_margin"
+            android:text="@string/client_name" />
+
+        <TextView
+            android:id="@+id/chef_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/text_margin"
+            android:text="@string/chefs_name" />
+
+        <TextView
+            android:id="@+id/meal_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/text_margin"
+            android:paddingLeft="@dimen/text_margin"
+            android:text="@string/date" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="414dp"
+        android:layout_height="329dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.096"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-    <TextView
-        android:id="@+id/chef_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chefs_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.095"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.139" />
+        <EditText
+            android:id="@+id/title_of_complaint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="101dp"
+            android:layout_marginEnd="101dp"
+            android:layout_marginBottom="12dp"
+            android:ems="10"
+            android:hint="Title of Complaint:"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            tools:ignore="TouchTargetSizeCheck" />
 
-    <TextView
-        android:id="@+id/meal_quantity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/quantity"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.104"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
 
-    <EditText
-        android:id="@+id/complaint_writer"
-        android:layout_width="220dp"
-        android:layout_height="214dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:hint="Complaint Description"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.528"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.817" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="82dp"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/meal_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.094"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.262" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/send_complaint_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/submit_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.988" />
+            <EditText
+                android:id="@+id/complaint_writer"
+                android:layout_width="214dp"
+                android:layout_height="62dp"
+                android:ems="10"
+                android:hint="Complaint Description"
+                android:inputType="textPersonName"
+                android:minHeight="48dp" />
 
-    <EditText
-        android:id="@+id/title_of_complaint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="101dp"
-        android:layout_marginEnd="101dp"
-        android:layout_marginBottom="20dp"
-        android:ems="10"
-        android:hint="Title of Complaint:"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/complaint_writer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="TouchTargetSizeCheck" />
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/meals_of_order"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/meals_label"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.101"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/make_complaint_title"
-        app:layout_constraintVertical_bias="0.196" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="97dp"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/send_complaint_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/submit_text" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
