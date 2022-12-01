@@ -49,82 +49,184 @@
 
         </LinearLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout"
+        <LinearLayout
+            android:id="@+id/orderSubmissionContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <TextView
-                    android:id="@+id/totalCostLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/nunito_sans"
-                    android:text="TextView"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    tools:text="@string/total_cost_label" />
-
-                <TextView
-                    android:id="@+id/totalCostAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="TextView"
-                    android:textSize="20sp"
-                    tools:text="@string/total_cost_default_amount" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <FrameLayout
-            android:id="@+id/frameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/checkout_buttons_layout"
+            <View
+                android:id="@+id/divider6"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
 
-                <Button
-                    android:id="@+id/cancel_button"
-                    style="?android:attr/buttonBarButtonStyle"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="visible">
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/baloo_bhai"
-                    android:minHeight="50dp"
-                    android:text="@android:string/cancel"
-                    android:textColor="@color/green_primary"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <Button
-                    android:id="@+id/order_button"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/totalCostLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nunito_sans"
+                        android:text="Total Cost:"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="@string/total_cost_label" />
+
+                    <TextView
+                        android:id="@+id/totalCostAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:text="TextView"
+                        android:textSize="20sp"
+                        tools:text="@string/total_cost_default_amount" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:visibility="visible" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/baloo_bhai"
-                    android:minHeight="50dp"
-                    android:text="@string/order"
-                    android:textAllCaps="true"
-                    android:textColor="@color/green_primary"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                    android:gravity="center_horizontal|center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-        </FrameLayout>
+                    <TextView
+                        android:id="@+id/pay_using_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:text="@string/pay_using_label"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/input_box_shadow"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageButton
+                                android:id="@+id/imageButton2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal|center_vertical"
+                                android:background="#00FFFFFF"
+                                android:contentDescription="Visa icon"
+                                android:minWidth="50dp"
+                                android:minHeight="50dp"
+                                app:srcCompat="@drawable/visa_icon" />
+
+                            <TextView
+                                android:id="@+id/clientCreditCardInfo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:gravity="center_horizontal|center_vertical"
+                                android:paddingRight="10dp"
+                                android:text="@string/default_client_card_info"
+                                android:textSize="20sp" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                android:visibility="visible" />
+
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/checkout_buttons_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/cancel_button"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/baloo_bhai"
+                        android:minHeight="50dp"
+                        android:text="@android:string/cancel"
+                        android:textColor="@color/green_primary"
+                        android:textSize="20sp" />
+
+                    <Button
+                        android:id="@+id/order_button"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/baloo_bhai"
+                        android:minHeight="50dp"
+                        android:text="@string/order"
+                        android:textAllCaps="true"
+                        android:textColor="@color/green_primary"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

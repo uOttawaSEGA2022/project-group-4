@@ -7,6 +7,7 @@ import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
@@ -70,7 +71,7 @@ public class App {
      */
     public static Client getClient() {
         // if user is logged in and is a Client
-        if (app.isUserAuthenticated() && app.getUser() instanceof Client) {
+        if (app.isUserAuthenticated() && app.getUser().getRole() == UserRoles.CLIENT) {
             try {
                 return (Client) app.getUser();
             } catch (Exception e) {

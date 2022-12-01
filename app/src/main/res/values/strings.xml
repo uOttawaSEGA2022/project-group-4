@@ -115,4 +115,6 @@
     <string name="no_search_result_message">Sorry! no meals found!</string>
     <string name="total_cost_label">Total Cost:</string>
     <string name="total_cost_default_amount">0</string>
+    <string name="pay_using_label">Pay using:</string>
+    <string name="default_client_card_info">unable to load card</string>
 </resources>
