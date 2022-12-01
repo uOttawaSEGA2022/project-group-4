@@ -40,7 +40,7 @@
                 android:textSize="43sp" />
 
             <LinearLayout
-                android:id="@+id/chef_meal_info_layout"
+                android:id="@+id/chef_personal_info_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
@@ -53,7 +53,7 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/chef_rating_title"
+                        android:id="@+id/chef_name_title"
                         android:layout_width="156dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -65,7 +65,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_rating_msg"
+                        android:id="@+id/chef_name_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -82,7 +82,7 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/chef_description_title"
+                        android:id="@+id/chef_email_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -94,7 +94,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_description_msg"
+                        android:id="@+id/chef_email_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -111,7 +111,7 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/chef_cuisine_title"
+                        android:id="@+id/chef_location_title"
                         android:layout_width="162dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -123,7 +123,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_cuisine_msg"
+                        android:id="@+id/chef_location_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"

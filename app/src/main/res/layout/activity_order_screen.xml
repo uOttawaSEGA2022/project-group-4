@@ -108,7 +108,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_rating_msg"
+                        android:id="@+id/chef_name_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/chef_rating_title"
@@ -138,7 +138,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_description_msg"
+                        android:id="@+id/chef_email_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/chef_description_title"
@@ -156,7 +156,7 @@
                     android:padding="20dp">
 
                     <TextView
-                        android:id="@+id/chef_cuisine_title"
+                        android:id="@+id/chef_location_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
@@ -168,10 +168,10 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_cuisine_msg"
+                        android:id="@+id/chef_location_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/chef_cuisine_title"
+                        android:layout_below="@id/chef_location_title"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
