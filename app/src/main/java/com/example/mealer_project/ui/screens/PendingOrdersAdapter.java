@@ -25,6 +25,7 @@ import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.utils.SendMailTask;
 
@@ -168,13 +169,13 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
             @Override
             public void onClick(View view) {
                 Log.e("complaintCheck", "it works");
+                Order orderData = getItem(position);
 
                 Bundle orderInfo = new Bundle();
-                orderInfo.putSerializable("test", order);
+                orderInfo.putSerializable("ORDER_DATA_ARG_KEY", orderData);
                 Intent goToComplaint = new Intent(getContext(), MakeComplaint.class);
-                //goToComplaint.putExtras(orderInfo);
+                goToComplaint.putExtras(orderInfo);
                 startActivity(getContext(), goToComplaint, null);
-                //parent.getContext().startActivity(new Intent(parent.getContext(), ClientScreen.class));
             }
         });
 

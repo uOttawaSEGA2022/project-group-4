@@ -14,12 +14,14 @@ import android.widget.Toast;
 import com.example.mealer_project.R;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.inbox.Complaint;
-import com.example.mealer_project.data.models.meals.Meal;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MakeComplaint extends AppCompatActivity {
     Order orderData;
+
     Complaint complaint;
     EditText titleText;
     EditText descriptionText;
@@ -37,14 +39,23 @@ public class MakeComplaint extends AppCompatActivity {
         //Variables for displaying order information
         clientName = findViewById(R.id.client_name);
         chefName = findViewById(R.id.chef_name);
+        dateOfOrder = findViewById(R.id.meal_date);
 
         //Variables for the user writing complaints
-        titleText = (EditText) findViewById(R.id.title_of_complaint);
-        descriptionText = (EditText) findViewById(R.id.complaint_writer);
+        titleText = findViewById(R.id.title_of_complaint);
+        descriptionText = findViewById(R.id.complaint_writer);
 
         //Buttons
         submitComplaint = findViewById(R.id.send_complaint_button);
         backButton = findViewById(R.id.backButtonComplaint);
+
+        try {
+            orderData = (Order) getIntent().getSerializableExtra("ORDER_DATA_ARG_KEY");
+            updateUI();
+        } catch (Exception e) {
+            Log.e("MakeComplaint", String.valueOf(e));
+            Toast.makeText(getApplicationContext(), "Unable to retrieve the meal info!", Toast.LENGTH_LONG).show();
+        }
 
         submitComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,15 +70,6 @@ public class MakeComplaint extends AppCompatActivity {
 
         backButton.setOnClickListener(v -> finish());
 
-//        try {
-//            orderData = (Order) getIntent().getSerializableExtra("Test");
-//            setComplaintInformation(orderData.getClientInfo().getClientName(), orderData.getChefInfo().getChefName(), orderData.getOrderDate());
-//        } catch (Exception e) {
-//            Log.e("MakeComplaint", "unable to create order object :(");
-//            Toast.makeText(getApplicationContext(), "Unable to retrieve the meal info!", Toast.LENGTH_LONG).show();
-//        }
-
-
     }
 
     //Creates a complaint
@@ -75,15 +77,18 @@ public class MakeComplaint extends AppCompatActivity {
         Date date = null;
         String title = titleText.getText().toString();
         String description = descriptionText.getText().toString();
+        String chefID = orderData.getChefInfo().getChefId();
+        String clientID = orderData.getClientInfo().getClientId();
 
 
-        //complaint = new Complaint("id", title, description, "clientID", "ChefID", date);
+        //complaint = new Complaint("id", title, description, clientID, chefID, date);
     }
 
     //sets the values of the order information
-    private void setComplaintInformation(String client, String chef, Date date){
-        clientName.setText(client);
-        chefName.setText(chef);
-        dateOfOrder.setText(String.valueOf(date));
+    private void updateUI(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        clientName.setText("Client Name: " + orderData.getClientInfo().getClientName());
+        chefName.setText("Chef Name: " + orderData.getChefInfo().getChefName());
+        dateOfOrder.setText("Date: " + dateFormat.format(orderData.getOrderDate()));
     }
 }

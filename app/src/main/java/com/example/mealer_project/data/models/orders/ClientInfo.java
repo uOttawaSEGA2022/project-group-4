@@ -2,7 +2,9 @@ package com.example.mealer_project.data.models.orders;
 
 import com.example.mealer_project.data.models.Client;
 
-public class ClientInfo {
+import java.io.Serializable;
+
+public class ClientInfo implements Serializable {
     String clientId;
     String clientName;
     String clientEmail;
