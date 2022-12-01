@@ -5,12 +5,16 @@ import static com.example.mealer_project.data.handlers.OrderHandler.dbOperations
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
@@ -20,6 +24,8 @@ import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.search.SearchMealItem;
 import com.example.mealer_project.ui.screens.search.SearchMealItemsAdapter;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,8 +110,10 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
             @Override
             public void onClick(View v) {
                 handleOrderButton();
-                App.getClient().clearCart(); //clears cart
-                orderData = App.getClient().getCart(); //sets orderData to equal the empty cart
+                if (App.getClient() != null) {
+                    App.getClient().clearCart(); //clears cart
+                    orderData = App.getClient().getCart(); //sets orderData to equal the empty cart
+                }
                 displaySuccessToast("Order Has Been Placed!");
                 finish(); //finishes action
             }
@@ -154,12 +162,45 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         for (OrderItem sMItemId: this.orderData.keySet()) {
             this.orderItemList.add(sMItemId);
         }
+        // if we do have items in cart
+        if (!this.orderItemList.isEmpty()) {
+            /// make the order submission container visible
+            LinearLayout orderSubmissionContainer = findViewById(R.id.orderSubmissionContainer);
+            orderSubmissionContainer.setVisibility(View.VISIBLE);
+            // display total cost
+            TextView totalCostAmount = findViewById(R.id.totalCostAmount);
+            totalCostAmount.setText(String.valueOf(getTotalCost()));
+            // display credit card info
+            displayCreditCardInfo();
+        } else {
+            // make the order submission container invisible
+            LinearLayout orderSubmissionContainer = findViewById(R.id.orderSubmissionContainer);
+            orderSubmissionContainer.setVisibility(View.GONE);
+        }
         Log.e("cartPopulation", "Populated the list: " + this.orderItemList.size());
-
     }
 
     private void handleOrderButton(){
         App.ORDER_HANDLER.dispatch(ADD_ORDER, null, this);
+    }
+
+    private double getTotalCost() {
+        if (this.orderItemList != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                return this.orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice()).sum();
+            }
+        }
+        // if no order items
+        return 0.0;
+    }
+
+    private void displayCreditCardInfo() {
+        // make sure we have a valid client
+        if (App.getClient() != null) {
+            TextView clientCreditCard = findViewById(R.id.clientCreditCardInfo);
+            String creditCardHashed = "XXXX-XXXX-XXXX-" + App.getClient().getClientCreditCard().getNumber().substring(12,16);
+            clientCreditCard.setText(creditCardHashed);
+        }
     }
 
     @Override
