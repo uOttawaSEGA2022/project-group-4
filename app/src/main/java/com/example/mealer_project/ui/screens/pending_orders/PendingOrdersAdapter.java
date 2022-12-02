@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.pending_orders;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -88,7 +88,8 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                         "REJECTED MEALER Order: " + order.getOrderID().substring(0, 6),
                         "Hello " + order.getClientInfo().getClientName() + ",<br><br>" +
                                 "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName()
-                                + ".<br><br>" + EMAIL_CONTENTS +
+                                + ".<br><br>" +
+                                EMAIL_CONTENTS +
                                 "<br><br><br>"
                                 + "Thank you for understanding.<br><br>MEALER Team");
             }
@@ -112,7 +113,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                                 ".<br><br>" +
                                 "You will receive another email notification when your order is ready for pick-up at " +
                                 order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
-                                order.getChefInfo().getChefAddress().getCity() +
+                                order.getChefInfo().getChefAddress().getCity() + " " +
                                 order.getChefInfo().getChefAddress().getPostalCode() +
                                 ".<br><br><br>" +
                                 EMAIL_CONTENTS +

@@ -76,12 +76,13 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
             public void onClick(View v) {
                 order.setIsCompleted(true);
                 App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
+
                 // Process: sending email to client that order has been rejected
                 String str = "Hello " + order.getClientInfo().getClientName() + ","
                         + "<br><br>" +
                         "The following order is ready for pick-up at " +
                         order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
-                        order.getChefInfo().getChefAddress().getCity() +
+                        order.getChefInfo().getChefAddress().getCity() + " " +
                         order.getChefInfo().getChefAddress().getPostalCode() + "."
                         + "<br><br>" +
                         EMAIL_CONTENTS

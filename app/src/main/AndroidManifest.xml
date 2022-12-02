@@ -153,21 +153,21 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.screens.PendingOrdersScreen"
+            android:name=".ui.screens.pending_orders.PendingOrdersScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.screens.CompletedOrdersScreen"
+            android:name=".ui.screens.completed_orders.CompletedOrdersScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.screens.PendingOrdersClientScreen"
+            android:name=".ui.screens.pending_orders.PendingOrdersClientScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

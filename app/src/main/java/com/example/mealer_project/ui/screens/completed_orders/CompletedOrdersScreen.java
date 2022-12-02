@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.completed_orders;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -15,9 +15,7 @@ import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CompletedOrdersScreen extends UIScreen implements StatefulView {
 

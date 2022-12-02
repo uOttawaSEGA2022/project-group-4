@@ -26,8 +26,20 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
         setContentView(R.layout.activity_chef_info_screen);
         // buttons for onClick methods
         backButton = (ImageButton) findViewById(R.id.button_back5);
+
+        // Process: calling helper method to attach listeners to all buttons
+        attachOnClickListeners();
     }
 
+    private void attachOnClickListeners(){
+        // on click method for back button
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            } // go to previous screen
+        });
+    }
 
     @Override
     public void updateUI() {

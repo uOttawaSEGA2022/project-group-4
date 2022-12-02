@@ -10,8 +10,12 @@ import android.widget.TextView;
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.MealHandler;
+import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersScreen;
+import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersClientScreen;
 import com.example.mealer_project.ui.screens.search.SearchScreen;
 
 public class ClientScreen extends UIScreen implements StatefulView {
@@ -46,7 +50,11 @@ public class ClientScreen extends UIScreen implements StatefulView {
         pendingOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));
+                if (((Client) App.getUser()).ORDERS.getPendingOrders().size() != 0)
+                    startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));
+                else
+                    displayErrorToast("You have no pending orders!");
+
             }
         });
 
@@ -54,7 +62,10 @@ public class ClientScreen extends UIScreen implements StatefulView {
         completedOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CompletedOrdersScreen.class));
+                if (((Client) App.getUser()).ORDERS.getCompletedOrders().size() != 0)
+                    startActivity(new Intent(getApplicationContext(), CompletedOrdersScreen.class));
+                else
+                    displayErrorToast("You have no completed orders!");
             }
         });
     }

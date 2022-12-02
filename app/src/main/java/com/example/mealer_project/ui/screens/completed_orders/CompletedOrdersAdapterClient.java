@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.completed_orders;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -26,6 +26,7 @@ import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.screens.MakeComplaint;
 import com.example.mealer_project.utils.SendMailTask;
 
 import java.text.DateFormat;
