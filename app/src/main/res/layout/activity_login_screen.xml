@@ -19,12 +19,13 @@
         android:layout_margin="20dp"
         android:layout_weight="1"
         android:width="100dp"
-        android:contentDescription="logo for now"
+        android:contentDescription="@string/logoDescription"
         android:src="@drawable/logo_fornow"
         app:layout_constraintBottom_toTopOf="@+id/loginUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ImageContrastCheck" />
 
     <EditText
         android:id="@+id/loginUsername"

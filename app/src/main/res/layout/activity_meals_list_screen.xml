@@ -20,7 +20,7 @@
             android:id="@+id/back_btn2"
             android:layout_width="48dp"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="@dimen/back_button_margin"
             android:layout_marginTop="10dp"
             android:background="#00FFFFFF"
             android:contentDescription="@string/back"
@@ -31,10 +31,12 @@
             android:id="@+id/mlTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_sans"
+            android:fontFamily="@font/baloo_bhai"
             android:gravity="center_horizontal|center_vertical"
             android:minHeight="70dp"
+            android:paddingTop="@dimen/title_padding"
             android:text="@string/meals_label"
+            android:textColor="@color/green_primary"
             android:textSize="34sp" />
 
         <ListView

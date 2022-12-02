@@ -20,8 +20,8 @@
                 android:id="@+id/back_btn"
                 android:layout_width="48dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/back_button_margin"
+                android:layout_marginTop="@dimen/back_button_margin"
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/back"
                 android:scaleType="fitXY"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/baloo_bhai"
                 android:gravity="center"
-                android:paddingTop="40dp"
+                android:paddingTop="@dimen/title_padding"
                 android:text="Meal Name Here"
                 android:textSize="34sp" />
 

@@ -126,6 +126,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
                         if (intent != null) {
                             updateVoidChequeImage(intent);
                             chequeString = intent.getStringExtra("voidChequeValue");
+                            displaySuccessToast("Void cheque uploaded!");
                         } else {
                             Log.e("VoidChequeActivity", "intent null");
                             displayErrorToast("Unable to process void cheque image!");

@@ -14,15 +14,15 @@
         <LinearLayout
             android:id="@+id/linearTop"
             android:layout_width="match_parent"
-            android:layout_height="670dp"
+            android:layout_height="520dp"
             android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/button_back3"
                 android:layout_width="48dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/back_button_margin"
+                android:layout_marginTop="@dimen/back_button_margin"
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/back"
                 android:scaleType="fitXY"
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/baloo_bhai"
                 android:gravity="center"
-                android:paddingTop="40dp"
+                android:paddingTop="@dimen/title_padding"
                 android:text="@string/checkout"
                 android:textColor="@color/green_primary"
                 android:textSize="34sp" />
@@ -94,6 +94,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/nunito_sans"
                         android:text="TextView"
                         android:textSize="20sp"
                         tools:text="@string/total_cost_default_amount" />
@@ -166,10 +167,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_marginLeft="10dp"
+                                android:fontFamily="@font/nunito_sans"
                                 android:gravity="center_horizontal|center_vertical"
                                 android:paddingRight="10dp"
                                 android:text="@string/default_client_card_info"
-                                android:textSize="20sp" />
+                                android:textSize="16sp" />
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

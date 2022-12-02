@@ -31,7 +31,7 @@ public class SearchScreen extends UIScreen {
     List<SearchMealItem> sMItems;
 
     ImageButton backButton;
-    ImageButton searchButton;
+    //ImageButton searchButton;
     ImageButton checkoutButton;
 
     ListView sMList;
@@ -51,7 +51,7 @@ public class SearchScreen extends UIScreen {
         setContentView(R.layout.activity_search_meal_screen);
 
         backButton = findViewById(R.id.back_btn3);
-        searchButton = findViewById(R.id.searchBtn); //add when screen is done
+        //searchButton = findViewById(R.id.searchBtn); //add when screen is done
         checkoutButton = findViewById(R.id.cartBtn);
 
         // get the list view component
@@ -92,8 +92,12 @@ public class SearchScreen extends UIScreen {
         checkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CheckoutScreen.class);
-                startActivity(intent);
+                if (App.getClient().getCart().size() == 0)
+                    displayErrorToast("No items in cart!");
+                else {
+                    Intent intent = new Intent(getApplicationContext(), CheckoutScreen.class);
+                    startActivity(intent);
+                }
             }
         });
 

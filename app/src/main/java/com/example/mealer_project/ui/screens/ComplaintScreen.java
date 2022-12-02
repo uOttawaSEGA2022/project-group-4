@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -28,6 +29,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     private Button dismissButton;
     private Button banTempButton;
     private Button banPermButton;
+    private ImageButton backButton;
     private DatePickerDialog datePickerDialog;
     DatePickerDialog.OnDateSetListener dateSetListener;
     Complaint complaintData;
@@ -105,6 +107,16 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
                 App.getInboxHandler().removeComplaint(complaintData.getId()); //Remove complaint from primary database of Admin Inbox
                 showNextScreen(); //Redirect to Admin Screen
             }
+        });
+
+        /**
+         * Back button
+         */
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            } // go to previous screen
         });
     }
 

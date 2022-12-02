@@ -115,7 +115,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
                     orderData = App.getClient().getCart(); //sets orderData to equal the empty cart
                 }
                 displaySuccessToast("Order Has Been Placed!");
-                finish(); //finishes action
+                showNextScreen(); //finishes action
             }
         });
 
@@ -124,7 +124,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
             @Override
             public void onClick(View v) {
 
-                builder.setMessage("You will be clearing your cart and returning to the main page.");
+                builder.setMessage("You will be clearing your cart and returning to the previous page.");
 
                 builder.setPositiveButton("Confirm",
                         new DialogInterface.OnClickListener() {
