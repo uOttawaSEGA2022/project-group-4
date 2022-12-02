@@ -174,7 +174,7 @@
                     android:background="@drawable/input_box_shadow"
                     android:ems="10"
                     android:fontFamily="@font/nunito_sans"
-                    android:hint="Pincode"
+                    android:hint="Postal Code"
                     android:inputType="textPostalAddress"
                     android:maxLength="6"
                     android:minHeight="50dp"

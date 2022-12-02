@@ -85,7 +85,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                 // Process: sending email to client that order has been rejected
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
-                        "REJECTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "REJECTED MEALER Order #: " + order.getOrderID().substring(0, 6),
                         "Hello " + order.getClientInfo().getClientName() + ",<br><br>" +
                                 "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName()
                                 + ".<br><br>" +
@@ -107,7 +107,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                 // Process: sending email to client that order has been accepted
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
-                        "ACCEPTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "ACCEPTED MEALER Order #: " + order.getOrderID().substring(0, 6),
                         "Hello " + order.getClientInfo().getClientName() + ",<br><br>" +
                                 "The following order has been accepted by Chef " + order.getChefInfo().getChefName() +
                                 ".<br><br>" +

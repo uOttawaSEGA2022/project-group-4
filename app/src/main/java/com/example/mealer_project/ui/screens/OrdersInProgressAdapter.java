@@ -94,7 +94,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
-                        "READY-FOR-PICK-UP MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "READY-FOR-PICK-UP MEALER Order #: " + order.getOrderID().substring(0, 6),
                         str);
             }
         });
