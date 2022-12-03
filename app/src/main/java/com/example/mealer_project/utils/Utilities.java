@@ -35,7 +35,6 @@ public class Utilities {
 
     static public Date getDateFromString(String dateValue) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/yyyy hh:mm:s", Locale.US);
-
         return formatter.parse(dateValue);
     }
 

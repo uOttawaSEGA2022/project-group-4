@@ -485,10 +485,9 @@ public class OrderActions {
         newOrder.setClientInfo(clientInfo);
 
         try {
-            Date date = ((Timestamp) document.getData().get("date")).toDate();
-            String dateString = date.toString();
-            Date finalDate = Utilities.getDateFromString(dateString);
-            newOrder.setDate(finalDate);
+            Timestamp timestamp = (Timestamp) document.getData().get("date");
+            Date date = timestamp.toDate();
+            newOrder.setDate(date);
 
         } catch (Exception e) {
             newOrder.setDate(Utilities.getTodaysDate());
