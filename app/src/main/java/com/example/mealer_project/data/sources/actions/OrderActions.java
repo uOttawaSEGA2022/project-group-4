@@ -484,7 +484,12 @@ public class OrderActions {
         newOrder.setClientInfo(clientInfo);
 
         try {
-            newOrder.setDate(((Timestamp) document.getData().get("date")).toDate());
+            Date date = ((Timestamp) document.getData().get("date")).toDate();
+            Log.e("DATE", date.toString());
+            DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM).format(date);
+            Log.e("DATE2", date.toString());
+            newOrder.setDate(date);
+            Log.e("DATE3", newOrder.getOrderDate().toString());
         } catch (Exception e) {
             newOrder.setDate(new Date());
             Log.e("DATE", "makeOrderFromFirebase: Error parsing date");
