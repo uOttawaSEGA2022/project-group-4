@@ -74,7 +74,7 @@ public class CompletedOrdersAdapter extends ArrayAdapter<Order> {
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
         ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
         return convertView;

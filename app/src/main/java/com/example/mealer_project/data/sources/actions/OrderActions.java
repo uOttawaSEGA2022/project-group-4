@@ -19,6 +19,7 @@ import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.utils.Preconditions;
+import com.example.mealer_project.utils.Utilities;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -484,9 +485,12 @@ public class OrderActions {
         newOrder.setClientInfo(clientInfo);
 
         try {
-            newOrder.setDate(((Timestamp) document.getData().get("date")).toDate());
+            Timestamp timestamp = (Timestamp) document.getData().get("date");
+            Date date = timestamp.toDate();
+            newOrder.setDate(date);
+
         } catch (Exception e) {
-            newOrder.setDate(new Date());
+            newOrder.setDate(Utilities.getTodaysDate());
             Log.e("DATE", "makeOrderFromFirebase: Error parsing date");
         }
 

@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.models;
 
+import android.util.Log;
+
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
@@ -33,6 +35,7 @@ public class Order implements Serializable {
      */
     public Order() {
         this.date = Utilities.getTodaysDate();
+        Log.e("ORDER DATE",Utilities.getTodaysDate().toString() );
         this.meals = new HashMap<>();
         this.setIsPending(true);
         this.setIsRejected(false);

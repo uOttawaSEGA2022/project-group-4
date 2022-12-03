@@ -6,7 +6,6 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
-import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.ui.screens.SignupScreen;
@@ -16,6 +15,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -34,11 +34,14 @@ public class AuthActions {
     }
 
     public void registerClient(String email, String password, SignupScreen signupScreen, Client newUser) {
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 newUser.setUserId(user.getUid());
@@ -80,10 +83,17 @@ public class AuthActions {
                                             }
                                         });
                             } else {
+
                                 signupScreen.userRegistrationFailed("User registration returned no user info");
                             }
                         } else {
                             if (task.getException() != null) {
+
+                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                    signupScreen.userRegistrationFailed("An account with this email already exists!");
+                                    return;
+                                }
+
                                 signupScreen.userRegistrationFailed(task.getException().toString());
                             } else {
                                 signupScreen.userRegistrationFailed("createUserWithEmailAndPassword failed: for unknown reasons");
@@ -100,6 +110,7 @@ public class AuthActions {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
                                 newUser.setUserId(user.getUid());
@@ -144,6 +155,12 @@ public class AuthActions {
                             }
                         } else {
                             if (task.getException() != null) {
+
+                                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                    signupScreen.userRegistrationFailed("An account with this email already exists!");
+                                    return;
+                                }
+
                                 signupScreen.userRegistrationFailed(task.getException().toString());
                             } else {
                                 signupScreen.userRegistrationFailed("createUserWithEmailAndPassword failed: for unknown reasons");
