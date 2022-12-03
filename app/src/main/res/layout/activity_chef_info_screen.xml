@@ -61,7 +61,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Chef Name:"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -72,7 +72,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -90,7 +90,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Email Address: "
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -101,7 +101,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -119,7 +119,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Location:"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -130,7 +130,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -157,7 +157,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Chef Rating:"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -168,7 +168,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -186,7 +186,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Description:"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -197,7 +197,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -215,7 +215,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Cuisine Type:"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -226,7 +226,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="@color/colorDefaultText"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -250,7 +250,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:paddingLeft="20dp"
                     android:text="Availability: "
-                    android:textColor="@color/colorDefaultText"
+                    android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -262,7 +262,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/nunito_sans"
                     android:text="Display Yes/No"
-                    android:textColor="@color/colorDefaultText"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
