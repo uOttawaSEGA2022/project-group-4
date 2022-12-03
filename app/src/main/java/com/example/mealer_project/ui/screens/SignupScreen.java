@@ -260,7 +260,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
             String chefShortDescription = chefShortDesc.getText().toString();
 
             // TO-DO: to be implemented. Temporarily empty string
-            Log.e("voidchequetest", chequeString);
+            //Log.e("voidchequetest", chequeString);
             String voidCheque = chequeString; //(String) chequeString.get("String");
 
             // register the new user by passing data to UserHandler of the app instance

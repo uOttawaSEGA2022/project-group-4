@@ -109,15 +109,15 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
             }
         });
 
-        /**
-         * Back button
-         */
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            } // go to previous screen
-        });
+//        /**
+//         * Back button
+//         */
+//        backButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            } // go to previous screen
+//        });
     }
 
     @Override
