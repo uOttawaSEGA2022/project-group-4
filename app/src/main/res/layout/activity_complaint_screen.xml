@@ -4,32 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
-    <ImageButton
-        android:id="@+id/backButton2"
-        android:layout_width="48dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="363dp"
-        android:layout_marginBottom="47dp"
-        android:background="#00FFFFFF"
-        android:contentDescription="@string/back"
-        android:scaleType="fitXY"
-        android:src="@drawable/backbutton"
-        app:layout_constraintBottom_toTopOf="@+id/complaintHeader"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/complaintScreenBackBtn"
+            android:layout_width="48dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#00FFFFFF"
+            android:contentDescription="@string/back"
+            android:scaleType="fitXY"
+            android:src="@drawable/backbutton" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/complaintHeader"
-        android:layout_width="378dp"
-        android:layout_height="69dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
         android:gravity="center"
         android:text="@string/complaint_header"
+        android:textColor="@color/colorDefaultText"
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +47,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
         android:text="@string/client_name"
+        android:textColor="@color/colorDefaultText"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.158"
@@ -56,6 +61,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/chefs_name"
+        android:textColor="@color/colorDefaultText"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.158"
@@ -81,12 +88,39 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
         android:text="@string/description_title"
+        android:textColor="@color/colorDefaultText"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.178"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.553" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/descriptionTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/complaintDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nunito_sans"
+                android:gravity="center"
+                android:maxHeight="150dp"
+                android:padding="@dimen/text_margin"
+                android:text="@string/complaint_information"
+                android:textColor="@color/colorDefaultText"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/dismiss"
@@ -96,7 +130,8 @@
         android:layout_marginBottom="48dp"
         android:text="@string/dismiss"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/ban_permament"
@@ -105,7 +140,8 @@
         android:layout_marginBottom="48dp"
         android:text="@string/ban_permanent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/ban_chef" />
+        app:layout_constraintEnd_toEndOf="@id/ban_chef"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/ban_chef"
@@ -114,33 +150,24 @@
         android:layout_gravity="right"
         android:layout_marginLeft="116dp"
         android:layout_marginBottom="36dp"
-        android:gravity="right"
+        android:gravity="center|right"
         android:onClick="openDatePicker"
         android:text="@string/ban_chef"
         app:layout_constraintBottom_toTopOf="@+id/ban_permament"
-        app:layout_constraintLeft_toRightOf="@id/dismiss" />
-
-    <TextView
-        android:id="@+id/complaintDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/nunito_sans"
-        android:text="@string/complaint_information"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.629" />
+        app:layout_constraintLeft_toRightOf="@id/dismiss"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/clientComplaintName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="unable to get name"
+        android:textColor="@color/colorDefaultText"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintRight_toRightOf="@id/clientName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.386" />
@@ -151,9 +178,11 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
         android:text="unable to get name"
+        android:textColor="@color/colorDefaultText"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.439"
+        app:layout_constraintHorizontal_bias="0.55"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.445" />
@@ -162,6 +191,7 @@
         android:id="@+id/mealComplaintName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorDefaultText"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

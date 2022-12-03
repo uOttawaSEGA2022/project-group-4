@@ -48,7 +48,7 @@ public class VoidChequeScreen extends UIScreen {
                 if (pictureSubmitted) {
                     submitVoidChequeImage();
                 } else {
-                    displayErrorToast("No void cheque image submitted! Please take a picture or upload one");
+                    displayErrorToast("No void cheque image submitted! Please take a photo");
                 }
             }
         });

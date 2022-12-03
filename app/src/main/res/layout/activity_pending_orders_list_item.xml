@@ -25,6 +25,7 @@
             android:gravity="center_vertical"
             android:minHeight="50dp"
             android:text="@string/client_name_label"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -49,6 +50,7 @@
                 android:gravity="center_vertical"
                 android:minHeight="50dp"
                 android:text="@string/meal_name_text"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -68,6 +70,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:minHeight="50dp"
                 android:text="@string/quantity"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -87,6 +90,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:minHeight="50dp"
                 android:text="@string/date"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -113,7 +117,7 @@
             android:layout_marginEnd="20dp"
             android:layout_weight="1"
             android:text="@string/reject_button"
-            app:backgroundTint="@color/green_secondary_lighter" />
+            app:backgroundTint="@color/reject_colour" />
 
         <Button
             android:id="@+id/acceptButton"
@@ -122,7 +126,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:text="@string/accept_button" />
+            android:text="@string/accept_button"
+            app:backgroundTint="@color/accept_colour" />
 
     </LinearLayout>
 

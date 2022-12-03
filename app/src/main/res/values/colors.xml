@@ -15,4 +15,13 @@
     <color name="green_text_background">#20478589</color>
     <color name="green_light_text">#EEFFA8</color>
     <color name="clear">#00000000</color>
+    <!-- Light Mode colours -->
+    <color name="header">#98c377</color>
+    <color name="colorDefaultText">#000000</color>
+    <color name="colorSecondaryText">#FFFFFF</color>
+    <color name="background">#FFFFFF</color>
+    <color name="backgroundSecondary">#424549</color>
+    <color name="list_item">#FFFFFF</color>
+    <color name="reject_colour">#88b15b</color>
+    <color name="accept_colour">#47894B</color>
 </resources>
