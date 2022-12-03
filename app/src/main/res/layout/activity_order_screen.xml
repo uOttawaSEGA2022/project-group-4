@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     android:minHeight="50dp"
     tools:context=".ui.screens.OrderScreen">
 
@@ -47,7 +47,7 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/price"
-                android:textColor="@color/black"
+                android:textColor="@color/colorDefaultText"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -79,6 +79,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/nunito_sans"
                     android:text="@string/unable_to_get_info"
+                    android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -115,7 +116,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -145,7 +146,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
 
                 </RelativeLayout>
@@ -175,7 +176,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
                 </RelativeLayout>
 
@@ -204,7 +205,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         tools:ignore="TextContrastCheck" />
                 </RelativeLayout>
@@ -235,7 +236,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
                         tools:ignore="TextContrastCheck" />
                 </RelativeLayout>
@@ -277,7 +278,7 @@
                     android:lines="3"
                     android:paddingStart="20dp"
                     android:paddingEnd="30dp"
-                    android:textColorHint="#8A000000"
+                    android:textColorHint="@color/green_darker"
                     android:textSize="16sp" />
 
             </LinearLayout>

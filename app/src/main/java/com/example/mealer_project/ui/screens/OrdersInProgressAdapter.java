@@ -18,7 +18,6 @@ import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.Orders;
 import com.example.mealer_project.data.models.orders.MealInfo;
-import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.SendMailTask;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +25,6 @@ import java.util.List;
 
 
 public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
-
 
     /**
      * Constructor
@@ -44,7 +42,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         // get chef's orders in progress
-        Orders orders = App.getChef().ORDERS;
+        //Orders orders = App.getChef().ORDERS;
         Order order = getItem(position);
 
         // get order data item for given position
@@ -62,7 +60,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
             mealNames += mI.getName() + "\n";
             quantities += mI.getQuantity() + "\n";
-            emailContents += mI.getName() + "   " + mI.getQuantity() + "<br>";
+            emailContents += mI.getQuantity() + "   " + mI.getName() + "<br>";
 
         }
 
@@ -98,6 +96,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
                         str);
             }
         });
+
 
         // populate data
         ((TextView) convertView.findViewById(R.id.clientText)).setText("Client: " + order.getClientInfo().getClientName());

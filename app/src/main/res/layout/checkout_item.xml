@@ -47,7 +47,7 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/nunito_sans"
                 android:text="@string/price"
-                android:textColor="#3E3E3E"
+                android:textColor="@color/black"
                 tools:ignore="TextContrastCheck" />
 
         </LinearLayout>
