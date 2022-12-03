@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayoutChef"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,7 +15,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/button_back5"
@@ -60,7 +61,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Chef Name:"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -71,7 +72,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -89,7 +90,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Email Address: "
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -100,7 +101,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -118,7 +119,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Location:"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -129,7 +130,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#616161"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -156,7 +157,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Chef Rating:"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -167,7 +168,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -185,7 +186,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Description:"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -196,7 +197,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#8A000000"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp" />
 
                 </LinearLayout>
@@ -214,7 +215,7 @@
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Cuisine Type:"
-                        android:textColor="@color/black"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -225,7 +226,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center_horizontal"
                         android:text="@string/unable_to_get_info"
-                        android:textColor="#616161"
+                        android:textColor="@color/colorDefaultText"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -249,7 +250,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:paddingLeft="20dp"
                     android:text="Availability: "
-                    android:textColor="@color/black"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -261,7 +262,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/nunito_sans"
                     android:text="Display Yes/No"
-                    android:textColor="#616161"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
             </LinearLayout>
 

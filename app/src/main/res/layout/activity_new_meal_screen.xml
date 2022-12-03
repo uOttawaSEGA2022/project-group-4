@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".ui.screens.NewMealScreen">
 
     <ScrollView
@@ -100,7 +101,6 @@
                     android:fontFamily="@font/nunito_sans"
                     android:minHeight="48dp"
                     android:text="@string/allergen"
-                    android:textColor="@android:color/black"
                     android:textSize="18sp" />
 
                 <RelativeLayout
@@ -321,11 +321,11 @@
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:ems="10"
                 android:fontFamily="@font/nunito_sans"
                 android:hint="@string/price"
-                android:inputType="numberDecimal"
-                android:autofillHints="" />
+                android:inputType="numberDecimal" />
 
             <EditText
                 android:id="@+id/description"

@@ -7,4 +7,5 @@
     <dimen name="title_padding">20dp</dimen>
     <dimen name="back_button_margin">10dp</dimen>
     <dimen name="logo_height">250dp</dimen>
+    <dimen name="text_size">15sp</dimen>
 </resources>

@@ -1,9 +1,11 @@
 package com.example.mealer_project.ui.screens;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,6 +49,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         dismissButton = (Button) findViewById(R.id.dismiss);
         banTempButton = (Button) findViewById(R.id.ban_chef);
         banPermButton = (Button) findViewById(R.id.ban_permament);
+        backButton = (ImageButton) findViewById(R.id.complaintScreenBackBtn);
 
         // get the complaint data
         try {
@@ -138,6 +141,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
      * @param meal
      * @param description
      */
+    @SuppressLint("ResourceAsColor")
     public void updateComplaintScreen(String title, String client, String chef, String meal, String description) {
 
         // sets the complaint header title

@@ -15,13 +15,13 @@
     <color name="green_text_background">#20478589</color>
     <color name="green_light_text">#EEFFA8</color>
     <color name="clear">#00000000</color>
-    <!-- Light Mode colours -->
-    <color name="header">#98c377</color>
-    <color name="colorDefaultText">#000000</color>
-    <color name="colorSecondaryText">#FFFFFF</color>
-    <color name="background">#FFFFFF</color>
-    <color name="backgroundSecondary">#424549</color>
-    <color name="list_item">#FFFFFF</color>
-    <color name="reject_colour">#88b15b</color>
-    <color name="accept_colour">#47894B</color>
+    <!-- Dark Mode Colors -->
+    <color name="header">#648947</color>
+    <color name="colorDefaultText">#FFFFFF</color>
+    <color name="colorSecondaryText">#000000</color>
+    <color name="background">#424549</color>
+    <color name="backgroundSecondary">#36393e</color>
+    <color name="list_item">#36393e</color>
+    <color name="reject_colour">@color/green_disabled</color>
+    <color name="accept_colour">@color/green_darker</color>
 </resources>
