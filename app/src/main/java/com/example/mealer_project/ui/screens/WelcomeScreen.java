@@ -93,8 +93,7 @@ public class WelcomeScreen extends UIScreen {
 
         // try to parse suspension date
         try {
-            Date suspensionDate = Utilities.getDateFromString(suspensionDateValue);
-
+            Date suspensionDate = new SimpleDateFormat("MM/dd/yyyy").parse(suspensionDateValue);
             // Variable declaration
             TextView editText = (TextView) findViewById(R.id.suspensionMsg);
 
