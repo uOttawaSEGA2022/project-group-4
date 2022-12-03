@@ -22,7 +22,12 @@ import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 
+import java.text.DecimalFormat;
+
 public class OrderScreen extends UIScreen implements StatefulView {
+
+    // format price to two decimal places
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     // store meals and chef data
     SearchMealItem sMItem;
@@ -91,8 +96,10 @@ public class OrderScreen extends UIScreen implements StatefulView {
         minusButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalQuantityCounter--;
-                updateUI();
+                if (totalQuantityCounter != 0) {
+                    totalQuantityCounter--;
+                    updateUI();
+                }
             }
         });
 
@@ -121,12 +128,12 @@ public class OrderScreen extends UIScreen implements StatefulView {
                     if (addToCart) {
                         // add order item to client's cart
                         App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
-                        displaySuccessToast("item added to cart!");
+                        displaySuccessToast("Item added to cart!");
                     }
                     // removing item from cart
                     else {
                         App.getClient().updateOrderItem(new OrderItem(sMItem, 0));
-                        displaySuccessToast("item removed from cart!");
+                        displaySuccessToast("Item removed from cart!");
                     }
                 } else {
                     displayErrorToast("Unable to update cart!");
@@ -288,7 +295,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
         // sets the text for price
         TextView priceText = (TextView) findViewById(R.id.order_price_of_meal);
-        priceText.setText("$ ".concat(String.valueOf(this.mealData.getPrice())));
+        priceText.setText("$ ".concat(df.format(this.mealData.getPrice())));
 
         // sets the text for the chef's name
         TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);

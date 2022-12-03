@@ -57,7 +57,7 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
         // Populate the data
         ((TextView) convertView.findViewById(R.id.item_meal_title)).setText(item.getSearchMealItem().getMeal().getName());
-        double price = item.getSearchMealItem().getMeal().getPrice() * item.getQuantity();
+        double price = item.getSearchMealItem().getMeal().getPrice();
         ((TextView) convertView.findViewById(R.id.item_price)).setText("$ " + df.format(price));
         TextView quantity = ((TextView) convertView.findViewById(R.id.item_quantity));
         quantity.setText(String.valueOf(item.getQuantity()));

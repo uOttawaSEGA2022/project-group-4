@@ -17,13 +17,18 @@ import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.meals.MealsAdapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MealInfoScreen extends UIScreen implements StatefulView {
 
+    // format price to two decimal places
+    private static final DecimalFormat df = new DecimalFormat("0.00");
+
     // create a new object of type meal that contains the respective meal's information/data
     Meal mealData;
 
+    // button variables
     ImageButton backButton;
     Button offeringButton;
     Button removeButton;
@@ -31,6 +36,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     // key to pass meal's information through intent
     public final static String MEAL_DATA_ARG_KEY = "MEAL_DATA_ARG_KEY";
 
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,7 +170,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     @Override
     public void updateUI() {
         try {
-            updateMealInfoScreen(mealData.getName(), mealData.getPrice(), mealData.getMealType(), mealData.getCuisineType(),
+            updateMealInfoScreen(mealData.getName(), Double.parseDouble(df.format(mealData.getPrice())), mealData.getMealType(), mealData.getCuisineType(),
                     mealData.getIngredients(), mealData.getAllergens(), mealData.getDescription(), mealData.isOffered());
         } catch (Exception e) {
             Log.e("MealInfoScreen", "unable to create meal object :(");
@@ -214,7 +220,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
         // sets the text for price
         TextView priceText = (TextView) findViewById(R.id.price_of_meal);
-        priceText.setText("$ " + String.valueOf(price));
+        priceText.setText("$ " + price);
 
         // sets the text for the meal type
         TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);

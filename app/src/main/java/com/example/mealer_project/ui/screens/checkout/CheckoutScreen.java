@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,15 +17,12 @@ import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.ui.screens.search.SearchMealItem;
-import com.example.mealer_project.ui.screens.search.SearchMealItemsAdapter;
 
-import org.w3c.dom.Text;
-
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +32,9 @@ import java.util.Map;
  * the class CheckoutAdapter for each items information.
  */
 public class CheckoutScreen extends UIScreen implements StatefulView {
+
+    // format price to two decimal places
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     // buttons
     private ImageButton backButton;
@@ -47,17 +46,10 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
     // list to store the items in the cart
     private List<OrderItem> orderItemList;
 
-    // key to specify the item being displayed
-    public final static String CHECKOUT_TYPE_ARG_KEY = "CHECKOUT_TYPE_ARG_KEY";
-
-    //
-    public final static String CHECKOUT_DATA_ARG_KEY = "CHECKOUT_DATA_ARG_KEY";
-
     // items adapter
     private CheckoutAdapter checkoutAdapter;
 
-    private OrderHandler orderHandler;
-
+    // -------------------------------------------------------------------------------------------------------------------------------------
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +161,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
             orderSubmissionContainer.setVisibility(View.VISIBLE);
             // display total cost
             TextView totalCostAmount = findViewById(R.id.totalCostAmount);
-            totalCostAmount.setText(String.valueOf(getTotalCost()));
+            totalCostAmount.setText(getTotalCost());
             // display credit card info
             displayCreditCardInfo();
         } else {
@@ -184,14 +176,16 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         App.ORDER_HANDLER.dispatch(ADD_ORDER, null, this);
     }
 
-    private double getTotalCost() {
+    private String getTotalCost() {
         if (this.orderItemList != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                return this.orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice() * el.getQuantity()).sum();
+                df.setRoundingMode(RoundingMode.UP);
+                Log.e("CHECKOUTSCREEN", (df.format(orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice() * el.getQuantity()).sum())));
+                return df.format(orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice() * el.getQuantity()).sum());
             }
         }
         // if no order items
-        return 0.0;
+        return String.valueOf(0.00);
     }
 
     private void displayCreditCardInfo() {
