@@ -8,16 +8,21 @@
     android:background="@color/background">
 
     <LinearLayout
+        android:id="@+id/cs_back_button_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/complaintScreenBackBtn"
+            android:id="@+id/cs_button_back"
             android:layout_width="48dp"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/back_button_margin"
+            android:layout_marginTop="@dimen/back_button_margin"
             android:background="#00FFFFFF"
             android:contentDescription="@string/back"
             android:scaleType="fitXY"
@@ -98,6 +103,7 @@
         app:layout_constraintVertical_bias="0.553" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/descriptionTitle">
@@ -121,6 +127,20 @@
                 android:textSize="20dp" />
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/csChefSuspensionInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="chef suspension info unavailable"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
     <Button
         android:id="@+id/dismiss"
