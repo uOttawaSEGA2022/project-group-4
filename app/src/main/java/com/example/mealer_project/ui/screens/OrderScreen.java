@@ -1,6 +1,8 @@
 package com.example.mealer_project.ui.screens;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 
 import java.text.DecimalFormat;
+import java.util.Map;
 
 public class OrderScreen extends UIScreen implements StatefulView {
 
@@ -112,6 +115,11 @@ public class OrderScreen extends UIScreen implements StatefulView {
             }
         });
 
+        // Variable Declaration
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Please confirm your selection");
+
         // on click method for adding or removing the meal from the cart
         addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -126,21 +134,85 @@ public class OrderScreen extends UIScreen implements StatefulView {
                 if (Preconditions.isNotNull(App.getClient())) {
                     // if adding item to the cart
                     if (addToCart) {
-                        // add order item to client's cart
-                        App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
-                        displaySuccessToast("Item added to cart!");
+                        // Process: checking if cart is empty
+                        if (!App.getClient().getCart().isEmpty()) { //not empty
+
+                            // Variable Declaration
+                            Map.Entry<OrderItem, Boolean> entry = App.getClient().getCart().entrySet().iterator().next();
+                            OrderItem orderItem = entry.getKey();
+
+                            // Process: checking if random orderItem chef is same as current chef
+                            if (orderItem.getSearchMealItem().getChef().getChefName().equals(sMItem.getChef().getChefName())) { //same chef
+
+                                // add order item to client's cart
+                                App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                                displaySuccessToast("Item added to cart!");
+
+                                // finish the activity and return back
+                                setResult(Activity.RESULT_OK);
+                                finish();
+
+                            }
+                            else { //different chef
+
+                                // setting alert text
+                                builder.setMessage("This meal is offered by a different chef. Would you like to clear your cart and start a new order?");
+
+                                // Process: setting actions for pos/neg buttons
+                                builder.setPositiveButton("Start new order",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                App.getClient().clearCart(); //clearing cart
+
+                                                // add order item to client's cart
+                                                App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                                                displaySuccessToast("Item added to cart!");
+
+                                                // finish the activity and return back
+                                                setResult(Activity.RESULT_OK);
+                                                finish();
+
+                                            }
+                                        });
+                                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {}
+                                });
+
+                                AlertDialog dialogue = builder.create();
+
+                                dialogue.show();
+
+                            }
+
+                        }
+                        else { //empty cart
+
+                            // add order item to client's cart
+                            App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                            displaySuccessToast("Item added to cart!");
+
+                            // finish the activity and return back
+                            setResult(Activity.RESULT_OK);
+                            finish();
+
+                        }
+
                     }
                     // removing item from cart
                     else {
                         App.getClient().updateOrderItem(new OrderItem(sMItem, 0));
                         displaySuccessToast("Item removed from cart!");
+                        // finish the activity and return back
+                        setResult(Activity.RESULT_OK);
+                        finish();
                     }
                 } else {
                     displayErrorToast("Unable to update cart!");
                 }
-                // finish the activity and return back
-                setResult(Activity.RESULT_OK);
-                finish();
+
             }
         });
 
