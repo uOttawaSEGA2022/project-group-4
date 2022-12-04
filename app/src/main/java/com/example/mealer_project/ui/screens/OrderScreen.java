@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -405,8 +406,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
         ((TextView) findViewById(R.id.os_chef_address)).setText(this.chefData.getChefAddress().toString());
 
         // chef's rating
-        String rating = this.chefData.getChefRating() + " out of 5";
-        ((TextView) findViewById(R.id.os_chef_rating)).setText(rating);
+        ((RatingBar) findViewById(R.id.os_chef_rating)).setRating((float) this.chefData.getChefRating());
     }
 
     private void updateOrderQuantity() {

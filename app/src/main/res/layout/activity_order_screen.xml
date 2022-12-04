@@ -292,6 +292,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:padding="10dp">
 
@@ -302,20 +303,19 @@
                         android:layout_margin="5dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_vertical"
                         android:text="@string/os_chef_rating_label"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <RatingBar
                         android:id="@+id/os_chef_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/nunito_sans"
-                        android:text="@string/unable_to_get_info"
-                        android:textSize="16sp" />
+                        android:isIndicator="true"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7" />
                 </LinearLayout>
 
             </LinearLayout>
