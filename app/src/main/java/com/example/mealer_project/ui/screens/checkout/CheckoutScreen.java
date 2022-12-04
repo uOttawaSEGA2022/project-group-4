@@ -79,7 +79,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         Log.e("cartLoaded", "Loaded meals: " + this.orderData.size());
     }
 
-    private void attachOnClickListeners(){
+    private void attachOnClickListeners() {
 
         // create alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -153,7 +153,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         // attach adapter to list view
         orderList.setAdapter(this.checkoutAdapter);
         // add data to the adapter
-        for (OrderItem sMItemId: this.orderData.keySet()) {
+        for (OrderItem sMItemId : this.orderData.keySet()) {
             this.orderItemList.add(sMItemId);
         }
         // if we do have items in cart
@@ -174,7 +174,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         Log.e("cartPopulation", "Populated the list: " + this.orderItemList.size());
     }
 
-    private void handleOrderButton(){
+    private void handleOrderButton() {
         App.ORDER_HANDLER.dispatch(ADD_ORDER, null, this);
     }
 
@@ -195,7 +195,7 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         if (App.getClient() != null) {
             TextView clientCreditCard = findViewById(R.id.clientCreditCardInfo);
             String creditCardNumber = App.getClient().getClientCreditCard().getNumber();
-            String creditCardHashed = "XXXX-XXXX-XXXX-" + creditCardNumber.substring(creditCardNumber.length()-4);
+            String creditCardHashed = "XXXX-XXXX-XXXX-" + creditCardNumber.substring(creditCardNumber.length() - 4);
             clientCreditCard.setText(creditCardHashed);
         }
     }

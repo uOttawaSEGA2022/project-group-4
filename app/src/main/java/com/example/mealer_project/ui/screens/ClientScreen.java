@@ -1,5 +1,7 @@
 package com.example.mealer_project.ui.screens;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +40,12 @@ public class ClientScreen extends UIScreen implements StatefulView {
 
     private void attachOnClickListeners(){
 
+        // create alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("NOTICE");
+        // set the icon for the alert dialog
+        builder.setIcon(R.drawable.mealer);
+
         Button searchMealsBtn = (Button) findViewById(R.id.searchMealButton);
         searchMealsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,9 +60,17 @@ public class ClientScreen extends UIScreen implements StatefulView {
             public void onClick(View v) {
                 if (((Client) App.getUser()).ORDERS.getPendingOrders().size() != 0)
                     startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));
-                else
-                    displayErrorToast("You have no pending orders!");
-
+                else {
+                    builder.setMessage("You have no pending orders!");
+                    builder.setPositiveButton("Okay",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
 
@@ -64,8 +80,17 @@ public class ClientScreen extends UIScreen implements StatefulView {
             public void onClick(View v) {
                 if (((Client) App.getUser()).ORDERS.getCompletedOrders().size() != 0)
                     startActivity(new Intent(getApplicationContext(), CompletedOrdersScreen.class));
-                else
-                    displayErrorToast("You have no completed orders!");
+                else {
+                    builder.setMessage("You have no completed orders!");
+                    builder.setPositiveButton("Okay",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
     }
