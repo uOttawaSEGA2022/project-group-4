@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -118,8 +119,9 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
         locationText.setText(location.toString());
 
         // sets the text for chef's rating
-        TextView chefRatingText = (TextView) findViewById(R.id.chef_rating_msg);
-        chefRatingText.setText(String.format("%.2f", chefRating));
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.chef_rating_msg);
+        ratingBar.setRating((float) chefRating);
+        ratingBar.setIsIndicator(true);
 
         // sets the text for the description
         TextView descriptionText = (TextView) findViewById(R.id.chef_description_msg);
