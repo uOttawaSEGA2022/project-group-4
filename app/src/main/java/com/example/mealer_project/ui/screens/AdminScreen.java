@@ -33,6 +33,8 @@ public class AdminScreen extends UIScreen implements StatefulView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        App.getAppInstance().setAdminScreen(this);
         setContentView(R.layout.activity_admin_screen);
 
         App.getInboxHandler().updateAdminInbox(this);
@@ -86,6 +88,8 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
     private void displayComplaints() {
         try {
+
+            App.getInboxHandler().updateAdminInbox(this);
             complaintsData = App.getAdminInbox().getListOfComplaints();
 
             Log.e("NUMBER COMPLAINTS", String.valueOf(complaintsData.size()));

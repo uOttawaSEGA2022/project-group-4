@@ -9,6 +9,7 @@ import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
+import com.example.mealer_project.ui.screens.AdminScreen;
 import com.example.mealer_project.ui.screens.ChefScreen;
 import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersScreen;
 import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersScreen;
@@ -28,6 +29,7 @@ public class AppInstance {
     private PendingOrdersScreen pendingOrdersScreen;
     private CompletedOrdersScreen completedOrdersScreen;
     private ChefScreen chefScreen;
+    private AdminScreen adminScreen;
 
     public AppInstance() {
         this.initializeApp();
@@ -119,6 +121,14 @@ public class AppInstance {
 
     public void setCompletedOrdersScreen(CompletedOrdersScreen completedOrdersScreen) {
         this.completedOrdersScreen = completedOrdersScreen;
+    }
+
+    public AdminScreen getAdminScreen () {
+        return adminScreen;
+    }
+
+    public void setAdminScreen(AdminScreen adminScreen) {
+        this.adminScreen = adminScreen;
     }
 
     /**

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.Admin;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
@@ -82,7 +83,9 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         banPermButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 suspendChef(INFINITE_SUSPENSION_DATE);
+                App.getAppInstance().getAdminScreen().updateUI();
             }});
 
         dateSetListener = new DatePickerDialog.OnDateSetListener(){
@@ -230,6 +233,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         App.getUserHandler().suspendChef(complaintData.getChefId(), suspensionDate);
         // remove the complaint
         App.getInboxHandler().removeComplaint(complaintData.getId());
+
         // take back to admin screen
         showNextScreen();
     }
