@@ -40,7 +40,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
     boolean clientButtonClicked;
     boolean chefButtonClicked;
     boolean userRegistrationInProgress;
-    String chequeString;
+    String chequeString = null;
     // define states being observed
     enum observedStates {
         VOID_CHEQUE_IMAGE
@@ -266,6 +266,12 @@ public class SignupScreen extends UIScreen implements StatefulView {
             //Log.e("voidchequetest", chequeString);
             String voidCheque = chequeString; //(String) chequeString.get("String");
 
+            //check void cheque submission
+            Response voidChequeCheck = voidChequeUploaded();
+            if (voidChequeCheck.isError()){
+                return voidChequeCheck;
+            }
+
             // register the new user by passing data to UserHandler of the app instance
             Response userRegistrationResponse = App.getUserHandler().registerChef(this, userEntityModel, chefShortDescription, voidCheque);
             if (userRegistrationResponse.isSuccess()) {
@@ -299,6 +305,13 @@ public class SignupScreen extends UIScreen implements StatefulView {
             return new Response(false, "Invalid CVC value. CVC must be 3 digit number between 000 - 999");
         }
 
+        return new Response(true);
+    }
+
+    private Response voidChequeUploaded(){
+        if (chequeString == null){
+            return new Response(false, "Please upload a void cheque!");
+        }
         return new Response(true);
     }
 
