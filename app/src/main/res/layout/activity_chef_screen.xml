@@ -136,13 +136,36 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/addMealButton"
+            <LinearLayout
+                android:id="@+id/chefScreenButtonHolder2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:text="@string/add_meal"
-                tools:ignore="TextContrastCheck" />
+                android:layout_gravity="center"
+                android:layout_marginRight="22dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp">
+
+                <Button
+                    android:id="@+id/addMealButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:gravity="center|center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="@string/add_meal"
+                    tools:ignore="TextContrastCheck" />
+
+                <Button
+                    android:id="@+id/chefProfile"
+                    android:layout_width="115dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp"
+                    android:text="Profile" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -213,13 +213,13 @@
                         android:fontFamily="@font/nunito_sans"
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
-                        android:text="Cuisine Type:"
+                        android:text="Meals Sold:"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_cuisine_msg"
+                        android:id="@+id/chef_mealsSold_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
