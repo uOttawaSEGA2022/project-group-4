@@ -15,6 +15,7 @@ import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.User;
+import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersScreen;
@@ -178,19 +179,27 @@ public class ChefScreen extends UIScreen implements StatefulView {
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
+                List<Meal> listOfMeals = ((Chef) App.getUser()).MEALS.getListOfMeals();
+                if(listOfMeals.size() != 0) {
+                    startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
+                } else {
+                    displayErrorToast("You have no menu items!");
+                }
             }
         });
 
         offeredMealsButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // initialize a new intent
-                Intent intent = new Intent(getApplicationContext(), MealsListScreen.class);
-                // specify that we want to display offered meals
-                intent.putExtra(MealsListScreen.MEALS_TYPE_ARG_KEY, MealsListScreen.MEALS_TYPE.OFFERED_MEALS.toString());
-                // display the offered meals list
-                startActivity(intent);
+                List<Meal> listOfOfferedMeals = ((Chef) App.getUser()).MEALS.getListOfOfferedMeals();
+                if(listOfOfferedMeals.size() != 0) {
+                    Intent intent = new Intent(getApplicationContext(), MealsListScreen.class); // initialize a new intent
+                    intent.putExtra(MealsListScreen.MEALS_TYPE_ARG_KEY, MealsListScreen.MEALS_TYPE.OFFERED_MEALS.toString()); // specify that we want to display offered meals
+                    startActivity(intent); // display the offered meals list
+                } else {
+                    displayErrorToast("You have no offered menu items");
+                }
+
             }
         });
 
@@ -227,6 +236,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
                     displayErrorToast("You have no pending orders!");
             }
         });
+
         viewChefProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
