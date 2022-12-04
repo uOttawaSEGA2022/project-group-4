@@ -4,11 +4,13 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,6 +56,7 @@ public class SearchMealItemsAdapter extends ArrayAdapter<SearchMealItem> {
         ((TextView) convertView.findViewById(R.id.smMealName)).setText(meal.getName());
         ((TextView) convertView.findViewById(R.id.smMealDescription)).setText(meal.getDescription());
         ((TextView) convertView.findViewById(R.id.smChef)).setText(chefInfo.getChefName());
+        ((RatingBar) convertView.findViewById(R.id.smChefRating)).setRating((float) chefInfo.getChefRating());
         // TODO: implement chef rating
         // ((TextView) convertView.findViewById(R.id.smChefRating)).setText();
         // attach on click listener to the meal item
