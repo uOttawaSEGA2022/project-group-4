@@ -93,22 +93,4 @@ public class AdminInbox implements Inbox {
         }
     }
 
-    /**
-     * Get a complaint by id
-     * @param complaintId ID of the complaint to retrieve
-     * @return Returns the complaint object which matched the provided complaint ID else false
-     * @throws NullPointerException if provided complaint ID object is null
-     */
-    @Override
-    public Complaint getComplaint(String complaintId) throws NullPointerException {
-        if (Preconditions.isNotEmptyString(complaintId)) {
-            // return the complaint object if it exists, else null
-            return complaints.get(complaintId);
-        } else {
-            // log for programmer, and exception message for client
-            Log.e("getComplaint", "complaintId provided is null");
-            throw new NullPointerException("No complaint ID provided!");
-        }
-    }
-
 }
