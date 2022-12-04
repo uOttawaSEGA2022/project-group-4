@@ -43,6 +43,9 @@ public class ChefScreen extends UIScreen implements StatefulView {
      */
     private OrdersInProgressAdapter ordersInProgressAdapter;
 
+    // key to pass chef's information through intent
+    private final static String CHEF_DATA_ARG_KEY = "Chef_DATA_ARG_KEY";
+
     //----------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +164,10 @@ public class ChefScreen extends UIScreen implements StatefulView {
         Button menuButton = (Button) findViewById(R.id.viewMenuButton);
         Button offeredMealsButton = (Button) findViewById(R.id.viewOfferedButton);
         Button addButton = (Button) findViewById(R.id.addMealButton);
+
+        //Profile Button
+        Button profileButton = (Button) findViewById(R.id.chefProfile);
+
         // Order buttons
         Button viewOrder = (Button) findViewById(R.id.viewCompletedOrdersButton);
         Button viewPendingOrder = (Button) findViewById(R.id.viewPendingOrdersButton);
@@ -191,6 +198,13 @@ public class ChefScreen extends UIScreen implements StatefulView {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), NewMealScreen.class)); //show new meal screen
+            }
+        });
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ChefInfoScreen.class)); //Show Chef's Profile
             }
         });
 

@@ -7,7 +7,10 @@ import com.example.mealer_project.data.entity_models.UserEntityModel;
  * Parent class of Client, Chef and Admin
  */
 public class User {
+
+    // store error values
     private String errorMsg = "";
+    //
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -257,8 +260,8 @@ public class User {
             } else { //invalid
 
                 // Output:
-                //throw new IllegalArgumentException(errorMsg);
-                throw new IllegalArgumentException("password");
+                throw new IllegalArgumentException(errorMsg);
+                //throw new IllegalArgumentException("password");
 
             }
         }

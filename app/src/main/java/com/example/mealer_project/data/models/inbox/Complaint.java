@@ -17,6 +17,8 @@ import java.util.Map;
  * Implements Comparator to enable sorting of complaints by date submitted
  */
 public class Complaint implements Comparator<Complaint>, Serializable {
+    private String errorMsg = "";
+
     // instance variables
     private String id;
     private String title;
@@ -51,23 +53,23 @@ public class Complaint implements Comparator<Complaint>, Serializable {
      * @param dateSubmitted date on which complaint is submitted
      */
     public Complaint(String id, String title, String description, String clientId, String chefId, Date dateSubmitted) {
-        setId(id);
-        setTitle(title);
-        setDescription(description);
-        setClientId(clientId);
-        setChefId(chefId);
-        setDateSubmitted(dateSubmitted);
-        setResolved(false);
+        this.setId(id);
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setClientId(clientId);
+        this.setChefId(chefId);
+        this.setDateSubmitted(dateSubmitted);
+        this.setResolved(false);
     }
 
     public Complaint(String id, String title, String description, String clientId, String chefId, String dateSubmitted) throws ParseException {
-        setId(id);
-        setTitle(title);
-        setDescription(description);
-        setClientId(clientId);
-        setChefId(chefId);
-        setDateSubmitted(dateSubmitted);
-        setResolved(false);
+        this.setId(id);
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setClientId(clientId);
+        this.setChefId(chefId);
+        this.setDateSubmitted(dateSubmitted);
+        this.setResolved(false);
     }
 
     /**
@@ -76,13 +78,13 @@ public class Complaint implements Comparator<Complaint>, Serializable {
      */
     public Complaint(ComplaintEntityModel complaintData) throws ParseException {
 //        setId(complaintData.getId());
-        setTitle(complaintData.getTitle());
-        setDescription(complaintData.getDescription());
-        setClientId(complaintData.getClientId());
-        setChefId(complaintData.getChefId());
+        this.setTitle(complaintData.getTitle());
+        this.setDescription(complaintData.getDescription());
+        this.setClientId(complaintData.getClientId());
+        this.setChefId(complaintData.getChefId());
         // set the date submitted, receives value as string, throws ParseException if format is incorrect
-        setDateSubmitted(complaintData.getDateSubmitted());
-        setResolved(false);
+        this.setDateSubmitted(complaintData.getDateSubmitted());
+        this.setResolved(false);
     }
 
     public String getId() {
@@ -98,15 +100,74 @@ public class Complaint implements Comparator<Complaint>, Serializable {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+
+        // Process: validating the title
+        if (validateName(title) == true) { //valid
+
+            this.title = title; //setting title
+
+        }
+        else { //invalid
+
+            // Output: error message
+            throw new IllegalArgumentException(errorMsg);
+
+        }
+
+    }
+
+    /**
+     * this helper method validates the title and checks that it's not empty
+     * @param title the title of the complaint
+     * @return whether the title is valid or not
+     */
+    private boolean validateName(String title) {
+
+        // Process: checking title length
+        if (title.length() > 0) { //at least 1 char
+            
+            if (title.length() > 50) { //too long
+
+                errorMsg = "Please limit the title to 50 characters"; //updating error msg
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+        else { //nothing inputted
+
+            errorMsg = "Complaint must be titled"; //updating error msg
+
+            return false;
+
+        }
+
     }
 
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Set/Change the description of the complaint
+     * @param description of complaint
+     */
     public void setDescription(String description) {
-        this.description = description;
+
+        if (description.length() >= 20) { //valid
+
+            this.description = description;
+
+        }
+        else { //too short or nothing inputted
+
+            throw new IllegalArgumentException("Description should be at least 20 characters long");
+
+        }
+
     }
 
     public String getClientId() {

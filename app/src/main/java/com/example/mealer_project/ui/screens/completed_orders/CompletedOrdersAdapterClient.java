@@ -77,6 +77,12 @@ public class CompletedOrdersAdapterClient extends ArrayAdapter<Order> {
         // Process: setting onClicks for complaint button
         Button complaintButton = (Button) convertView.findViewById(R.id.fileComplaintButton);
 
+        //check if complaint has been submitted
+        if (order.isComplaintSubmitted() == true){
+            Log.e("ComplaintCheck", "This has been checked!");
+            complaintButton.setVisibility(View.GONE);
+        }
+
         // Process: Check if null
         if (complaintButton != null) {
             complaintButton.setOnClickListener(new View.OnClickListener() {
