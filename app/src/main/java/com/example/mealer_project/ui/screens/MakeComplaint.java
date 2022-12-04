@@ -66,11 +66,7 @@ public class MakeComplaint extends UIScreen implements StatefulView {
         submitComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (titleText.getText().toString().length() > 0 && descriptionText.getText().toString().length() > 0){
-                    sendComplaint();
-                }else {
-                    Toast.makeText(getApplicationContext(), "Please fill in description and title!", Toast.LENGTH_LONG).show();
-                }
+                sendComplaint();
             }
         });
 
@@ -89,8 +85,6 @@ public class MakeComplaint extends UIScreen implements StatefulView {
 
         complaint = new ComplaintEntityModel(null, title, description, clientID, chefID, date);
         App.getInboxHandler().addNewComplaint(complaint, this);
-        Toast.makeText(getApplicationContext(), "Complaint Sent!", Toast.LENGTH_LONG).show();
-        this.finish();
     }
 
     //sets the values of the order information
@@ -115,7 +109,8 @@ public class MakeComplaint extends UIScreen implements StatefulView {
      */
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-        displaySuccessToast((String) payload);
+        displaySuccessToast("Complaint Sent!");
+        this.finish();
     }
 
     /**
