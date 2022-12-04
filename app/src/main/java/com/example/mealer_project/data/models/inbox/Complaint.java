@@ -170,6 +170,6 @@ public class Complaint implements Comparator<Complaint>, Serializable {
      */
     @Override
     public int compare(Complaint complaint1, Complaint complaint2) {
-        return complaint1.getDateSubmitted().compareTo(complaint2.getDateSubmitted());
+        return complaint2.getDateSubmitted().compareTo(complaint1.getDateSubmitted());
     }
 }

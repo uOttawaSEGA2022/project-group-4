@@ -103,6 +103,8 @@ public class UserActions {
                             // get value of isSuspended for check
                             boolean isSuspended = (Boolean) document.getData().get("isSuspended");
 
+                            Response r = makeChefFromFirebase(document);
+
                             // if chef is suspended, return right away with empty chef
                             if (isSuspended) {
                                 // get suspension date
@@ -120,7 +122,6 @@ public class UserActions {
 
                             // if Chef is not suspended, we create the Chef instance
                             else {
-                                Response r = makeChefFromFirebase(document);
                                 if (loginScreen != null && r.isSuccess()) {
                                     // load Chef's meals
                                     // app's user should have been set to the Chef by this point (App.getUser() = logged in chef)
