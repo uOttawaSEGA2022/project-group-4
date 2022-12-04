@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Mode Colors -->
+    <color name="header">#648947</color>
+    <color name="colorDefaultText">#FFFFFF</color>
+    <color name="colorSecondaryText">#000000</color>
+    <color name="background">#424549</color>
+    <color name="backgroundSecondary">#36393e</color>
+    <color name="list_item">#36393e</color>
+    <color name="reject_colour">@color/green_disabled</color>
+    <color name="accept_colour">@color/green_darker</color>
+</resources>

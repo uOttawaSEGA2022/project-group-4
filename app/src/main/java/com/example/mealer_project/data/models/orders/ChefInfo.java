@@ -11,7 +11,7 @@ public class ChefInfo implements Serializable {
     double chefRating;
     Address chefAddress;
 
-    public ChefInfo(String chefId, String chefName, int chefRating, Address chefAddress) {
+    public ChefInfo(String chefId, String chefName, double chefRating, Address chefAddress) {
         this.setChefId(chefId);
         this.setChefName(chefName);
         this.setChefRating(chefRating);

@@ -12,6 +12,7 @@
         android:id="@+id/signupPage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/background"
         tools:context=".ui.screens.SignupScreen">
 
         <ImageButton
@@ -71,6 +72,8 @@
                 android:hint="First name"
                 android:inputType="textPersonName"
                 android:minHeight="50dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -85,6 +88,8 @@
                 android:hint="Last name"
                 android:inputType="textPersonName"
                 android:minHeight="50dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -99,6 +104,8 @@
                 android:hint="Email Address"
                 android:inputType="textEmailAddress"
                 android:minHeight="50dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -113,6 +120,9 @@
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:minHeight="50dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/green_darker"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -127,6 +137,9 @@
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
                 android:minHeight="50dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/green_darker"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -141,6 +154,9 @@
                 android:hint="Street Address"
                 android:inputType="textPostalAddress"
                 android:minHeight="50dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/green_darker"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -164,6 +180,9 @@
                     android:inputType="textPostalAddress"
                     android:minHeight="50dp"
                     android:paddingLeft="10dp"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/green_darker"
+                    android:textColorHint="@color/green_darker"
                     tools:ignore="TextContrastCheck" />
 
                 <EditText
@@ -178,6 +197,9 @@
                     android:inputType="textPostalAddress"
                     android:maxLength="6"
                     android:minHeight="50dp"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/green_darker"
+                    android:textColorHint="@color/green_darker"
                     tools:ignore="TextContrastCheck"
                     tools:paddingLeft="10dp" />
             </LinearLayout>
@@ -193,6 +215,8 @@
                 android:hint="Country"
                 android:inputType="textPostalAddress"
                 android:minHeight="50dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -213,6 +237,8 @@
                     android:fontFamily="@font/nunito_sans"
                     android:padding="0dp"
                     android:text="Registering as:"
+                    android:textColor="@color/colorDefaultText"
+                    android:textColorHint="@color/green_darker"
                     android:textSize="18sp" />
 
                 <LinearLayout
@@ -267,6 +293,8 @@
                     android:fontFamily="@font/nunito_sans"
                     android:padding="0dp"
                     android:text="About yourself:"
+                    android:textColor="@color/colorDefaultText"
+                    android:textColorHint="@color/green_darker"
                     android:textSize="18sp" />
 
                 <EditText
@@ -282,7 +310,9 @@
                     android:hint="Short Description"
                     android:inputType="textMultiLine"
                     android:minHeight="200dp"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/green_darker" />
 
                 <Button
                     android:id="@+id/signupChefVoidChequeBtn"
@@ -318,6 +348,8 @@
                     android:fontFamily="@font/nunito_sans"
                     android:padding="0dp"
                     android:text="Add Credit Card Information:"
+                    android:textColor="@color/colorDefaultText"
+                    android:textColorHint="@color/green_darker"
                     android:textSize="18sp" />
 
                 <LinearLayout
@@ -339,7 +371,9 @@
                         android:hint="ASSOCIATED BRAND"
                         android:inputType="textPersonName"
                         android:minHeight="50dp"
-                        android:paddingLeft="10dp" />
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/green_darker" />
 
                     <EditText
                         android:id="@+id/signupCreditCardNumber"
@@ -352,7 +386,9 @@
                         android:hint="CARD NUMBER"
                         android:inputType="number"
                         android:minHeight="50dp"
-                        android:paddingLeft="10dp" />
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/green_darker" />
 
                     <EditText
                         android:id="@+id/signupCreditCardName"
@@ -366,6 +402,8 @@
                         android:inputType="textPersonName"
                         android:minHeight="50dp"
                         android:paddingLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/green_darker"
                         tools:paddingLeft="10dp" />
 
                     <LinearLayout
@@ -384,13 +422,15 @@
                             android:layout_weight="1"
                             android:background="@drawable/input_box_shadow"
                             android:ems="10"
-                            android:maxLength="2"
                             android:fontFamily="@font/nunito_sans"
                             android:gravity="center"
                             android:hint="MM"
                             android:inputType="number"
+                            android:maxLength="2"
                             android:minHeight="50dp"
-                            android:paddingLeft="10dp" />
+                            android:paddingLeft="10dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/green_darker" />
 
                         <EditText
                             android:id="@+id/signupCreditCardYear"
@@ -401,13 +441,15 @@
                             android:layout_weight="1"
                             android:background="@drawable/input_box_shadow"
                             android:ems="10"
-                            android:maxLength="2"
                             android:fontFamily="@font/nunito_sans"
                             android:gravity="center"
                             android:hint="YY"
                             android:inputType="number"
+                            android:maxLength="2"
                             android:minHeight="50dp"
-                            android:paddingLeft="10dp" />
+                            android:paddingLeft="10dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/green_darker" />
 
                         <EditText
                             android:id="@+id/signupCreditCardCVC"
@@ -416,13 +458,15 @@
                             android:layout_weight="1"
                             android:background="@drawable/input_box_shadow"
                             android:ems="10"
-                            android:maxLength="3"
                             android:fontFamily="@font/nunito_sans"
                             android:gravity="center"
                             android:hint="CVC"
                             android:inputType="number"
+                            android:maxLength="3"
                             android:minHeight="50dp"
-                            android:paddingLeft="10dp" />
+                            android:paddingLeft="10dp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/green_darker" />
                     </LinearLayout>
 
                 </LinearLayout>

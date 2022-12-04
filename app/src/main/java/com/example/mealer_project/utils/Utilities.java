@@ -6,7 +6,11 @@ import com.example.mealer_project.utils.TrieSearch.StopWords;
 
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,11 +34,22 @@ public class Utilities {
 
 
     static public Date getDateFromString(String dateValue) throws ParseException {
-        return DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(dateValue);
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/DD/yyyy hh:mm:s", Locale.US);
+        return formatter.parse(dateValue);
     }
 
     static public Date getTodaysDate() {
-        return DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).getCalendar().getTime();
+        SimpleDateFormat formatter= new SimpleDateFormat("MM/DD/yyyy hh:mm:s");
+        Date date = new Date(System.currentTimeMillis());
+        String finalDate = formatter.format(date);
+
+        try {
+            return getDateFromString(finalDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        //return DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).getCalendar().getTime();
     }
 
     static public String getMapPropertyNames(Map mapObj) {

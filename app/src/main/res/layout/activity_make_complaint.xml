@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".ui.screens.MakeComplaint">
 
     <ImageButton
@@ -42,7 +43,8 @@
         android:id="@+id/linearLayout"
         android:layout_width="414dp"
         android:layout_height="198dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/title_padding"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
@@ -53,27 +55,33 @@
             android:id="@+id/client_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
+            android:layout_gravity="center"
             android:padding="@dimen/text_margin"
             android:paddingLeft="@dimen/text_margin"
-            android:text="@string/client_name" />
+            android:text="@string/client_name"
+            android:textColor="@color/colorDefaultText"
+            android:textSize="@dimen/text_size" />
 
         <TextView
             android:id="@+id/chef_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
+            android:layout_gravity="center"
             android:padding="@dimen/text_margin"
-            android:text="@string/chefs_name" />
+            android:text="@string/chefs_name"
+            android:textColor="@color/colorDefaultText"
+            android:textSize="@dimen/text_size" />
 
         <TextView
             android:id="@+id/meal_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/text_margin"
+            android:layout_gravity="center"
             android:padding="@dimen/text_margin"
             android:paddingLeft="@dimen/text_margin"
-            android:text="@string/date" />
+            android:text="@string/date"
+            android:textColor="@color/colorDefaultText"
+            android:textSize="@dimen/text_size" />
     </LinearLayout>
 
     <LinearLayout
@@ -96,6 +104,7 @@
             android:hint="Title of Complaint:"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:textColorHint="@color/colorDefaultText"
             tools:ignore="TouchTargetSizeCheck" />
 
         <Space
@@ -116,11 +125,13 @@
                 android:id="@+id/complaint_writer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Complaint Description:"
                 android:inputType="textMultiLine"
-                android:lines="5" />
+                android:lines="5"
+                android:textColorHint="@color/colorDefaultText" />
 
             <Space
                 android:layout_width="wrap_content"

@@ -28,4 +28,27 @@ public class OrderItem implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    /*@Override
+    public boolean equals(Object o) {
+
+        // Process: checking if comparing to self
+        if (o == this) {
+            // Output
+            return true;
+        }
+
+        // Process: checking if comparing another order item
+        if (!(o instanceof OrderItem)) { //not order item
+            // Output
+            return false;
+        }
+
+        // Variable Declaration
+        OrderItem orderItem = (OrderItem) o;
+
+        // Output: checking if ids are the same
+        return orderItem.getSearchMealItem().getId().equals(this.getSearchMealItem().getId());
+
+    }*/
 }

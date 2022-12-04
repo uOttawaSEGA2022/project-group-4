@@ -510,8 +510,7 @@ public class MealActions {
                     String.valueOf(document.getData().get("firstName")) +
                             " "  + String.valueOf(document.getData().get("lastName"));
 
-            // TODO: implement chef rating
-            // int chefRating = (Integer) document.getData().get("rating");
+            double chefRating = ((Number) document.getData().get("ratingSum")).doubleValue() / ((Number) document.getData().get("numOfRatings")).intValue();
 
             AddressEntityModel newAddress = new AddressEntityModel();
 
@@ -520,7 +519,7 @@ public class MealActions {
             newAddress.setCountry(String.valueOf(document.getData().get("country")));
             newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
 
-            return new Result<ChefInfo, String>(new ChefInfo(document.getId(), chefName, 4, new Address(newAddress)), null);
+            return new Result<ChefInfo, String>(new ChefInfo(document.getId(), chefName, chefRating, new Address(newAddress)), null);
         } catch (Exception e) {
             return new Result<ChefInfo, String>(null, "Failed to create ChefInfo: " + e.getMessage());
         }

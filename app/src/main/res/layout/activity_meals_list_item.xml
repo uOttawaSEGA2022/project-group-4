@@ -26,6 +26,7 @@
         android:gravity="center_vertical"
         android:minHeight="50dp"
         android:text="Meal Name"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -42,6 +43,7 @@
         android:layout_marginTop="5dp"
         android:fontFamily="@font/nunito_sans"
         android:text="Description"
+        android:textColor="@color/black"
         android:textStyle="bold" />
 
     <TextView
@@ -50,7 +52,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
         android:minHeight="70dp"
-        android:text="Meal Description" />
+        android:text="Meal Description"
+        android:textColor="@color/black" />
 
     <View
         android:id="@+id/divider2"
@@ -80,6 +83,7 @@
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_vertical"
                 android:text="@string/meal_item_offered_label"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -90,7 +94,8 @@
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_vertical"
                 android:minHeight="50dp"
-                android:text="Offered or not" />
+                android:text="Offered or not"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <View
@@ -120,6 +125,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_sans"
                 android:text="@string/meal_item_cuisine_label"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -130,7 +136,8 @@
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_vertical"
                 android:minHeight="50dp"
-                android:text="Cuisine Type" />
+                android:text="Cuisine Type"
+                android:textColor="@color/black" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

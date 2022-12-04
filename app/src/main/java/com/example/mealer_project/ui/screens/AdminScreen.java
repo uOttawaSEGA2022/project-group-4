@@ -95,7 +95,7 @@ public class AdminScreen extends UIScreen implements StatefulView {
             for (Complaint eachComplaint: complaintsData) {
                 complaintTitles.add(eachComplaint.getTitle());
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, complaintTitles);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getApplicationContext(), R.layout.text_view, complaintTitles);
             complaintListView.setAdapter(arrayAdapter);
         } catch (Exception e) {
             Log.e("displayComplaints", "unable to display complaints: " + e.getMessage());
