@@ -183,12 +183,9 @@ public class ChefScreen extends UIScreen implements StatefulView {
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<Meal> listOfMeals = ((Chef) App.getUser()).MEALS.getListOfMeals();
-                if(listOfMeals.size() != 0) {
-                    startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
-                } else {
-                    displayErrorToast("You have no menu items!");
-                }
+
+                // if no valid chef logged in
+                if (App.getChef() == null) return;
 
                 // if chef has no meals
                 if (App.getChef().MEALS.getMenu().size() == 0 || App.getChef().MEALS.getMenu() == null) {
@@ -211,14 +208,9 @@ public class ChefScreen extends UIScreen implements StatefulView {
         offeredMealsButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<Meal> listOfOfferedMeals = ((Chef) App.getUser()).MEALS.getListOfOfferedMeals();
-                if(listOfOfferedMeals.size() != 0) {
-                    Intent intent = new Intent(getApplicationContext(), MealsListScreen.class); // initialize a new intent
-                    intent.putExtra(MealsListScreen.MEALS_TYPE_ARG_KEY, MealsListScreen.MEALS_TYPE.OFFERED_MEALS.toString()); // specify that we want to display offered meals
-                    startActivity(intent); // display the offered meals list
-                } else {
-                    displayErrorToast("You have no offered menu items");
-                }
+
+                // if no valid chef logged in
+                if (App.getChef() == null) return;
 
                 // if chef has no offered meals
                 if (App.getChef().MEALS.getOfferedMeals().size() == 0 || App.getChef().MEALS.getOfferedMeals() == null) {
