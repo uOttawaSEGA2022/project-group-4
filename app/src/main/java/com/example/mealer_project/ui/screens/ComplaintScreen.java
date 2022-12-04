@@ -74,6 +74,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 datePickerDialog = new DatePickerDialog(ComplaintScreen.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
             }

@@ -98,11 +98,8 @@ public class MakeComplaint extends UIScreen implements StatefulView {
             if (orders.get(x).getOrderID().equals(orderData.getOrderID())){
                 trueOrder = orders.get(x);
                 trueOrder.setComplaintSubmitted(true);
-                Log.e("Order status", String.valueOf(trueOrder.isComplaintSubmitted()) + " " + String.valueOf(trueOrder.getOrderID()) + " " + String.valueOf(orderData.getOrderID()));
-
             }
         }
-        Log.e("Order status", String.valueOf(trueOrder.isComplaintSubmitted()) + " " + String.valueOf(trueOrder.getOrderID()) + " " + String.valueOf(orderData.getOrderID()));
         App.getPrimaryDatabase().ORDERS.updateComplaintStatus(trueOrder);
         this.finish();
     }
