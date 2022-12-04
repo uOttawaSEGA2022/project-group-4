@@ -69,6 +69,8 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         // confirm their click to change offering
         builder.setCancelable(true);
         builder.setTitle("Please confirm your selection");
+        // set the icon for the alert dialog
+        builder.setIcon(R.drawable.mealer);
 
         // on click method for changing the offering value of the meal
         offeringButton.setOnClickListener(new Button.OnClickListener() {
