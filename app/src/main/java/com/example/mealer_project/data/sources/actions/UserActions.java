@@ -299,66 +299,127 @@ public class UserActions {
 
     /**
      * Method changes fields (isSuspended and suspensionDate) of chef in firebase based on admin response
-     * to complaint
+     * to complaint, delete meals and complaints of that chef is suspended indefinitely
      * @param chefId id of the chef associated with the complaint
      * @param isSuspended boolean whether chef is suspended
      * @param suspensionDate end date of suspension
      */
 
-    public void updateChefSuspension(String chefId, boolean isSuspended, String suspensionDate){
+    public void updateChefSuspension(String chefId, boolean isSuspended, String suspensionDate) {
 
         // Set the "isSuspended" field to ban boolean and the "suspensionDate" field to suspensionDate date
         database.collection(CHEF_COLLECTION).document(chefId)
                 .update(
                         "isSuspended", isSuspended,
-                        "suspensionDate",suspensionDate)
+                        "suspensionDate", suspensionDate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
-                        database.collection(MEALS_COLLECTION + "/" + chefId + "/" + CHEF_MEALS_COLLECTION)
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                        if (suspensionDate == "01/01/9999"){ //  chef banned indefinitely
 
-                                                database.collection(MEALS_COLLECTION + "/" + chefId + "/" + CHEF_MEALS_COLLECTION)
-                                                        .document(document.getId())
-                                                        .update("isOffered", false)
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
+//                                                    database.collection(MEALS_COLLECTION)  // delete all meals of this chef
+//                                                             .document(chefId)
+//                                                             .collection(CHEF_MEALS_COLLECTION)
+//                                                            .document(document.getId())
+//                                                            .delete()
+//                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                                @Override
+//                                                                public void onSuccess(Void aVoid) {
+//
+//                                                                    Log.d("Success", "Meals successfully deleted for indefinitely banned chef!");
+//                                                                }
+//                                                            })
+//                                                            .addOnFailureListener(new OnFailureListener() {
+//                                                                @Override
+//                                                                public void onFailure(@NonNull Exception e) {
+//                                                                    Log.w("Error", "Error deleting meals for indefinitely banned chef", e);
+//                                                                }
+//                                                            });
 
-                                                                Log.d("Success", "Meals successfully updated to not offered!");
-                                                            }
-                                                        })
-                                                        .addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Log.w("Error", "Error updating meals", e);
-                                                            }
-                                                        });
+                            database.collection("Complaints")  // delete all complaints of this chef
+                                    .whereEqualTo("chefId", chefId)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
 
+                                                    database.collection("Complaints")
+                                                            .document(document.getId())
+                                                            .delete()
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+
+                                                                    Log.d("Success", "Complaints successfully deleted for indefinitely banned chef!");
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    Log.w("Error", "Error deleting complaints for indefinitely banned chef", e);
+                                                                }
+                                                            });;
+                                                }
+                                            } else {
+                                                Log.d(TAG, "Error getting complaints for chef with id: " + chefId, task.getException());
                                             }
-                                        } else {
-                                            Log.e("updateChefSus", "Error getting meals from chef");
-
                                         }
-                                    }
-                                });
+                                    });
+
+
+                        }
+                        else {  // chef NOT banned indefinitely so simply set meals to not offered
+
+                            database.collection(MEALS_COLLECTION)
+                                    .document(chefId)
+                                    .collection(CHEF_MEALS_COLLECTION)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                                    database.collection(MEALS_COLLECTION)
+                                                            .document(chefId)
+                                                            .collection(CHEF_MEALS_COLLECTION)
+                                                            .document(document.getId())
+                                                            .update("isOffered", false)
+                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+
+                                                                    Log.d("Success", "Meals successfully updated to not offered!");
+                                                                }
+                                                            })
+                                                            .addOnFailureListener(new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    Log.w("Error", "Error updating meals", e);
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        }
+                                    });
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("Error", "Error updating chef suspension", e);
+                        Log.w(TAG, "Error updating document", e);
                     }
                 });
     }
 
-    public void getClientAndChefNamesByIds(String clientId, String chefId, ComplaintScreen complaintScreen) {
+
+
+
+public void getClientAndChefNamesByIds(String clientId, String chefId, ComplaintScreen complaintScreen) {
         // first get client name
         database
                 .collection(CLIENT_COLLECTION)
