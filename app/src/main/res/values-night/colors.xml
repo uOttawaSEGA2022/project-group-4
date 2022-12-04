@@ -9,4 +9,5 @@
     <color name="list_item">#36393e</color>
     <color name="reject_colour">@color/green_disabled</color>
     <color name="accept_colour">@color/green_darker</color>
+    <color name="search_header">#456153</color>
 </resources>

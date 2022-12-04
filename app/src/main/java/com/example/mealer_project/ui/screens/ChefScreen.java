@@ -1,5 +1,7 @@
 package com.example.mealer_project.ui.screens;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -44,9 +46,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
      */
     private OrdersInProgressAdapter ordersInProgressAdapter;
 
-    // key to pass chef's information through intent
-    private final static String CHEF_DATA_ARG_KEY = "Chef_DATA_ARG_KEY";
-
     //----------------------------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +80,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         if (App.getUser() instanceof Chef) { // is a CHEF
             // Initialization: setting ordersData to the list
             this.orderData = ((Chef) App.getUser()).ORDERS.getOrdersInProgress();
-        }
-        else { // not a chef -> error-handling
+        } else { // not a chef -> error-handling
             Log.e("ChefScreen", "Current logged-in user is not a CHEF");
         }
     }
@@ -109,7 +107,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         }
 
         // Process: loop through the map of data for the orders in progress
-        for (Order order: this.orderData) {
+        for (Order order : this.orderData) {
             ordersInProgressAdapter.add(order); // adds orderData to the list
         }
     }
@@ -131,7 +129,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
         }
 
         // Process: looping through the map of data
-        for (Order order: this.orderData) {
+        for (Order order : this.orderData) {
             ordersInProgressAdapter.add(order); //adding the orderData to the list
         }
 
@@ -150,6 +148,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
 
     /**
      * Sets the appropriate welcome message to the user
+     *
      * @param message
      */
     private void setWelcomeMessage(String message) {
@@ -175,22 +174,46 @@ public class ChefScreen extends UIScreen implements StatefulView {
         // View profile button
         ImageView viewChefProfile = (ImageView) findViewById(R.id.mealer_logo);
 
+        // create alert dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("NOTICE");
+        // set the icon for the alert dialog
+        builder.setIcon(R.drawable.mealer);
 
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 List<Meal> listOfMeals = ((Chef) App.getUser()).MEALS.getListOfMeals();
                 if(listOfMeals.size() != 0) {
                     startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
                 } else {
                     displayErrorToast("You have no menu items!");
                 }
+=======
+                // if chef has no meals
+                if (App.getChef().MEALS.getMenu().size() == 0 || App.getChef().MEALS.getMenu() == null) {
+
+                    builder.setMessage("You have no meals!");
+                    builder.setPositiveButton("Okay",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else
+                    // chef has meals
+                    startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
+>>>>>>> 363b3e88d28aac91d9db8fcb5999de39976dbce3
             }
         });
 
         offeredMealsButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< HEAD
                 List<Meal> listOfOfferedMeals = ((Chef) App.getUser()).MEALS.getListOfOfferedMeals();
                 if(listOfOfferedMeals.size() != 0) {
                     Intent intent = new Intent(getApplicationContext(), MealsListScreen.class); // initialize a new intent
@@ -200,6 +223,27 @@ public class ChefScreen extends UIScreen implements StatefulView {
                     displayErrorToast("You have no offered menu items");
                 }
 
+=======
+                // if chef has no offered meals
+                if (App.getChef().MEALS.getOfferedMeals().size() == 0 || App.getChef().MEALS.getOfferedMeals() == null) {
+                    builder.setMessage("You have no offered meals!");
+                    builder.setPositiveButton("Okay",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    // initialize a new intent
+                    Intent intent = new Intent(getApplicationContext(), MealsListScreen.class);
+                    // specify that we want to display offered meals
+                    intent.putExtra(MealsListScreen.MEALS_TYPE_ARG_KEY, MealsListScreen.MEALS_TYPE.OFFERED_MEALS.toString());
+                    // display the offered meals list
+                    startActivity(intent);
+                }
+>>>>>>> 363b3e88d28aac91d9db8fcb5999de39976dbce3
             }
         });
 
@@ -222,8 +266,17 @@ public class ChefScreen extends UIScreen implements StatefulView {
             public void onClick(View view) {
                 if (((Chef) App.getUser()).ORDERS.getCompletedOrders().size() != 0)
                     startActivity(new Intent(getApplicationContext(), CompletedOrdersScreen.class)); //show completed orders
-                else
-                    displayErrorToast("You have no completed orders!");
+                else {
+                    builder.setMessage("You have no completed orders!");
+                    builder.setPositiveButton("Okay",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
 
@@ -232,8 +285,17 @@ public class ChefScreen extends UIScreen implements StatefulView {
             public void onClick(View view) {
                 if (((Chef) App.getUser()).ORDERS.getPendingOrders().size() != 0)
                     startActivity(new Intent(getApplicationContext(), PendingOrdersScreen.class)); //show pending orders
-                else
-                    displayErrorToast("You have no pending orders!");
+                else {
+                    builder.setMessage("You have no pending orders!");
+                    builder.setPositiveButton("Okay",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
 
@@ -243,11 +305,11 @@ public class ChefScreen extends UIScreen implements StatefulView {
                 startActivity(new Intent(getApplicationContext(), ChefInfoScreen.class));
             }
         });
-
     }
 
     /**
      * When the user clicks the logout button, it will take back to the intro screen
+     *
      * @param view
      */
     public void clickLogout(View view) {
@@ -275,7 +337,7 @@ public class ChefScreen extends UIScreen implements StatefulView {
             displayErrorToast("Successfully completed order!");
 
         } else { // other op
-            displayErrorToast((String)payload);
+            displayErrorToast((String) payload);
         }
         updateAdapter();
     }

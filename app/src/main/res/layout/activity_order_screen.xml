@@ -253,6 +253,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/nunito_sans"
                         android:text="@string/unable_to_get_info"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -284,6 +285,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/nunito_sans"
                         android:text="@string/unable_to_get_info"
+                        android:textColor="@color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
 
