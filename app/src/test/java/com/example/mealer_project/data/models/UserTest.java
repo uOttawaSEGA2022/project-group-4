@@ -42,7 +42,7 @@ public class UserTest {
 
     @Test
     public void getSuspended() {
-        Chef user = new Chef("Henry", "Cavil", "hc@gm.com", "Ottawa@123", Address.getSampleAddress(), UserRoles.CHEF, "description", "", 1, 1);
+        Chef user = new Chef("Henry", "Cavil", "hc@gm.com", "Ottawa@123", Address.getSampleAddress(), UserRoles.CHEF, "description", "", 1, 1, 2);
         boolean expected = false;
         boolean actual = user.getIsSuspended();
         assertEquals("Chef suspension does not match", expected, actual);

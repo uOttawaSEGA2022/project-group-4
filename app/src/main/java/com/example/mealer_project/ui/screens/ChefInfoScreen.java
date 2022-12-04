@@ -73,7 +73,7 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
     public void updateUI() {
         try {
             updateChefInfoScreen(chefData.getFirstName()+" "+chefData.getLastName(), chefData.getEmail(), chefData.getAddress(), chefData.getChefRating(), chefData.getDescription(),
-                    chefData.getNumOfMealsSold(), chefData.getIsSuspended());
+                    chefData.getNumOfOrdersSold(), chefData.getIsSuspended());
         } catch (Exception e) {
             Log.e("MealInfoScreen", "unable to create meal object :(");
             displayErrorToast("Unable to retrieve the meal info!");

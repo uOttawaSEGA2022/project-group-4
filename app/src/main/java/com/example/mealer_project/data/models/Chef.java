@@ -13,7 +13,7 @@ public class Chef extends User {
     private String voidCheque;
     private double chefRatingSum; // sum of ratings
     private int numOfRatings; // number of ratings
-    private int numOfMealsSold;
+    private int numOfOrdersSold;
     private boolean isSuspended;
     private Date suspensionDate;
     // storing Chef's meals in an instance of Meals class which provides methods to work with a collection of meals
@@ -39,7 +39,7 @@ public class Chef extends User {
         super(firstName, lastName, email, password, address, role);
         this.setDescription(description);
         this.setVoidCheque(voidCheque);
-        this.setNumOfMealsSold(numberOfMealsSold);
+        this.setNumOfOrdersSold(numberOfMealsSold);
         this.setChefRatingSum(chefRatingSum);
         this.setNumOfRatings(numOfRatings);
         // instantiate a meals object where Chef's meals will be stored
@@ -54,7 +54,7 @@ public class Chef extends User {
         super(userData, address);
         this.setDescription(description);
         this.setVoidCheque(voidCheque);
-        this.setNumOfMealsSold(0);
+        this.setNumOfOrdersSold(0);
         this.setChefRatingSum(0);
         this.setNumOfRatings(0);
         // instantiate a meals object where Chef's meals will be stored
@@ -142,18 +142,17 @@ public class Chef extends User {
         return chefRatingSum/numOfRatings;
     }
     /**
-     * Get the total number of meals sold by a chef
+     * Get the total number of orders sold by a chef
      * @return Integer representing chef's total sales
      */
-    public int getNumOfMealsSold() { return numOfMealsSold; }
+    public int getNumOfOrdersSold() { return numOfOrdersSold; }
 
     /**
-     * Set the chef's total meals sold
-     * @param numOfMealsSold integer representing the chef's total sales
+     * Set the chef's total orders sold
+     * @param numOfOrdersSold integer representing the chef's total sales
      */
-    public void setNumOfMealsSold(int numOfMealsSold) {
-        // validate num of meals sold
-        this.numOfMealsSold = numOfMealsSold;
+    public void setNumOfOrdersSold(int numOfOrdersSold) {
+        this.numOfOrdersSold = numOfOrdersSold;
     }
 
     /**
