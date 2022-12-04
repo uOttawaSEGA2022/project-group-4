@@ -15,7 +15,6 @@ import com.example.mealer_project.data.handlers.MealHandler;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.ui.screens.meals.MealsAdapter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -57,12 +56,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         }
 
         // on click method for back button
-        backButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(v -> finish());
 
         // alert dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -73,65 +67,43 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         builder.setIcon(R.drawable.mealer);
 
         // on click method for changing the offering value of the meal
-        offeringButton.setOnClickListener(new Button.OnClickListener() {
+        offeringButton.setOnClickListener(v -> {
 
-            @Override
-            public void onClick(View v) {
+            // change text
+            if (mealData.isOffered()) { // currently being offered
+                builder.setMessage("You will be unoffering this meal now!");
+            } else { // currently is not offered
+                builder.setMessage("You will be offering this meal now!");
+            }
 
+            builder.setPositiveButton("Confirm",
+                    (dialog, which) -> {
+                        offeredButtonClickHandler();
+                        showRemoveButton();
+                    });
+            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        });
+
+        // on click method for removing a meal (only if it is not currently offered)
+        removeButton.setOnClickListener(v -> {
+
+            if (mealData.isOffered()) { // currently being offered
+                displayErrorToast("CANNOT REMOVE AN OFFERED MEAL");
+            } else { // currently is not offered
                 // change text
-                if (mealData.isOffered()) { // currently being offered
-                    builder.setMessage("You will be unoffering this meal now!");
-                } else { // currently is not offered
-                    builder.setMessage("You will be offering this meal now!");
-                }
+                builder.setMessage("Are you sure you want to remove this meal? \nThis cannot be changed.");
 
                 builder.setPositiveButton("Confirm",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                offeredButtonClickHandler();
-                                showRemoveButton();
-                            }
-                        });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
+                        (dialog, which) -> removeButtonClickHandler());
+                builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
                 });
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-            }
-        });
-
-        // on click method for removing a meal (only if it is not currently offered)
-        removeButton.setOnClickListener(new Button.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                if (mealData.isOffered()) { // currently being offered
-                    displayErrorToast("CANNOT REMOVE AN OFFERED MEAL");
-                } else { // currently is not offered
-                    // change text
-                    builder.setMessage("Are you sure you want to remove this meal? \nThis cannot be changed.");
-
-                    builder.setPositiveButton("Confirm",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    removeButtonClickHandler();
-                                }
-                            });
-                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
             }
         });
         showRemoveButton();
@@ -153,11 +125,18 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         }
     }
 
+
+    // UI Methods-----------------------------------------------------------------------------------------------
+    /**
+     * Helper method that will remove a button from menu
+     */
     private void removeButtonClickHandler() {
         App.MEAL_HANDLER.dispatch(MealHandler.dbOperations.REMOVE_MEAL, mealData.getMealID(), this);
     }
 
-    //toggles remove button's visibility on if the meal is offered or not
+    /**
+     * Helper method that toggles remove button's visibility on if the meal is offered or not
+     */
     public void showRemoveButton(){
         View button = findViewById(R.id.remove_btn);
         if (mealData.isOffered()) {
@@ -183,25 +162,6 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     @Override
     public void showNextScreen() {
 
-    }
-
-    @Override
-    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-        // if any DB operation is initiated on a meal, and it's a success, we update meals list to show current changes
-        App.getAppInstance().getMealsListScreen().notifyDataChanged();
-        // display success message
-        displaySuccessToast((String) payload);
-
-        // if operation was to delete the meal, close the meal info screen
-        if (dbOperation == MealHandler.dbOperations.REMOVE_MEAL) {
-            finish();
-        }
-    }
-
-    @Override
-    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-        // display error message
-        displayErrorToast((String) payload);
     }
 
     /**
@@ -258,6 +218,25 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
         } else { // meal is currently not being offered
             offeringButton.setText("Offer Meal");
         }
+    }
 
+    // Firebase Methods-----------------------------------------------------------------------------------------------
+    @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        // if any DB operation is initiated on a meal, and it's a success, we update meals list to show current changes
+        App.getAppInstance().getMealsListScreen().notifyDataChanged();
+        // display success message
+        displaySuccessToast((String) payload);
+
+        // if operation was to delete the meal, close the meal info screen
+        if (dbOperation == MealHandler.dbOperations.REMOVE_MEAL) {
+            finish();
+        }
+    }
+
+    @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+        // display error message
+        displayErrorToast((String) payload);
     }
 }

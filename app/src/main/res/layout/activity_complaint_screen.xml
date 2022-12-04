@@ -134,15 +134,15 @@
         android:id="@+id/csChefSuspensionInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:gravity="center_horizontal|center_vertical"
         android:hint="chef suspension info unavailable"
         android:textColor="@android:color/holo_red_dark"
         android:textSize="16sp"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/ban_chef"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+        app:layout_constraintTop_toBottomOf="@id/scrollView2" />
 
     <Button
         android:id="@+id/dismiss"
@@ -177,7 +177,7 @@
         android:layout_gravity="right"
         android:layout_marginLeft="116dp"
         android:layout_marginEnd="50dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="20dp"
         android:gravity="center|right"
         android:onClick="openDatePicker"
         android:text="@string/ban_chef"

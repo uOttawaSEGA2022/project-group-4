@@ -1,6 +1,5 @@
 package com.example.mealer_project.ui.screens;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,14 +13,10 @@ import android.widget.Toast;
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
-import com.example.mealer_project.data.handlers.InboxHandler;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
-import com.example.mealer_project.data.models.inbox.Complaint;
-import com.example.mealer_project.data.sources.actions.OrderActions;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersAdapterClient;
 import com.example.mealer_project.utils.Utilities;
 
 import java.text.DateFormat;
@@ -68,12 +63,7 @@ public class MakeComplaint extends UIScreen implements StatefulView {
             Toast.makeText(getApplicationContext(), "Unable to retrieve the meal info!", Toast.LENGTH_LONG).show();
         }
 
-        submitComplaint.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendComplaint();
-            }
-        });
+        submitComplaint.setOnClickListener(view -> sendComplaint());
 
         backButton.setOnClickListener(v -> finish());
 
@@ -104,6 +94,7 @@ public class MakeComplaint extends UIScreen implements StatefulView {
         this.finish();
     }
 
+    // UI Methods-----------------------------------------------------------------------------------------------
     //sets the values of the order information
     @Override
     public void updateUI(){
@@ -118,6 +109,7 @@ public class MakeComplaint extends UIScreen implements StatefulView {
 
     }
 
+    // Firebase Methods-----------------------------------------------------------------------------------------------
     /**
      * Method to handle success of a DB operation
      *

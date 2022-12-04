@@ -17,23 +17,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_screen);
-
-        // initialize Firebase instance
-
-
     }
 
+    /**
+     * Button click takes to sign up screen
+     * @param view
+     */
     public void OnSetSignUp(View view) {
 
         // Variable Declaration
         Intent intent = new Intent(getApplicationContext(), SignupScreen.class); //where SignUp.class is the sign up activity
-        startActivityForResult (intent,0); //fix this after
+        startActivity(intent);
     }
 
+    /**
+     * Button click takes to login screen
+     * @param view
+     */
     public void OnSetLogIn(View view) {
-
         // Variable Declaration
         Intent intent = new Intent(getApplicationContext(), LoginScreen.class); //where LogIn.class is the login activity
-        startActivityForResult (intent,0); //fix this after
+        startActivity(intent);
     }
 }

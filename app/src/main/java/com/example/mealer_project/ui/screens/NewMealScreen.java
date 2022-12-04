@@ -242,7 +242,6 @@ public class NewMealScreen extends UIScreen implements StatefulView {
         addAllergensToList(); //calling helper method to add all allergens
 
         // Variable Declaration
-        Chef chef = (Chef) App.getAppInstance().getUser();
         String chefID = App.getUserId();
 
         EditText mealName = (EditText) findViewById(R.id.meal_name);

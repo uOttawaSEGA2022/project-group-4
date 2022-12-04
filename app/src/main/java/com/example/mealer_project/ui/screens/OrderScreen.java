@@ -38,6 +38,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
     Meal mealData;
     ChefInfo chefData;
 
+    // key
     public static final String SEARCH_MEAL_ITEM_ARG_KEY = "SEARCH_MEAL_ITEM_ARG_KEY";
 
     // button instantiations
@@ -89,31 +90,22 @@ public class OrderScreen extends UIScreen implements StatefulView {
     private void attachOnClickListeners() {
 
         // on click method for back button
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish(); // go to previous screen
-            }
+        backButton.setOnClickListener(v -> {
+            finish(); // go to previous screen
         });
 
         // on click method for minus button
-        minusButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (totalQuantityCounter != 1) {
-                    totalQuantityCounter--;
-                    updateUI();
-                }
+        minusButton.setOnClickListener(v -> {
+            if (totalQuantityCounter != 1) {
+                totalQuantityCounter--;
+                updateUI();
             }
         });
 
         // on click method for plus button
-        plusButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                totalQuantityCounter++;
-                updateUI();
-            }
+        plusButton.setOnClickListener(v -> {
+            totalQuantityCounter++;
+            updateUI();
         });
 
         // Variable Declaration
@@ -123,74 +115,26 @@ public class OrderScreen extends UIScreen implements StatefulView {
         builder.setTitle("Please confirm your selection");
 
         // on click method for adding or removing the meal from the cart
-        addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // if current quantity zero, we don't need to do anything
-                if (totalQuantityCounter == 0) {
-                    displayErrorToast("Please select quantity!");
-                    return;
-                }
+        addOrRemoveButton.setOnClickListener(v -> {
+            // if current quantity zero, we don't need to do anything
+            if (totalQuantityCounter == 0) {
+                displayErrorToast("Please select quantity!");
+                return;
+            }
 
-                // ensure a valid client available at this point
-                if (Preconditions.isNotNull(App.getClient())) {
-                    // if adding item to the cart
-                    if (addToCart) {
-                        // Process: checking if cart is empty
-                        if (!App.getClient().getCart().isEmpty()) { //not empty
+            // ensure a valid client available at this point
+            if (Preconditions.isNotNull(App.getClient())) {
+                // if adding item to the cart
+                if (addToCart) {
+                    // Process: checking if cart is empty
+                    if (!App.getClient().getCart().isEmpty()) { //not empty
 
-                            // Variable Declaration
-                            Map.Entry<OrderItem, Boolean> entry = App.getClient().getCart().entrySet().iterator().next();
-                            OrderItem orderItem = entry.getKey();
+                        // Variable Declaration
+                        Map.Entry<OrderItem, Boolean> entry = App.getClient().getCart().entrySet().iterator().next();
+                        OrderItem orderItem = entry.getKey();
 
-                            // Process: checking if random orderItem chef is same as current chef
-                            if (orderItem.getSearchMealItem().getChef().getChefName().equals(sMItem.getChef().getChefName())) { //same chef
-
-                                // add order item to client's cart
-                                App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
-                                displaySuccessToast("Item added to cart!");
-
-                                // finish the activity and return back
-                                setResult(Activity.RESULT_OK);
-                                finish();
-
-                            }
-                            else { //different chef
-
-                                // setting alert text
-                                builder.setMessage("This meal is offered by a different chef. Would you like to clear your cart and start a new order?");
-
-                                // Process: setting actions for pos/neg buttons
-                                builder.setPositiveButton("Start new order",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-
-                                                App.getClient().clearCart(); //clearing cart
-
-                                                // add order item to client's cart
-                                                App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
-                                                displaySuccessToast("Item added to cart!");
-
-                                                // finish the activity and return back
-                                                setResult(Activity.RESULT_OK);
-                                                finish();
-
-                                            }
-                                        });
-                                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {}
-                                });
-
-                                AlertDialog dialogue = builder.create();
-
-                                dialogue.show();
-
-                            }
-
-                        }
-                        else { //empty cart
+                        // Process: checking if random orderItem chef is same as current chef
+                        if (orderItem.getSearchMealItem().getChef().getChefName().equals(sMItem.getChef().getChefName())) { //same chef
 
                             // add order item to client's cart
                             App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
@@ -201,25 +145,65 @@ public class OrderScreen extends UIScreen implements StatefulView {
                             finish();
 
                         }
+                        else { //different chef
+
+                            // setting alert text
+                            builder.setMessage("This meal is offered by a different chef. Would you like to clear your cart and start a new order?");
+
+                            // Process: setting actions for pos/neg buttons
+                            builder.setPositiveButton("Start new order",
+                                    (dialog, which) -> {
+
+                                        App.getClient().clearCart(); //clearing cart
+
+                                        // add order item to client's cart
+                                        App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                                        displaySuccessToast("Item added to cart!");
+
+                                        // finish the activity and return back
+                                        setResult(Activity.RESULT_OK);
+                                        finish();
+
+                                    });
+                            builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {});
+
+                            AlertDialog dialogue = builder.create();
+
+                            dialogue.show();
+
+                        }
 
                     }
-                    // removing item from cart
-                    else {
-                        App.getClient().updateOrderItem(new OrderItem(sMItem, 0));
-                        displaySuccessToast("Item removed from cart!");
+                    else { //empty cart
+
+                        // add order item to client's cart
+                        App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                        displaySuccessToast("Item added to cart!");
+
                         // finish the activity and return back
                         setResult(Activity.RESULT_OK);
                         finish();
-                    }
-                } else {
-                    displayErrorToast("Unable to update cart!");
-                }
 
+                    }
+
+                }
+                // removing item from cart
+                else {
+                    App.getClient().updateOrderItem(new OrderItem(sMItem, 0));
+                    displaySuccessToast("Item removed from cart!");
+                    // finish the activity and return back
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                }
+            } else {
+                displayErrorToast("Unable to update cart!");
             }
+
         });
 
     }
 
+    // Helper Methods for Adding the Meal------------------------------------------------------------------------
     private Response loadMealAndChefData() {
         try {
             // we get the data from the SearchMealItem passed from the search screen
@@ -242,7 +226,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
                             this.totalQuantityCounter = orderItem.getQuantity();
                             // set add to cart as false, so we only allow remove from cart
                             this.addToCart = false;
-                            // making quantity buttons to unclickable
+                            // set quantity buttons to unclickable
                             plusButton.setClickable(false);
                             minusButton.setClickable(false);
                             // display the order quantity
@@ -264,6 +248,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
         return new Response(false, "No valid data available to display");
     }
 
+    // UI Methods-----------------------------------------------------------------------------------------------
     /**
      * Updates the screen with the required information
      */
@@ -288,78 +273,6 @@ public class OrderScreen extends UIScreen implements StatefulView {
         Intent intent = new Intent(getApplicationContext(), Checkout.class);
         startActivity(intent);
         */
-    }
-
-    @Override
-    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-
-        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
-
-            // Output: successfully add new order
-            displayErrorToast("Successfully added order!");
-
-        }
-        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {
-
-            // Output: successfully removed order
-            displayErrorToast("Successfully removed order!");
-
-        }
-        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
-
-            // Output: successfully updated order
-            displayErrorToast("Successfully updated order!");
-
-        }
-        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {
-
-            // Output: successfully retrieved order
-            displayErrorToast("Successfully retrieved order!");
-
-        }
-        else { //other op
-
-            // Output
-            displayErrorToast((String) payload);
-
-        }
-
-    }
-
-    @Override
-    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-
-        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
-
-            // Output: failed to add new order
-            displayErrorToast("Failed to add order!");
-
-        }
-        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {
-
-            // Output: failed to remove order
-            displayErrorToast("Failed to remove order!");
-
-        }
-        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
-
-            // Output: failed to update order
-            displayErrorToast("Failed to update order!");
-
-        }
-        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {
-
-            // Output: failed to get order
-            displayErrorToast("Failed to get order!");
-
-        }
-        else { //other error
-
-            // Output
-            displayErrorToast((String) payload);
-
-        }
-
     }
 
     /**
@@ -436,5 +349,78 @@ public class OrderScreen extends UIScreen implements StatefulView {
             quantityText.setKeyListener(null);
             quantityText.setBackgroundColor(Color.TRANSPARENT);
         }
+    }
+
+    // Firebase Methods------------------------------------------------------------------------------------------
+    @Override
+    public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+
+        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
+
+            // Output: successfully add new order
+            displayErrorToast("Successfully added order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {
+
+            // Output: successfully removed order
+            displayErrorToast("Successfully removed order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
+
+            // Output: successfully updated order
+            displayErrorToast("Successfully updated order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {
+
+            // Output: successfully retrieved order
+            displayErrorToast("Successfully retrieved order!");
+
+        }
+        else { //other op
+
+            // Output
+            displayErrorToast((String) payload);
+
+        }
+
+    }
+
+    @Override
+    public void dbOperationFailureHandler(Object dbOperation, Object payload) {
+
+        if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
+
+            // Output: failed to add new order
+            displayErrorToast("Failed to add order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.REMOVE_ORDER) {
+
+            // Output: failed to remove order
+            displayErrorToast("Failed to remove order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.UPDATE_ORDER) {
+
+            // Output: failed to update order
+            displayErrorToast("Failed to update order!");
+
+        }
+        else if (dbOperation == OrderHandler.dbOperations.GET_ORDER_BY_ID) {
+
+            // Output: failed to get order
+            displayErrorToast("Failed to get order!");
+
+        }
+        else { //other error
+
+            // Output
+            displayErrorToast((String) payload);
+
+        }
+
     }
 }

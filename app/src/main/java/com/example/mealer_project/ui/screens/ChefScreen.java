@@ -183,14 +183,13 @@ public class ChefScreen extends UIScreen implements StatefulView {
         menuButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
                 List<Meal> listOfMeals = ((Chef) App.getUser()).MEALS.getListOfMeals();
                 if(listOfMeals.size() != 0) {
                     startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
                 } else {
                     displayErrorToast("You have no menu items!");
                 }
-=======
+
                 // if chef has no meals
                 if (App.getChef().MEALS.getMenu().size() == 0 || App.getChef().MEALS.getMenu() == null) {
 
@@ -206,14 +205,12 @@ public class ChefScreen extends UIScreen implements StatefulView {
                 } else
                     // chef has meals
                     startActivity(new Intent(getApplicationContext(), MealsListScreen.class));
->>>>>>> 363b3e88d28aac91d9db8fcb5999de39976dbce3
             }
         });
 
         offeredMealsButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< HEAD
                 List<Meal> listOfOfferedMeals = ((Chef) App.getUser()).MEALS.getListOfOfferedMeals();
                 if(listOfOfferedMeals.size() != 0) {
                     Intent intent = new Intent(getApplicationContext(), MealsListScreen.class); // initialize a new intent
@@ -223,7 +220,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
                     displayErrorToast("You have no offered menu items");
                 }
 
-=======
                 // if chef has no offered meals
                 if (App.getChef().MEALS.getOfferedMeals().size() == 0 || App.getChef().MEALS.getOfferedMeals() == null) {
                     builder.setMessage("You have no offered meals!");
@@ -243,7 +239,6 @@ public class ChefScreen extends UIScreen implements StatefulView {
                     // display the offered meals list
                     startActivity(intent);
                 }
->>>>>>> 363b3e88d28aac91d9db8fcb5999de39976dbce3
             }
         });
 

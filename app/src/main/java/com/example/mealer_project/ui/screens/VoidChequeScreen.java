@@ -25,6 +25,7 @@ import com.example.mealer_project.ui.core.UIScreen;
 
 public class VoidChequeScreen extends UIScreen {
 
+    // ATTRIBUTES
     private boolean pictureSubmitted = false;
     private String voidChequeValue = "";
 
@@ -64,6 +65,9 @@ public class VoidChequeScreen extends UIScreen {
 
     }
 
+    /**
+     * Launches phone's camera
+     */
     ActivityResultLauncher<Intent> startImageCaptureActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
@@ -80,11 +84,19 @@ public class VoidChequeScreen extends UIScreen {
         }
     });
 
+    /**
+     * Takes the picture
+     * @param view
+     */
     public void takePicture(View view){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startImageCaptureActivity.launch(intent);
     }
 
+    /**
+     * Shows the picture on the screen and puts the information into a string
+     * @param data
+     */
     private void updateVoidChequeImage(Intent data) {
         ImageView imageView = (ImageView) findViewById(R.id.voidCheque);
         imageView.setImageBitmap((Bitmap) data.getExtras().get("data"));
@@ -99,6 +111,9 @@ public class VoidChequeScreen extends UIScreen {
         pictureSubmitted = true;
     }
 
+    /**
+     * Submits the void cheque image
+     */
     private void submitVoidChequeImage() {
         this.setResult(Activity.RESULT_OK, getIntent());
         this.getIntent().putExtra("voidChequeValue", voidChequeValue);

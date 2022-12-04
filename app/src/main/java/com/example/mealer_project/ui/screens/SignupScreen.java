@@ -70,112 +70,97 @@ public class SignupScreen extends UIScreen implements StatefulView {
         setRegistrationInProgress(false);
     }
 
+    /**
+     * Attaches onClick listeners to all buttons
+     */
     private void attachOnClickListeners() {
 
         // Sign up form submit handler
         Button signupSubmitBtn = (Button) findViewById(R.id.signupFormSubmitBtn);
-        signupSubmitBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                if (!userRegistrationInProgress) {
-                    // handle submission
-                    signUpSubmitButtonClickHandler();
-                } else {
-                    displayErrorToast("Currently processing a sign-up request. Please wait, and try again.");
-                }
+        signupSubmitBtn.setOnClickListener(v -> {
+            if (!userRegistrationInProgress) {
+                // handle submission
+                signUpSubmitButtonClickHandler();
+            } else {
+                displayErrorToast("Currently processing a sign-up request. Please wait, and try again.");
             }
         });
 
         // handle displaying of conditional information (dependent on type of user)
         this.selectUserTypeClientBtn = (Button) findViewById(R.id.userTypeClientBtn);
-        selectUserTypeClientBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                clientButtonClicked = true;
-                updateUI();
-            }
+        selectUserTypeClientBtn.setOnClickListener(v -> {
+            clientButtonClicked = true;
+            updateUI();
         });
         this.selectUserTypeChefBtn = (Button) findViewById(R.id.userTypeChefBtn);
-        selectUserTypeChefBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                chefButtonClicked = true;
-                updateUI();
-            }
+        selectUserTypeChefBtn.setOnClickListener(v -> {
+            chefButtonClicked = true;
+            updateUI();
         });
 
         Button voidChequeBtnHandler = (Button) findViewById(R.id.signupChefVoidChequeBtn);
-        voidChequeBtnHandler.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                startVoidChequeActivity.launch(new Intent(getApplicationContext(), VoidChequeScreen.class));
-            }
-        });
+        voidChequeBtnHandler.setOnClickListener(v ->
+                startVoidChequeActivity.launch(new Intent(getApplicationContext(), VoidChequeScreen.class)));
 
         ImageButton backButton = (ImageButton) findViewById(R.id.button_back2);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        backButton.setOnClickListener(v -> {
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(intent);
         });
 
         EditText passwordField = (EditText) findViewById(R.id.signupPassword);
-        passwordField.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                passwordField.setEnabled(false);
-                // initialise the alert dialog builder
-                AlertDialog.Builder builder = new AlertDialog.Builder(SignupScreen.this);
+        passwordField.setOnClickListener(v -> {
+            passwordField.setEnabled(false);
+            // initialise the alert dialog builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(SignupScreen.this);
 
-                // set the title for the alert dialog
-                builder.setTitle("Password Requirements");
+            // set the title for the alert dialog
+            builder.setTitle("Password Requirements");
 
-                // must click on alert dialog to close screen
-                builder.setCancelable(true);
+            // must click on alert dialog to close screen
+            builder.setCancelable(true);
 
-                // set the icon for the alert dialog
-                builder.setIcon(R.drawable.mealer);
+            // set the icon for the alert dialog
+            builder.setIcon(R.drawable.mealer);
 
-                // allows user to click outside of dialog to close screen
-                builder.setCancelable(false);
+            // allows user to click outside of dialog to close screen
+            builder.setCancelable(false);
 
-                // message displayed
-                builder.setMessage("A good password should contain:\n\n" +
-                        "\u2022 at least 8 characters\n" +
-                        "\u2022 at least 1 capital\n" +
-                        "\u2022 at least 1 number\n" +
-                        "\u2022 at least 1 special character");
+            // message displayed
+            builder.setMessage("A good password should contain:\n\n" +
+                    "\u2022 at least 8 characters\n" +
+                    "\u2022 at least 1 capital\n" +
+                    "\u2022 at least 1 number\n" +
+                    "\u2022 at least 1 special character");
 
-                // handle the positive button of the dialog (does nothing)
-                builder.setPositiveButton("Okay", (dialog, which) -> {
-                    passwordField.setEnabled(true);
-                });
+            // handle the positive button of the dialog (does nothing)
+            builder.setPositiveButton("Okay", (dialog, which) -> {
+                passwordField.setEnabled(true);
+            });
 
-                // create and show the Alert Dialog
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
+            // create and show the Alert Dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
     }
 
     ActivityResultLauncher<Intent> startVoidChequeActivity = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    //Log.e("VoidChequeActivity", String.valueOf(result.getResultCode()));
-                    if (result.getResultCode() == Activity.RESULT_OK) { // operation succeed (value = -1)
-                        Intent intent = result.getData();
-                        Log.e("intentCheck", String.valueOf(intent));
-                        if (intent != null) {
-                            updateVoidChequeImage(intent);
-                            chequeString = intent.getStringExtra("voidChequeValue");
-                            displaySuccessToast("Void cheque uploaded!");
-                        } else {
-                            Log.e("VoidChequeActivity", "intent null");
-                            displayErrorToast("Unable to process void cheque image!");
-                        }
+            result -> {
+                //Log.e("VoidChequeActivity", String.valueOf(result.getResultCode()));
+                if (result.getResultCode() == Activity.RESULT_OK) { // operation succeed (value = -1)
+                    Intent intent = result.getData();
+                    Log.e("intentCheck", String.valueOf(intent));
+                    if (intent != null) {
+                        updateVoidChequeImage(intent);
+                        chequeString = intent.getStringExtra("voidChequeValue");
+                        displaySuccessToast("Void cheque uploaded!");
+                    } else {
+                        Log.e("VoidChequeActivity", "intent null");
+                        displayErrorToast("Unable to process void cheque image!");
                     }
                 }
-    });
+            });
 
     private void updateVoidChequeImage(Intent intent) {
         Object img = intent.getExtras().getParcelable(observedStates.VOID_CHEQUE_IMAGE.toString());
@@ -219,6 +204,9 @@ public class SignupScreen extends UIScreen implements StatefulView {
          }
     };
 
+    /**
+     * displays the specified information for a client
+     */
     private void setUserTypeClient() {
         // update client & chef buttons color
         // selectUserTypeClientBtn.setBackgroundColor(90648947);
@@ -228,6 +216,9 @@ public class SignupScreen extends UIScreen implements StatefulView {
         chefSpecificInfo.setVisibility(View.GONE);
     }
 
+    /**
+     * displays the specified information for a chef
+     */
     private void setUserTypeChef() {
         // update client & chef buttons color
         // selectUserTypeClientBtn.setBackgroundColor(30648947);
@@ -237,7 +228,9 @@ public class SignupScreen extends UIScreen implements StatefulView {
         chefSpecificInfo.setVisibility(View.VISIBLE);
     }
 
-    // logic for handling sign up submission
+    /**
+     * logic for handling sign up submission
+     */
     public void signUpSubmitButtonClickHandler() {
 
         // set sign up in progress, user can't re-submit form for processing
@@ -261,6 +254,11 @@ public class SignupScreen extends UIScreen implements StatefulView {
         }
     }
 
+    /**
+     * Handles some validation
+     * Process: Checks if CVC is valid, then tries to create a credit cart entity from the rest of the input fields
+     * @return
+     */
     private Response signupFormSubmissionHandler() {
         UserEntityModel userEntityModel = getUserEntityModel();
 
@@ -337,6 +335,10 @@ public class SignupScreen extends UIScreen implements StatefulView {
         return password.equals(confirmPassword);
     }
 
+    /**
+     * Helper method to send a response to the user based on whether CVC is valid
+     * @return
+     */
     private Response isCVCValid() {
         String cvcNum = cvcValue.getText().toString();
         int numChars = cvcNum.toCharArray().length;
@@ -347,6 +349,10 @@ public class SignupScreen extends UIScreen implements StatefulView {
         return new Response(true);
     }
 
+    /**
+     * Helper method to send a response based on if the user uploaded a void cheque
+     * @return
+     */
     private Response voidChequeUploaded(){
         if (chequeString == null){
             return new Response(false, "Please upload a void cheque!");
@@ -354,9 +360,8 @@ public class SignupScreen extends UIScreen implements StatefulView {
         return new Response(true);
     }
 
-    // THIS NEEDS TO CHANGE
     /**
-     * Method to display next screen - Welcome Screen
+     * Method to display next screen - CHEF screen or CLIENT screen respectively
      * This method also sets userRegistrationInProgress to false to indicate user sign completed
      */
     public void showNextScreen() {
@@ -478,10 +483,5 @@ public class SignupScreen extends UIScreen implements StatefulView {
 
         // return Result containing creditCard instance and no error object
         return new Result<>(creditCard, null);
-    }
-
-    public String getChefDescription() {
-        EditText textDescription = (EditText)findViewById(R.id.signupChefShortDescription);
-        return textDescription.getText().toString();
     }
 }

@@ -1,7 +1,6 @@
 package com.example.mealer_project.ui.screens;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Order;
-import com.example.mealer_project.data.models.Orders;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.utils.SendMailTask;
 
@@ -42,7 +40,6 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         // get chef's orders in progress
-        //Orders orders = App.getChef().ORDERS;
         Order order = getItem(position);
 
         // get order data item for given position
@@ -68,33 +65,30 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
         final String EMAIL_CONTENTS = emailContents; //constant meal names & quantities
 
         // on click on completed button
-        ((Button) convertView.findViewById(R.id.doneButton)).setOnClickListener(new View.OnClickListener() {
+        // once this button is clicked, the user will receive an email
+        ((Button) convertView.findViewById(R.id.doneButton)).setOnClickListener(v -> {
+            order.setIsCompleted(true);
+            App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
 
-            @Override
-            public void onClick(View v) {
-                order.setIsCompleted(true);
-                App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
+            // Process: sending email to client that order has been rejected
+            String str = "Hello " + order.getClientInfo().getClientName() + ","
+                    + "<br><br>" +
+                    "The following order is ready for pick-up at " +
+                    order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
+                    order.getChefInfo().getChefAddress().getCity() + " " +
+                    order.getChefInfo().getChefAddress().getPostalCode() + "."
+                    + "<br><br>" +
+                    EMAIL_CONTENTS
+                    + "<br>" +
+                    "If you have any questions about pick-up, please contact us at mealerprojectgroup4@gmail.com" +
+                    " with your order number provided in the subject line."
+                    + "<br><br><br>" +
+                    "MEALER Team";
 
-                // Process: sending email to client that order has been rejected
-                String str = "Hello " + order.getClientInfo().getClientName() + ","
-                        + "<br><br>" +
-                        "The following order is ready for pick-up at " +
-                        order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
-                        order.getChefInfo().getChefAddress().getCity() + " " +
-                        order.getChefInfo().getChefAddress().getPostalCode() + "."
-                        + "<br><br>" +
-                        EMAIL_CONTENTS
-                        + "<br>" +
-                        "If you have any questions about pick-up, please contact us at mealerprojectgroup4@gmail.com" +
-                        " with your order number provided in the subject line."
-                        + "<br><br><br>" +
-                        "MEALER Team";
-
-                new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
-                        order.getClientInfo().getClientEmail(),
-                        "READY-FOR-PICK-UP MEALER Order #: " + order.getOrderID().substring(0, 6),
-                        str);
-            }
+            new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
+                    order.getClientInfo().getClientEmail(),
+                    "READY-FOR-PICK-UP MEALER Order #: " + order.getOrderID().substring(0, 6),
+                    str);
         });
 
 

@@ -1,6 +1,5 @@
 package com.example.mealer_project.ui.screens;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,7 +12,6 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.example.mealer_project.utils.Utilities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,26 +56,18 @@ public class WelcomeScreen extends UIScreen {
 
     }
 
-    private void testOrder() {
-        // if current user is client
-        if (App.getClient() != null) {
-            Button testOrderBtn = (Button) findViewById(R.id.testOrderBtn);
-            testOrderBtn.setVisibility(View.VISIBLE);
-
-            // test order
-            testOrderBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), TestOrdersActivity.class));
-                }
-            });
-        }
-    }
-
+    /**
+     * Sets the welcome message in the header
+     * @param message
+     */
     private void setWelcomeMessage(String message) {
         editText.setText(message, TextView.BufferType.EDITABLE);
     }
 
+    /**
+     * Handles the logout action
+     * @param view
+     */
     public void clickLogout(View view) {
         // handle user logout
         App.getAppInstance().logoutUser();
@@ -135,6 +125,25 @@ public class WelcomeScreen extends UIScreen {
         } catch (ParseException e) {
             displayErrorToast("Unable to obtain valid suspension date for Chef");
             Log.e("showSuspensionMessage", "Unable to parse chef suspension date: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Method used when testing orders
+     */
+    private void testOrder() {
+        // if current user is client
+        if (App.getClient() != null) {
+            Button testOrderBtn = (Button) findViewById(R.id.testOrderBtn);
+            testOrderBtn.setVisibility(View.VISIBLE);
+
+            // test order
+            testOrderBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getApplicationContext(), TestOrdersActivity.class));
+                }
+            });
         }
     }
 
