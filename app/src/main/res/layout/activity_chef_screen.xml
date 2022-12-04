@@ -56,6 +56,7 @@
             android:layout_toLeftOf="@id/logout_btn_chef"
             android:layout_toRightOf="@id/mealer_logo"
             android:fontFamily="sans-serif-medium"
+            android:maxHeight="56dp"
             android:text="Welcome! You are logged in as Chef"
             android:textColor="@color/white"
             android:textSize="16sp"

@@ -48,7 +48,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
     private EditText quantityText;
 
     // counter for quantity
-    int totalQuantityCounter = 0;
+    int totalQuantityCounter = 1;
     // flag to track if item needs to be added to the cart
     boolean addToCart = true;
 
@@ -100,7 +100,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
         minusButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (totalQuantityCounter != 0) {
+                if (totalQuantityCounter != 1) {
                     totalQuantityCounter--;
                     updateUI();
                 }
@@ -118,6 +118,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
         // Variable Declaration
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.mealer);
         builder.setCancelable(true);
         builder.setTitle("Please confirm your selection");
 
