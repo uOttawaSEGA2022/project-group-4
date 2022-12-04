@@ -111,10 +111,33 @@ public class Client extends User {
      */
     public void updateOrderItem(OrderItem orderItem) {
         if (orderItem.getQuantity() == 0) {
-            this.cart.remove(orderItem);
+            removeFromCart(orderItem); //calling helper method to remove item
         } else {
             this.cart.put(orderItem, true);
         }
+    }
+
+    /**
+     * this helper method overrides the remove method for the cart map
+     * and uses the custom equals method for comparing order items
+     * @param orderItem the item to be removed from cart
+     */
+    private void removeFromCart(OrderItem orderItem) {
+
+        // Process: looping through the cart
+        for (OrderItem oi : this.cart.keySet()) {
+
+            // Process: find the key
+            if (oi.equals(orderItem)) { //equals
+
+                this.cart.remove(oi, true); //removing from cart
+
+                break; //stop loop
+
+            }
+
+        }
+
     }
 
     /**

@@ -29,7 +29,7 @@ public class OrderItem implements Serializable {
         this.quantity = quantity;
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object o) {
 
         // Process: checking if comparing to self
@@ -50,5 +50,5 @@ public class OrderItem implements Serializable {
         // Output: checking if ids are the same
         return orderItem.getSearchMealItem().getId().equals(this.getSearchMealItem().getId());
 
-    }*/
+    }
 }
