@@ -127,21 +127,26 @@
         android:id="@+id/dismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:layout_marginEnd="276dp"
         android:layout_marginBottom="48dp"
         android:text="@string/dismiss"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/ban_permament"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="48dp"
         android:text="@string/ban_permanent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/ban_chef"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dismiss"
         tools:ignore="TextContrastCheck" />
 
     <Button
@@ -150,11 +155,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginLeft="116dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="36dp"
         android:gravity="center|right"
         android:onClick="openDatePicker"
         android:text="@string/ban_chef"
-        app:layout_constraintBottom_toTopOf="@+id/ban_permament"
+        app:layout_constraintBottom_toTopOf="@id/ban_permament"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/dismiss"
         tools:ignore="TextContrastCheck" />
 
