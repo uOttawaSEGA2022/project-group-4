@@ -15,18 +15,23 @@ import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.handlers.InboxHandler;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.inbox.Complaint;
+import com.example.mealer_project.data.sources.actions.OrderActions;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersAdapterClient;
 import com.example.mealer_project.utils.Utilities;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class MakeComplaint extends UIScreen implements StatefulView {
     Order orderData;
+    Order trueOrder;
 
     ComplaintEntityModel complaint;
     EditText titleText;
@@ -85,6 +90,21 @@ public class MakeComplaint extends UIScreen implements StatefulView {
 
         complaint = new ComplaintEntityModel(null, title, description, clientID, chefID, date);
         App.getInboxHandler().addNewComplaint(complaint, this);
+
+        Toast.makeText(getApplicationContext(), "Complaint Sent!", Toast.LENGTH_LONG).show();
+        orderData.setComplaintSubmitted(true);
+        List<Order> orders = ((Client) App.getUser()).ORDERS.getCompletedOrders();
+        for (int x = 0; x < orders.size(); x++){
+            if (orders.get(x).getOrderID().equals(orderData.getOrderID())){
+                trueOrder = orders.get(x);
+                trueOrder.setComplaintSubmitted(true);
+                Log.e("Order status", String.valueOf(trueOrder.isComplaintSubmitted()) + " " + String.valueOf(trueOrder.getOrderID()) + " " + String.valueOf(orderData.getOrderID()));
+
+            }
+        }
+        Log.e("Order status", String.valueOf(trueOrder.isComplaintSubmitted()) + " " + String.valueOf(trueOrder.getOrderID()) + " " + String.valueOf(orderData.getOrderID()));
+        App.getPrimaryDatabase().ORDERS.updateComplaintStatus(trueOrder);
+        this.finish();
     }
 
     //sets the values of the order information
@@ -109,8 +129,8 @@ public class MakeComplaint extends UIScreen implements StatefulView {
      */
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-        displaySuccessToast("Complaint Sent!");
-        this.finish();
+        App.getAppInstance().getCompletedOrdersScreen().notifyDataChanged();
+        displaySuccessToast((String) payload);
     }
 
     /**

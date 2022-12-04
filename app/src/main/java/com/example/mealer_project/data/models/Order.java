@@ -27,6 +27,7 @@ public class Order implements Serializable {
     private boolean isCompleted;
     private boolean isRated;
     private double rating;
+    private boolean complaintSubmitted;
 
     // Constructor Methods--------------------------------------------------------------------------------------
 
@@ -42,6 +43,7 @@ public class Order implements Serializable {
         this.setIsCompleted(false);
         this.setIsRated(false);
         this.setRating(0);
+        this.setComplaintSubmitted(false);
     }
 
     /**
@@ -66,6 +68,7 @@ public class Order implements Serializable {
         this.setIsCompleted(false);
         this.setIsRated(isRated);
         this.setRating(rating);
+        this.setComplaintSubmitted(false);
     }
 
     //----------------------------------------------------------------------------------------------------------
@@ -148,6 +151,10 @@ public class Order implements Serializable {
 
 
     //----------------------------------------------------------------------------------------------------------
+
+    public boolean isComplaintSubmitted(){return complaintSubmitted;}
+
+    public void setComplaintSubmitted(boolean complaintSubmitted){ this.complaintSubmitted = complaintSubmitted;}
     /**
      * Sets the value of the order ID
      * @param orderID
