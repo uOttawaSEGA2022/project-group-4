@@ -75,6 +75,7 @@ public class OrderActions {
             databaseOrder.put("meals", order.getMeals());
             databaseOrder.put("isRated", order.isRated());
             databaseOrder.put("rating", order.getRating());
+            databaseOrder.put("complaintSubmitted", order.isComplaintSubmitted());
 
             // Add order to Orders Collection
             database
@@ -239,6 +240,27 @@ public class OrderActions {
                     .update("isPending", order.getIsPending(),
                                 "isRejected", order.getIsRejected(),
                                 "isCompleted", order.getIsCompleted())
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            App.ORDER_HANDLER.handleActionSuccess(UPDATE_ORDER,order);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            App.ORDER_HANDLER.handleActionFailure(UPDATE_ORDER,"Error updating order in firebase");
+                        }
+                    });
+        }
+    }
+
+    public void updateComplaintStatus(Order order){
+        if (Preconditions.isNotNull(order)) {
+
+            database.collection(ORDER_COLLECTION)
+                    .document(order.getOrderID())
+                    .update("complaintSubmitted", order.isComplaintSubmitted())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -463,6 +485,11 @@ public class OrderActions {
         newOrder.setIsRejected((Boolean)document.getData().get("isRejected"));
         newOrder.setIsRated((Boolean)document.getData().get("isRated"));
         newOrder.setRating(((Number)document.getData().get("rating")).doubleValue());
+        if (document.getData().get("complaintSubmitted") != null){
+            newOrder.setComplaintSubmitted((Boolean)document.getData().get("complaintSubmitted"));
+        }else{
+            newOrder.setComplaintSubmitted((Boolean) false);
+        }
 
         Map<String,Object> chefData = (Map<String, Object>) document.getData().get("chefInfo");
         Map<String,Object> clientData = (Map<String, Object>) document.getData().get("clientInfo");
