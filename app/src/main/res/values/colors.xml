@@ -24,4 +24,5 @@
     <color name="list_item">#FFEDECEC</color>
     <color name="reject_colour">#88b15b</color>
     <color name="accept_colour">#47894B</color>
+    <color name="search_header">#D2FAE6</color>
 </resources>
