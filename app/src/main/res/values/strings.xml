@@ -21,6 +21,7 @@
     <string name="logoDescription">an image of our logo</string>
     <string name="title">Mealer</string>
     <string name="signUpBtn">SIGN UP</string>
+    <string name="sign_up_underline"><u>Sign up</u></string>
     <string name="loginBtn">LOG IN</string>
     <string name="complaint_header">Complaint Title Here</string>
     <string name="client_name">Client:</string>
@@ -117,7 +118,7 @@
     <string name="total_cost_default_amount">0</string>
     <string name="pay_using_label">Pay using:</string>
     <string name="default_client_card_info">unable to load card</string>
-    <string name="search">Search</string>
+    <string name="search">Food, drinks, etc.</string>
     <string name="your_orders">Your Orders</string>
     <string name="chefRatingBarDescription">This is the rating for the chef</string>
     <string name="chefRatingLabel">Chef Rating:</string>
@@ -126,4 +127,5 @@
     <string name="mealDescription">Meal Description</string>
     <string name="description">Description</string>
     <string name="mealName">Meal Name</string>
+    <string name="no_account">Don\'t have an account?</string>
 </resources>

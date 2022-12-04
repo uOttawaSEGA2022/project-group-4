@@ -52,7 +52,7 @@ public class User {
      * @param userData A UserEntityModel object representing non-validated user data
      * @param userAddress an Address object representing validated address data
      */
-    public User(UserEntityModel userData, Address userAddress)  throws IllegalArgumentException {
+    public User(UserEntityModel userData, Address userAddress) throws IllegalArgumentException {
         // instantiate User's data members
         // using setters to enable validation of incoming data
         this.setFirstName(userData.getFirstName());
@@ -204,7 +204,7 @@ public class User {
         // Process: checking if email is valid
         if (validateEmail(email)) { //valid
 
-            this.email = email; //setting email
+            this.email = email.trim(); //setting email + trimming any whitespaces (before or after)
 
         }
         else {
@@ -260,7 +260,7 @@ public class User {
 
             // Output:
             throw new IllegalArgumentException(errorMsg);
-            
+
             }
         }
 

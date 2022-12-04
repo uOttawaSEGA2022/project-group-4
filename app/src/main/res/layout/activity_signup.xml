@@ -73,6 +73,7 @@
                 android:inputType="textPersonName"
                 android:minHeight="50dp"
                 android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -88,6 +89,7 @@
                 android:inputType="textPersonName"
                 android:minHeight="50dp"
                 android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -103,6 +105,7 @@
                 android:inputType="textEmailAddress"
                 android:minHeight="50dp"
                 android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -119,6 +122,7 @@
                 android:minHeight="50dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/green_darker"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -135,6 +139,7 @@
                 android:minHeight="50dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/green_darker"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -151,6 +156,7 @@
                 android:minHeight="50dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/green_darker"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -176,6 +182,7 @@
                     android:paddingLeft="10dp"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/green_darker"
+                    android:textColorHint="@color/green_darker"
                     tools:ignore="TextContrastCheck" />
 
                 <EditText
@@ -192,6 +199,7 @@
                     android:minHeight="50dp"
                     android:textColor="@color/black"
                     android:textColorHighlight="@color/green_darker"
+                    android:textColorHint="@color/green_darker"
                     tools:ignore="TextContrastCheck"
                     tools:paddingLeft="10dp" />
             </LinearLayout>
@@ -208,6 +216,7 @@
                 android:inputType="textPostalAddress"
                 android:minHeight="50dp"
                 android:textColor="@color/black"
+                android:textColorHint="@color/green_darker"
                 tools:ignore="TextContrastCheck"
                 tools:paddingLeft="10dp" />
 
@@ -229,6 +238,7 @@
                     android:padding="0dp"
                     android:text="Registering as:"
                     android:textColor="@color/colorDefaultText"
+                    android:textColorHint="@color/green_darker"
                     android:textSize="18sp" />
 
                 <LinearLayout
@@ -284,6 +294,7 @@
                     android:padding="0dp"
                     android:text="About yourself:"
                     android:textColor="@color/colorDefaultText"
+                    android:textColorHint="@color/green_darker"
                     android:textSize="18sp" />
 
                 <EditText
@@ -338,6 +349,7 @@
                     android:padding="0dp"
                     android:text="Add Credit Card Information:"
                     android:textColor="@color/colorDefaultText"
+                    android:textColorHint="@color/green_darker"
                     android:textSize="18sp" />
 
                 <LinearLayout
@@ -360,7 +372,8 @@
                         android:inputType="textPersonName"
                         android:minHeight="50dp"
                         android:paddingLeft="10dp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/green_darker" />
 
                     <EditText
                         android:id="@+id/signupCreditCardNumber"
@@ -374,7 +387,8 @@
                         android:inputType="number"
                         android:minHeight="50dp"
                         android:paddingLeft="10dp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/green_darker" />
 
                     <EditText
                         android:id="@+id/signupCreditCardName"
@@ -389,6 +403,7 @@
                         android:minHeight="50dp"
                         android:paddingLeft="10dp"
                         android:textColor="@color/black"
+                        android:textColorHint="@color/green_darker"
                         tools:paddingLeft="10dp" />
 
                     <LinearLayout
@@ -414,7 +429,8 @@
                             android:maxLength="2"
                             android:minHeight="50dp"
                             android:paddingLeft="10dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/green_darker" />
 
                         <EditText
                             android:id="@+id/signupCreditCardYear"
@@ -432,7 +448,8 @@
                             android:maxLength="2"
                             android:minHeight="50dp"
                             android:paddingLeft="10dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/green_darker" />
 
                         <EditText
                             android:id="@+id/signupCreditCardCVC"
@@ -448,7 +465,8 @@
                             android:maxLength="3"
                             android:minHeight="50dp"
                             android:paddingLeft="10dp"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/green_darker" />
                     </LinearLayout>
 
                 </LinearLayout>
