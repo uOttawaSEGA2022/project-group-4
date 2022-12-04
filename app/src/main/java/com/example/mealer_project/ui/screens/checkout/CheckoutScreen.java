@@ -85,6 +85,8 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         builder.setTitle("Are you sure you wish to continue?");
+        // set the icon for the alert dialog
+        builder.setIcon(R.drawable.mealer);
 
         /* onClick logic for checkout button
         you add all the cart order items to the order and call order handler */

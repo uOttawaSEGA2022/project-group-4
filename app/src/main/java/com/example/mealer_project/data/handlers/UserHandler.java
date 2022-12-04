@@ -19,6 +19,7 @@ import com.example.mealer_project.ui.screens.SignupScreen;
 import com.example.mealer_project.utils.Response;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class UserHandler {
@@ -141,15 +142,21 @@ public class UserHandler {
      * Method to update chef (check if date has passed)
      * @param chef Chef involved with complaint
      */
-    public void updateChef(Chef chef){
+    public void updateChefSuspension(Chef chef){
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(chef.getSuspensionDate());
 
         if (chef.getSuspensionDate() != null) { //not suspended
-            if (new Date().after(chef.getSuspensionDate())) { // if the date has passed, we change info in firebase
+
+            if (calendar.before(Calendar.getInstance())) { // if the date has passed, we change info in firebase
                 chef.setIsSuspended(false);
                 chef.setSuspensionDate(null);
                 App.getPrimaryDatabase().USER.updateChefSuspension(chef.getUserId(), false, null);
             }
+
         }
+
     }
 
     public void getClientAndChefNamesByIds(String clientId, String chefId, ComplaintScreen complaintScreen) {

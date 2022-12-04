@@ -21,7 +21,7 @@
     <color name="colorSecondaryText">#FFFFFF</color>
     <color name="background">#FFFFFF</color>
     <color name="backgroundSecondary">#424549</color>
-    <color name="list_item">#FFFFFF</color>
+    <color name="list_item">#FFEDECEC</color>
     <color name="reject_colour">#88b15b</color>
     <color name="accept_colour">#47894B</color>
 </resources>

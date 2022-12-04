@@ -7,7 +7,10 @@ import com.example.mealer_project.data.entity_models.UserEntityModel;
  * Parent class of Client, Chef and Admin
  */
 public class User {
+
+    // store error values
     private String errorMsg = "";
+    //
     protected String firstName;
     protected String lastName;
     protected String email;
@@ -24,14 +27,15 @@ public class User {
 
     /**
      * Create a User object
+     *
      * @param firstName First name of the user
-     * @param lastName Last name of the user
-     * @param email email of the user
-     * @param password password for the user
-     * @param address address of the user
-     * @param role Role of the user
+     * @param lastName  Last name of the user
+     * @param email     email of the user
+     * @param password  password for the user
+     * @param address   address of the user
+     * @param role      Role of the user
      */
-    public User(String firstName, String lastName, String email, String password, Address address, UserRoles role)  throws IllegalArgumentException {
+    public User(String firstName, String lastName, String email, String password, Address address, UserRoles role) throws IllegalArgumentException {
         // instantiate User's data members
         // using setters to enable validation of incoming data
         this.setFirstName(firstName);
@@ -49,7 +53,8 @@ public class User {
 
     /**
      * Create a User object
-     * @param userData A UserEntityModel object representing non-validated user data
+     *
+     * @param userData    A UserEntityModel object representing non-validated user data
      * @param userAddress an Address object representing validated address data
      */
     public User(UserEntityModel userData, Address userAddress) throws IllegalArgumentException {
@@ -67,13 +72,14 @@ public class User {
 
     /**
      * Constructor for creating an instance of Admin (which only requires certain attributes)
-     * @param userId user id of admin
+     *
+     * @param userId    user id of admin
      * @param firstName First name of the admin
-     * @param lastName Last name of the admin
-     * @param email email of the admin
-     * @param role role of the user
+     * @param lastName  Last name of the admin
+     * @param email     email of the admin
+     * @param role      role of the user
      */
-    protected User(String userId,String firstName, String lastName, String email, UserRoles role) {
+    protected User(String userId, String firstName, String lastName, String email, UserRoles role) {
         if (role != UserRoles.ADMIN) {
             throw new IllegalArgumentException("Invalid role. This constructor only supports users of type Admin");
         }
@@ -88,6 +94,7 @@ public class User {
 
     /**
      * Get user's first name
+     *
      * @return String representing user's first name
      */
     public String getFirstName() {
@@ -96,6 +103,7 @@ public class User {
 
     /**
      * Set user's first name
+     *
      * @param firstName String representing user's first name
      */
     public void setFirstName(String firstName) {
@@ -104,8 +112,7 @@ public class User {
 
             this.firstName = firstName; //setting name
 
-        }
-        else { //invalid
+        } else { //invalid
 
             // Output: error message
             throw new IllegalArgumentException("Invalid first name");
@@ -118,11 +125,8 @@ public class User {
      * this helper method checks and validates the first/last names
      * or city/country name
      *
-     * @param name
-     *  the name inputted
-     *
-     * @return
-     *  whether the name is valid
+     * @param name the name inputted
+     * @return whether the name is valid
      */
     private boolean validateName(String name) {
 
@@ -150,8 +154,7 @@ public class User {
 
             return true;
 
-        }
-        else { //nothing inputted
+        } else { //nothing inputted
 
             return false;
 
@@ -161,6 +164,7 @@ public class User {
 
     /**
      * Get user's last name
+     *
      * @return String representing user's last name
      */
     public String getLastName() {
@@ -169,6 +173,7 @@ public class User {
 
     /**
      * Set user's last name
+     *
      * @param lastName String representing user's last name
      */
     public void setLastName(String lastName) {
@@ -177,8 +182,7 @@ public class User {
 
             this.lastName = lastName; //setting name
 
-        }
-        else { //invalid
+        } else { //invalid
 
             // Output: error message
             throw new IllegalArgumentException("Invalid last name");
@@ -189,6 +193,7 @@ public class User {
 
     /**
      * Get user's email address
+     *
      * @return String representing user's email address
      */
     public String getEmail() {
@@ -197,6 +202,7 @@ public class User {
 
     /**
      * Set user's email address
+     *
      * @param email String representing user's email address
      */
     public void setEmail(String email) {
@@ -206,8 +212,7 @@ public class User {
 
             this.email = email.trim(); //setting email + trimming any whitespaces (before or after)
 
-        }
-        else {
+        } else {
 
             // Output: error msg
             throw new IllegalArgumentException("Invalid email address");
@@ -218,13 +223,10 @@ public class User {
     /**
      * this helper method checks and validates the email address inputted by the user
      *
-     * @param email
-     *  the email entered
-     *
-     * @return
-     *  whether the email is valid
+     * @param email the email entered
+     * @return whether the email is valid
      */
-   private boolean validateEmail(String email) {
+    private boolean validateEmail(String email) {
 
         // Variable Declaration
         String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
@@ -234,8 +236,7 @@ public class User {
             // Process: checking if email matches the email pattern
             return email.matches(emailPattern);
 
-        }
-        else { //empty field
+        } else { //empty field
 
             return false;
 
@@ -245,21 +246,22 @@ public class User {
 
     /**
      * Set user's password
+     *
      * @param password String representing user's password
      */
     public void setPassword(String password) {
 
-        if (password!= null){
+        if (password != null) {
             // Process: validating password
             if (validatePassword(password)) { //valid
 
                 this.password = password;
 
-            }
-            else { //invalid
+            } else { //invalid
 
-            // Output:
-            throw new IllegalArgumentException(errorMsg);
+                // Output:
+                throw new IllegalArgumentException(errorMsg);
+                //throw new IllegalArgumentException("password");
 
             }
         }
@@ -269,11 +271,8 @@ public class User {
     /**
      * this helper method checks and validates the password inputted by the user
      *
-     * @param password
-     *  the password entered
-     *
-     * @return
-     *  whether password is valid
+     * @param password the password entered
+     * @return whether password is valid
      */
     private boolean validatePassword(String password) {
 
@@ -330,37 +329,32 @@ public class User {
 
                 return false;
 
-            }
-            else if (!hasCapital) {
+            } else if (!hasCapital) {
 
                 errorMsg = "Password must contain at least 1 capital letter.";
 
                 return false;
 
 
-            }
-            else if (!hasNumber) {
+            } else if (!hasNumber) {
 
                 errorMsg = "Password must contain at least 1 number.";
 
                 return false;
 
-            }
-            else if (!hasSpecial) {
+            } else if (!hasSpecial) {
 
                 errorMsg = "Password must contain at least 1 special character.";
 
                 return false;
 
-            }
-            else { //valid
+            } else { //valid
 
                 return true;
 
             }
 
-        }
-        else { //not long enough
+        } else { //not long enough
 
             errorMsg = "Password must be at least 8 characters long.";
 
@@ -372,6 +366,7 @@ public class User {
 
     /**
      * Get user's address
+     *
      * @return String representing user's address
      */
     public Address getAddress() {
@@ -380,6 +375,7 @@ public class User {
 
     /**
      * Set user's address
+     *
      * @param address String representing user's address
      * @throws IllegalArgumentException
      */
@@ -389,8 +385,7 @@ public class User {
 
             this.address = address;
 
-        }
-        else {
+        } else {
 
             throw new IllegalArgumentException(errorMsg);
 
@@ -409,20 +404,16 @@ public class User {
         if (streetAd.length() == 0) {
             errorMsg = "Street address cannot be empty";
             return false;
-        }
-        else if (postalCode.length() == 0) {
+        } else if (postalCode.length() == 0) {
             errorMsg = "Postal code cannot be empty";
             return false;
-        }
-        else if (city.length() == 0) {
+        } else if (city.length() == 0) {
             errorMsg = "City cannot be empty";
             return false;
-        }
-        else if (country.length() == 0) {
+        } else if (country.length() == 0) {
             errorMsg = "Country cannot be empty";
             return false;
-        }
-        else { //not empty
+        } else { //not empty
 
             // variable declaration for street address
             char[] charsInStreet = streetAd.toCharArray();
@@ -438,13 +429,11 @@ public class User {
 
                     hasLetters = true; //updating flag
 
-                }
-                else if (Character.isDigit(charsInStreet[i])) { //is number
+                } else if (Character.isDigit(charsInStreet[i])) { //is number
 
                     hasNumber = true; //updating flag
 
-                }
-                else { //is special char
+                } else { //is special char
 
                     if (charsInStreet[i] == 32 || charsInStreet[i] == 45 ||
                             charsInStreet[i] == 46) { //space, hyphen, or period
@@ -452,8 +441,7 @@ public class User {
                         errorMsg = "Invalid characters in street address";
                         hasInvalidSpecial = false; //updating flag
 
-                    }
-                    else { //invalid special char
+                    } else { //invalid special char
 
                         hasInvalidSpecial = true; //updating flag
 
@@ -469,8 +457,7 @@ public class User {
                 // Process: checking for incomplete address or special chars
                 if (hasInvalidSpecial) { //wrong chars
                     errorMsg = "Invalid characters in street address";
-                }
-                else {
+                } else {
                     errorMsg = "Invalid street address";
                 }
                 return false;
@@ -506,6 +493,7 @@ public class User {
 
     /**
      * Get user's id
+     *
      * @return String representing user's id
      */
     public String getUserId() {
@@ -514,6 +502,7 @@ public class User {
 
     /**
      * Set user's id
+     *
      * @param userId String representing user's id
      */
     public void setUserId(String userId) {
@@ -522,6 +511,7 @@ public class User {
 
     /**
      * Get user's role
+     *
      * @return String representing user's role
      */
     public UserRoles getRole() {
@@ -530,6 +520,7 @@ public class User {
 
     /**
      * Set user's role
+     *
      * @param role one of the values of UserRoles
      */
     public void setRole(UserRoles role) {

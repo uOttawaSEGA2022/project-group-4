@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -369,10 +370,6 @@ public class OrderScreen extends UIScreen implements StatefulView {
         TextView priceText = (TextView) findViewById(R.id.order_price_of_meal);
         priceText.setText("$ ".concat(df.format(this.mealData.getPrice())));
 
-        // sets the text for the chef's name
-        TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
-        chefNameText.setText(String.valueOf(this.chefData.getChefName()));
-
         // sets the text for the meal type
         TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);
         mealTypeText.setText(this.mealData.getMealType());
@@ -398,6 +395,18 @@ public class OrderScreen extends UIScreen implements StatefulView {
         // sets the text for description
         TextView descriptionText = (TextView) findViewById(R.id.order_msg_description);
         descriptionText.setText(this.mealData.getDescription());
+
+        //// Chef's details
+
+        // sets the text for the chef's name
+        TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
+        chefNameText.setText(String.valueOf(this.chefData.getChefName()));
+
+        // chef's address
+        ((TextView) findViewById(R.id.os_chef_address)).setText(this.chefData.getChefAddress().toString());
+
+        // chef's rating
+        ((RatingBar) findViewById(R.id.os_chef_rating)).setRating((float) this.chefData.getChefRating());
     }
 
     private void updateOrderQuantity() {
