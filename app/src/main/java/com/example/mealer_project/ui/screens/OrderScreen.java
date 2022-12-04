@@ -241,6 +241,9 @@ public class OrderScreen extends UIScreen implements StatefulView {
                             this.totalQuantityCounter = orderItem.getQuantity();
                             // set add to cart as false, so we only allow remove from cart
                             this.addToCart = false;
+                            // making quantity buttons to unclickable
+                            plusButton.setClickable(false);
+                            minusButton.setClickable(false);
                             // display the order quantity
                             updateUI();
                         }

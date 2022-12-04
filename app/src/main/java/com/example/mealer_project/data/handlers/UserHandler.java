@@ -28,7 +28,9 @@ public class UserHandler {
      * DB Operations handled by this handler
      */
     public enum dbOperations {
-        USER_LOG_IN
+        USER_LOG_IN,
+        GET_CLIENT_AND_CHEF_NAMES,
+        GET_CHEF_SUSPENSION_DATE
     };
 
     /**

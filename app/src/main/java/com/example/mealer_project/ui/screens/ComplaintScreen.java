@@ -12,11 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.models.Admin;
+import com.example.mealer_project.data.handlers.UserHandler;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
@@ -38,9 +39,8 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     Complaint complaintData;
     String[] clientAndChefNames;
     public final static String INFINITE_SUSPENSION_DATE = "01/01/9999";
-    public enum dbOperations {
-      GET_CLIENT_AND_CHEF_NAMES
-    };
+    // store chef's suspension date if chef already suspended
+    private String chefSuspensionDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         dismissButton = (Button) findViewById(R.id.dismiss);
         banTempButton = (Button) findViewById(R.id.ban_chef);
         banPermButton = (Button) findViewById(R.id.ban_permament);
-        backButton = (ImageButton) findViewById(R.id.complaintScreenBackBtn);
+        backButton = (ImageButton) findViewById(R.id.cs_button_back);
 
         // get the complaint data
         try {
@@ -75,6 +75,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 datePickerDialog = new DatePickerDialog(ComplaintScreen.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, dateSetListener, year, month, day);
+                datePickerDialog.getDatePicker().setMinDate(cal.getTimeInMillis());
                 datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 datePickerDialog.show();
             }
@@ -83,9 +84,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         banPermButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 suspendChef(INFINITE_SUSPENSION_DATE);
-                App.getAppInstance().getAdminScreen().updateUI();
             }});
 
         dateSetListener = new DatePickerDialog.OnDateSetListener(){
@@ -128,11 +127,17 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
 
     @Override
     public void updateUI() {
-        try {
-            updateComplaintScreen(complaintData.getTitle(), clientAndChefNames[0], clientAndChefNames[1], complaintData.getOrderId(), complaintData.getDescription());
-        }catch (Exception e) {
-            Log.e("ComplaintScreen", "unable to create complaint object");
-            displayErrorToast("Unable to display complaint!");
+        // if we have now received both client and chef names
+        if (
+                Preconditions.isNotEmptyString(clientAndChefNames[0]) &&
+                Preconditions.isNotEmptyString(clientAndChefNames[1])
+        ) {
+            try {
+                updateComplaintScreen(complaintData.getTitle(), clientAndChefNames[0], clientAndChefNames[1], complaintData.getOrderId(), complaintData.getDescription());
+            }catch (Exception e) {
+                Log.e("ComplaintScreen", "unable to create complaint object");
+                displayErrorToast("Unable to display complaint!");
+            }
         }
     }
 
@@ -166,6 +171,22 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         // sets the text for description
         TextView textDescription = (TextView)findViewById(R.id.complaintDescription);
         textDescription.setText(description);
+
+        // if chef is suspended display suspension date
+        displayChefSuspensionDate();
+    }
+
+    // if chef is suspended, then show Admin the chef's suspension date
+    private void displayChefSuspensionDate() {
+        // if there is chef suspension date
+        TextView csChefSuspension = (TextView) findViewById(R.id.csChefSuspensionInfo);
+        if (this.chefSuspensionDate != null && !this.chefSuspensionDate.isEmpty() && !this.chefSuspensionDate.equalsIgnoreCase("null")) {
+            String chefSuspended = "Chef is already suspended until: " + this.chefSuspensionDate;
+            csChefSuspension.setText(chefSuspended);
+            csChefSuspension.setVisibility(View.VISIBLE);
+        } else {
+            csChefSuspension.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -193,8 +214,12 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
      */
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-        if (dbOperation == dbOperations.GET_CLIENT_AND_CHEF_NAMES) {
+        if (dbOperation == UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES) {
             handleNamesRetrievalSuccess((String) payload);
+        }
+
+        if (dbOperation == UserHandler.dbOperations.GET_CHEF_SUSPENSION_DATE) {
+            this.chefSuspensionDate = (String) payload;
         }
     };
 
@@ -203,7 +228,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
      */
     @Override
     public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-        if (dbOperation == dbOperations.GET_CLIENT_AND_CHEF_NAMES) {
+        if (dbOperation == UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES) {
             displayErrorToast((String) payload);
         }
     };
@@ -221,11 +246,6 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
             // set chef's name
             clientAndChefNames[1] = name;
         }
-
-        // if we have now received both client and chef names
-        if (Preconditions.isNotEmptyString(clientAndChefNames[0]) && Preconditions.isNotEmptyString(clientAndChefNames[1])) {
-            updateUI();
-        }
     }
 
     private void suspendChef(String suspensionDate) {
@@ -233,7 +253,6 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         App.getUserHandler().suspendChef(complaintData.getChefId(), suspensionDate);
         // remove the complaint
         App.getInboxHandler().removeComplaint(complaintData.getId());
-
         // take back to admin screen
         showNextScreen();
     }

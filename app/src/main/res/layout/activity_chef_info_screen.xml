@@ -113,7 +113,7 @@
 
                     <TextView
                         android:id="@+id/chef_location_title"
-                        android:layout_width="162dp"
+                        android:layout_width="160dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"
                         android:paddingStart="20dp"
@@ -147,13 +147,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:padding="20dp">
 
                     <TextView
                         android:id="@+id/chef_rating_title"
-                        android:layout_width="160dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
                         android:fontFamily="@font/nunito_sans"
+                        android:gravity="center_vertical"
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
                         android:text="Chef Rating:"
@@ -161,15 +163,15 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <RatingBar
                         android:id="@+id/chef_rating_msg"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nunito_sans"
-                        android:gravity="center_horizontal"
-                        android:text="@string/unable_to_get_info"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:layout_width="242dp"
+                        android:layout_height="42dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"
+                        android:stepSize="0.5" />
 
                 </LinearLayout>
 
@@ -214,13 +216,13 @@
                         android:fontFamily="@font/nunito_sans"
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
-                        android:text="Cuisine Type:"
+                        android:text="Meals Sold:"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/chef_cuisine_msg"
+                        android:id="@+id/chef_mealsSold_msg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_sans"

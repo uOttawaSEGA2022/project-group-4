@@ -433,20 +433,22 @@ public void getClientAndChefNamesByIds(String clientId, String chefId, Complaint
                             if (document.exists()) {
                                 if (document.getData() != null){
                                     complaintScreen.dbOperationSuccessHandler(
-                                                    ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
+                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
                                                     document.getData().get("firstName")
                                                     + " " +
                                                     document.getData().get("lastName")
                                             );
+                                    // inform complaint screen to update ui
+                                    complaintScreen.updateUI();
                                 } else {
                                     Log.e("getClientChefName", "document data null");
                                     complaintScreen.dbOperationFailureHandler(
-                                            ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
+                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                                 }
                             } else {
                                 Log.e("getClientChefName", "client not found for id: " + clientId);
                                 complaintScreen.dbOperationFailureHandler(
-                                        ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
+                                        UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                             }
                         } else {
                             Log.e(TAG, "getClientChefName failed with ", task.getException());
@@ -467,20 +469,26 @@ public void getClientAndChefNamesByIds(String clientId, String chefId, Complaint
                             if (document.exists()) {
                                 if (document.getData() != null){
                                     complaintScreen.dbOperationSuccessHandler(
-                                            ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
+                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
                                                     document.getData().get("firstName")
                                                             + " " +
                                                             document.getData().get("lastName")
                                             );
+                                    complaintScreen.dbOperationSuccessHandler(
+                                            UserHandler.dbOperations.GET_CHEF_SUSPENSION_DATE,
+                                            String.valueOf((document.getData().get("suspensionDate")))
+                                    );
+                                    // inform complaint screen to update ui
+                                    complaintScreen.updateUI();
                                 } else {
                                     Log.e("getClientChefName", "document data null");
                                     complaintScreen.dbOperationFailureHandler(
-                                            ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
+                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                                 }
                             } else {
                                 Log.e("getClientChefName", "chef not found for provided id: " + chefId);
                                 complaintScreen.dbOperationFailureHandler(
-                                        ComplaintScreen.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
+                                        UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                             }
                         } else {
                             Log.e(TAG, "getClientChefName failed with ", task.getException());

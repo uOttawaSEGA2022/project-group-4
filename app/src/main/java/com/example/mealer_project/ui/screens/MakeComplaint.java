@@ -15,18 +15,23 @@ import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
 import com.example.mealer_project.data.handlers.InboxHandler;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.inbox.Complaint;
+import com.example.mealer_project.data.sources.actions.OrderActions;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
+import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersAdapterClient;
 import com.example.mealer_project.utils.Utilities;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 public class MakeComplaint extends UIScreen implements StatefulView {
     Order orderData;
+    Order trueOrder;
 
     ComplaintEntityModel complaint;
     EditText titleText;
@@ -66,11 +71,7 @@ public class MakeComplaint extends UIScreen implements StatefulView {
         submitComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (titleText.getText().toString().length() > 0 && descriptionText.getText().toString().length() > 0){
-                    sendComplaint();
-                }else {
-                    Toast.makeText(getApplicationContext(), "Please fill in description and title!", Toast.LENGTH_LONG).show();
-                }
+                sendComplaint();
             }
         });
 
@@ -89,7 +90,17 @@ public class MakeComplaint extends UIScreen implements StatefulView {
 
         complaint = new ComplaintEntityModel(null, title, description, clientID, chefID, date);
         App.getInboxHandler().addNewComplaint(complaint, this);
+
         Toast.makeText(getApplicationContext(), "Complaint Sent!", Toast.LENGTH_LONG).show();
+        orderData.setComplaintSubmitted(true);
+        List<Order> orders = ((Client) App.getUser()).ORDERS.getCompletedOrders();
+        for (int x = 0; x < orders.size(); x++){
+            if (orders.get(x).getOrderID().equals(orderData.getOrderID())){
+                trueOrder = orders.get(x);
+                trueOrder.setComplaintSubmitted(true);
+            }
+        }
+        App.getPrimaryDatabase().ORDERS.updateComplaintStatus(trueOrder);
         this.finish();
     }
 
@@ -115,6 +126,7 @@ public class MakeComplaint extends UIScreen implements StatefulView {
      */
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
+        App.getAppInstance().getCompletedOrdersScreen().notifyDataChanged();
         displaySuccessToast((String) payload);
     }
 

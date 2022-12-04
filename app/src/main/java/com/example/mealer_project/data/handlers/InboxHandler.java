@@ -146,7 +146,7 @@ public class InboxHandler {
                // once complaint has been added to database, it will be added locally to AdminInbox by successAddingComplaint
                App.getPrimaryDatabase().INBOX.addComplaint(complaint, this);
           } catch (Exception e) {
-               errorAddingComplaint("Failed to create Complaint from ComplaintEntityModel: " + e.getMessage());
+               errorAddingComplaint(e.getMessage());
           }
 
           // make the async call to add complaint to database

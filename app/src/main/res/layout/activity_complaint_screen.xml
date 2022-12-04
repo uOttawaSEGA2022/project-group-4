@@ -8,16 +8,21 @@
     android:background="@color/background">
 
     <LinearLayout
+        android:id="@+id/cs_back_button_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/complaintScreenBackBtn"
+            android:id="@+id/cs_button_back"
             android:layout_width="48dp"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/back_button_margin"
+            android:layout_marginTop="@dimen/back_button_margin"
             android:background="#00FFFFFF"
             android:contentDescription="@string/back"
             android:scaleType="fitXY"
@@ -46,6 +51,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
+        android:paddingEnd="@dimen/text_margin"
         android:text="@string/client_name"
         android:textColor="@color/colorDefaultText"
         android:textSize="20dp"
@@ -60,6 +66,7 @@
         android:id="@+id/chefName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/text_margin"
         android:text="@string/chefs_name"
         android:textColor="@color/colorDefaultText"
         android:textSize="20dp"
@@ -98,6 +105,7 @@
         app:layout_constraintVertical_bias="0.553" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/descriptionTitle">
@@ -122,25 +130,44 @@
         </LinearLayout>
     </ScrollView>
 
+    <TextView
+        android:id="@+id/csChefSuspensionInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:hint="chef suspension info unavailable"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
     <Button
         android:id="@+id/dismiss"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
         android:layout_marginEnd="276dp"
         android:layout_marginBottom="48dp"
         android:text="@string/dismiss"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/ban_permament"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="48dp"
         android:text="@string/ban_permanent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/ban_chef"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dismiss"
         tools:ignore="TextContrastCheck" />
 
     <Button
@@ -149,11 +176,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginLeft="116dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="36dp"
         android:gravity="center|right"
         android:onClick="openDatePicker"
         android:text="@string/ban_chef"
-        app:layout_constraintBottom_toTopOf="@+id/ban_permament"
+        app:layout_constraintBottom_toTopOf="@id/ban_permament"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/dismiss"
         tools:ignore="TextContrastCheck" />
 
@@ -166,9 +195,7 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintRight_toRightOf="@id/clientName"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/clientName"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.386" />
 
@@ -182,8 +209,7 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.55"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/chefName"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.445" />
 
