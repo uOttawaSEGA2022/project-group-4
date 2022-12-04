@@ -1,6 +1,7 @@
 package com.example.mealer_project.ui.screens;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -218,7 +219,38 @@ public class SignupScreen extends UIScreen implements StatefulView {
         } else {
             // setting below false let's user submit signup form again
             setRegistrationInProgress(false);
-            displayErrorToast(response.getErrorMessage());
+            //displayErrorToast(response.getErrorMessage());
+            if (response.getErrorMessage().equals("password")) {
+                // initialise the alert dialog builder
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                // set the title for the alert dialog
+                builder.setTitle("Password Requirements");
+
+                // set the icon for the alert dialog
+                builder.setIcon(R.drawable.mealer);
+
+                // allows user to click outside of dialog to close screen
+                builder.setCancelable(true);
+
+                // message displayed
+                builder.setMessage("A good password should contain:\n\n" +
+                        "\u2022 at least 8 characters\n" +
+                        "\u2022 at least 1 capital\n" +
+                        "\u2022 at least 1 number\n" +
+                        "\u2022 at least 1 special character");
+
+                // handle the positive button of the dialog (does nothing)
+                builder.setPositiveButton("Okay", (dialog, which) -> {
+
+                });
+
+                // create and show the Alert Dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            else
+                displayErrorToast(response.getErrorMessage());
         }
     }
 
