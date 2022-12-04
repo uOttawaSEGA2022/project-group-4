@@ -99,7 +99,6 @@ public class AdminInbox implements Inbox {
      * @return Returns the complaint object which matched the provided complaint ID else false
      * @throws NullPointerException if provided complaint ID object is null
      */
-    @Override
     public Complaint getComplaint(String complaintId) throws NullPointerException {
         if (Preconditions.isNotEmptyString(complaintId)) {
             // return the complaint object if it exists, else null

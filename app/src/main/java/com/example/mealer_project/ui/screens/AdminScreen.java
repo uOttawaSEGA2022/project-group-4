@@ -82,8 +82,6 @@ public class AdminScreen extends UIScreen implements StatefulView {
 
     private void displayComplaints() {
         try {
-
-            App.getInboxHandler().updateAdminInbox(this);
             complaintsData = App.getAdminInbox().getListOfComplaints();
 
             Log.e("NUMBER COMPLAINTS", String.valueOf(complaintsData.size()));
@@ -98,7 +96,6 @@ public class AdminScreen extends UIScreen implements StatefulView {
         } catch (Exception e) {
             Log.e("displayComplaints", "unable to display complaints: " + e.getMessage());
         }
-
     }
 
     @Override

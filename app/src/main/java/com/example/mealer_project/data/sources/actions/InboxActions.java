@@ -38,12 +38,14 @@ public class InboxActions {
      * @param inboxHandler reference to instance of inbox handler to pass operation response
      */
     public void getAllComplaints(InboxHandler inboxHandler) {
+        Log.e("complaint", "called 1");
         // get all complaints from Firestore and once done, call appropriate method in inboxHandler
         database.collection(COMPLAINTS_COLLECTION).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     List<Complaint> complaints = new ArrayList<>();
+                    Log.e("complaint", "called 2");
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         try {
                             complaints.add(getComplaintObject(document.getId(), document.getData()));

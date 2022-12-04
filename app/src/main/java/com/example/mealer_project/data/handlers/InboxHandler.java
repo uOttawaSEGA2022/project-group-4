@@ -84,6 +84,7 @@ public class InboxHandler {
       * @param complaints list of complaints retrieved from database
       */
      public void createNewAdminInbox(List<Complaint> complaints){
+          Log.e("complaint", "called 3");
           // validate complaints
           if (Preconditions.isNotEmptyList(complaints)) {
                // instantiate a new admin inbox by providing it list of complaints
@@ -92,15 +93,22 @@ public class InboxHandler {
                     App.setAdminInbox(new AdminInbox(complaints));
                } catch (NullPointerException e) {
                     Log.e("createNewAdminInbox", "one of the complaints is null: " + e.getMessage());
-                    adminScreen.dbOperationFailureHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "Failed to load complaints");
+
+                    // guard-clause - make sure we have a valid instance of admin screen
+                    if (adminScreen == null) {
+                         Log.e("createNewAdminInbox", "adminScreen has not been instantiated yet, is null");
+                    } else {
+                         adminScreen.dbOperationFailureHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "Failed to load complaints");
+                    }
+
                } catch (Exception e) {
                     Log.e("createNewAdminInbox", "an exception occurred while creating Admin Inbox: " + e.getMessage());
-                    adminScreen.dbOperationFailureHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "Failed to load complaints");
-               }
-
-               // guard-clause - make sure we have a valid instance of admin screen
-               if (adminScreen == null) {
-                    Log.e("createNewAdminInbox", "adminScreen has not been instantiated yet, is null");
+                    // guard-clause - make sure we have a valid instance of admin screen
+                    if (adminScreen == null) {
+                         Log.e("createNewAdminInbox", "adminScreen has not been instantiated yet, is null");
+                    } else {
+                         adminScreen.dbOperationFailureHandler(AdminScreen.dbOperations.GET_COMPLAINTS, "Failed to load complaints");
+                    }
                }
 
                // call method in inboxView to update inbox so admin can see all complaints
