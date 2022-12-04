@@ -72,11 +72,11 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
     @Override
     public void updateUI() {
         try {
-            updateChefInfoScreen(chefData.getFirstName()+" "+chefData.getLastName(), chefData.getEmail(), chefData.getAddress(), chefData.getChefRating(), chefData.getDescription(),
-                    chefData.getNumOfOrdersSold(), chefData.getIsSuspended());
+            updateChefInfoScreen(chefData.getFirstName()+" "+chefData.getLastName(), chefData.getEmail(),
+                    chefData.getAddress(), chefData.getChefRating(), chefData.getDescription(), chefData.getIsSuspended());
         } catch (Exception e) {
-            Log.e("MealInfoScreen", "unable to create meal object :(");
-            displayErrorToast("Unable to retrieve the meal info!");
+            Log.e("ChefInfoScreen", "unable to create chef object :(");
+            displayErrorToast("Unable to retrieve the chef info!");
         }
     }
 
@@ -101,11 +101,10 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
      * @param location
      * @param chefRating
      * @param description
-     * @param totalMealsSold
      * @param isSuspended
      */
     public void updateChefInfoScreen(String name, String emailAddress, Address location, double chefRating,
-                                     String description, int totalMealsSold, boolean isSuspended) {
+                                     String description, boolean isSuspended) {
         //Setting the text for the chef's information
         TextView chefNameText = (TextView) findViewById(R.id.chef_name_msg);
         chefNameText.setText(name);
@@ -128,8 +127,8 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
         descriptionText.setText(description);
 
         // sets the text for cuisineType
-        TextView mealsSoldText = (TextView) findViewById(R.id.chef_mealsSold_msg);
-        mealsSoldText.setText(String.valueOf(totalMealsSold));
+        //TextView mealsSoldText = (TextView) findViewById(R.id.chef_mealsSold_msg);
+        //mealsSoldText.setText(String.valueOf(totalMealsSold));
 
         // sets the text for chef's availability
         TextView availabilityText = (TextView) findViewById(R.id.chef_availability_msg);
