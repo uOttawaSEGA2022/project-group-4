@@ -28,7 +28,7 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_info_screen);
-<<<<<<< HEAD
+
 
         // buttons for onClick methods
         chefInfoBackBtn = (ImageButton) findViewById(R.id.button_back5);
@@ -50,18 +50,17 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
             Log.e("MealInfoScreen", "unable to create meal object :(");
             displayErrorToast("Unable to retrieve the meal info!");
         }
-=======
+
         // buttons for onClick methods
-        backButton = (ImageButton) findViewById(R.id.button_back5);
+        chefInfoBackBtn = (ImageButton) findViewById(R.id.button_back5);
 
         // Process: calling helper method to attach listeners to all buttons
         attachOnClickListeners();
->>>>>>> 8c360ff150265ed99d744b0f984f77363fdbfd57
     }
 
     private void attachOnClickListeners(){
         // on click method for back button
-        backButton.setOnClickListener(new View.OnClickListener() {
+        chefInfoBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
