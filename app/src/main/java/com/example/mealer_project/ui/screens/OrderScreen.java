@@ -1,6 +1,8 @@
 package com.example.mealer_project.ui.screens;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -22,7 +25,13 @@ import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 
+import java.text.DecimalFormat;
+import java.util.Map;
+
 public class OrderScreen extends UIScreen implements StatefulView {
+
+    // format price to two decimal places
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     // store meals and chef data
     SearchMealItem sMItem;
@@ -91,8 +100,10 @@ public class OrderScreen extends UIScreen implements StatefulView {
         minusButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalQuantityCounter--;
-                updateUI();
+                if (totalQuantityCounter != 0) {
+                    totalQuantityCounter--;
+                    updateUI();
+                }
             }
         });
 
@@ -104,6 +115,11 @@ public class OrderScreen extends UIScreen implements StatefulView {
                 updateUI();
             }
         });
+
+        // Variable Declaration
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("Please confirm your selection");
 
         // on click method for adding or removing the meal from the cart
         addOrRemoveButton.setOnClickListener(new Button.OnClickListener() {
@@ -119,21 +135,85 @@ public class OrderScreen extends UIScreen implements StatefulView {
                 if (Preconditions.isNotNull(App.getClient())) {
                     // if adding item to the cart
                     if (addToCart) {
-                        // add order item to client's cart
-                        App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
-                        displaySuccessToast("item added to cart!");
+                        // Process: checking if cart is empty
+                        if (!App.getClient().getCart().isEmpty()) { //not empty
+
+                            // Variable Declaration
+                            Map.Entry<OrderItem, Boolean> entry = App.getClient().getCart().entrySet().iterator().next();
+                            OrderItem orderItem = entry.getKey();
+
+                            // Process: checking if random orderItem chef is same as current chef
+                            if (orderItem.getSearchMealItem().getChef().getChefName().equals(sMItem.getChef().getChefName())) { //same chef
+
+                                // add order item to client's cart
+                                App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                                displaySuccessToast("Item added to cart!");
+
+                                // finish the activity and return back
+                                setResult(Activity.RESULT_OK);
+                                finish();
+
+                            }
+                            else { //different chef
+
+                                // setting alert text
+                                builder.setMessage("This meal is offered by a different chef. Would you like to clear your cart and start a new order?");
+
+                                // Process: setting actions for pos/neg buttons
+                                builder.setPositiveButton("Start new order",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                App.getClient().clearCart(); //clearing cart
+
+                                                // add order item to client's cart
+                                                App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                                                displaySuccessToast("Item added to cart!");
+
+                                                // finish the activity and return back
+                                                setResult(Activity.RESULT_OK);
+                                                finish();
+
+                                            }
+                                        });
+                                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {}
+                                });
+
+                                AlertDialog dialogue = builder.create();
+
+                                dialogue.show();
+
+                            }
+
+                        }
+                        else { //empty cart
+
+                            // add order item to client's cart
+                            App.getClient().updateOrderItem(new OrderItem(sMItem, totalQuantityCounter));
+                            displaySuccessToast("Item added to cart!");
+
+                            // finish the activity and return back
+                            setResult(Activity.RESULT_OK);
+                            finish();
+
+                        }
+
                     }
                     // removing item from cart
                     else {
                         App.getClient().updateOrderItem(new OrderItem(sMItem, 0));
-                        displaySuccessToast("item removed from cart!");
+                        displaySuccessToast("Item removed from cart!");
+                        // finish the activity and return back
+                        setResult(Activity.RESULT_OK);
+                        finish();
                     }
                 } else {
                     displayErrorToast("Unable to update cart!");
                 }
-                // finish the activity and return back
-                setResult(Activity.RESULT_OK);
-                finish();
+
             }
         });
 
@@ -288,11 +368,7 @@ public class OrderScreen extends UIScreen implements StatefulView {
 
         // sets the text for price
         TextView priceText = (TextView) findViewById(R.id.order_price_of_meal);
-        priceText.setText("$ ".concat(String.valueOf(this.mealData.getPrice())));
-
-        // sets the text for the chef's name
-        TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
-        chefNameText.setText(String.valueOf(this.chefData.getChefName()));
+        priceText.setText("$ ".concat(df.format(this.mealData.getPrice())));
 
         // sets the text for the meal type
         TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);
@@ -319,6 +395,18 @@ public class OrderScreen extends UIScreen implements StatefulView {
         // sets the text for description
         TextView descriptionText = (TextView) findViewById(R.id.order_msg_description);
         descriptionText.setText(this.mealData.getDescription());
+
+        //// Chef's details
+
+        // sets the text for the chef's name
+        TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
+        chefNameText.setText(String.valueOf(this.chefData.getChefName()));
+
+        // chef's address
+        ((TextView) findViewById(R.id.os_chef_address)).setText(this.chefData.getChefAddress().toString());
+
+        // chef's rating
+        ((RatingBar) findViewById(R.id.os_chef_rating)).setRating((float) this.chefData.getChefRating());
     }
 
     private void updateOrderQuantity() {

@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.pending_orders;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -85,10 +85,11 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                 // Process: sending email to client that order has been rejected
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
-                        "REJECTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "REJECTED MEALER Order #: " + order.getOrderID().substring(0, 6),
                         "Hello " + order.getClientInfo().getClientName() + ",<br><br>" +
                                 "We regret to inform you that the following order has been rejected by Chef " + order.getChefInfo().getChefName()
-                                + ".<br><br>" + EMAIL_CONTENTS +
+                                + ".<br><br>" +
+                                EMAIL_CONTENTS +
                                 "<br><br><br>"
                                 + "Thank you for understanding.<br><br>MEALER Team");
             }
@@ -106,13 +107,13 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                 // Process: sending email to client that order has been accepted
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
-                        "ACCEPTED MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "ACCEPTED MEALER Order #: " + order.getOrderID().substring(0, 6),
                         "Hello " + order.getClientInfo().getClientName() + ",<br><br>" +
                                 "The following order has been accepted by Chef " + order.getChefInfo().getChefName() +
                                 ".<br><br>" +
                                 "You will receive another email notification when your order is ready for pick-up at " +
                                 order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
-                                order.getChefInfo().getChefAddress().getCity() +
+                                order.getChefInfo().getChefAddress().getCity() + " " +
                                 order.getChefInfo().getChefAddress().getPostalCode() +
                                 ".<br><br><br>" +
                                 EMAIL_CONTENTS +
@@ -129,7 +130,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
         ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
 

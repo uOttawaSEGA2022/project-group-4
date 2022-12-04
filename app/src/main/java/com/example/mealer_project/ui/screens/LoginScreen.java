@@ -1,11 +1,13 @@
 package com.example.mealer_project.ui.screens;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.R;
@@ -49,6 +51,21 @@ public class LoginScreen extends UIScreen implements StatefulView {
                     displayErrorToast(loginResponse.getErrorMessage());
                     setLoginInProcess(false);
                 }
+            }
+        });
+
+        Button signupBtn = (Button) findViewById(R.id.goSignUpBtn);
+        signupBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SignupScreen.class);
+                startActivity(intent);
+            }
+        });
+        ImageButton backBtn = (ImageButton)findViewById(R.id.back_btn4);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

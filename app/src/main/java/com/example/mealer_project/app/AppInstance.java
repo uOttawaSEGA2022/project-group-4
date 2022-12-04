@@ -10,7 +10,8 @@ import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 import com.example.mealer_project.ui.screens.ChefScreen;
-import com.example.mealer_project.ui.screens.PendingOrdersScreen;
+import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersScreen;
+import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersScreen;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,7 @@ public class AppInstance {
     private AdminInbox adminInbox;
     private MealsListScreen mealsListScreen;
     private PendingOrdersScreen pendingOrdersScreen;
+    private CompletedOrdersScreen completedOrdersScreen;
     private ChefScreen chefScreen;
 
     public AppInstance() {
@@ -111,6 +113,14 @@ public class AppInstance {
         this.chefScreen = chefScreen;
     }
 
+    public CompletedOrdersScreen getCompletedOrdersScreen() {
+        return completedOrdersScreen;
+    }
+
+    public void setCompletedOrdersScreen(CompletedOrdersScreen completedOrdersScreen) {
+        this.completedOrdersScreen = completedOrdersScreen;
+    }
+
     /**
      * Method to get logged in client's cart
      * @return Map containing order items if user is validated successfully, else an empty map
@@ -134,4 +144,5 @@ public class AppInstance {
         // sign user out
         FirebaseAuth.getInstance().signOut();
     }
+
 }

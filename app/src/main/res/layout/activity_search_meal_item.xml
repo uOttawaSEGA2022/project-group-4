@@ -25,7 +25,8 @@
         android:fontFamily="@font/nunito_sans"
         android:gravity="center_vertical"
         android:minHeight="50dp"
-        android:text="Meal Name"
+        android:text="@string/mealName"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -41,7 +42,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:fontFamily="@font/nunito_sans"
-        android:text="Description"
+        android:text="@string/description"
+        android:textColor="@color/black"
         android:textStyle="bold" />
 
     <TextView
@@ -50,7 +52,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunito_sans"
         android:minHeight="70dp"
-        android:text="Meal Description" />
+        android:text="@string/mealDescription"
+        android:textColor="@color/black" />
 
     <View
         android:id="@+id/divider2"
@@ -58,28 +61,26 @@
         android:layout_height="2dp"
         android:background="?android:attr/listDivider" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/smChefLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/smChefLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_vertical"
-                android:text="Chef: "
+                android:text="@string/chefLabel"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
             <TextView
@@ -90,17 +91,15 @@
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center_vertical"
                 android:minHeight="50dp"
-                android:text="Chef Name" />
+                android:text="@string/chefName"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <View
-            android:id="@+id/divider3"
-            android:layout_width="1dp"
-            android:layout_height="50dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toStartOf="@+id/smRatingLayout"
-            app:layout_constraintStart_toEndOf="@+id/smChefLayout"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/divider7"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
 
         <LinearLayout
             android:id="@+id/smRatingLayout"
@@ -108,31 +107,27 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:minHeight="50dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/smChefLayout"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/smRatingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:fontFamily="@font/nunito_sans"
-                android:text="Meal Rating: "
+                android:text="@string/chefRatingLabel"
+                android:textColor="@color/black"
                 android:textStyle="bold" />
 
-            <TextView
+            <RatingBar
                 android:id="@+id/smChefRating"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="@font/nunito_sans"
-                android:gravity="center_vertical"
-                android:minHeight="50dp"
-                android:text="★-★★★★★" />
+                android:layout_height="match_parent"
+                android:contentDescription='@string/chefRatingBarDescription'
+                android:isIndicator="true"
+                android:scaleX="0.6"
+                android:scaleY="0.6" />
         </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

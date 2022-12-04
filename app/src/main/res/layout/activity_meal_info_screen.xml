@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".ui.screens.MealInfoScreen">
 
     <ScrollView
@@ -20,8 +21,8 @@
                 android:id="@+id/back_btn"
                 android:layout_width="48dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="@dimen/back_button_margin"
+                android:layout_marginTop="@dimen/back_button_margin"
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/back"
                 android:scaleType="fitXY"
@@ -33,8 +34,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/baloo_bhai"
                 android:gravity="center"
-                android:paddingTop="40dp"
+                android:paddingTop="@dimen/title_padding"
                 android:text="Meal Name Here"
+                android:textColor="@color/colorDefaultText"
                 android:textSize="34sp" />
 
             <TextView
@@ -45,6 +47,7 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="@string/price"
+                android:textColor="@color/colorDefaultText"
                 android:textSize="16sp" />
 
             <RelativeLayout
@@ -60,6 +63,7 @@
                     android:paddingStart="20dp"
                     android:paddingEnd="30dp"
                     android:text="@string/type_of_meal"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
 
                 <TextView
@@ -70,6 +74,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="center_horizontal"
                     android:text="@string/unable_to_get_info"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
 
             </RelativeLayout>
@@ -87,6 +92,7 @@
                     android:paddingStart="20dp"
                     android:paddingEnd="30dp"
                     android:text="@string/type_of_cuisine"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
 
                 <TextView
@@ -97,6 +103,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="center_horizontal"
                     android:text="@string/unable_to_get_info"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
 
             </RelativeLayout>
@@ -114,6 +121,7 @@
                     android:paddingStart="20dp"
                     android:paddingEnd="30dp"
                     android:text="@string/ingredients"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
 
                 <TextView
@@ -124,6 +132,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="center_horizontal"
                     android:text="@string/unable_to_get_info"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
             </RelativeLayout>
 
@@ -140,6 +149,7 @@
                     android:paddingStart="20dp"
                     android:paddingEnd="30dp"
                     android:text="@string/allergen"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
 
                 <TextView
@@ -150,6 +160,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="center_horizontal"
                     android:text="@string/unable_to_get_info"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
             </RelativeLayout>
 
@@ -166,6 +177,7 @@
                     android:paddingStart="20dp"
                     android:paddingEnd="30dp"
                     android:text="@string/description_title"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
 
                 <TextView
@@ -176,6 +188,7 @@
                     android:fontFamily="@font/nunito_sans"
                     android:gravity="center_horizontal"
                     android:text="@string/unable_to_get_info"
+                    android:textColor="@color/colorDefaultText"
                     android:textSize="16sp" />
             </RelativeLayout>
 

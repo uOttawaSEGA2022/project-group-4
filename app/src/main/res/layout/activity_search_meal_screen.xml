@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/btnContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -34,6 +35,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal"
             android:padding="5dp">
 
@@ -45,7 +47,6 @@
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/back"
                 android:minHeight="50dp"
-                android:onClick="clickBack"
                 android:scaleType="fitXY"
                 android:src="@drawable/backbutton"
                 tools:ignore="DuplicateClickableBoundsCheck" />
@@ -54,23 +55,13 @@
                 android:id="@+id/searchBox"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:ems="10"
-                android:hint="search"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ems="8"
+                android:fontFamily="@font/nunito_sans"
+                android:hint="@string/search"
                 android:inputType="textPersonName"
                 android:textSize="20sp" />
-
-            <ImageButton
-                android:id="@+id/searchBtn"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:background="#00FFFFFF"
-                android:contentDescription="@android:string/search_go"
-                android:onClick="clickBack"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_baseline_search_24"
-                tools:ignore="DuplicateClickableBoundsCheck" />
 
             <ImageButton
                 android:id="@+id/cartBtn"
@@ -78,7 +69,6 @@
                 android:layout_height="match_parent"
                 android:background="#00FFFFFF"
                 android:contentDescription="@string/back"
-                android:onClick="clickBack"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_baseline_shopping_cart_24"
                 tools:ignore="DuplicateClickableBoundsCheck" />
@@ -90,9 +80,11 @@
         android:id="@+id/searchMeals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/montaga"
         android:gravity="center_horizontal|center_vertical"
         android:minHeight="70dp"
         android:text="Search Meals"
+        android:textColor="@color/colorDefaultText"
         android:textSize="34sp" />
 
     <ListView

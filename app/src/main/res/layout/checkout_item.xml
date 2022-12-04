@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/remove_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,11 +13,11 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="9dp"
         android:background="@drawable/input_box_shadow"
+        android:baselineAligned="false"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:baselineAligned="false">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -46,7 +47,7 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/nunito_sans"
                 android:text="@string/price"
-                android:textColor="#3E3E3E"
+                android:textColor="@color/black"
                 tools:ignore="TextContrastCheck" />
 
         </LinearLayout>
@@ -59,20 +60,6 @@
             android:layout_margin="10dp"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/decrease_quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/clear"
-                android:fontFamily="@font/baloo_bhai"
-                android:minWidth="48dp"
-                android:text="@string/minus"
-                android:textColor="@color/green_darker"
-                android:textColorLink="#FFFFFF"
-                android:textSize="20sp"
-                android:visibility="gone"
-                tools:ignore="TextContrastCheck" />
-
             <TextView
                 android:id="@+id/item_quantity"
                 android:layout_width="wrap_content"
@@ -82,25 +69,11 @@
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center"
                 android:hint="@string/number"
-                android:inputType="number"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/increase_quantity"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/clear"
-                android:fontFamily="@font/baloo_bhai"
-                android:minWidth="48dp"
-                android:text="@string/plus"
-                android:textColor="@color/green_darker"
-                android:textSize="20sp"
-                android:visibility="gone" />
+                android:textSize="16sp"
+                tools:ignore="TextContrastCheck" />
 
         </LinearLayout>
 

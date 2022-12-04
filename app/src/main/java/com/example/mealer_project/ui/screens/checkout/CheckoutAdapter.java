@@ -28,12 +28,7 @@ import java.util.List;
  */
 public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
-    // key to get information
-    public static final String CHECKOUT_TYPE_ARG_KEY = "CHECKOUT_TYPE_ARG_KEY";
-
-    private Button minusButton;
-    private Button plusButton;
-
+    // format price to two decimal places
     private static final DecimalFormat df = new DecimalFormat("0.00");
 
     /**
@@ -62,36 +57,10 @@ public class CheckoutAdapter extends ArrayAdapter<OrderItem>{
 
         // Populate the data
         ((TextView) convertView.findViewById(R.id.item_meal_title)).setText(item.getSearchMealItem().getMeal().getName());
-        double price = item.getSearchMealItem().getMeal().getPrice() * item.getQuantity();
+        double price = item.getSearchMealItem().getMeal().getPrice();
         ((TextView) convertView.findViewById(R.id.item_price)).setText("$ " + df.format(price));
         TextView quantity = ((TextView) convertView.findViewById(R.id.item_quantity));
         quantity.setText(String.valueOf(item.getQuantity()));
-
-        // quantity update buttons
-        minusButton = (Button) convertView.findViewById(R.id.decrease_quantity);
-        plusButton = (Button) convertView.findViewById(R.id.increase_quantity);
-
-        // attach on click listener to minus button
-        minusButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
-        // attach on click listener to addition button
-        plusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        // send information to the CheckoutScreen
-        Bundle extras = new Bundle();
-        extras.putSerializable(CheckoutScreen.CHECKOUT_DATA_ARG_KEY, item);
 
         return convertView;
     }

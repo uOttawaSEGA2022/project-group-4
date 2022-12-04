@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.completed_orders;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,16 +9,15 @@ import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Chef;
+import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class PendingOrdersScreen extends UIScreen implements StatefulView {
+public class CompletedOrdersScreen extends UIScreen implements StatefulView {
 
     // Variable Declaration
     /**
@@ -32,9 +31,14 @@ public class PendingOrdersScreen extends UIScreen implements StatefulView {
     private List<Order> orders;
 
     /**
-     * the array adapter for the list view of the pending orders
+     * the array adapter for the list view of the Chef completed orders
      */
-    private PendingOrdersAdapter pendingOrdersAdapter;
+    private CompletedOrdersAdapter completedOrdersAdapter;
+
+    /**
+     * the array adapter for the list view of the Client completed orders
+     */
+    private CompletedOrdersAdapterClient completedOrdersAdapterClient;
 
     /**
      * the back button icon
@@ -46,18 +50,18 @@ public class PendingOrdersScreen extends UIScreen implements StatefulView {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending_orders_screen);
-        App.getAppInstance().setPendingOrdersScreen(this);
+        setContentView(R.layout.activity_completed_orders_screen);
+        App.getAppInstance().setCompletedOrdersScreen(this);
 
         // Initialization
         ordersData = new ArrayList<Order>();
         backButton = findViewById(R.id.backButton);
 
         // Process: loading the Orders data
-        loadPendingOrdersData();
+        loadCompletedOrdersData();
 
         // Process: populating the Orders ListView
-        populatePendingOrdersList();
+        populateCompletedOrdersList();
 
         // Process: setting onClick method for back button
         backButton.setOnClickListener(v -> finish());
@@ -67,18 +71,23 @@ public class PendingOrdersScreen extends UIScreen implements StatefulView {
     /**
      * this helper method retrieves the current CHEF's Orders
      */
-    private void loadPendingOrdersData() {
+    private void loadCompletedOrdersData() {
 
         // Process: checking if current user is a CHEF
-        if (App.getUser() instanceof Chef) { //is CHEF
-            // Initialization: setting ordersData to the list
-            this.ordersData = ((Chef) App.getUser()).ORDERS.getPendingOrders();
+        if (App.getUser() instanceof Chef ) { //is CHEF
+            // Initialization: setting ordersData to the list of completed orders
+            this.ordersData = ((Chef) App.getUser()).ORDERS.getCompletedOrders();
         }
-        else { //not a chef -> error-handling
-            Log.e("PendingOrdersScreen", "Can't show pending orders; Current logged-in user is not a CHEF");
+        // Process: checking if current user is a CLIENT
+        else if (App.getUser() instanceof Client) { //is CLIENT
+            // Initialization: setting ordersData to the list of completed orders
+            this.ordersData = ((Client) App.getUser()).ORDERS.getCompletedOrders();
+        }
+        else { //if not chef//client -> error-handling
+            Log.e("CompletedOrdersScreen", "Can't show completed orders; Current logged-in user is not a CHEF or CLIENT");
 
             // Output
-            displayErrorToast("No pending orders available to be displayed!");
+            displayErrorToast("No completed orders available to be displayed!");
         }
 
     }
@@ -86,35 +95,40 @@ public class PendingOrdersScreen extends UIScreen implements StatefulView {
     /**
      * this helper method populates the Orders list
      */
-    private void populatePendingOrdersList() {
+    private void populateCompletedOrdersList() {
 
         // Variable Declaration
         this.orders = new ArrayList<Order>();
-        ListView pendingOrdersList = findViewById(R.id.pendingListView);
+        ListView completedOrdersList = findViewById(R.id.completedListView);
 
-        // Initialization: setting the adapter
-        pendingOrdersAdapter = new PendingOrdersAdapter(this, R.layout.activity_pending_orders_list_item, this.orders);
+        // Process: checking for chef or client
+        if (App.getUser() instanceof Client) { //client
 
-        // Process: attaching the adapter to the ListView
-        pendingOrdersList.setAdapter(pendingOrdersAdapter);
+            // Initialization: setting the adapter
+            completedOrdersAdapterClient = new CompletedOrdersAdapterClient(this, R.layout.activity_completed_orders_client_list_item, this.orders);
 
-        // Process: looping through the map of data
-        for (Order order: this.ordersData) {
-            pendingOrdersAdapter.add(order); //adding the orderData to the list
+            // Process: attaching the adapter to the ListView
+            completedOrdersList.setAdapter(completedOrdersAdapterClient);
+
+            // Process: looping through the map of data
+            for (Order order: this.ordersData) {
+                completedOrdersAdapterClient.add(order); //adding the orderData to the list
+            }
+
         }
+        else if (App.getUser() instanceof Chef) { //chef
 
-    }
+            // Initialization: setting the adapter
+            completedOrdersAdapter = new CompletedOrdersAdapter(this, R.layout.activity_completed_orders_list_item, this.orders);
 
-    /**
-     * this helper method populates the Orders list after a change has been made
-     */
-    private void repopulatePendingOrdersList() {
+            // Process: attaching the adapter to the ListView
+            completedOrdersList.setAdapter(completedOrdersAdapter);
 
-        pendingOrdersAdapter.clear(); //removing all previous data
+            // Process: looping through the map of data
+            for (Order order: this.ordersData) {
+                completedOrdersAdapter.add(order); //adding the orderData to the list
+            }
 
-        // Process: looping through the map of data
-        for (Order order: this.ordersData) {
-            pendingOrdersAdapter.add(order); //adding the orderData to the list
         }
 
     }
@@ -163,19 +177,10 @@ public class PendingOrdersScreen extends UIScreen implements StatefulView {
 
         }
 
-        loadPendingOrdersData();
-        repopulatePendingOrdersList();
-
-        // Process: telling adapter that orders have been updated
-        pendingOrdersAdapter.notifyDataSetChanged();
-
-        App.getAppInstance().getOrdersInProgressScreen().updateAdapter();
-
     }
 
     @Override
     public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-
         if (dbOperation == OrderHandler.dbOperations.ADD_ORDER) {
 
             // Output: failed to add new order
@@ -206,6 +211,5 @@ public class PendingOrdersScreen extends UIScreen implements StatefulView {
             displayErrorToast((String) payload);
 
         }
-
     }
 }

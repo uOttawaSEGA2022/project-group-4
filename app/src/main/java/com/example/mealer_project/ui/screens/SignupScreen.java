@@ -1,6 +1,7 @@
 package com.example.mealer_project.ui.screens;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
+import com.example.mealer_project.MainActivity;
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.entity_models.AddressEntityModel;
@@ -39,7 +41,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
     boolean clientButtonClicked;
     boolean chefButtonClicked;
     boolean userRegistrationInProgress;
-    String chequeString;
+    String chequeString = null;
     // define states being observed
     enum observedStates {
         VOID_CHEQUE_IMAGE
@@ -110,7 +112,47 @@ public class SignupScreen extends UIScreen implements StatefulView {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        EditText passwordField = (EditText) findViewById(R.id.signupPassword);
+        passwordField.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passwordField.setEnabled(false);
+                // initialise the alert dialog builder
+                AlertDialog.Builder builder = new AlertDialog.Builder(SignupScreen.this);
+
+                // set the title for the alert dialog
+                builder.setTitle("Password Requirements");
+
+                // must click on alert dialog to close screen
+                builder.setCancelable(true);
+
+                // set the icon for the alert dialog
+                builder.setIcon(R.drawable.mealer);
+
+                // allows user to click outside of dialog to close screen
+                builder.setCancelable(false);
+
+                // message displayed
+                builder.setMessage("A good password should contain:\n\n" +
+                        "\u2022 at least 8 characters\n" +
+                        "\u2022 at least 1 capital\n" +
+                        "\u2022 at least 1 number\n" +
+                        "\u2022 at least 1 special character");
+
+                // handle the positive button of the dialog (does nothing)
+                builder.setPositiveButton("Okay", (dialog, which) -> {
+                    passwordField.setEnabled(true);
+                });
+
+                // create and show the Alert Dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
     }
@@ -126,6 +168,7 @@ public class SignupScreen extends UIScreen implements StatefulView {
                         if (intent != null) {
                             updateVoidChequeImage(intent);
                             chequeString = intent.getStringExtra("voidChequeValue");
+                            displaySuccessToast("Void cheque uploaded!");
                         } else {
                             Log.e("VoidChequeActivity", "intent null");
                             displayErrorToast("Unable to process void cheque image!");
@@ -259,8 +302,14 @@ public class SignupScreen extends UIScreen implements StatefulView {
             String chefShortDescription = chefShortDesc.getText().toString();
 
             // TO-DO: to be implemented. Temporarily empty string
-            Log.e("voidchequetest", chequeString);
+            //Log.e("voidchequetest", chequeString);
             String voidCheque = chequeString; //(String) chequeString.get("String");
+
+            //check void cheque submission
+            Response voidChequeCheck = voidChequeUploaded();
+            if (voidChequeCheck.isError()){
+                return voidChequeCheck;
+            }
 
             // register the new user by passing data to UserHandler of the app instance
             Response userRegistrationResponse = App.getUserHandler().registerChef(this, userEntityModel, chefShortDescription, voidCheque);
@@ -295,6 +344,13 @@ public class SignupScreen extends UIScreen implements StatefulView {
             return new Response(false, "Invalid CVC value. CVC must be 3 digit number between 000 - 999");
         }
 
+        return new Response(true);
+    }
+
+    private Response voidChequeUploaded(){
+        if (chequeString == null){
+            return new Response(false, "Please upload a void cheque!");
+        }
         return new Response(true);
     }
 

@@ -1,5 +1,7 @@
 package com.example.mealer_project.data.models;
 
+import android.util.Log;
+
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.data.models.orders.ChefInfo;
 import com.example.mealer_project.data.models.orders.ClientInfo;
@@ -23,6 +25,8 @@ public class Order implements Serializable {
     private boolean isPending;
     private boolean isRejected;
     private boolean isCompleted;
+    private boolean isRated;
+    private double rating;
 
     // Constructor Methods--------------------------------------------------------------------------------------
 
@@ -31,10 +35,13 @@ public class Order implements Serializable {
      */
     public Order() {
         this.date = Utilities.getTodaysDate();
+        Log.e("ORDER DATE",Utilities.getTodaysDate().toString() );
         this.meals = new HashMap<>();
         this.setIsPending(true);
         this.setIsRejected(false);
         this.setIsCompleted(false);
+        this.setIsRated(false);
+        this.setRating(0);
     }
 
     /**
@@ -44,8 +51,10 @@ public class Order implements Serializable {
      * @param clientInfo info of the client who placed the order
      * @param meals mealInfo and corresponding quantity of each meal in order
      * @param date Date and time for when the order was placed
+     * @param isRated whether the order's already been rated or not
+     * @param rating the rating for this order
      */
-    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<String,MealInfo> meals, Date date){
+    public Order(String orderID, ChefInfo chefInfo, ClientInfo clientInfo, Map<String,MealInfo> meals, Date date, boolean isRated, double rating){
         // Initialization
         this.setOrderID(orderID);
         this.setChefInfo(chefInfo);
@@ -55,6 +64,8 @@ public class Order implements Serializable {
         this.setIsPending(true);
         this.setIsRejected(false);
         this.setIsCompleted(false);
+        this.setIsRated(isRated);
+        this.setRating(rating);
     }
 
     //----------------------------------------------------------------------------------------------------------
@@ -105,7 +116,25 @@ public class Order implements Serializable {
         return meals;
     }
 
+    //----------------------------------------------------------------------------------------------------------
 
+    public boolean isRated() {
+        return isRated;
+    }
+
+    public void setIsRated(boolean isRated) {
+        this.isRated = isRated;
+    }
+
+    //----------------------------------------------------------------------------------------------------------
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 
     //----------------------------------------------------------------------------------------------------------
 

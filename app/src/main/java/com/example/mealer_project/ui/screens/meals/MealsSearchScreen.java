@@ -31,20 +31,12 @@ public class MealsSearchScreen extends UIScreen {
 
         //Header Buttons
         ImageButton backButton = (ImageButton) findViewById(R.id.back_btn3);
-        ImageButton searchButton = (ImageButton) findViewById(R.id.searchBtn);
         ImageButton cartButton = (ImageButton) findViewById(R.id.cartBtn);
 
         backButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
-            }
-        });
-
-        searchButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Logic for search
             }
         });
 

@@ -1,5 +1,6 @@
 package com.example.mealer_project.ui.screens;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
+import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.ui.core.UIScreen;
 import com.example.mealer_project.utils.Utilities;
@@ -93,8 +95,7 @@ public class WelcomeScreen extends UIScreen {
 
         // try to parse suspension date
         try {
-            Date suspensionDate = Utilities.getDateFromString(suspensionDateValue);
-
+            Date suspensionDate = new SimpleDateFormat("MM/dd/yyyy").parse(suspensionDateValue);
             // Variable declaration
             TextView editText = (TextView) findViewById(R.id.suspensionMsg);
 
@@ -110,12 +111,25 @@ public class WelcomeScreen extends UIScreen {
             }
             else { //finite time
 
-                // var declaration: date formatter
-                SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.US);
+                App.getUserHandler().updateChefSuspension((Chef) App.getAppInstance().getUser());
 
-                // setting the text
-                editText.setText(String.format("%s%s.", getString(R.string.chef_temp_ban_message) + " ", formatter.format(suspensionDate)));
-                editText.setVisibility(View.VISIBLE); //visible
+                if (((Chef) App.getAppInstance().getUser()).getIsSuspended()) { //suspended
+
+                    // var declaration: date formatter
+                    SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy", Locale.US);
+
+                    // setting the text
+                    editText.setText(String.format("%s%s.", getString(R.string.chef_temp_ban_message) + " ", formatter.format(((Chef) App.getAppInstance().getUser()).getSuspensionDate())));
+                    editText.setVisibility(View.VISIBLE); //visible
+
+                }
+                else { //no longer suspended
+
+                    // returning to chef homescreen
+                    Intent intent = new Intent(getApplicationContext(), ChefScreen.class);
+                    startActivity(intent);
+
+                }
 
             }
         } catch (ParseException e) {

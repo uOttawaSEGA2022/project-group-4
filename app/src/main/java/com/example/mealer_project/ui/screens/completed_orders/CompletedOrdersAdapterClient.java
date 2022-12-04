@@ -1,4 +1,4 @@
-package com.example.mealer_project.ui.screens;
+package com.example.mealer_project.ui.screens.completed_orders;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
@@ -25,6 +25,8 @@ import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
+import com.example.mealer_project.ui.core.StatefulView;
+import com.example.mealer_project.ui.screens.MakeComplaint;
 import com.example.mealer_project.utils.SendMailTask;
 
 import java.text.DateFormat;
@@ -92,34 +94,38 @@ public class CompletedOrdersAdapterClient extends ArrayAdapter<Order> {
         }
 
         RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
-        Button submitButton = (Button) convertView.findViewById(R.id.submitButton);
+        Button submitButton = (Button) convertView.findViewById(R.id.submitRatingButton);
 
         // Process: Check if null
-        if (submitButton != null) {
-            if (ratingBar != null) {
+        if (submitButton != null && ratingBar != null) {
+            Log.e("CompletedClient", "order id: " + order.getOrderID() + "; is rated: " + order.isRated());
+            if (!order.isRated()) { //not yet rated
+                submitButton.setVisibility(View.VISIBLE);
                 // perform click event on button
                 submitButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // get values and then displayed in a toast
-                        String rating = "Rating :: " + ratingBar.getRating();
-                        App.ORDER_HANDLER.updateChefRating(order.getChefInfo().getChefId(), Double.valueOf(ratingBar.getRating()));
+                        String rating = "Rating: " + ratingBar.getRating();
+                        App.ORDER_HANDLER.updateChefRating(order.getOrderID(), order.getChefInfo().getChefId(), Double.valueOf(ratingBar.getRating()), (StatefulView) App.getAppInstance().getCompletedOrdersScreen());
                         Toast.makeText(getContext(), rating, Toast.LENGTH_SHORT).show();
                         ratingBar.setIsIndicator(true);
                         submitButton.setVisibility(View.GONE);
-
                     }
                 });
             }
+            else { //already rated -> show rating
+                submitButton.setVisibility(View.GONE);
+                ratingBar.setRating((float) order.getRating());
+                ratingBar.setIsIndicator(true);
+            }
         }
-
-
 
         // Process: setting the order info to appear on the screen
         ((TextView) convertView.findViewById(R.id.mealNameText2)).setText("\n" + mealNames);
         ((TextView) convertView.findViewById(R.id.quantityText2)).setText("(#)\n" + quantities);
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd\nhh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
         return convertView;

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,8 +19,8 @@
             android:id="@+id/backButton"
             android:layout_width="48dp"
             android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/back_button_margin"
+            android:layout_marginTop="@dimen/back_button_margin"
             android:background="#00FFFFFF"
             android:contentDescription="@string/back"
             android:scaleType="fitXY"
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/baloo_bhai"
             android:gravity="center"
-            android:paddingTop="40dp"
+            android:paddingTop="20dp"
             android:text="@string/view_pending_orders_label"
             android:textColor="@color/green_primary"
             android:textSize="34sp" />

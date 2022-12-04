@@ -18,7 +18,6 @@ import com.example.mealer_project.data.handlers.OrderHandler;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.Orders;
 import com.example.mealer_project.data.models.orders.MealInfo;
-import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.utils.SendMailTask;
 
 import java.text.SimpleDateFormat;
@@ -26,7 +25,6 @@ import java.util.List;
 
 
 public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
-
 
     /**
      * Constructor
@@ -44,7 +42,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         // get chef's orders in progress
-        Orders orders = App.getChef().ORDERS;
+        //Orders orders = App.getChef().ORDERS;
         Order order = getItem(position);
 
         // get order data item for given position
@@ -62,7 +60,7 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
             mealNames += mI.getName() + "\n";
             quantities += mI.getQuantity() + "\n";
-            emailContents += mI.getName() + "   " + mI.getQuantity() + "<br>";
+            emailContents += mI.getQuantity() + "   " + mI.getName() + "<br>";
 
         }
 
@@ -76,12 +74,13 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
             public void onClick(View v) {
                 order.setIsCompleted(true);
                 App.ORDER_HANDLER.dispatch(OrderHandler.dbOperations.UPDATE_ORDER, order,  App.getAppInstance().getOrdersInProgressScreen());
+
                 // Process: sending email to client that order has been rejected
                 String str = "Hello " + order.getClientInfo().getClientName() + ","
                         + "<br><br>" +
                         "The following order is ready for pick-up at " +
                         order.getChefInfo().getChefAddress().getStreetAddress() + ", " +
-                        order.getChefInfo().getChefAddress().getCity() +
+                        order.getChefInfo().getChefAddress().getCity() + " " +
                         order.getChefInfo().getChefAddress().getPostalCode() + "."
                         + "<br><br>" +
                         EMAIL_CONTENTS
@@ -93,10 +92,11 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
                 new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
                         order.getClientInfo().getClientEmail(),
-                        "READY-FOR-PICK-UP MEALER Order: " + order.getOrderID().substring(0, 6),
+                        "READY-FOR-PICK-UP MEALER Order #: " + order.getOrderID().substring(0, 6),
                         str);
             }
         });
+
 
         // populate data
         ((TextView) convertView.findViewById(R.id.clientText)).setText("Client: " + order.getClientInfo().getClientName());

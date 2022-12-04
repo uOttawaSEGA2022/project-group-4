@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".ui.screens.MakeComplaint">
 
     <ImageButton
         android:id="@+id/backButtonComplaint"
         android:layout_width="48dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="23dp"
         android:background="#00FFFFFF"
         android:contentDescription="@string/back"
         android:scaleType="fitXY"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/baloo_bhai"
         android:gravity="center"
-        android:paddingTop="40dp"
+        android:paddingTop="@dimen/title_padding"
         android:text="@string/make_complaint"
         android:textColor="@color/green_primary"
         android:textSize="34sp"
@@ -43,7 +43,8 @@
         android:id="@+id/linearLayout"
         android:layout_width="414dp"
         android:layout_height="198dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/title_padding"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
@@ -54,24 +55,33 @@
             android:id="@+id/client_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:padding="@dimen/text_margin"
             android:paddingLeft="@dimen/text_margin"
-            android:text="@string/client_name" />
+            android:text="@string/client_name"
+            android:textColor="@color/colorDefaultText"
+            android:textSize="@dimen/text_size" />
 
         <TextView
             android:id="@+id/chef_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:padding="@dimen/text_margin"
-            android:text="@string/chefs_name" />
+            android:text="@string/chefs_name"
+            android:textColor="@color/colorDefaultText"
+            android:textSize="@dimen/text_size" />
 
         <TextView
             android:id="@+id/meal_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:padding="@dimen/text_margin"
             android:paddingLeft="@dimen/text_margin"
-            android:text="@string/date" />
+            android:text="@string/date"
+            android:textColor="@color/colorDefaultText"
+            android:textSize="@dimen/text_size" />
     </LinearLayout>
 
     <LinearLayout
@@ -94,6 +104,7 @@
             android:hint="Title of Complaint:"
             android:inputType="textPersonName"
             android:minHeight="48dp"
+            android:textColorHint="@color/colorDefaultText"
             tools:ignore="TouchTargetSizeCheck" />
 
         <Space
@@ -112,12 +123,15 @@
 
             <EditText
                 android:id="@+id/complaint_writer"
-                android:layout_width="214dp"
-                android:layout_height="62dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
-                android:hint="Complaint Description"
-                android:inputType="textPersonName"
-                android:minHeight="48dp" />
+                android:gravity="start|top"
+                android:hint="Complaint Description:"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:textColorHint="@color/colorDefaultText" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -139,6 +153,7 @@
                 android:id="@+id/send_complaint_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:text="@string/submit_text" />
 
             <Space

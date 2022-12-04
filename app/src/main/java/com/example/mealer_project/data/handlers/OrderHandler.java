@@ -283,19 +283,24 @@ public class OrderHandler {
 
 
 
-    public void updateChefRating(String chefId, Double newRating){
+    public void updateChefRating(String orderId, String chefId, Double newRating, StatefulView uiScreen){
+        this.uiScreen = uiScreen;
 
-        if (chefId instanceof String && newRating instanceof Double && App.getUser() instanceof Client){
+        if (orderId instanceof String && chefId instanceof String && newRating instanceof Double && App.getUser() instanceof Client){
+            App.getPrimaryDatabase().ORDERS.updateChefRating(orderId, chefId, newRating); //firebase
 
-            App.getPrimaryDatabase().ORDERS.updateChefRating(chefId, newRating);
+            App.getClient().ORDERS.getOrder(orderId).getSuccessObject().setRating(newRating);
+            App.getClient().ORDERS.getOrder(orderId).getSuccessObject().setIsRated(true);
         }
     }
 
     public void handleUpdateChefRatingSuccess(){
+        Log.e("OrderHandler", uiScreen.toString());
         uiScreen.dbOperationSuccessHandler(dbOperations.RATE_CHEF, "Updating chef rating was a success!");
     }
 
     public void handleUpdateChefRatingFailure(String errorMessage){
+        Log.e("OrderHandler", uiScreen.toString());
         uiScreen.dbOperationSuccessHandler(dbOperations.RATE_CHEF, errorMessage);
     }
 

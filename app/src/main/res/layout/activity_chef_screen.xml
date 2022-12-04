@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/test"
+    android:background="@drawable/background"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -35,7 +35,9 @@
             android:layout_height="55dp"
             android:layout_centerHorizontal="false"
             android:layout_marginStart="5dp"
+            android:clickable="false"
             android:contentDescription="@string/logoDescription"
+            android:focusable="true"
             app:srcCompat="@drawable/mealer"
             tools:ignore="ImageContrastCheck" />
 
@@ -253,6 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
+                        android:background="@drawable/input_box_shadow_white"
                         android:fontFamily="@font/nunito_sans"
                         android:gravity="center"
                         android:text="There are currently no orders in progress..."

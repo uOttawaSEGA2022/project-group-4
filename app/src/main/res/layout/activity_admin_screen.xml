@@ -2,31 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/linearLayout2">
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/btnContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout_conversion_absoluteHeight="56dp"
-        tools:layout_editor_absoluteY="0dp"
+        tools:layout_conversion_absoluteWidth="411dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_conversion_absoluteWidth="411dp">
+        tools:layout_editor_absoluteY="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="false"
-            android:background="#98c377"
+            android:background="@color/header"
             android:clipToPadding="true"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:contentInsetStart="16dp"
-            app:contentInsetStartWithNavigation="72dp"/>
+            app:contentInsetStartWithNavigation="72dp" />
 
         <ImageView
             android:id="@+id/mealer_logo"
@@ -34,8 +35,9 @@
             android:layout_height="55dp"
             android:layout_centerHorizontal="false"
             android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
-            app:srcCompat="@drawable/mealer" />
+            android:contentDescription="@string/logoDescription"
+            app:srcCompat="@drawable/mealer"
+            tools:ignore="ImageContrastCheck" />
 
         <TextView
             android:id="@+id/welcome_message_chef"
@@ -54,7 +56,8 @@
             android:text="Welcome, you're logged in as ADMIN"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:constraint_referenced_tags="1" />
+            app:constraint_referenced_tags="1"
+            tools:ignore="TextContrastCheck" />
 
         <ImageButton
             android:id="@+id/logout_btn_chef"
@@ -70,7 +73,8 @@
             android:minHeight="48dp"
             android:onClick="clickLogout"
             android:translationX="5dp"
-            app:srcCompat="@drawable/ic_baseline_logout_24" />
+            app:srcCompat="@drawable/ic_baseline_logout_24"
+            tools:ignore="ImageContrastCheck" />
 
     </RelativeLayout>
 
@@ -78,8 +82,9 @@
     <ListView
         android:id="@+id/complaintList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/background"
         tools:layout_conversion_absoluteHeight="675dp"
         tools:layout_conversion_absoluteWidth="411dp"
         tools:layout_editor_absoluteX="0dp"

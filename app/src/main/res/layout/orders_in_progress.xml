@@ -12,6 +12,7 @@
         android:id="@+id/orderTextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/input_box_shadow_white"
         android:orientation="vertical">
 
         <LinearLayout
@@ -31,6 +32,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="5dp"
                 android:text="@string/client_name"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:ignore="TextContrastCheck" />
@@ -52,6 +54,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:minHeight="50dp"
                 android:text="@string/date"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -78,6 +81,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="@string/meal_name_here"
+                android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 tools:ignore="TextContrastCheck" />
@@ -97,7 +101,8 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/nunito_sans"
                 android:gravity="center"
-                android:text="@string/number" />
+                android:text="@string/number"
+                android:textColor="@color/black" />
         </LinearLayout>
 
         <View

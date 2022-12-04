@@ -1,14 +1,17 @@
 package com.example.mealer_project.ui.screens;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.mealer_project.R;
@@ -28,6 +31,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
     private Button dismissButton;
     private Button banTempButton;
     private Button banPermButton;
+    private ImageButton backButton;
     private DatePickerDialog datePickerDialog;
     DatePickerDialog.OnDateSetListener dateSetListener;
     Complaint complaintData;
@@ -45,6 +49,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
         dismissButton = (Button) findViewById(R.id.dismiss);
         banTempButton = (Button) findViewById(R.id.ban_chef);
         banPermButton = (Button) findViewById(R.id.ban_permament);
+        backButton = (ImageButton) findViewById(R.id.complaintScreenBackBtn);
 
         // get the complaint data
         try {
@@ -106,6 +111,16 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
                 showNextScreen(); //Redirect to Admin Screen
             }
         });
+
+        /**
+         * Back button
+         */
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) { // go to previous screen
+                finish();
+            }
+        });
     }
 
     @Override
@@ -126,6 +141,7 @@ public class ComplaintScreen extends UIScreen implements StatefulView{
      * @param meal
      * @param description
      */
+    @SuppressLint("ResourceAsColor")
     public void updateComplaintScreen(String title, String client, String chef, String meal, String description) {
 
         // sets the complaint header title

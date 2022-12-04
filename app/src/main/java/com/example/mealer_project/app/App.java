@@ -87,7 +87,7 @@ public class App {
      */
     public static Chef getChef() {
         // if user is logged in and is a Client
-        if (app.isUserAuthenticated() && app.getUser() instanceof Chef) {
+        if (app.isUserAuthenticated() && app.getUser().getRole() == UserRoles.CHEF) {
             try {
                 return (Chef) app.getUser();
             } catch (Exception e) {
