@@ -250,14 +250,11 @@ public class UserActions {
     protected Response makeChefFromFirebase(DocumentSnapshot document){
 
         try {
-
             if (document.getData() == null) {
                 throw new NullPointerException("makeChefFromFirebase: invalid document object");
             }
-
             UserEntityModel newUser = new UserEntityModel();
             AddressEntityModel newAddress = new AddressEntityModel();
-
             newUser.setFirstName(String.valueOf(document.getData().get("firstName")));
             newUser.setLastName(String.valueOf(document.getData().get("lastName")));
             newUser.setEmail(String.valueOf(document.getData().get("email")));
@@ -267,30 +264,24 @@ public class UserActions {
             newAddress.setCity(String.valueOf(document.getData().get("addressCity")));
             newAddress.setCountry(String.valueOf(document.getData().get("country")));
             newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
-
             String description = String.valueOf(document.getData().get("description"));
             String voidCheque = String.valueOf(document.getData().get("voidCheque"));
-
             Address address = new Address(newAddress);
-
             Chef newChef = new Chef(newUser, address, description, voidCheque);
             // if chef has ratings, add ratings
             Object chefRating = document.getData().get("ratingSum");
             if (chefRating != null) {
-                newChef.setChefRatingSum(Double.parseDouble(String.valueOf(chefRating)));
-                newChef.setNumOfRatings(Integer.parseInt(String.valueOf(document.getData().get("numOfRatings"))));
+                newChef.setChefRatingSum(((Number) chefRating).doubleValue());
+
+                newChef.setNumOfRatings(((Number) document.getData().get("numOfRatings")).intValue());
             }
-
             newChef.setIsSuspended((Boolean) document.getData().get("isSuspended"));
-
             // if suspension date is NOT null (meaning we do have a value)
             newChef.setSuspensionDate(
                     document.getData().get("suspensionDate") != null ?
                     DateFormat.getDateInstance(DateFormat.SHORT, Locale.US).parse(String.valueOf((document.getData().get("suspensionDate")))):
                     null);
-
             App.getAppInstance().setUser(newChef);
-
             return new Response(true);
         } catch (Exception e) {
             return new Response(false, "makeChefFromFirebase: " + e.getMessage());
