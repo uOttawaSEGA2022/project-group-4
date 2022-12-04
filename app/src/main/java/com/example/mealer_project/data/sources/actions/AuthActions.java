@@ -171,7 +171,6 @@ public class AuthActions {
                 });
     }
 
-
     public void logInUser(String email, String password, LoginScreen loginScreen) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -189,8 +188,4 @@ public class AuthActions {
         });
     }
 
-    public void logOutUser() {
-        // log out the current user
-        mAuth.signOut();
-    }
 }

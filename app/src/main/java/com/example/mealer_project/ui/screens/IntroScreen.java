@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-
 import com.example.mealer_project.R;
 import com.example.mealer_project.ui.core.UIScreen;
 

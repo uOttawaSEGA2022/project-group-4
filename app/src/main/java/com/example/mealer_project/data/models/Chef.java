@@ -183,20 +183,4 @@ public class Chef extends User {
         this.suspensionDate = suspensionDate;
     }
 
-    /**
-     * to check if check if suspended
-     * @return true is Chef is suspended, else false
-     */
-    public boolean isSuspended() {
-        return isSuspended;
-    }
-
-    /**
-     * Method to specify if Chef is suspended or not
-     * @param suspended accepts true to set Chef as suspended, else false
-     */
-    public void setSuspended(boolean suspended) {
-        isSuspended = suspended;
-    }
-
 }

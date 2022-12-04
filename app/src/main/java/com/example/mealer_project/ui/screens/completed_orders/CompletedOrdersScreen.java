@@ -216,4 +216,5 @@ public class CompletedOrdersScreen extends UIScreen implements StatefulView {
     public void notifyDataChanged(){
         populateCompletedOrdersList();
     }
+
 }

@@ -20,21 +20,16 @@ import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
-import com.example.mealer_project.data.handlers.OrderHandler;
-import com.example.mealer_project.data.models.Chef;
-import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.screens.MakeComplaint;
-import com.example.mealer_project.utils.SendMailTask;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class CompletedOrdersAdapterClient extends ArrayAdapter<Order> {
-
 
     /**
      * Constructor
@@ -137,5 +132,3 @@ public class CompletedOrdersAdapterClient extends ArrayAdapter<Order> {
         return convertView;
     }
 }
-
-

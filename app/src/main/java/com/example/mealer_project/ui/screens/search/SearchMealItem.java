@@ -18,12 +18,6 @@ public class SearchMealItem implements Serializable {
         this.setChef(chef);
     }
 
-    public SearchMealItem(Meal meal, Chef chef) {
-        this.setId();
-        this.setMeal(meal);
-        this.setChef(chef);
-    }
-
     public void setId() {
         this.id = UUID.randomUUID();
     }

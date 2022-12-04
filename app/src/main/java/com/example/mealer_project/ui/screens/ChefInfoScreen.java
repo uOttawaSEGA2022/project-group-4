@@ -1,7 +1,5 @@
 package com.example.mealer_project.ui.screens;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,11 +12,8 @@ import com.example.mealer_project.R;
 import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Chef;
 import com.example.mealer_project.data.models.Address;
-import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
-
-import java.util.ArrayList;
 
 public class ChefInfoScreen extends UIScreen implements StatefulView {
 
@@ -30,17 +25,11 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chef_info_screen);
 
-
         // buttons for onClick methods
         chefInfoBackBtn = (ImageButton) findViewById(R.id.button_back5);
 
         // on click method for back button
-        chefInfoBackBtn.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        chefInfoBackBtn.setOnClickListener(v -> finish());
 
         // Try getting chef's data from previous screen
         try {
@@ -61,12 +50,8 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
 
     private void attachOnClickListeners(){
         // on click method for back button
-        chefInfoBackBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            } // go to previous screen
-        });
+        // go to previous screen
+        chefInfoBackBtn.setOnClickListener(v -> finish());
     }
 
     @Override

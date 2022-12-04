@@ -44,7 +44,6 @@ public class MealActions {
         this.database = database;
     }
 
-
     private void addChefMeal(String chefMealsId, Meal meal, String chefName, String chefAddress) {
 
         Map<String, Object> databaseMeal = new HashMap<>();
@@ -246,7 +245,6 @@ public class MealActions {
             App.MEAL_HANDLER.handleActionFailure(ADD_MEAL_TO_OFFERED_LIST, "Invalid object value for mealId");
         }
     }
-
 
     /**
      * Set isOffered property to false to a meal in a specific chef's list of meals in Firebase
@@ -507,8 +505,8 @@ public class MealActions {
 
         try {
             String chefName =
-                    String.valueOf(document.getData().get("firstName")) +
-                            " "  + String.valueOf(document.getData().get("lastName"));
+                    document.getData().get("firstName") +
+                            " "  + document.getData().get("lastName");
 
             double chefRating = ((Number) document.getData().get("ratingSum")).doubleValue() / ((Number) document.getData().get("numOfRatings")).intValue();
 
@@ -519,9 +517,9 @@ public class MealActions {
             newAddress.setCountry(String.valueOf(document.getData().get("country")));
             newAddress.setPostalCode(String.valueOf(document.getData().get("postalCode")));
 
-            return new Result<ChefInfo, String>(new ChefInfo(document.getId(), chefName, chefRating, new Address(newAddress)), null);
+            return new Result<>(new ChefInfo(document.getId(), chefName, chefRating, new Address(newAddress)), null);
         } catch (Exception e) {
-            return new Result<ChefInfo, String>(null, "Failed to create ChefInfo: " + e.getMessage());
+            return new Result<>(null, "Failed to create ChefInfo: " + e.getMessage());
         }
     }
 
@@ -532,44 +530,41 @@ public class MealActions {
 
         database.collection(MEALS_COLLECTION + "/" + mealDocumentId + "/" + CHEF_MEALS_COLLECTION)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<SearchMealItem> smItems = new ArrayList<>();
-                            SearchMealItem smItem;
-                            Meal meal;
-                            if (task.getResult() == null || task.getResult().isEmpty()) {
-                                Log.e("searchMeals", "empty result");
-                            }
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // check if we have a isOffered property
-                                if (document.getData().get("isOffered") != null) {
-                                    // get the isOffered property's value
-                                    boolean isOffered = (Boolean) document.getData().get("isOffered");
-                                    // if only the meal if offered
-                                    if (isOffered) {
-                                        // create the meal
-                                        meal = makeMealFromFirebase(document);
-                                        // set the meal id
-                                        meal.setMealID(document.getId());
-                                        // add keywords to meal instance (only need to do this when we need search meal functionality i.e., for a client)
-                                        meal.setKeywords((ArrayList<String>) document.getData().get("keywords"));
-                                        // create SearchMealItem adding to it the meal and chefInfo
-                                        smItem = new SearchMealItem(meal, chefInfo);
-                                        Log.e("searchMeals", "adding meal: " + meal.getName());
-                                        // store current SearchMealItem in our list
-                                        smItems.add(smItem);
-                                    }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<SearchMealItem> smItems = new ArrayList<>();
+                        SearchMealItem smItem;
+                        Meal meal;
+                        if (task.getResult() == null || task.getResult().isEmpty()) {
+                            Log.e("searchMeals", "empty result");
+                        }
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            // check if we have a isOffered property
+                            if (document.getData().get("isOffered") != null) {
+                                // get the isOffered property's value
+                                boolean isOffered = (Boolean) document.getData().get("isOffered");
+                                // if only the meal if offered
+                                if (isOffered) {
+                                    // create the meal
+                                    meal = makeMealFromFirebase(document);
+                                    // set the meal id
+                                    meal.setMealID(document.getId());
+                                    // add keywords to meal instance (only need to do this when we need search meal functionality i.e., for a client)
+                                    meal.setKeywords((ArrayList<String>) document.getData().get("keywords"));
+                                    // create SearchMealItem adding to it the meal and chefInfo
+                                    smItem = new SearchMealItem(meal, chefInfo);
+                                    Log.e("searchMeals", "adding meal: " + meal.getName());
+                                    // store current SearchMealItem in our list
+                                    smItems.add(smItem);
                                 }
                             }
-                            Log.e("searchMeals", "updating meals");
-                            // pass list containing SearchMealItems to handler so our App's search meal list can be updated
-                            App.MEAL_HANDLER.handleActionSuccess(ADD_MEALS_TO_SEARCH_LIST, smItems);
-                        } else {
-                            Log.d("searchMeals", "Error getting documents: ", task.getException());
-                            App.MEAL_HANDLER.handleActionFailure(ADD_MEALS_TO_SEARCH_LIST, "Failed to retrieve meals from firebase");
                         }
+                        Log.e("searchMeals", "updating meals");
+                        // pass list containing SearchMealItems to handler so our App's search meal list can be updated
+                        App.MEAL_HANDLER.handleActionSuccess(ADD_MEALS_TO_SEARCH_LIST, smItems);
+                    } else {
+                        Log.d("searchMeals", "Error getting documents: ", task.getException());
+                        App.MEAL_HANDLER.handleActionFailure(ADD_MEALS_TO_SEARCH_LIST, "Failed to retrieve meals from firebase");
                     }
                 });
     }
@@ -597,21 +592,4 @@ public class MealActions {
 
     }
 
-    private Map mealToMapConversion(Meal meal){
-
-        Map<String, Object> mealMap = new HashMap<>();
-
-        mealMap.put("name", meal.getName());
-        mealMap.put("mealId", meal.getMealID());
-        mealMap.put("chefID", meal.getChefID());
-        mealMap.put("cuisineType", meal.getCuisineType());
-        mealMap.put("mealType", meal.getMealType());
-        mealMap.put("ingredients", meal.getIngredients());
-        mealMap.put("allergens", meal.getAllergens());
-        mealMap.put("description", meal.getDescription());
-        mealMap.put("isOffered", meal.isOffered());
-        mealMap.put("price", meal.getPrice());
-
-        return mealMap;
-    }
 }

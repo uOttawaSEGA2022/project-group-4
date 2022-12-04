@@ -1,4 +1,5 @@
 package com.example.mealer_project.data.models.orders;
+
 import com.example.mealer_project.data.models.meals.Meal;
 
 import java.io.Serializable;
@@ -21,7 +22,6 @@ public class MealInfo implements Serializable {
         this.setPrice(price);
     }
 
-
     /**
      * Create an instance of MealInfo using Meal
      * @param meal  meal data used to create
@@ -31,7 +31,6 @@ public class MealInfo implements Serializable {
         this.setName( meal.getName());
         this.setPrice( meal.getPrice());
     }
-
 
     public String getName() { return name; }
 

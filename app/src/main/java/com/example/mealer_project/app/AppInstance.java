@@ -3,22 +3,16 @@ package com.example.mealer_project.app;
 import android.util.Log;
 
 import com.example.mealer_project.data.handlers.DataHandlers;
-import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
-import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
-import com.example.mealer_project.ui.screens.AdminScreen;
 import com.example.mealer_project.ui.screens.ChefScreen;
 import com.example.mealer_project.ui.screens.completed_orders.CompletedOrdersScreen;
 import com.example.mealer_project.ui.screens.pending_orders.PendingOrdersScreen;
 import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class AppInstance {
     private FirebaseRepository primaryDatabase;
@@ -29,7 +23,6 @@ public class AppInstance {
     private PendingOrdersScreen pendingOrdersScreen;
     private CompletedOrdersScreen completedOrdersScreen;
     private ChefScreen chefScreen;
-    private AdminScreen adminScreen;
 
     public AppInstance() {
         this.initializeApp();
@@ -121,28 +114,6 @@ public class AppInstance {
 
     public void setCompletedOrdersScreen(CompletedOrdersScreen completedOrdersScreen) {
         this.completedOrdersScreen = completedOrdersScreen;
-    }
-
-    public AdminScreen getAdminScreen () {
-        return adminScreen;
-    }
-
-    public void setAdminScreen(AdminScreen adminScreen) {
-        this.adminScreen = adminScreen;
-    }
-
-    /**
-     * Method to get logged in client's cart
-     * @return Map containing order items if user is validated successfully, else an empty map
-     */
-    public Map<OrderItem, Boolean> getClientCart() {
-        // if logged in user is a client
-        if (isUserAuthenticated() && user instanceof Client) {
-            return ((Client) user).getCart();
-        } else {
-            // return empty hashmap
-            return new HashMap<>();
-        }
     }
 
     /**

@@ -56,21 +56,18 @@ public class MealsAdapter extends ArrayAdapter<Meal> {
         // Cache row position inside the button using `setTag`
         mealItemContainer.setTag(position);
         // attach the click event handler
-        mealItemContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int position = (Integer) view.getTag();
-                // Use the cached row position number inside LinearLayout's tag
-                Meal mealData = getItem(position);
+        mealItemContainer.setOnClickListener(view -> {
+            int position1 = (Integer) view.getTag();
+            // Use the cached row position number inside LinearLayout's tag
+            Meal mealData = getItem(position1);
 
-                Bundle extras = new Bundle();
-                extras.putSerializable(MealInfoScreen.MEAL_DATA_ARG_KEY, mealData);
-                Intent mealInfoIntent = new Intent(getContext(), MealInfoScreen.class);
-                mealInfoIntent.putExtras(extras);
+            Bundle extras = new Bundle();
+            extras.putSerializable(MealInfoScreen.MEAL_DATA_ARG_KEY, mealData);
+            Intent mealInfoIntent = new Intent(getContext(), MealInfoScreen.class);
+            mealInfoIntent.putExtras(extras);
 
-                // show meal info screen, passing it the meal's data
-                startActivity(getContext(), mealInfoIntent, null);
-            }
+            // show meal info screen, passing it the meal's data
+            startActivity(getContext(), mealInfoIntent, null);
         });
         return convertView;
     }

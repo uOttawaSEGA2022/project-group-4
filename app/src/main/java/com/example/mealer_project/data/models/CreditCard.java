@@ -3,7 +3,6 @@ package com.example.mealer_project.data.models;
 import com.example.mealer_project.data.entity_models.CreditCardEntityModel;
 
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Class to store information of a client's credit card
@@ -29,46 +28,6 @@ public class CreditCard {
         this.setCvc(creditCardEntityModel.getCvc());
         this.setExpiryMonth(creditCardEntityModel.getExpiryMonth());
         this.setExpiryYear(creditCardEntityModel.getExpiryYear());
-    }
-
-    /**
-     * Create a credit card object to store information, without a client id
-     * @param brand the card association brand (ex: MasterCard, Visa, etc.)
-     * @param name name of the card holder
-     * @param number credit card's number
-     * @param cvc CVC code of the credit card
-     * @param expiryMonth expiry month of the credit card
-     * @param expiryYear expiry year of the credit card
-     */
-    public CreditCard(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
-        // using setters to enable data validation
-        this.setBrand(brand);
-        this.setName(name);
-        this.setNumber(number);
-        this.setCvc(cvc);
-        this.setExpiryMonth(expiryMonth);
-        this.setExpiryYear(expiryYear);
-    }
-
-    /**
-     * Create a credit card object to store information of a client's credit card
-     * @param clientId id of client whom the credit card belongs to
-     * @param brand the card association brand (ex: MasterCard, Visa, etc.)
-     * @param name name of the card holder
-     * @param number credit card's number
-     * @param cvc CVC code of the credit card
-     * @param expiryMonth expiry month of the credit card
-     * @param expiryYear expiry year of the credit card
-     */
-    public CreditCard(String clientId, String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
-        // using setters to enable data validation
-        this.setClientId(clientId);
-        this.setBrand(brand);
-        this.setName(name);
-        this.setNumber(number);
-        this.setCvc(cvc);
-        this.setExpiryMonth(expiryMonth);
-        this.setExpiryYear(expiryYear);
     }
 
     public String getClientId() {

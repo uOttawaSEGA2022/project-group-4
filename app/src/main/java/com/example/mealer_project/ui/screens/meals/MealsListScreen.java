@@ -38,7 +38,6 @@ public class MealsListScreen extends UIScreen{
     // back button
     ImageButton backButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +64,6 @@ public class MealsListScreen extends UIScreen{
                 finish();
             }
         });
-    }
-
-    // Go back to previous screen
-    public void clickBack(View view) {
-        finish();
     }
 
     private void loadMealsData() {

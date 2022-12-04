@@ -45,18 +45,4 @@ public class Admin extends User {
         return mealerAdmin;
     }
 
-    /**
-     * Method for Admin to suspend Cook either temporarily or indefinitely
-     */
-    public void suspend(String chefId) {
-
-        //Information about Cook's suspension & changes to Database
-    }
-
-    /**
-     * Method for Admin to dismiss a complaint from Client
-     */
-    public void deleteComplaint() {
-        //Information about Client's dismissed complaint & changes to Database
-    }
 }

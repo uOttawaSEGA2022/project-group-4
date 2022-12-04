@@ -1,18 +1,12 @@
 package com.example.mealer_project.ui.screens.meals;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 
 import com.example.mealer_project.R;
-import com.example.mealer_project.app.App;
 import com.example.mealer_project.ui.core.UIScreen;
-
-import java.util.ArrayList;
 
 public class MealsSearchScreen extends UIScreen {
 
@@ -22,8 +16,6 @@ public class MealsSearchScreen extends UIScreen {
         setContentView(R.layout.activity_search_meal_screen);
 
         attachOnClickListeners();
-
-
 
     }
 
@@ -46,7 +38,6 @@ public class MealsSearchScreen extends UIScreen {
 
             }
         });
-
 
     }
 }

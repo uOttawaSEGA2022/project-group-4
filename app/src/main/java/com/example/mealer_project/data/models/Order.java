@@ -13,8 +13,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.grpc.okhttp.internal.Util;
-
 public class Order implements Serializable {
 
     private String orderID;
@@ -97,7 +95,6 @@ public class Order implements Serializable {
         return clientInfo;
     }
 
-
     //----------------------------------------------------------------------------------------------------------
     /**
      * Sets the value of the mealQuantity map
@@ -141,14 +138,9 @@ public class Order implements Serializable {
 
     //----------------------------------------------------------------------------------------------------------
 
-    public boolean isRejected() {
-        return isRejected;
-    }
-
     public void setIsRejected(boolean rejected) {
         isRejected = rejected;
     }
-
 
     //----------------------------------------------------------------------------------------------------------
 
@@ -206,14 +198,6 @@ public class Order implements Serializable {
     }
 
     //----------------------------------------------------------------------------------------------------------
-    /**
-     * Set the status of rejection
-     * @param isRejected
-     */
-    public void isRejected(boolean isRejected){
-        this.isRejected = isRejected;
-    }
-
     /**
      * Return rejection status
      * @return isRejected

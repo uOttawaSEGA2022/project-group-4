@@ -1,8 +1,6 @@
 package com.example.mealer_project.data.models.meals;
 
-
 import com.example.mealer_project.data.entity_models.MealEntityModel;
-import com.example.mealer_project.ui.screens.search.SearchMealItem;
 import com.example.mealer_project.utils.Utilities;
 
 import java.io.Serializable;

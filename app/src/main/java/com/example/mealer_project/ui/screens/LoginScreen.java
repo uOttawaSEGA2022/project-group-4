@@ -1,6 +1,5 @@
 package com.example.mealer_project.ui.screens;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,54 +30,44 @@ public class LoginScreen extends UIScreen implements StatefulView {
         setLoginInProcess(false);
 
         Button loginBtn = (Button) findViewById(R.id.loginSubmitBtn);
-        loginBtn.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
+        loginBtn.setOnClickListener(v -> {
 
-                // if login already in progress, don't start process again
-                if (loginInProcess) {
-                    displayErrorToast("Login in process already! Please wait!");
-                    return;
-                }
+            // if login already in progress, don't start process again
+            if (loginInProcess) {
+                displayErrorToast("Login in process already! Please wait!");
+                return;
+            }
 
-
-                // handle login
-                Response loginResponse = loginSubmissionHandler();
-                if (loginResponse.isSuccess()) {
-                    displaySuccessToast(loginResponse.getSuccessMessage());
-                    // set login to be in process & display loading spinner
-                    setLoginInProcess(true);
-                } else {
-                    displayErrorToast(loginResponse.getErrorMessage());
-                    setLoginInProcess(false);
-                }
+            // handle login
+            Response loginResponse = loginSubmissionHandler();
+            if (loginResponse.isSuccess()) {
+                displaySuccessToast(loginResponse.getSuccessMessage());
+                // set login to be in process & display loading spinner
+                setLoginInProcess(true);
+            } else {
+                displayErrorToast(loginResponse.getErrorMessage());
+                setLoginInProcess(false);
             }
         });
 
-        Button signupBtn = (Button) findViewById(R.id.goSignUpBtn);
-        signupBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignupScreen.class);
-                startActivity(intent);
-            }
+        Button signupBtn = findViewById(R.id.goSignUpBtn);
+        signupBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SignupScreen.class);
+            startActivity(intent);
         });
-        ImageButton backBtn = (ImageButton)findViewById(R.id.back_btn4);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        ImageButton backBtn = findViewById(R.id.back_btn4);
+        backBtn.setOnClickListener(v -> finish());
     }
 
     private Response loginSubmissionHandler() {
 
-        EditText textEmail = (EditText)findViewById(R.id.loginUsername);
+        EditText textEmail = findViewById(R.id.loginUsername);
         String email = textEmail.getText().toString();
         if (email.equals("")) {
             return new Response(false, "Please enter your email address");
         }
 
-        EditText textPassword = (EditText)findViewById(R.id.loginPassword);
+        EditText textPassword = findViewById(R.id.loginPassword);
         String password = textPassword.getText().toString();
         if (password.equals("")) {
             return new Response(false, "Please enter your password");

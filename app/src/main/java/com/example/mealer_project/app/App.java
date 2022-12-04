@@ -9,18 +9,13 @@ import com.example.mealer_project.data.models.Client;
 import com.example.mealer_project.data.models.User;
 import com.example.mealer_project.data.models.UserRoles;
 import com.example.mealer_project.data.models.inbox.AdminInbox;
-import com.example.mealer_project.data.models.orders.OrderItem;
 import com.example.mealer_project.data.sources.FirebaseRepository;
-
-import java.util.Map;
 
 public class App {
     static AppInstance app = new AppInstance();
     static final public UserHandler USER_HANDLER = app.getAppDataHandler().getUserHandler();
-    static final public InboxHandler INBOX_HANDLER = app.getAppDataHandler().getInboxHandler();
     static final public MealHandler MEAL_HANDLER = app.getAppDataHandler().getMealHandler();
     static final public OrderHandler ORDER_HANDLER = app.getAppDataHandler().getOrderHandler();
-    static final public Map<OrderItem, Boolean> CART = app.getClientCart();
 
     public static AppInstance getAppInstance() {
         return app;

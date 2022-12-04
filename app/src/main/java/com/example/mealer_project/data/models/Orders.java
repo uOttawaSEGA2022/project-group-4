@@ -1,12 +1,7 @@
 package com.example.mealer_project.data.models;
 
-import android.os.Build;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
-import com.example.mealer_project.data.models.inbox.Complaint;
-import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
@@ -61,23 +56,6 @@ public class Orders implements Comparator<Order> {
     }
 
     /**
-     * Method to retrieve a list containing all Orders by the Chef
-     * @return a List containing Order objects
-     */
-    public List<Order> getAllOrders() {
-
-        // Variable Declaration
-        ArrayList<Order> allOrders = (ArrayList<Order>) this.orders.values();
-
-        // Process: sorting the list by date placed
-        Collections.sort(allOrders, this);
-
-        // Output
-        return allOrders;
-
-    };
-
-    /**
      * Method to retrieve a list containing all pending Orders by the Chef
      * @return a List containing Order objects
      */
@@ -118,7 +96,7 @@ public class Orders implements Comparator<Order> {
         for (Order order : this.orders.values()) {
 
             // Process: checking if completed
-            if (order.getIsCompleted() == false && order.getIsRejected() == false && order.getIsPending() == false) {
+            if (!order.getIsCompleted() && !order.getIsRejected() && !order.getIsPending()) {
 
                 ordersInProgress.add(order); //adding to list
             }
@@ -130,7 +108,6 @@ public class Orders implements Comparator<Order> {
         // Output
         return ordersInProgress;
     };
-
 
     /**
      * Method to retrieve a list containing all completed Orders by the Chef

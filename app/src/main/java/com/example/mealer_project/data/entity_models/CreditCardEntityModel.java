@@ -11,15 +11,6 @@ public class CreditCardEntityModel {
 
     public CreditCardEntityModel() {};
 
-    public CreditCardEntityModel(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
-        this.setBrand(brand);
-        this.setName(name);
-        this.setNumber(number);
-        this.setCvc(cvc);
-        this.setExpiryMonth(expiryMonth);
-        this.setExpiryYear(expiryYear);
-    }
-
     public String getClientId() {
         return clientId;
     }

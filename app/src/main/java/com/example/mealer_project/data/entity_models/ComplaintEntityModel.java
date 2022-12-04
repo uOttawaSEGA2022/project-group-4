@@ -65,8 +65,4 @@ public class ComplaintEntityModel {
     public Date getDateSubmitted() {
         return dateSubmitted;
     }
-
-    public void setDateSubmitted(Date dateSubmitted) {
-        this.dateSubmitted = dateSubmitted;
-    }
 }

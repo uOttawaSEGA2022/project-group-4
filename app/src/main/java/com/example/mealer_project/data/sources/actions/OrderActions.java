@@ -30,26 +30,18 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import org.checkerframework.checker.units.qual.A;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 public class OrderActions {
 
     FirebaseFirestore database;
 
-
     public OrderActions(FirebaseFirestore database) {
         this.database = database;
     }
-
 
     /**
      * Adds order to firebase
@@ -65,9 +57,6 @@ public class OrderActions {
             databaseOrder.put("clientInfo", order.getClientInfo());
             databaseOrder.put("chefInfo", order.getChefInfo());
 
-            //SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-            //String strDate = dateFormat.format(order.getOrderDate());
-
             databaseOrder.put("date", order.getOrderDate());
             databaseOrder.put("isPending", order.getIsPending());
             databaseOrder.put("isRejected", order.getIsRejected());
@@ -81,56 +70,33 @@ public class OrderActions {
             database
                     .collection(ORDER_COLLECTION)
                     .add(databaseOrder)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
+                    .addOnSuccessListener(documentReference -> {
 
-                            // if successful, update orderId
-                            order.setOrderID(documentReference.getId());
+                        // if successful, update orderId
+                        order.setOrderID(documentReference.getId());
 
-                            // if successful, add orderId to specific chef's list of orders
-                            database.collection(CHEF_COLLECTION)
-                                            .document(order.getChefInfo().getChefId())
-                                            .update(CHEF_ORDERS_COLLECTION, FieldValue.arrayUnion(order.getOrderID()))
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    Log.d("ChefOrdersSuccess", "DocumentSnapshot successfully updated!");
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Log.w("ChefOrdersError", "Error updating document", e);
-                                                }
-                                            });
+                        // if successful, add orderId to specific chef's list of orders
+                        database.collection(CHEF_COLLECTION)
+                                        .document(order.getChefInfo().getChefId())
+                                        .update(CHEF_ORDERS_COLLECTION, FieldValue.arrayUnion(order.getOrderID()))
+                                        .addOnSuccessListener(aVoid -> Log.d("ChefOrdersSuccess", "DocumentSnapshot successfully updated!"))
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("ChefOrdersError", "Error updating document", e);
+                                            }
+                                        });
 
-                            // if successful, add orderId to specific client's list of orders
-                            database.collection(CLIENT_COLLECTION)
-                                    .document(order.getClientInfo().getClientId())
-                                    .update(CLIENT_ORDERS_COLLECTION, FieldValue.arrayUnion(order.getOrderID()))
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d("ClientOrdersSuccess", "DocumentSnapshot successfully updated!");
-                                        }
-                                        })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w("ClientOrdersError", "Error updating document", e);
-                                        }
-                                    });
+                        // if successful, add orderId to specific client's list of orders
+                        database.collection(CLIENT_COLLECTION)
+                                .document(order.getClientInfo().getClientId())
+                                .update(CLIENT_ORDERS_COLLECTION, FieldValue.arrayUnion(order.getOrderID()))
+                                .addOnSuccessListener(aVoid -> Log.d("ClientOrdersSuccess", "DocumentSnapshot successfully updated!"))
+                                .addOnFailureListener(e -> Log.w("ClientOrdersError", "Error updating document", e));
 
-                            App.ORDER_HANDLER.handleActionSuccess(ADD_ORDER, order);
-                        }
+                        App.ORDER_HANDLER.handleActionSuccess(ADD_ORDER, order);
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.ORDER_HANDLER.handleActionFailure(ADD_ORDER, "Failed to add order to database: " + e.getMessage());
-                        }
-                    });
+                    .addOnFailureListener(e -> App.ORDER_HANDLER.handleActionFailure(ADD_ORDER, "Failed to add order to database: " + e.getMessage()));
         }
     }
 
@@ -146,57 +112,46 @@ public class OrderActions {
 
             // retrieve order object from firebase
             DocumentReference docRef = database.collection(ORDER_COLLECTION).document(orderId);
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
+            docRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
 
-                            // if the order exists, get clientId and chefId
-                            String clientId = (String) document.get("clientId");
-                            String chefId = (String) document.get("chefId");
+                        // if the order exists, get clientId and chefId
+                        String clientId = (String) document.get("clientId");
+                        String chefId = (String) document.get("chefId");
 
-                            // delete orderId from specific chef's list of orders
-                            database.collection(CHEF_COLLECTION)
-                                            .document(chefId)
-                                            .update(CHEF_ORDERS_COLLECTION, FieldValue.arrayRemove(orderId));
+                        // delete orderId from specific chef's list of orders
+                        database.collection(CHEF_COLLECTION)
+                                        .document(chefId)
+                                        .update(CHEF_ORDERS_COLLECTION, FieldValue.arrayRemove(orderId));
 
-                            // delete orderId from specific client's list of orders
-                            database.collection(CLIENT_COLLECTION)
-                                    .document(clientId)
-                                    .update(CLIENT_ORDERS_COLLECTION, FieldValue.arrayRemove(orderId));
+                        // delete orderId from specific client's list of orders
+                        database.collection(CLIENT_COLLECTION)
+                                .document(clientId)
+                                .update(CLIENT_ORDERS_COLLECTION, FieldValue.arrayRemove(orderId));
 
-                            //finally, delete order from Orders Collection
-                            docRef
-                            .delete()
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            App.ORDER_HANDLER.handleActionSuccess(REMOVE_ORDER, orderId);
-
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "Failed to remove order from database: " + e.getMessage());
-                                        }
-                                    });
+                        //finally, delete order from Orders Collection
+                        docRef
+                        .delete()
+                                .addOnSuccessListener(aVoid -> App.ORDER_HANDLER.handleActionSuccess(REMOVE_ORDER, orderId))
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "Failed to remove order from database: " + e.getMessage());
+                                    }
+                                });
 
 
-                        } else {
-                            App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "No such document");
-                        }
                     } else {
-                        App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "get failed with " + task.getException());
+                        App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "No such document");
                     }
+                } else {
+                    App.ORDER_HANDLER.handleActionFailure(REMOVE_ORDER, "get failed with " + task.getException());
                 }
             });
         }
-
     }
-
 
     public void getOrderById(String orderId){
 
@@ -207,24 +162,21 @@ public class OrderActions {
                     .collection(ORDER_COLLECTION)
                     .document(orderId)
                     .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
 
-                                    Order order = makeOrderFromFirebase(document);
+                                Order order = makeOrderFromFirebase(document);
 
 
-                                    App.ORDER_HANDLER.handleActionSuccess(GET_ORDER_BY_ID, order);
+                                App.ORDER_HANDLER.handleActionSuccess(GET_ORDER_BY_ID, order);
 
-                                } else {
-                                    Log.d("RemoveOrder", "No such document");
-                                }
                             } else {
-                                Log.d("RemoveOrder", "get failed with ", task.getException());
+                                Log.d("RemoveOrder", "No such document");
                             }
+                        } else {
+                            Log.d("RemoveOrder", "get failed with ", task.getException());
                         }
                     });
         }
@@ -240,18 +192,8 @@ public class OrderActions {
                     .update("isPending", order.getIsPending(),
                                 "isRejected", order.getIsRejected(),
                                 "isCompleted", order.getIsCompleted())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            App.ORDER_HANDLER.handleActionSuccess(UPDATE_ORDER,order);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.ORDER_HANDLER.handleActionFailure(UPDATE_ORDER,"Error updating order in firebase");
-                        }
-                    });
+                    .addOnSuccessListener(aVoid -> App.ORDER_HANDLER.handleActionSuccess(UPDATE_ORDER,order))
+                    .addOnFailureListener(e -> App.ORDER_HANDLER.handleActionFailure(UPDATE_ORDER,"Error updating order in firebase"));
         }
     }
 
@@ -261,21 +203,10 @@ public class OrderActions {
             database.collection(ORDER_COLLECTION)
                     .document(order.getOrderID())
                     .update("complaintSubmitted", order.isComplaintSubmitted())
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            App.ORDER_HANDLER.handleActionSuccess(UPDATE_ORDER,order);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            App.ORDER_HANDLER.handleActionFailure(UPDATE_ORDER,"Error updating order in firebase");
-                        }
-                    });
+                    .addOnSuccessListener(aVoid -> App.ORDER_HANDLER.handleActionSuccess(UPDATE_ORDER,order))
+                    .addOnFailureListener(e -> App.ORDER_HANDLER.handleActionFailure(UPDATE_ORDER,"Error updating order in firebase"));
         }
     }
-
 
     public void loadChefOrders(String chefId){
 
@@ -285,20 +216,77 @@ public class OrderActions {
             database.collection(CHEF_COLLECTION)
                     .document(chefId)
                     .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
 
-                                    // retrieve list of orderIds from chef
+                                // retrieve list of orderIds from chef
+                                ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
+
+                                // if no orders
+                                if (orderIds == null) {
+                                    return;
+                                }
+
+                                // iterate through list
+                                for (String orderId : orderIds) {
+
+                                    // go to orders_collection and retrieve order using the given orderId in the list
+                                    database.collection(ORDER_COLLECTION)
+                                            .document(orderId)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot document = task.getResult();
+                                                        if (document.exists()) {
+
+                                                            //make order object from firebase
+                                                            Order order = makeOrderFromFirebase(document);
+
+                                                            //update orders of the logged in chef
+
+                                                            App.getChef().ORDERS.addOrder(order);
+
+                                                        } else {
+                                                            Log.d("loadChefOrders", "Order not found given orderId stored in chef orders");
+                                                        }
+                                                    } else {
+                                                        Log.d("loadChefOrders", "get failed with ", task.getException());
+                                                    }
+                                                }
+                                            });
+                                }
+                            } else {
+                                Log.d("loadChefOrders", "Chef not found");
+                            }
+                        } else {
+                            Log.d("loadChefOrders", "get failed with ", task.getException());
+                        }
+                    });
+        }
+    }
+
+    public void loadClientOrders(String clientId){
+
+        if (Preconditions.isNotNull(clientId)) {
+
+            // retrieve client object from firebase
+            database.collection(CLIENT_COLLECTION)
+                    .document(clientId)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+
+                                if (document.getData().get(CHEF_ORDERS_COLLECTION) != null) {
+
+                                    // retrieve list of orderIds from client
                                     ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
 
-                                    // if no orders
-                                    if (orderIds == null) {
-                                        return;
-                                    }
 
                                     // iterate through list
                                     for (String orderId : orderIds) {
@@ -317,92 +305,28 @@ public class OrderActions {
                                                                 //make order object from firebase
                                                                 Order order = makeOrderFromFirebase(document);
 
-                                                                //update orders of the logged in chef
-
-                                                                App.getChef().ORDERS.addOrder(order);
+                                                                //update orders of the logged in client
+                                                                App.getClient().ORDERS.addOrder(order);
 
                                                             } else {
-                                                                Log.d("loadChefOrders", "Order not found given orderId stored in chef orders");
+                                                                Log.d("loadClientOrders", "Order not found given orderId stored in chef orders");
                                                             }
                                                         } else {
-                                                            Log.d("loadChefOrders", "get failed with ", task.getException());
+                                                            Log.d("loadClientOrders", "get failed with ", task.getException());
                                                         }
                                                     }
                                                 });
                                     }
                                 } else {
-                                    Log.d("loadChefOrders", "Chef not found");
+                                    Log.d("loadClientOrders", "Chef not found");
                                 }
-                            } else {
-                                Log.d("loadChefOrders", "get failed with ", task.getException());
                             }
+                        } else {
+                            Log.d("loadClientOrders", "get failed with ", task.getException());
                         }
                     });
         }
     }
-
-    public void loadClientOrders(String clientId){
-
-        if (Preconditions.isNotNull(clientId)) {
-
-            // retrieve client object from firebase
-            database.collection(CLIENT_COLLECTION)
-                    .document(clientId)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-
-                                    if (document.getData().get(CHEF_ORDERS_COLLECTION) != null) {
-
-                                        // retrieve list of orderIds from client
-                                        ArrayList<String> orderIds = (ArrayList<String>) document.getData().get(CHEF_ORDERS_COLLECTION);
-
-
-                                        // iterate through list
-                                        for (String orderId : orderIds) {
-
-                                            // go to orders_collection and retrieve order using the given orderId in the list
-                                            database.collection(ORDER_COLLECTION)
-                                                    .document(orderId)
-                                                    .get()
-                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                            if (task.isSuccessful()) {
-                                                                DocumentSnapshot document = task.getResult();
-                                                                if (document.exists()) {
-
-                                                                    //make order object from firebase
-                                                                    Order order = makeOrderFromFirebase(document);
-
-                                                                    //update orders of the logged in client
-                                                                    App.getClient().ORDERS.addOrder(order);
-
-                                                                } else {
-                                                                    Log.d("loadClientOrders", "Order not found given orderId stored in chef orders");
-                                                                }
-                                                            } else {
-                                                                Log.d("loadClientOrders", "get failed with ", task.getException());
-                                                            }
-                                                        }
-                                                    });
-                                        }
-                                    } else {
-                                        Log.d("loadClientOrders", "Chef not found");
-                                    }
-                                }
-                            } else {
-                                Log.d("loadClientOrders", "get failed with ", task.getException());
-                            }
-                        }
-                    });
-        }
-    }
-
 
     public void updateChefRating(String orderId, String chefId, Double newRating){
 
@@ -412,60 +336,46 @@ public class OrderActions {
             database.collection(CHEF_COLLECTION)
                     .document(chefId)
                     .get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
 
-                                    Double ratingSum = ((Number) document.getData().get("ratingSum")).doubleValue();
-                                    int numOfRatings = ((Number) document.getData().get("numOfRatings")).intValue();
-                                    numOfRatings = numOfRatings + 1;
+                                Double ratingSum = ((Number) document.getData().get("ratingSum")).doubleValue();
+                                int numOfRatings = ((Number) document.getData().get("numOfRatings")).intValue();
+                                numOfRatings = numOfRatings + 1;
 
-                                    database.collection(CHEF_COLLECTION)
-                                            .document(chefId)
-                                            .update("ratingSum", ratingSum + newRating,
-                                                    "numOfRatings", numOfRatings)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    App.ORDER_HANDLER.handleUpdateChefRatingSuccess();
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update chef's rating!");
-                                                }
-                                            });
+                                database.collection(CHEF_COLLECTION)
+                                        .document(chefId)
+                                        .update("ratingSum", ratingSum + newRating,
+                                                "numOfRatings", numOfRatings)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                App.ORDER_HANDLER.handleUpdateChefRatingSuccess();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update chef's rating!");
+                                            }
+                                        });
 
-                                    database.collection(ORDER_COLLECTION)
-                                            .document(orderId)
-                                            .update("rating", newRating,
-                                                    "isRated", true)
-                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    App.ORDER_HANDLER.handleUpdateChefRatingSuccess();
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update order's rating!");
-                                                }
-                                            });
+                                database.collection(ORDER_COLLECTION)
+                                        .document(orderId)
+                                        .update("rating", newRating,
+                                                "isRated", true)
+                                        .addOnSuccessListener(aVoid -> App.ORDER_HANDLER.handleUpdateChefRatingSuccess())
+                                        .addOnFailureListener(e -> App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update order's rating!"));
 
-                                } else {
-                                        Log.d("updateChefRating", "Chef not found");
-                                    }
                             } else {
-                                Log.d("updateChefRating" , "get failed with ", task.getException());
-                            }
+                                    Log.d("updateChefRating", "Chef not found");
+                                }
+                        } else {
+                            Log.d("updateChefRating" , "get failed with ", task.getException());
                         }
                     });
-
 
         }
 

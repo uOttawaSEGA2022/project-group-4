@@ -13,11 +13,9 @@ import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.ui.core.StatefulView;
 import com.example.mealer_project.ui.core.UIScreen;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class AdminScreen extends UIScreen implements StatefulView {
 
@@ -34,38 +32,34 @@ public class AdminScreen extends UIScreen implements StatefulView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        App.getAppInstance().setAdminScreen(this);
         setContentView(R.layout.activity_admin_screen);
 
         App.getInboxHandler().updateAdminInbox(this);
 
         complaintListView = findViewById(R.id.complaintList);
-        complaintListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        complaintListView.setOnItemClickListener((parent, view, position, id) -> {
 
-                // guard-clause
-                if (complaintsData == null) {
-                    Log.e("setOnItemClickListener", "complaintsData is null");
-                    displayErrorToast("No complaints available");
-                }
-
-                // get the complaint
-                Complaint complaint = null;
-
-                try {
-                    complaint = complaintsData.get(position);
-
-                    // complaint = complaints[pos]
-                    Intent complaintScreenIntent = new Intent(getApplicationContext(), ComplaintScreen.class);
-                    complaintScreenIntent.putExtra(COMPLAINT_OBJ_INTENT_KEY, complaint);
-                    startActivity(complaintScreenIntent);
-                } catch (Exception e) {
-                    Log.e("setOnItemClickListener", "unable to create complaint object: " + e.getMessage());
-                    displayErrorToast("Unable to process request!");
-                }
-
+            // guard-clause
+            if (complaintsData == null) {
+                Log.e("setOnItemClickListener", "complaintsData is null");
+                displayErrorToast("No complaints available");
             }
+
+            // get the complaint
+            Complaint complaint = null;
+
+            try {
+                complaint = complaintsData.get(position);
+
+                // complaint = complaints[pos]
+                Intent complaintScreenIntent = new Intent(getApplicationContext(), ComplaintScreen.class);
+                complaintScreenIntent.putExtra(COMPLAINT_OBJ_INTENT_KEY, complaint);
+                startActivity(complaintScreenIntent);
+            } catch (Exception e) {
+                Log.e("setOnItemClickListener", "unable to create complaint object: " + e.getMessage());
+                displayErrorToast("Unable to process request!");
+            }
+
         });
     }
 

@@ -91,21 +91,6 @@ public class Client extends User {
     }
 
     /**
-     * Method to add or update a credit card for a client
-     * @param brand card association brand (ex: MasterCard, Visa, etc.)
-     * @param name name of the card holder
-     * @param number credit card number
-     * @param cvc CVC code
-     * @param expiryMonth expiry month of the credit card
-     * @param expiryYear expiry year of the credit card
-     */
-    public void setClientCreditCard(String brand, String name, String number, String cvc, int expiryMonth, int expiryYear) {
-        // validate provided card info
-        // verify client has been instantiated (has valid userId)
-        this.clientCreditCard = new CreditCard(this.userId, brand, name, number, cvc, expiryMonth, expiryYear);
-    }
-
-    /**
      * Update order items in cart
      * @param orderItem instance of OrderItem
      */
@@ -130,7 +115,7 @@ public class Client extends User {
             // Process: find the key
             if (oi.equals(orderItem)) { //equals
 
-                this.cart.remove(oi, true); //removing from cart
+                this.cart.remove(oi); //removing from cart
 
                 break; //stop loop
 
@@ -152,10 +137,6 @@ public class Client extends User {
         return cart;
     }
 
-    public void setCart(Map<OrderItem, Boolean> cart) {
-        this.cart = cart;
-    }
-
     /**
      * method to get order item information of a meal present in client's cart
      * @return if meal present returns an instance of that Meal, else null
@@ -173,13 +154,6 @@ public class Client extends User {
         }
         // if cart is empty or no order item found for the meal
         return null;
-    }
-
-    /**
-     * Method for a client to be able to rate a meal
-     */
-    public void rateMeal() {
-        // logic for a client to rate a meal
     }
 
     public SearchMeals getSearchMeals() {

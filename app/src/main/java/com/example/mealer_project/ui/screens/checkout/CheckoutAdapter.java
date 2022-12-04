@@ -1,24 +1,18 @@
 package com.example.mealer_project.ui.screens.checkout;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mealer_project.R;
 import com.example.mealer_project.data.models.orders.OrderItem;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
 

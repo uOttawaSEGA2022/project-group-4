@@ -89,15 +89,12 @@ public class SearchScreen extends UIScreen {
             }
         });
 
-        checkoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (App.getClient().getCart().size() == 0)
-                    displayErrorToast("No items in cart!");
-                else {
-                    Intent intent = new Intent(getApplicationContext(), CheckoutScreen.class);
-                    startActivity(intent);
-                }
+        checkoutButton.setOnClickListener(view -> {
+            if (App.getClient().getCart().size() == 0)
+                displayErrorToast("No items in cart!");
+            else {
+                Intent intent = new Intent(getApplicationContext(), CheckoutScreen.class);
+                startActivity(intent);
             }
         });
 
@@ -121,17 +118,6 @@ public class SearchScreen extends UIScreen {
                 Log.e("searchR", "Search box text changed: " + s);
             }
         });
-    }
-
-    public void newSearchItemAdded(SearchMealItem newItem) {
-        // update our local data store
-        loadSearchMealData();
-        // add new item
-        this.sMItems.add(newItem);
-        // inform adapter of the change
-        sMItemsAdapter.notifyDataSetChanged();
-        // TODO: below line for test, remove later
-        Log.e("searchMeals", "new search item added, sM: " + this.sMItems.size() + " sM D: " + this.sMItemsData.size());
     }
 
     public void newSearchItemsAdded(List<SearchMealItem> newItems) {

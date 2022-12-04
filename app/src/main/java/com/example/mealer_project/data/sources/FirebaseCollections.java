@@ -1,6 +1,5 @@
 package com.example.mealer_project.data.sources;
 
-
 public abstract class FirebaseCollections {
 
     public final static String CLIENT_COLLECTION = "Clients";

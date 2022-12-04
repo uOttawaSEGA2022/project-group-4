@@ -8,13 +8,6 @@ public class AddressEntityModel {
 
     public AddressEntityModel() {};
 
-    public AddressEntityModel(String streetAddress, String city, String postalCode, String country) {
-        this.streetAddress = streetAddress;
-        this.city = city;
-        this.postalCode = postalCode;
-        this.country = country;
-    }
-
     public String getStreetAddress() {
         return streetAddress;
     }

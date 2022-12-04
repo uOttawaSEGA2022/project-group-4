@@ -3,14 +3,11 @@ package com.example.mealer_project.ui.screens.search;
 import android.util.Log;
 
 import com.example.mealer_project.utils.TrieSearch.TriesSearch;
-import com.example.mealer_project.utils.Utilities;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class SearchMeals {
 

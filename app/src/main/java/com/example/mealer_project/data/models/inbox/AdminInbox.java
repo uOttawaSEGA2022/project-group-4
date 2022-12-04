@@ -1,15 +1,11 @@
 package com.example.mealer_project.data.models.inbox;
 
-import android.os.Build;
 import android.util.Log;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.example.mealer_project.app.App;
 import com.example.mealer_project.utils.Preconditions;
 
 /**
@@ -18,21 +14,6 @@ import com.example.mealer_project.utils.Preconditions;
 public class AdminInbox implements Inbox {
     // store complaints in a Map for quickly accessing any complaint by it's id without need for traversal
     private HashMap<String, Complaint> complaints;
-
-    /**
-     * Create a new admin inbox
-     */
-    public AdminInbox() {
-        complaints = new HashMap<>();
-    }
-
-    /**
-     * Create a new admin inbox when number of complaints is known
-     * Additional advantage: avoids overhead of dynamic memory for array based maps
-     */
-    public AdminInbox(int size) {
-        complaints = new HashMap<>(size);
-    }
 
     /**
      * Create a new admin inbox by providing list of complaints

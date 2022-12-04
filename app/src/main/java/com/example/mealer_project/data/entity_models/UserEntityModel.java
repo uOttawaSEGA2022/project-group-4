@@ -15,15 +15,6 @@ public class UserEntityModel {
 
     public UserEntityModel() {};
 
-    public UserEntityModel(String firstName, String lastName, String email, String password, AddressEntityModel address, UserRoles role) {
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
-        this.setEmail(email);
-        this.setPassword(password);
-        this.setAddress(address);
-        this.setRole(role);
-    }
-
     public String getFirstName() {
         return firstName;
     }

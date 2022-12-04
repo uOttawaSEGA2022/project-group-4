@@ -1,15 +1,12 @@
 package com.example.mealer_project.data.models.inbox;
 
 import com.example.mealer_project.data.entity_models.ComplaintEntityModel;
-import com.example.mealer_project.utils.Utilities;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -205,10 +202,6 @@ public class Complaint implements Comparator<Complaint>, Serializable {
     private void setDateSubmitted(String dateSubmitted) throws ParseException {
         // mm-dd--yyyy
         // this.dateSubmitted = Utilities.getDateFromString(dateSubmitted);
-    }
-
-    public boolean isResolved() {
-        return isResolved;
     }
 
     public void setResolved(boolean resolved) {

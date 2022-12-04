@@ -21,7 +21,6 @@ import com.example.mealer_project.ui.screens.ComplaintScreen;
 import com.example.mealer_project.ui.screens.LoginScreen;
 import com.example.mealer_project.utils.Response;
 
-import static com.example.mealer_project.data.handlers.MealHandler.dbOperations.ADD_MEAL_TO_OFFERED_LIST;
 import static com.example.mealer_project.data.sources.FirebaseCollections.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,9 +39,6 @@ public class UserActions {
 
     FirebaseFirestore database;
 
-
-
-
     public UserActions(FirebaseFirestore database) {
         this.database = database;
     }
@@ -53,33 +49,30 @@ public class UserActions {
         // then check if Chef
         DocumentReference userReference = database.collection(ADMIN_COLLECTION).document(userId);
 
-        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        if (document.getData() != null){
-                            Response r = makeAdminFromFirebase(document, userId);
-                            if (loginScreen != null && r.isSuccess()) {
-                                loginScreen.showNextScreen();
-                            } else if (loginScreen != null){
-                                Log.e("Login failed for admin", r.getErrorMessage());
-                                loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN, "Login failed for admin: " + r.getErrorMessage());
-                            }
-
-                            if (r.isError()) {
-                                Log.e("getUserById: ", r.getErrorMessage());
-                            }
+        userReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    if (document.getData() != null){
+                        Response r = makeAdminFromFirebase(document, userId);
+                        if (loginScreen != null && r.isSuccess()) {
+                            loginScreen.showNextScreen();
+                        } else if (loginScreen != null){
+                            Log.e("Login failed for admin", r.getErrorMessage());
+                            loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN, "Login failed for admin: " + r.getErrorMessage());
                         }
 
-                    } else {
-                        // if user not in Admin collection, check Chef
-                        getChefById(userId, loginScreen);
+                        if (r.isError()) {
+                            Log.e("getUserById: ", r.getErrorMessage());
+                        }
                     }
+
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    // if user not in Admin collection, check Chef
+                    getChefById(userId, loginScreen);
                 }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
             }
         });
     }
@@ -88,59 +81,56 @@ public class UserActions {
         DocumentReference userReference = database.collection(CHEF_COLLECTION).document(userId);
 
         // get Chef's data
-        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+        userReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        if (document.getData() != null){
+                    if (document.getData() != null){
 
-                            // if chef is suspended, we don't need to store Chef data locally
+                        // if chef is suspended, we don't need to store Chef data locally
 
-                            // get value of isSuspended for check
-                            boolean isSuspended = (Boolean) document.getData().get("isSuspended");
+                        // get value of isSuspended for check
+                        boolean isSuspended = (Boolean) document.getData().get("isSuspended");
 
-                            Response r = makeChefFromFirebase(document);
+                        Response r = makeChefFromFirebase(document);
 
-                            // if chef is suspended, return right away with empty chef
-                            if (isSuspended) {
-                                // get suspension date
-                                if (document.getData().get("suspensionDate") != null) {
-                                    String chefSuspensionDate = String.valueOf((document.getData().get("suspensionDate")));
+                        // if chef is suspended, return right away with empty chef
+                        if (isSuspended) {
+                            // get suspension date
+                            if (document.getData().get("suspensionDate") != null) {
+                                String chefSuspensionDate = String.valueOf((document.getData().get("suspensionDate")));
 
-                                    // inform UI that Chef is suspended and provide it suspension date
-                                    loginScreen.handleSuspendedChefLogin(chefSuspensionDate, String.valueOf(document.getData().get("firstName")));
-                                } else {
-                                    loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Could not retrieve a valid date for suspended chef");
-                                }
-                                // return
-                                new Response(false, "Chef is suspended");
+                                // inform UI that Chef is suspended and provide it suspension date
+                                loginScreen.handleSuspendedChefLogin(chefSuspensionDate, String.valueOf(document.getData().get("firstName")));
+                            } else {
+                                loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Could not retrieve a valid date for suspended chef");
                             }
-
-                            // if Chef is not suspended, we create the Chef instance
-                            else {
-                                if (loginScreen != null && r.isSuccess()) {
-                                    // load Chef's meals
-                                    // app's user should have been set to the Chef by this point (App.getUser() = logged in chef)
-                                    App.getPrimaryDatabase().ORDERS.loadChefOrders(userId);
-                                    App.getPrimaryDatabase().MEALS.loadChefMeals(loginScreen);
-
-                                } else if (loginScreen != null){
-                                    Log.e("Login failed for chef", r.getErrorMessage());
-                                    loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed, " + r.getErrorMessage());
-                                }
-                            }
+                            // return
+                            new Response(false, "Chef is suspended");
                         }
 
-                    } else {
-                        getClientById(userId, loginScreen);
+                        // if Chef is not suspended, we create the Chef instance
+                        else {
+                            if (loginScreen != null && r.isSuccess()) {
+                                // load Chef's meals
+                                // app's user should have been set to the Chef by this point (App.getUser() = logged in chef)
+                                App.getPrimaryDatabase().ORDERS.loadChefOrders(userId);
+                                App.getPrimaryDatabase().MEALS.loadChefMeals(loginScreen);
+
+                            } else if (loginScreen != null){
+                                Log.e("Login failed for chef", r.getErrorMessage());
+                                loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed, " + r.getErrorMessage());
+                            }
+                        }
                     }
+
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    getClientById(userId, loginScreen);
                 }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
             }
         });
 
@@ -149,35 +139,32 @@ public class UserActions {
     protected void getClientById(String userId, LoginScreen loginScreen) {
         DocumentReference userReference = database.collection(CLIENT_COLLECTION).document(userId);
 
-        userReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+        userReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
 
-                        if (document.getData() != null){
-                            Response r = makeClientFromFirebase(document);
-                            if (loginScreen != null && r.isSuccess()) {
-                                App.getPrimaryDatabase().ORDERS.loadClientOrders(userId);
-                                loginScreen.showNextScreen();
-                            } else if (loginScreen != null){
-                                Log.e("Login failed for client", r.getErrorMessage());
-                                loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed for user: " + r.getErrorMessage());
-                            }
-
-                            if (r.isError()) {
-                                Log.e("getUserById: ", r.getErrorMessage());
-                            }
+                    if (document.getData() != null){
+                        Response r = makeClientFromFirebase(document);
+                        if (loginScreen != null && r.isSuccess()) {
+                            App.getPrimaryDatabase().ORDERS.loadClientOrders(userId);
+                            loginScreen.showNextScreen();
+                        } else if (loginScreen != null){
+                            Log.e("Login failed for client", r.getErrorMessage());
+                            loginScreen.dbOperationFailureHandler(UserHandler.dbOperations.USER_LOG_IN,"Login failed for user: " + r.getErrorMessage());
                         }
 
-                    } else {
-                        Log.d(TAG, "No such document");
+                        if (r.isError()) {
+                            Log.e("getUserById: ", r.getErrorMessage());
+                        }
                     }
+
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    Log.d(TAG, "No such document");
                 }
+            } else {
+                Log.d(TAG, "get failed with ", task.getException());
             }
         });
     }
@@ -237,7 +224,6 @@ public class UserActions {
             Client newClient = new Client(newUser, address, creditCard);
 
             App.getAppInstance().setUser(newClient);
-
 
             Log.e("clientS", "Set user as: " + App.getUser().getRole() + "id: " + App.getUser().getUserId());
 
@@ -303,11 +289,9 @@ public class UserActions {
                 .update(
                         "isSuspended", isSuspended,
                         "suspensionDate", suspensionDate)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
+                .addOnSuccessListener(aVoid -> {
 
-                        if (suspensionDate == "01/01/9999"){ //  chef banned indefinitely
+                    if (suspensionDate == "01/01/9999"){ //  chef banned indefinitely
 
 //                                                    database.collection(MEALS_COLLECTION)  // delete all meals of this chef
 //                                                             .document(chefId)
@@ -328,87 +312,55 @@ public class UserActions {
 //                                                                }
 //                                                            });
 
-                            database.collection("Complaints")  // delete all complaints of this chef
-                                    .whereEqualTo("chefId", chefId)
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                        database.collection("Complaints")  // delete all complaints of this chef
+                                .whereEqualTo("chefId", chefId)
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                                    database.collection("Complaints")
-                                                            .document(document.getId())
-                                                            .delete()
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void aVoid) {
-
-                                                                    Log.d("Success", "Complaints successfully deleted for indefinitely banned chef!");
-                                                                }
-                                                            })
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    Log.w("Error", "Error deleting complaints for indefinitely banned chef", e);
-                                                                }
-                                                            });;
-                                                }
-                                            } else {
-                                                Log.d(TAG, "Error getting complaints for chef with id: " + chefId, task.getException());
-                                            }
+                                            database.collection("Complaints")
+                                                    .document(document.getId())
+                                                    .delete()
+                                                    .addOnSuccessListener(aVoid1 -> Log.d("Success", "Complaints successfully deleted for indefinitely banned chef!"))
+                                                    .addOnFailureListener(e -> Log.w("Error", "Error deleting complaints for indefinitely banned chef", e));;
                                         }
-                                    });
+                                    } else {
+                                        Log.d(TAG, "Error getting complaints for chef with id: " + chefId, task.getException());
+                                    }
+                                });
 
 
-                        }
-                        else {  // chef NOT banned indefinitely so simply set meals to not offered
+                    }
+                    else {  // chef NOT banned indefinitely so simply set meals to not offered
 
-                            database.collection(MEALS_COLLECTION)
-                                    .document(chefId)
-                                    .collection(CHEF_MEALS_COLLECTION)
-                                    .get()
-                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                        database.collection(MEALS_COLLECTION)
+                                .document(chefId)
+                                .collection(CHEF_MEALS_COLLECTION)
+                                .get()
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                                    database.collection(MEALS_COLLECTION)
-                                                            .document(chefId)
-                                                            .collection(CHEF_MEALS_COLLECTION)
-                                                            .document(document.getId())
-                                                            .update("isOffered", false)
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void aVoid) {
-
-                                                                    Log.d("Success", "Meals successfully updated to not offered!");
-                                                                }
-                                                            })
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    Log.w("Error", "Error updating meals", e);
-                                                                }
-                                                            });
-                                                }
-                                            }
+                                            database.collection(MEALS_COLLECTION)
+                                                    .document(chefId)
+                                                    .collection(CHEF_MEALS_COLLECTION)
+                                                    .document(document.getId())
+                                                    .update("isOffered", false)
+                                                    .addOnSuccessListener(aVoid12 -> Log.d("Success", "Meals successfully updated to not offered!"))
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.w("Error", "Error updating meals", e);
+                                                        }
+                                                    });
                                         }
-                                    });
-                        }
+                                    }
+                                });
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error updating document", e);
-                    }
-                });
+                .addOnFailureListener(e -> Log.w(TAG, "Error updating document", e));
     }
-
-
-
 
 public void getClientAndChefNamesByIds(String clientId, String chefId, ComplaintScreen complaintScreen) {
         // first get client name
@@ -416,34 +368,31 @@ public void getClientAndChefNamesByIds(String clientId, String chefId, Complaint
                 .collection(CLIENT_COLLECTION)
                 .document(clientId)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                if (document.getData() != null){
-                                    complaintScreen.dbOperationSuccessHandler(
-                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
-                                                    document.getData().get("firstName")
-                                                    + " " +
-                                                    document.getData().get("lastName")
-                                            );
-                                    // inform complaint screen to update ui
-                                    complaintScreen.updateUI();
-                                } else {
-                                    Log.e("getClientChefName", "document data null");
-                                    complaintScreen.dbOperationFailureHandler(
-                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
-                                }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            if (document.getData() != null){
+                                complaintScreen.dbOperationSuccessHandler(
+                                        UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
+                                                document.getData().get("firstName")
+                                                + " " +
+                                                document.getData().get("lastName")
+                                        );
+                                // inform complaint screen to update ui
+                                complaintScreen.updateUI();
                             } else {
-                                Log.e("getClientChefName", "client not found for id: " + clientId);
+                                Log.e("getClientChefName", "document data null");
                                 complaintScreen.dbOperationFailureHandler(
                                         UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                             }
                         } else {
-                            Log.e(TAG, "getClientChefName failed with ", task.getException());
+                            Log.e("getClientChefName", "client not found for id: " + clientId);
+                            complaintScreen.dbOperationFailureHandler(
+                                    UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                         }
+                    } else {
+                        Log.e(TAG, "getClientChefName failed with ", task.getException());
                     }
                 });
 
@@ -452,38 +401,35 @@ public void getClientAndChefNamesByIds(String clientId, String chefId, Complaint
                 .collection(CHEF_COLLECTION)
                 .document(chefId)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                if (document.getData() != null){
-                                    complaintScreen.dbOperationSuccessHandler(
-                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
-                                                    document.getData().get("firstName")
-                                                            + " " +
-                                                            document.getData().get("lastName")
-                                            );
-                                    complaintScreen.dbOperationSuccessHandler(
-                                            UserHandler.dbOperations.GET_CHEF_SUSPENSION_DATE,
-                                            String.valueOf((document.getData().get("suspensionDate")))
-                                    );
-                                    // inform complaint screen to update ui
-                                    complaintScreen.updateUI();
-                                } else {
-                                    Log.e("getClientChefName", "document data null");
-                                    complaintScreen.dbOperationFailureHandler(
-                                            UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
-                                }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            if (document.getData() != null){
+                                complaintScreen.dbOperationSuccessHandler(
+                                        UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,
+                                                document.getData().get("firstName")
+                                                        + " " +
+                                                        document.getData().get("lastName")
+                                        );
+                                complaintScreen.dbOperationSuccessHandler(
+                                        UserHandler.dbOperations.GET_CHEF_SUSPENSION_DATE,
+                                        String.valueOf((document.getData().get("suspensionDate")))
+                                );
+                                // inform complaint screen to update ui
+                                complaintScreen.updateUI();
                             } else {
-                                Log.e("getClientChefName", "chef not found for provided id: " + chefId);
+                                Log.e("getClientChefName", "document data null");
                                 complaintScreen.dbOperationFailureHandler(
                                         UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                             }
                         } else {
-                            Log.e(TAG, "getClientChefName failed with ", task.getException());
+                            Log.e("getClientChefName", "chef not found for provided id: " + chefId);
+                            complaintScreen.dbOperationFailureHandler(
+                                    UserHandler.dbOperations.GET_CLIENT_AND_CHEF_NAMES,"unable to process request");
                         }
+                    } else {
+                        Log.e(TAG, "getClientChefName failed with ", task.getException());
                     }
                 });
     }
