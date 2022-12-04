@@ -325,22 +325,22 @@ public class UserActions {
 
                                                 if (suspensionDate == "01/01/9999"){ //  chef banned indefinitely
 
-                                                    database.collection(MEALS_COLLECTION + "/" + chefId + "/" + CHEF_MEALS_COLLECTION)  // delete all meals of this chef
-                                                            .document(document.getId())
-                                                            .delete()
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void aVoid) {
-
-                                                                    Log.d("Success", "Meals successfully deleted for indefinitely banned chef!");
-                                                                }
-                                                            })
-                                                            .addOnFailureListener(new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    Log.w("Error", "Error deleting meals for indefinitely banned chef", e);
-                                                                }
-                                                            });
+//                                                    database.collection(MEALS_COLLECTION + "/" + chefId + "/" + CHEF_MEALS_COLLECTION)  // delete all meals of this chef
+//                                                            .document(document.getId())
+//                                                            .delete()
+//                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                                @Override
+//                                                                public void onSuccess(Void aVoid) {
+//
+//                                                                    Log.d("Success", "Meals successfully deleted for indefinitely banned chef!");
+//                                                                }
+//                                                            })
+//                                                            .addOnFailureListener(new OnFailureListener() {
+//                                                                @Override
+//                                                                public void onFailure(@NonNull Exception e) {
+//                                                                    Log.w("Error", "Error deleting meals for indefinitely banned chef", e);
+//                                                                }
+//                                                            });
 
                                                     database.collection("Complaints")  // delete all complaints of this chef
                                                             .whereEqualTo("chefId", chefId)
