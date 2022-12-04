@@ -1,18 +1,24 @@
 package com.example.mealer_project.data.models;
 
-import androidx.annotation.NonNull;
+import android.os.Build;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
+import com.example.mealer_project.data.models.inbox.Complaint;
 import com.example.mealer_project.data.models.meals.Meal;
 import com.example.mealer_project.utils.Preconditions;
 import com.example.mealer_project.utils.Response;
 import com.example.mealer_project.utils.Result;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Orders {
+public class Orders implements Comparator<Order> {
     private Map<String, Order> orders;
 
     public Orders(){
@@ -59,7 +65,16 @@ public class Orders {
      * @return a List containing Order objects
      */
     public List<Order> getAllOrders() {
-        return new ArrayList<Order>(this.orders.values());
+
+        // Variable Declaration
+        ArrayList<Order> allOrders = (ArrayList<Order>) this.orders.values();
+
+        // Process: sorting the list by date placed
+        Collections.sort(allOrders, this);
+
+        // Output
+        return allOrders;
+
     };
 
     /**
@@ -83,6 +98,9 @@ public class Orders {
 
         }
 
+        // Process: sorting the list by date placed
+        Collections.sort(pendingList, this);
+
         // Output
         return pendingList;
 
@@ -105,6 +123,9 @@ public class Orders {
                 ordersInProgress.add(order); //adding to list
             }
         }
+
+        // Process: sorting the list by date placed
+        Collections.sort(ordersInProgress, this);
 
         // Output
         return ordersInProgress;
@@ -130,6 +151,9 @@ public class Orders {
             }
 
         }
+
+        // Process: sorting the list by date placed
+        Collections.sort(completedList, this);
 
         // Output
         return completedList;
@@ -164,4 +188,17 @@ public class Orders {
 
         }
     }
+
+    /**
+     * this method compares the orders by the dates they were placed
+     * @param order1 the first order
+     * @param order2 the order the first is being compared to
+     * @return 0 if same date; -1 is order2 was placed first; 1 if order1 was placed first
+     */
+    @Override
+    public int compare(Order order1, Order order2) {
+        // Output
+        return order2.getOrderDate().compareTo(order1.getOrderDate());
+    }
+
 }
