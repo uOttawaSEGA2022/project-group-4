@@ -34,7 +34,6 @@ public class Order implements Serializable {
      */
     public Order() {
         this.date = Utilities.getTodaysDate();
-        Log.e("ORDER DATE",Utilities.getTodaysDate().toString() );
         this.meals = new HashMap<>();
         this.setIsPending(true);
         this.setIsRejected(false);

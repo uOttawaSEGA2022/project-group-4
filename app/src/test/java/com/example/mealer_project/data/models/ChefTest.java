@@ -34,15 +34,6 @@ public class ChefTest {
         assertEquals("Chef email does not match", expected, actual);
     }
 
-    //Testing the chef's number of orders sold from primary class chef
-    @Test
-    public void getNumberOfOrdersSold() {
-        Chef chef = new Chef("Gordon", "Ramsey", "gordon123@gmail.com", "Password@123", Address.getSampleAddress(), UserRoles.CHEF, "I am a good chef", "myVoidCheque", 233, 5, 2);
-        int expected = 233;
-        int actual = chef.getNumOfOrdersSold();
-        assertEquals("Chef's total meals sold does not match", expected, actual);
-    }
-
     //Testing the chef's role from primary class chef
     @Test
     public void getRole() {
