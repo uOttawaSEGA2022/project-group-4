@@ -46,7 +46,6 @@
                     android:hint="@string/meal_name"
                     android:inputType="textPersonName"
                     android:minHeight="50dp"
-                    android:textColor="@android:color/black"
                     tools:ignore="TextContrastCheck" />
 
                 <Spinner
