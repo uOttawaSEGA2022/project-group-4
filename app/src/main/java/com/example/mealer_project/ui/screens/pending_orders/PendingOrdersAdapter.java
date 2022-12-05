@@ -1,6 +1,7 @@
 package com.example.mealer_project.ui.screens.pending_orders;
 
 import android.content.Context;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
 import com.example.mealer_project.utils.SendMailTask;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -55,7 +57,7 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
             mealNames += mI.getName() + "\n";
             quantities += mI.getQuantity() + "\n";
-            emailContents += mI.getName() + "            " + mI.getQuantity();
+            emailContents += mI.getQuantity() + " " + mI.getName();
 
         }
 
@@ -65,7 +67,10 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
 
         ((TextView) convertView.findViewById(R.id.userNameText)).setText("Client: " + order.getClientInfo().getClientName());
 
-        // Process: setting onClicks for accept/reject buttons
+        // EMAIL FORMATTING ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // NOTE: the image will not appear for Outlook because of Microsoft settings
+
+        // Process: Sends email to client if their meal has been REJECTED
         ((Button) convertView.findViewById(R.id.rejectButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,10 +89,13 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                                 + ".<br><br>" +
                                 EMAIL_CONTENTS +
                                 "<br><br><br>"
-                                + "Thank you for understanding.<br><br>MEALER Team");
+                                + "Thank you for understanding.<br><br>" +
+                                "<img src = https://raw.githubusercontent.com/uOttawaSEGA2022/project-group-4/master/app/src/main/res/drawable-v24/mealer.png width=\"100\" height=\"100\">" +
+                                "<br>MEALER Team");
             }
         });
 
+        // Process: Sends email to client if their meal has been ACCEPTED
         ((Button) convertView.findViewById(R.id.acceptButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,7 +123,8 @@ public class PendingOrdersAdapter extends ArrayAdapter<Order> {
                                 "<br>" +
                                 "If you have any questions about your order, please email us directly at " +
                                 "mealerprojectgroup4@gmail.com with your order number provided in the subject line." +
-                                "<br><br><br>" +
+                                "<br><br><br>" + "<img src = https://raw.githubusercontent.com/uOttawaSEGA2022/project-group-4/master/app/src/main/res/drawable-v24/mealer.png width=\"100\" height=\"100\">"
+                                + "<br>" +
                                 "MEALER Team");
             }
         });
