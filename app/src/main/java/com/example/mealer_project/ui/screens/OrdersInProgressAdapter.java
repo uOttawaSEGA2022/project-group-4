@@ -21,7 +21,6 @@ import com.example.mealer_project.utils.SendMailTask;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
 public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
     /**
@@ -61,6 +60,9 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
 
         }
 
+        // EMAIL FORMATTING ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        // NOTE: the image will not appear for Outlook because of Microsoft settings
+
         // Variable Declaration
         final String EMAIL_CONTENTS = emailContents; //constant meal names & quantities
 
@@ -82,7 +84,8 @@ public class OrdersInProgressAdapter extends ArrayAdapter<Order>{
                     + "<br>" +
                     "If you have any questions about pick-up, please contact us at mealerprojectgroup4@gmail.com" +
                     " with your order number provided in the subject line."
-                    + "<br><br><br>" +
+                    + "<br><br><br>" + "<img src = https://raw.githubusercontent.com/uOttawaSEGA2022/project-group-4/master/app/src/main/res/drawable-v24/mealer.png width=\"100\" height=\"100\">"
+                    + "<br>" +
                     "MEALER Team";
 
             new SendMailTask().execute("mealerprojectgroup4@gmail.com", "zzzbziucedxljweu",
