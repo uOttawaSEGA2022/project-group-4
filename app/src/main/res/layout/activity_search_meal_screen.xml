@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/background"
     android:orientation="vertical">
 
@@ -99,6 +99,8 @@
         android:id="@+id/noSearchResultMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/text_margin"
         android:text="@string/no_search_result_message"
         android:textSize="20sp"
         android:visibility="gone" />
