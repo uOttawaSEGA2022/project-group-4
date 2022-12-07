@@ -1,0 +1,81 @@
+Index: app/src/main/java/com/example/mealer_project/data/models/Chef.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.data.models;\r\n\r\nimport com.example.mealer_project.data.entity_models.UserEntityModel;\r\nimport com.example.mealer_project.data.models.meals.Meals;\r\nimport java.util.Date;\r\n\r\n/**\r\n * This class instantiates an instance of Chef for Mealer App\r\n * Child Class of User\r\n */\r\npublic class Chef extends User {\r\n    private String description;\r\n    private String voidCheque;\r\n    private double chefRatingSum; // sum of ratings\r\n    private int numOfRatings; // number of ratings\r\n    //private int numOfOrdersSold;\r\n    private boolean isSuspended;\r\n    private Date suspensionDate;\r\n    // storing Chef's meals in an instance of Meals class which provides methods to work with a collection of meals\r\n    // variable is public for accessibility, but also final\r\n    public final Meals MEALS;\r\n    public final Orders ORDERS;\r\n\r\n    /**\r\n     * Create a single instance of chef\r\n     * @param firstName First name of the chef\r\n     * @param lastName Last name of the chef\r\n     * @param email email of the chef\r\n     * @param password password for the chef\r\n     * @param address address of the chef\r\n     * @param role Role of the chef\r\n     * @param description Description of the chef\r\n     * @param voidCheque Chequing information of chef\r\n     * Menu of a chef is stored in a HashMap\r\n     */\r\n    public Chef(String firstName, String lastName, String email, String password, Address address,\r\n                UserRoles role, String description, String voidCheque, int numberOfMealsSold, double chefRatingSum, int numOfRatings)  throws IllegalArgumentException {\r\n        // instantiate Admins data members\r\n        super(firstName, lastName, email, password, address, role);\r\n        this.setDescription(description);\r\n        this.setVoidCheque(voidCheque);\r\n        //this.setNumOfOrdersSold(numberOfMealsSold);\r\n        this.setChefRatingSum(chefRatingSum);\r\n        this.setNumOfRatings(numOfRatings);\r\n        // instantiate a meals object where Chef's meals will be stored\r\n        this.MEALS = new Meals();\r\n        this.isSuspended = false;\r\n        this.suspensionDate = null;\r\n        this.ORDERS = new Orders();\r\n    }\r\n\r\n    public Chef(UserEntityModel userData, Address address, String description, String voidCheque) throws IllegalArgumentException {\r\n        // instantiate Admins data members\r\n        super(userData, address);\r\n        this.setDescription(description);\r\n        this.setVoidCheque(voidCheque);\r\n        //this.setNumOfOrdersSold(0);\r\n        this.setChefRatingSum(0);\r\n        this.setNumOfRatings(0);\r\n        // instantiate a meals object where Chef's meals will be stored\r\n        this.MEALS = new Meals();\r\n        this.isSuspended = false;\r\n        this.suspensionDate = null;\r\n        this.ORDERS = new Orders();\r\n    }\r\n\r\n    /**\r\n     * Get a short description of the chef\r\n     * @return String representing chef's description\r\n     */\r\n    public String getDescription() { return description; }\r\n\r\n    /**\r\n     * Set the chef's description\r\n     * @param description String representing the chef's description\r\n     */\r\n    public void setDescription(String description) throws IllegalArgumentException {\r\n        // validate description\r\n        if (description.length() > 0)\r\n            this.description = description;\r\n        else\r\n            throw new IllegalArgumentException(\"Please enter a description\");\r\n    }\r\n\r\n    /**\r\n     * Get chequing information about chef\r\n     * @return String representing void cheque of chef\r\n     */\r\n    public String getVoidCheque() {\r\n        return voidCheque;\r\n    }\r\n\r\n    /**\r\n     * Set the chef's void cheque\r\n     * @param voidCheque String representing void cheque of chef\r\n     */\r\n    public void setVoidCheque(String voidCheque) {\r\n        // validate void cheque\r\n        this.voidCheque = voidCheque;\r\n    }\r\n\r\n    /**\r\n     * Get the average rating of a chef\r\n     * @return Integer representing chef's overall rating\r\n     */\r\n    public double getChefRatingSum() { return chefRatingSum; }\r\n\r\n    /**\r\n     * Set the chef's rating sum\r\n     * @param chefRatingSum integer representing the chef's rating\r\n     */\r\n    public void setChefRatingSum(double chefRatingSum) {\r\n\r\n        this.chefRatingSum = chefRatingSum;\r\n    }\r\n\r\n    /**\r\n     * Add to the chef's rating sum\r\n     * @param chefRating integer representing the chef's rating\r\n     */\r\n    public void addToChefRatingSum(double chefRating) {\r\n\r\n        this.chefRatingSum += chefRating;\r\n        this.numOfRatings ++;\r\n    }\r\n\r\n    /**\r\n     * Get the number of ratings done for a chef\r\n     * @return Integer representing number of ratings\r\n     */\r\n    public double getNumOfRatings() { return numOfRatings; }\r\n\r\n    /**\r\n     * Set the chef's number of ratings\r\n     * @param numOfRatings integer representing the chef's number of ratings\r\n     */\r\n    public void setNumOfRatings(int numOfRatings) {\r\n        this.numOfRatings = numOfRatings;\r\n    }\r\n\r\n    public double getChefRating(){\r\n        return chefRatingSum/numOfRatings;\r\n    }\r\n    /**\r\n     * Get the total number of orders sold by a chef\r\n     * @return Integer representing chef's total sales\r\n     */\r\n    //public int getNumOfOrdersSold() { return numOfOrdersSold; }\r\n\r\n    /**\r\n     * Set the chef's total orders sold\r\n     * @param numOfOrdersSold integer representing the chef's total sales\r\n     */\r\n    /*public void setNumOfOrdersSold(int numOfOrdersSold) {\r\n        this.numOfOrdersSold = numOfOrdersSold;\r\n    }*/\r\n\r\n    /**\r\n     * Get a true/false whether chef is banned\r\n     * @return boolean suspended or not\r\n     */\r\n    public boolean getIsSuspended() { return isSuspended; }\r\n\r\n    /**\r\n     * Set the boolean for suspended or not\r\n     * @param isSuspended suspended or not\r\n     */\r\n    public void setIsSuspended(boolean isSuspended) {\r\n        this.isSuspended = isSuspended;\r\n    }\r\n\r\n    /**\r\n     * Get the end of suspension date\r\n     * @return Date of end of suspension\r\n     */\r\n    public Date getSuspensionDate() { return suspensionDate; }\r\n\r\n    /**\r\n     * Set the boolean for suspended or not\r\n     * @param suspensionDate date of end of suspension\r\n     */\r\n    public void setSuspensionDate(Date suspensionDate) {\r\n        this.suspensionDate = suspensionDate;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/mealer_project/data/models/Chef.java b/app/src/main/java/com/example/mealer_project/data/models/Chef.java
+--- a/app/src/main/java/com/example/mealer_project/data/models/Chef.java	(revision 5f78e6131a870e0303dbc0160df334282a8f5123)
++++ b/app/src/main/java/com/example/mealer_project/data/models/Chef.java	(date 1670387827813)
+@@ -128,7 +128,7 @@
+      * Get the number of ratings done for a chef
+      * @return Integer representing number of ratings
+      */
+-    public double getNumOfRatings() { return numOfRatings; }
++    public int getNumOfRatings() { return numOfRatings; }
+ 
+     /**
+      * Set the chef's number of ratings
+@@ -138,6 +138,10 @@
+         this.numOfRatings = numOfRatings;
+     }
+ 
++    /**
++     * Gets the chef's overall rating
++     * @return Double representing the rating
++     */
+     public double getChefRating(){
+         return chefRatingSum/numOfRatings;
+     }
+Index: app/src/test/java/com/example/mealer_project/data/models/ChefTest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.mealer_project.data.models;\r\n\r\nimport static org.junit.Assert.*;\r\nimport org.junit.Test;\r\n\r\npublic class ChefTest {\r\n\r\n    // description, chefRating, email, numberOfMealsSold, role\r\n\r\n    //Testing the chef's description from primary class chef\r\n    @Test\r\n    public void getChefDescription() {\r\n        Chef chef = new Chef(\"Gordon\", \"Ramsey\", \"gordon123@gmail.com\", \"Password@123\", Address.getSampleAddress(), UserRoles.CHEF, \"I am a good chef\", \"myVoidChqeue\", 233, 5, 2);\r\n        String expected = \"I am a good chef\";\r\n        String actual = chef.getDescription();\r\n        assertEquals(\"Chef description does not match\", expected, actual);\r\n    }\r\n\r\n    //Testing the chef's rating from primary class chef\r\n    @Test\r\n    public void getChefRating() {\r\n        Chef chef = new Chef(\"Gordon\", \"Ramsey\", \"gordon123@gmail.com\", \"Password@123\", Address.getSampleAddress(), UserRoles.CHEF, \"I am a good chef\", \"myVoidChqeue\", 233, 5, 2);\r\n        double expected = 5.0/2.0;\r\n        double actual = chef.getChefRating();\r\n        assertEquals(expected, actual, 0);\r\n    }\r\n\r\n    //Testing the chef's email address from primary class chef\r\n    @Test\r\n    public void getChefEmail() {\r\n        Chef chef = new Chef(\"Gordon\", \"Ramsey\", \"gordon123@gmail.com\", \"Password@123\", Address.getSampleAddress(), UserRoles.CHEF, \"I am a good chef\", \"myVoidChqeue\", 233, 5, 2);\r\n        String expected = \"gordon123@gmail.com\";\r\n        String actual = chef.getEmail();\r\n        assertEquals(\"Chef email does not match\", expected, actual);\r\n    }\r\n\r\n    //Testing the chef's number of orders sold from primary class chef\r\n    @Test\r\n    public void getNumberOfOrdersSold() {\r\n        Chef chef = new Chef(\"Gordon\", \"Ramsey\", \"gordon123@gmail.com\", \"Password@123\", Address.getSampleAddress(), UserRoles.CHEF, \"I am a good chef\", \"myVoidCheque\", 233, 5, 2);\r\n        int expected = 233;\r\n        int actual = chef.getNumOfOrdersSold();\r\n        assertEquals(\"Chef's total meals sold does not match\", expected, actual);\r\n    }\r\n\r\n    //Testing the chef's role from primary class chef\r\n    @Test\r\n    public void getRole() {\r\n        Chef chef = new Chef(\"Gordon\", \"Ramsey\", \"gordon123@gmail.com\", \"Password@123\", Address.getSampleAddress(), UserRoles.CHEF, \"I am a good chef\", \"myVoidChqeue\", 233, 5, 2);\r\n        UserRoles expected = UserRoles.CHEF;\r\n        UserRoles actual = chef.getRole();\r\n        assertEquals(\"Last name does not match\", expected, actual);\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/test/java/com/example/mealer_project/data/models/ChefTest.java b/app/src/test/java/com/example/mealer_project/data/models/ChefTest.java
+--- a/app/src/test/java/com/example/mealer_project/data/models/ChefTest.java	(revision 5f78e6131a870e0303dbc0160df334282a8f5123)
++++ b/app/src/test/java/com/example/mealer_project/data/models/ChefTest.java	(date 1670387840459)
+@@ -36,11 +36,11 @@
+ 
+     //Testing the chef's number of orders sold from primary class chef
+     @Test
+-    public void getNumberOfOrdersSold() {
++    public void getNumOfRatings() {
+         Chef chef = new Chef("Gordon", "Ramsey", "gordon123@gmail.com", "Password@123", Address.getSampleAddress(), UserRoles.CHEF, "I am a good chef", "myVoidCheque", 233, 5, 2);
+-        int expected = 233;
+-        int actual = chef.getNumOfOrdersSold();
+-        assertEquals("Chef's total meals sold does not match", expected, actual);
++        int expected = 2;
++        int actual = chef.getNumOfRatings();
++        assertEquals("Chef's total number of ratings does not math", expected, actual);
+     }
+ 
+     //Testing the chef's role from primary class chef
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"deploymentTargetDropDown\">\r\n    <targetSelectedWithDropDown>\r\n      <Target>\r\n        <type value=\"QUICK_BOOT_TARGET\" />\r\n        <deviceKey>\r\n          <Key>\r\n            <type value=\"VIRTUAL_DEVICE_PATH\" />\r\n            <value value=\"C:\\Users\\kkris\\.android\\avd\\Pixel_3a_API_33.avd\" />\r\n          </Key>\r\n        </deviceKey>\r\n      </Target>\r\n    </targetSelectedWithDropDown>\r\n    <timeTargetWasSelectedWithDropDown value=\"2022-12-03T03:57:22.523660700Z\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+--- a/.idea/deploymentTargetDropDown.xml	(revision 5f78e6131a870e0303dbc0160df334282a8f5123)
++++ b/.idea/deploymentTargetDropDown.xml	(date 1670347093065)
+@@ -7,11 +7,11 @@
+         <deviceKey>
+           <Key>
+             <type value="VIRTUAL_DEVICE_PATH" />
+-            <value value="C:\Users\kkris\.android\avd\Pixel_3a_API_33.avd" />
++            <value value="C:\Users\kkris\.android\avd\Pixel_3a_API_33_2.avd" />
+           </Key>
+         </deviceKey>
+       </Target>
+     </targetSelectedWithDropDown>
+-    <timeTargetWasSelectedWithDropDown value="2022-12-03T03:57:22.523660700Z" />
++    <timeTargetWasSelectedWithDropDown value="2022-12-06T17:17:12.126221600Z" />
+   </component>
+ </project>
+\ No newline at end of file

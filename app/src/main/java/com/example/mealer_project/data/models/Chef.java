@@ -128,7 +128,7 @@ public class Chef extends User {
      * Get the number of ratings done for a chef
      * @return Integer representing number of ratings
      */
-    public int getNumOfRatings() { return numOfRatings; }
+    public double getNumOfRatings() { return numOfRatings; }
 
     /**
      * Set the chef's number of ratings
@@ -138,10 +138,6 @@ public class Chef extends User {
         this.numOfRatings = numOfRatings;
     }
 
-    /**
-     * Gets the chef's overall rating
-     * @return Double representing the rating
-     */
     public double getChefRating(){
         return chefRatingSum/numOfRatings;
     }
