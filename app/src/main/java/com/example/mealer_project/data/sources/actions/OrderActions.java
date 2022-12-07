@@ -352,7 +352,25 @@ public class OrderActions {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                App.ORDER_HANDLER.handleUpdateChefRatingSuccess();
+
+                                                database.collection(ORDER_COLLECTION)
+                                                        .document(orderId)
+                                                        .update("rating", newRating,
+                                                                "isRated", true)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+                                                                App.ORDER_HANDLER.handleUpdateChefRatingSuccess();
+
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update chef's rating!");
+                                                            }
+                                                        });
+
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -361,13 +379,6 @@ public class OrderActions {
                                                 App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update chef's rating!");
                                             }
                                         });
-
-                                database.collection(ORDER_COLLECTION)
-                                        .document(orderId)
-                                        .update("rating", newRating,
-                                                "isRated", true)
-                                        .addOnSuccessListener(aVoid -> App.ORDER_HANDLER.handleUpdateChefRatingSuccess())
-                                        .addOnFailureListener(e -> App.ORDER_HANDLER.handleUpdateChefRatingFailure("Failed to update order's rating!"));
 
                             } else {
                                     Log.d("updateChefRating", "Chef not found");
