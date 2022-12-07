@@ -151,7 +151,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
     @Override
     public void updateUI() {
         try {
-            updateMealInfoScreen(mealData.getName(), Double.parseDouble(df.format(mealData.getPrice())), mealData.getMealType(), mealData.getCuisineType(),
+            updateMealInfoScreen(mealData.getName(), mealData.getPrice(), mealData.getMealType(), mealData.getCuisineType(),
                     mealData.getIngredients(), mealData.getAllergens(), mealData.getDescription(), mealData.isOffered());
         } catch (Exception e) {
             Log.e("MealInfoScreen", "unable to create meal object :(");
@@ -182,7 +182,7 @@ public class MealInfoScreen extends UIScreen implements StatefulView {
 
         // sets the text for price
         TextView priceText = (TextView) findViewById(R.id.price_of_meal);
-        priceText.setText("$ " + price);
+        priceText.setText("$ " + df.format(price));
 
         // sets the text for the meal type
         TextView mealTypeText = (TextView) findViewById(R.id.order_msg_type);
