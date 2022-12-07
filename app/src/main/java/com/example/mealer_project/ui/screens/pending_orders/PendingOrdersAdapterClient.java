@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mealer_project.R;
+import com.example.mealer_project.app.App;
 import com.example.mealer_project.data.models.Order;
 import com.example.mealer_project.data.models.orders.MealInfo;
 
@@ -64,10 +65,18 @@ public class PendingOrdersAdapterClient extends ArrayAdapter<Order> {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
 
+        // if client logged in
+        if (App.getClient() != null) {
+            TextView orderStatus = convertView.findViewById(R.id.orderStatusField);
+            // display order status for pending orders
+            orderStatus.setVisibility(View.VISIBLE);
+            if (!order.getIsPending() && !order.getIsCompleted() && !order.getIsRejected()) {
+                orderStatus.setText(R.string.accepted_order_status_being_prepared);
 
-        if (!order.getIsPending() && !order.getIsCompleted() && !order.getIsRejected()) {
-            ((TextView) convertView.findViewById(R.id.orderStatusField)).setText(R.string.accepted_order_status_being_prepared);
+            }
         }
+
+
 
         return convertView;
     }

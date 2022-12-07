@@ -131,4 +131,5 @@
     <string name="os_chef_address_label">Chef\'s address:</string>
     <string name="os_chef_rating_label">Rating:</string>
     <string name="accepted_order_status_being_prepared">being prepared</string>
+    <string name="os_chef_desc_label">Description:</string>
 </resources>

@@ -51,9 +51,6 @@ public class WelcomeScreen extends UIScreen {
             setWelcomeMessage("Welcome " + currentUser.getRole() + ", " + currentUser.getFirstName() + " " + currentUser.getLastName() + "!");
         }
 
-        // uncomment when testing orders
-        testOrder();
-
     }
 
     /**
@@ -125,25 +122,6 @@ public class WelcomeScreen extends UIScreen {
         } catch (ParseException e) {
             displayErrorToast("Unable to obtain valid suspension date for Chef");
             Log.e("showSuspensionMessage", "Unable to parse chef suspension date: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Method used when testing orders
-     */
-    private void testOrder() {
-        // if current user is client
-        if (App.getClient() != null) {
-            Button testOrderBtn = (Button) findViewById(R.id.testOrderBtn);
-            testOrderBtn.setVisibility(View.VISIBLE);
-
-            // test order
-            testOrderBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), TestOrdersActivity.class));
-                }
-            });
         }
     }
 
