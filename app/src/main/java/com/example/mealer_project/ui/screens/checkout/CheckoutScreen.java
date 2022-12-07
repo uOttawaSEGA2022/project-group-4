@@ -108,7 +108,6 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
                     App.getClient().clearCart(); //clears cart
                     orderData = App.getClient().getCart(); //sets orderData to equal the empty cart
                 }
-                displaySuccessToast("Order Has Been Placed!");
                 showNextScreen(); //finishes action
             }
         });
@@ -182,7 +181,6 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
         if (this.orderItemList != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 df.setRoundingMode(RoundingMode.UP);
-                Log.e("CHECKOUTSCREEN", (df.format(orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice() * el.getQuantity()).sum())));
                 return df.format(orderItemList.stream().mapToDouble(el -> el.getSearchMealItem().getMeal().getPrice() * el.getQuantity()).sum());
             }
         }
@@ -217,12 +215,17 @@ public class CheckoutScreen extends UIScreen implements StatefulView {
 
     @Override
     public void dbOperationSuccessHandler(Object dbOperation, Object payload) {
-
+        if (dbOperation == ADD_ORDER) {
+            displaySuccessToast((String) payload);
+        }
     }
 
     @Override
     public void dbOperationFailureHandler(Object dbOperation, Object payload) {
-
+        // display the error message
+        if (payload instanceof String) {
+            displayErrorToast((String) payload);
+        }
     }
 
 }

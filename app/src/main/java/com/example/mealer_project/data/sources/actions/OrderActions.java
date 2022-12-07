@@ -83,7 +83,7 @@ public class OrderActions {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Log.w("ChefOrdersError", "Error updating document", e);
+                                                Log.e("ChefOrdersError", "Error updating document: " + e.getMessage());
                                             }
                                         });
 
@@ -92,11 +92,13 @@ public class OrderActions {
                                 .document(order.getClientInfo().getClientId())
                                 .update(CLIENT_ORDERS_COLLECTION, FieldValue.arrayUnion(order.getOrderID()))
                                 .addOnSuccessListener(aVoid -> Log.d("ClientOrdersSuccess", "DocumentSnapshot successfully updated!"))
-                                .addOnFailureListener(e -> Log.w("ClientOrdersError", "Error updating document", e));
+                                .addOnFailureListener(e -> Log.e("ClientOrdersError", "Error updating document: " + e));
 
                         App.ORDER_HANDLER.handleActionSuccess(ADD_ORDER, order);
                     })
                     .addOnFailureListener(e -> App.ORDER_HANDLER.handleActionFailure(ADD_ORDER, "Failed to add order to database: " + e.getMessage()));
+        } else {
+            App.ORDER_HANDLER.handleActionFailure(ADD_ORDER, "Invalid order instance provided");
         }
     }
 
@@ -186,6 +188,9 @@ public class OrderActions {
     public void updateOrder(Order order){
 
         if (Preconditions.isNotNull(order)) {
+
+            Log.e("order2", order.getOrderID());
+            Log.e("order2", "p: " + order.getIsPending());
 
             database.collection(ORDER_COLLECTION)
                     .document(order.getOrderID())
