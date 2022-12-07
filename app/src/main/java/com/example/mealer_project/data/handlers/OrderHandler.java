@@ -98,9 +98,9 @@ public class OrderHandler {
                         Log.e("OrderHandler dispatch", "Action not implemented yet");
                 }
             }
-            catch (Exception e) { //op. failed
+            catch (Exception e) {
                 Log.e("OrderHandler Dispatch", "Exception: " + e.getMessage());
-                uiScreen.dbOperationFailureHandler(OrderHandler.dbOperations.ERROR, "Dispatch failed: " + e.getMessage());
+                uiScreen.dbOperationFailureHandler(OrderHandler.dbOperations.ERROR, "Request failed: " + e.getMessage());
             }
 
         }
@@ -201,7 +201,6 @@ public class OrderHandler {
 
                     case LOAD_CLIENT_ORDERS:
                         if (Preconditions.isNotNull(payload) && payload instanceof String) {
-
                             uiScreen.dbOperationSuccessHandler(operationType, "Loading client meals was a success!");
                         }
                         else {
@@ -286,9 +285,8 @@ public class OrderHandler {
     public void updateChefRating(String orderId, String chefId, Double newRating, StatefulView uiScreen){
         this.uiScreen = uiScreen;
 
-        if (orderId instanceof String && chefId instanceof String && newRating instanceof Double && App.getUser() instanceof Client){
+        if (App.getClient() != null){
             App.getPrimaryDatabase().ORDERS.updateChefRating(orderId, chefId, newRating); //firebase
-
             App.getClient().ORDERS.getOrder(orderId).getSuccessObject().setRating(newRating);
             App.getClient().ORDERS.getOrder(orderId).getSuccessObject().setIsRated(true);
         }
