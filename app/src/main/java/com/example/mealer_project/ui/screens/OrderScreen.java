@@ -319,6 +319,9 @@ public class OrderScreen extends UIScreen implements StatefulView {
         TextView chefNameText = (TextView) findViewById(R.id.order_chef_name_msg);
         chefNameText.setText(String.valueOf(this.chefData.getChefName()));
 
+        // chef's description
+        ((TextView) findViewById(R.id.os_chef_desc)).setText(this.chefData.getChefDescription());
+
         // chef's address
         ((TextView) findViewById(R.id.os_chef_address)).setText(this.chefData.getChefAddress().toString());
 

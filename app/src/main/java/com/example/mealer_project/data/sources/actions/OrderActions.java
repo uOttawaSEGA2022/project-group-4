@@ -429,6 +429,7 @@ public class OrderActions {
         Address chefAddress = new Address(addressEntityModel);
 
         ChefInfo chefInfo = new ChefInfo((String) chefData.get("chefId"), (String) chefData.get("chefName"),
+                (chefData.get("chefDescription") != null ? (String) chefData.get("chefDescription") : "no description available"),
                 ((Number)chefData.get("chefRating")).intValue(), chefAddress);
 
         ClientInfo clientInfo = new ClientInfo((String) clientData.get("clientId"), (String) clientData.get("clientName"),
