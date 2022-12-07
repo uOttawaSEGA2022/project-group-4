@@ -67,8 +67,8 @@ public class Orders implements Comparator<Order> {
         // Process: looping through orders
         for (Order order : this.orders.values()) {
 
-            // Process: checking if pending
-            if (order.getIsPending()) {
+            // Process: checking if order is pending to be accepted OR accepted but not completed (not completed and not rejected)
+            if (order.getIsPending() || (!order.getIsPending() && !order.getIsCompleted() && !order.getIsRejected())) {
 
                 pendingList.add(order); //adding to list
 

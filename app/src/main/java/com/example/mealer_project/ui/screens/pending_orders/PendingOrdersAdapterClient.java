@@ -1,6 +1,7 @@
 package com.example.mealer_project.ui.screens.pending_orders;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,11 @@ public class PendingOrdersAdapterClient extends ArrayAdapter<Order> {
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd\nhh:mm:ss");
         ((TextView) convertView.findViewById(R.id.dateText2)).setText("Date:\n" + dateFormat.format(order.getOrderDate()));
+
+
+        if (!order.getIsPending() && !order.getIsCompleted() && !order.getIsRejected()) {
+            ((TextView) convertView.findViewById(R.id.orderStatusField)).setText(R.string.accepted_order_status_being_prepared);
+        }
 
         return convertView;
     }
