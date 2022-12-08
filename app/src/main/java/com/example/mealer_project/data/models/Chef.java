@@ -145,7 +145,7 @@ public class Chef extends User {
      * Get the total number of orders sold by a chef
      * @return Integer representing chef's total sales
      */
-    public int getNumOfOrdersSold() { return numOfOrdersSold; }
+    public int getNumOfOrdersSold() { return ORDERS.getCompletedOrders().size(); }
 
     /**
      * Set the chef's total orders sold
