@@ -187,7 +187,7 @@
                         android:fontFamily="@font/nunito_sans"
                         android:paddingStart="20dp"
                         android:paddingEnd="30dp"
-                        android:text="Description:"
+                        android:text="@string/os_chef_desc_label"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -235,6 +235,34 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/chef_meals_sold_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/input_box_shadow"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/meals_sold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/num_of_meals_sold"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/number"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/chef_available_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -267,7 +295,6 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 

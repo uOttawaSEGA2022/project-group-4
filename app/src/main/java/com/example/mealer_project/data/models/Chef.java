@@ -13,7 +13,7 @@ public class Chef extends User {
     private String voidCheque;
     private double chefRatingSum; // sum of ratings
     private int numOfRatings; // number of ratings
-    //private int numOfOrdersSold;
+    private int numOfOrdersSold;
     private boolean isSuspended;
     private Date suspensionDate;
     // storing Chef's meals in an instance of Meals class which provides methods to work with a collection of meals
@@ -145,15 +145,15 @@ public class Chef extends User {
      * Get the total number of orders sold by a chef
      * @return Integer representing chef's total sales
      */
-    //public int getNumOfOrdersSold() { return numOfOrdersSold; }
+    public int getNumOfOrdersSold() { return numOfOrdersSold; }
 
     /**
      * Set the chef's total orders sold
      * @param numOfOrdersSold integer representing the chef's total sales
      */
-    /*public void setNumOfOrdersSold(int numOfOrdersSold) {
+    public void setNumOfOrdersSold(int numOfOrdersSold) {
         this.numOfOrdersSold = numOfOrdersSold;
-    }*/
+    }
 
     /**
      * Get a true/false whether chef is banned
