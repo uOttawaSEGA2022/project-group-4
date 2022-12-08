@@ -106,14 +106,9 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="10dp"
-                android:background="@drawable/input_box_shadow_white"
-                android:fontFamily="@font/copse"
                 android:text="@string/profile"
-                android:textColor="@color/black"
                 android:textStyle="bold"
-                app:backgroundTint="@color/green_primary"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp" />
+                app:backgroundTint="@color/green_primary" />
 
             <TextView
                 android:id="@+id/chefScreenMealsLabel"
