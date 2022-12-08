@@ -58,7 +58,7 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
     public void updateUI() {
         try {
             updateChefInfoScreen(chefData.getFirstName()+" "+chefData.getLastName(), chefData.getEmail(),
-                    chefData.getAddress(), chefData.getChefRating(), chefData.getDescription(), chefData.getIsSuspended());
+                    chefData.getAddress(), chefData.getChefRating(), chefData.getDescription(), chefData.getIsSuspended(), chefData.getNumOfOrdersSold());
         } catch (Exception e) {
             Log.e("ChefInfoScreen", "unable to create chef object :(");
             displayErrorToast("Unable to retrieve the chef info!");
@@ -89,7 +89,7 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
      * @param isSuspended
      */
     public void updateChefInfoScreen(String name, String emailAddress, Address location, double chefRating,
-                                     String description, boolean isSuspended) {
+                                     String description, boolean isSuspended, int totalMealsSold) {
         //Setting the text for the chef's information
         TextView chefNameText = (TextView) findViewById(R.id.chef_name_msg);
         chefNameText.setText(name);
@@ -112,8 +112,8 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
         descriptionText.setText(description);
 
         // sets the text for cuisineType
-        //TextView mealsSoldText = (TextView) findViewById(R.id.chef_mealsSold_msg);
-        //mealsSoldText.setText(String.valueOf(totalMealsSold));
+        TextView mealsSoldText = (TextView) findViewById(R.id.chef_mealsSold_msg);
+        mealsSoldText.setText(String.valueOf(totalMealsSold));
 
         // sets the text for chef's availability
         TextView availabilityText = (TextView) findViewById(R.id.chef_availability_msg);
