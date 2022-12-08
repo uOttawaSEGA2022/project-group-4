@@ -57,7 +57,7 @@ public class ClientScreen extends UIScreen implements StatefulView {
         pendingOrdersBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((Client) App.getUser()).ORDERS.getPendingOrders().size() != 0)
+                if (((Client) App.getUser()).ORDERS.getClientsPendingOrders().size() != 0)
                     startActivity(new Intent(getApplicationContext(), PendingOrdersClientScreen.class));
                 else {
                     builder.setMessage("You have no pending orders!");

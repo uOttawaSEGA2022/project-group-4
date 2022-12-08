@@ -67,7 +67,7 @@ public class PendingOrdersClientScreen extends UIScreen {
         // Process: checking if current user is a CLIENT
         if (App.getUser() instanceof Client) { //is CLIENT
             // Initialization: setting ordersData to the list
-            this.ordersData = ((Client) App.getUser()).ORDERS.getPendingOrders();
+            this.ordersData = ((Client) App.getUser()).ORDERS.getClientsPendingOrders();
         }
         else { //not a client -> error-handling
             Log.e("PendingOrders Client", "Can't show pending orders; Current logged-in user is not a CLIENT");

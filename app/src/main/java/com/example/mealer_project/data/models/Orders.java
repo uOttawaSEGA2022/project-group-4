@@ -68,6 +68,35 @@ public class Orders implements Comparator<Order> {
         for (Order order : this.orders.values()) {
 
             // Process: checking if order is pending to be accepted OR accepted but not completed (not completed and not rejected)
+            if (order.getIsPending()) {
+
+                pendingList.add(order); //adding to list
+
+            }
+
+        }
+
+        // Process: sorting the list by date placed
+        Collections.sort(pendingList, this);
+
+        // Output
+        return pendingList;
+
+    };
+
+    /**
+     * Method to retrieve a list containing all pending Orders of a Client
+     * @return a List containing Order objects
+     */
+    public List<Order> getClientsPendingOrders() {
+
+        // Variable Declaration
+        ArrayList<Order> pendingList = new ArrayList<Order>();
+
+        // Process: looping through orders
+        for (Order order : this.orders.values()) {
+
+            // Process: checking if order is pending to be accepted OR accepted but not completed (not completed and not rejected)
             if (order.getIsPending() || (!order.getIsPending() && !order.getIsCompleted() && !order.getIsRejected())) {
 
                 pendingList.add(order); //adding to list
