@@ -115,6 +115,7 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
         TextView mealsSoldText = (TextView) findViewById(R.id.chef_mealsSold_msg);
         mealsSoldText.setText(String.valueOf(totalMealsSold));
 
+        /*
         // sets the text for chef's availability
         TextView availabilityText = (TextView) findViewById(R.id.chef_availability_msg);
 
@@ -123,6 +124,8 @@ public class ChefInfoScreen extends UIScreen implements StatefulView {
         } else { // Chef is currently not available
             availabilityText.setText("No");
         }
+
+         */
 
     }
 }
