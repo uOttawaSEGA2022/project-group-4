@@ -92,11 +92,28 @@
             android:id="@+id/chefScreenMealsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="55dp"
             android:gravity="center_horizontal|center_vertical"
             android:minHeight="200dp"
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/chefProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/input_box_shadow_white"
+                android:fontFamily="@font/copse"
+                android:text="@string/profile"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:backgroundTint="@color/green_primary"
+                app:strokeColor="@color/black"
+                app:strokeWidth="2dp" />
 
             <TextView
                 android:id="@+id/chefScreenMealsLabel"
@@ -107,7 +124,8 @@
                 android:text="@string/meals_label"
                 android:textColor="@color/black"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
 
             <LinearLayout
                 android:id="@+id/chefScreenButtonHolder"
@@ -141,11 +159,12 @@
 
             <LinearLayout
                 android:id="@+id/chefScreenButtonHolder2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="22dp"
-                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp">
 
@@ -156,17 +175,8 @@
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
                     android:gravity="center|center_vertical"
-                    android:paddingLeft="10dp"
                     android:text="@string/add_meal"
                     tools:ignore="TextContrastCheck" />
-
-                <Button
-                    android:id="@+id/chefProfile"
-                    android:layout_width="115dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="10dp"
-                    android:text="Profile" />
 
             </LinearLayout>
 

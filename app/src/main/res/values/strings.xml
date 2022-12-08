@@ -133,4 +133,5 @@
     <string name="accepted_order_status_being_prepared">being prepared</string>
     <string name="os_chef_desc_label">Description:</string>
     <string name="num_of_meals_sold">Number of Meals Sold:</string>
+    <string name="profile">Profile</string>
 </resources>
