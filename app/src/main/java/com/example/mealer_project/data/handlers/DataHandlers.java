@@ -1,7 +1,5 @@
 package com.example.mealer_project.data.handlers;
 
-import com.example.mealer_project.data.sources.FirebaseRepository;
-
 public class DataHandlers {
     // instance handlers
     private final UserHandler userHandler;
@@ -10,7 +8,7 @@ public class DataHandlers {
     private final OrderHandler orderHandler;
 
     // instantiate repository and handlers
-    public DataHandlers(FirebaseRepository firebaseRepository) {
+    public DataHandlers() {
         this.userHandler = new UserHandler();
         this.inboxHandler = new InboxHandler();
         this.mealHandler = new MealHandler();

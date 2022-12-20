@@ -12,7 +12,7 @@ import com.example.mealer_project.data.models.inbox.AdminInbox;
 import com.example.mealer_project.data.sources.FirebaseRepository;
 
 public class App {
-    static AppInstance app = new AppInstance();
+    static AppInstance app = AppInstance.getAppInstance();
     static final public UserHandler USER_HANDLER = app.getAppDataHandler().getUserHandler();
     static final public MealHandler MEAL_HANDLER = app.getAppDataHandler().getMealHandler();
     static final public OrderHandler ORDER_HANDLER = app.getAppDataHandler().getOrderHandler();
