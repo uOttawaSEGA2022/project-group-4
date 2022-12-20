@@ -14,7 +14,13 @@ import com.example.mealer_project.ui.screens.meals.MealsListScreen;
 import com.example.mealer_project.utils.Preconditions;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.checkerframework.checker.units.qual.A;
+
 public class AppInstance {
+
+    // singleton instance
+    private static AppInstance appInstance;
+
     private FirebaseRepository primaryDatabase;
     private DataHandlers appDataHandlers;
     private User user;
@@ -24,14 +30,27 @@ public class AppInstance {
     private CompletedOrdersScreen completedOrdersScreen;
     private ChefScreen chefScreen;
 
-    public AppInstance() {
+    /**
+     * Private default constructor
+     */
+    private AppInstance() {
         this.initializeApp();
+    }
+
+    /**
+     * Initializes a new App instance if it doesn't already exist.
+     * Returns the instance of AppInstance
+     * @return reference to an AppInstance
+     */
+    public static AppInstance getAppInstance() {
+        return (appInstance == null) ? new AppInstance() : appInstance;
     }
 
     public void initializeApp() {
         // set firebase to be the primary database
         primaryDatabase = new FirebaseRepository(FirebaseAuth.getInstance());
-        appDataHandlers = new DataHandlers(primaryDatabase);
+        // initialize App's local data handlers
+        appDataHandlers = new DataHandlers();
     }
 
     public boolean isUserAuthenticated() {
